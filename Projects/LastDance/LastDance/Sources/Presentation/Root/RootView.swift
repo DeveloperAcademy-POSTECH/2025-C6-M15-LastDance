@@ -1,0 +1,33 @@
+//
+//  RootView.swift
+//  LastDance
+//
+//  Created by 배현진 on 10/5/25.
+//
+
+import SwiftUI
+
+struct RootView: View {
+    @StateObject private var router = NavigationRouter()
+
+    var body: some View {
+        NavigationStack(path: $router.path) {
+            OnboardingView()
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .exhibitionList:
+                        ExhibitionListView()
+                    case .exhibitionDetail(let id):
+                        ExhibitionDetailView(exhibitionId: id)
+                    case .camera:
+                        CameraView()
+                    case .reaction:
+                        ReactionInputView()
+                    case .archive:
+                        ArchiveView()
+                    }
+                }
+        }
+        .environmentObject(router)
+    }
+}
