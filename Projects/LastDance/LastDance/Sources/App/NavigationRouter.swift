@@ -1,0 +1,33 @@
+//
+//  NavigationRouter.swift
+//  LastDance
+//
+//  Created by 배현진 on 10/5/25.
+//
+
+import SwiftUI
+
+/// SwiftUI NavigationStack 기반 라우터
+final class NavigationRouter: ObservableObject {
+    @Published var path: [Route] = []
+
+    func push(_ route: Route) {
+        path.append(route)
+    }
+
+    func popLast() {
+        _ = path.popLast()
+    }
+
+    func removeAll() {
+        path.removeAll()
+    }
+
+    /// 특정 화면까지 전부 pop
+    func popTo(_ target: Route) {
+        while let last = path.last {
+            if last == target { break }
+            _ = path.popLast()
+        }
+    }
+}
