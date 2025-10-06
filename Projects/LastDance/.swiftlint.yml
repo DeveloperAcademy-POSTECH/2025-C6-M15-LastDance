@@ -1,0 +1,112 @@
+disabled_rules:                                 # 기본 활성 상태를 비활성화
+  - leading_whitespace                          # 선행 공백 확인
+  - trailing_whitespace                         # 후행 공백 확인
+  - trailing_comma                              # 마지막 요소뒤에 콤마 사용 확인
+
+opt_in_rules:                                # 기본 비활성 상태를 활성화
+    - sorted_imports                         # import 라이브러리 알파벳 순서
+    - trailing_closure                       # 후행 클로저 사용
+    - multiple_closures_with_trailing_closure
+    - closure_spacing                        # 클로저 앞뒤 공백 규칙
+    - closure_end_indentation                # 클로저의 끝 괄호를 시작한 행과의 들여쓰기 맞춤
+    - vertical_whitespace                    # 세로 공백
+    - empty_string                           # "" 보다 isEmpty 선호
+    - empty_count                            # == 보다 isEmpty 선호
+
+analyzer_rules:
+    - unused_declaration                     # 사용되지 않는 선언 알림
+    - unused_import                          # 사용되지 않는 모듈 import 알림
+
+excluded:                       # 검사에서 제외할 파일
+    - DerivedData
+    - Tests/Mocks
+
+reporter: "xcode"
+
+line_length:                    # 한 줄 단위 길이 확인
+    warning: 100
+    ignores_urls: true
+    ignores_comments: true
+    
+large_tuple:                    # 튜플 크기 확인
+    warning: 3
+    error: 5
+    
+nesting:                        # depth 확인
+    type_level:
+        warning: 3
+        
+force_cast: warning             # as! 강제 캐스팅 확인
+force_try: warning              # try! 강제 캐스팅 확인
+
+type_name:                      # 타입 네이밍 확인
+  min_length:
+    warning: 1
+  max_length:
+    warning: 40
+    error: 50
+  allowed_symbols: ["_"]
+  
+identifier_name:                # 네이밍 확인
+  min_length:
+    error: 3
+  excluded:
+    - $
+    - id
+    - URL
+    - end
+    - vm
+    - app
+    - lhs
+    - rhs
+    - at
+    - acc
+    - cur
+    - box
+    - day
+    - top
+    - key
+    - mid
+    - low
+    - vc
+    - vcs
+    - min
+    - max
+    - epm
+    - hex
+    - to
+    - gap
+    - T
+    - sut
+  validates_start_with_lowercase: warning
+  allowed_symbols: ["_"]
+  
+trailing_closure:
+  only_single_muted_parameter: true
+  
+custom_rules:
+    no_get_prefix:                                      # 함수 네이밍에 get prefix 금지
+        included: ".*\\.swift"
+        name: "Avoid 'get' Prefix"
+        regex: 'func get[A-Z].*'
+        match_kind: [function_decl]
+        message: "Do not use 'get' as a function prefix."
+        severity: warning
+    plural_array_naming:
+        included: ".*\\.swift"
+        name: "Plural Array Naming"
+        regex: "\\b(var|let)\\s+[a-zA-Z]*[^s]\\s*:\\s*\\[.*\\]"
+        message: "배열 변수는 복수형으로 끝나야 합니다."
+        severity: warning
+    enum_case_lower_camel:
+        included: ".*\\.swift"
+        name: "Enum Case Naming"
+        regex: "case\\s+[A-Z]"
+        message: "enum case는 lowerCamelCase로 작성해야 합니다."
+        severity: error
+    view_struct:
+        included: ".*\\.swift"
+        name: "SwiftUI View Struct"
+        regex: "class\\s+.*:.*View"
+        message: "SwiftUI View는 struct로 선언하는 것이 권장됩니다."
+        severity: warning
