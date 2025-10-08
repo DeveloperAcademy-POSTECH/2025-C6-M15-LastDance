@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
+		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
 		99E6F0B52E91EF48002ED9C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
 		99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0A82E91EF48002ED9C2 /* LastDanceApp.swift */; };
@@ -51,11 +53,21 @@
 		99E6F0D72E91F29E002ED9C2 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		96B1CA1F2E9642D1003E7C1C /* Data */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Data;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		99E6F0642E91E4A9002ED9C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */,
+				96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,9 +190,9 @@
 		99E6F0B12E91EF48002ED9C2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				96B1CA1F2E9642D1003E7C1C /* Data */,
 				99E6F0A92E91EF48002ED9C2 /* App */,
 				99E6F0DB2E91F463002ED9C2 /* Common */,
-				99E6F0DA2E91F459002ED9C2 /* Data */,
 				99E6F0D92E91F43D002ED9C2 /* Domain */,
 				99E6F0B02E91EF48002ED9C2 /* Presentation */,
 			);
@@ -213,13 +225,6 @@
 				99E6F0E12E91F603002ED9C2 /* Model */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		99E6F0DA2E91F459002ED9C2 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		99E6F0DB2E91F463002ED9C2 /* Common */ = {
@@ -367,8 +372,13 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				96B1CA1F2E9642D1003E7C1C /* Data */,
+			);
 			name = LastDance;
 			packageProductDependencies = (
+				96B1CA192E954A5C003E7C1C /* CombineMoya */,
+				96B1CA1B2E954A5C003E7C1C /* Moya */,
 			);
 			productName = LastDance;
 			productReference = 99E6F0672E91E4A9002ED9C2 /* LastDance.app */;
@@ -398,6 +408,9 @@
 			);
 			mainGroup = 99E6F05E2E91E4A9002ED9C2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 99E6F0682E91E4A9002ED9C2 /* Products */;
 			projectDirPath = "";
@@ -645,6 +658,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		96B1CA192E954A5C003E7C1C /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		96B1CA1B2E954A5C003E7C1C /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
 }
