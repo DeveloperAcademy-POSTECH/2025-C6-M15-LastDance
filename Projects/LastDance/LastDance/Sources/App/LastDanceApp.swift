@@ -45,6 +45,13 @@ struct LastDanceApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .onAppear {
+                    #if DEBUG
+                    Task { @MainActor in
+                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
+                    }
+                    #endif
+                }
         }
         .modelContainer(sharedModelContainer)
     }
