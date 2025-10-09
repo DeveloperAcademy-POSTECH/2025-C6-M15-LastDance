@@ -10,18 +10,37 @@ import SwiftData
 
 @main
 struct LastDanceApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+    let sharedModelContainer: ModelContainer
+    
+    init() {
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let schema = Schema([
+                Exhibition.self,
+                Artwork.self,
+                Artist.self,
+                User.self,
+                Venue.self,
+                CapturedArtwork.self,
+                Reaction.self,
+                IdentificatedArtwork.self
+            ])
+            
+            let modelConfiguration = ModelConfiguration(
+                schema: schema,
+                isStoredInMemoryOnly: false
+            )
+
+            self.sharedModelContainer = try ModelContainer(
+                for: schema,
+                configurations: [modelConfiguration]
+            )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+        
+        // SwiftUI가 아닌 외부에서 사용 가능하도록 SwiftDataManager에 container 주입
+        SwiftDataManager.shared.configure(with: sharedModelContainer)
+    }
 
     var body: some Scene {
         WindowGroup {
