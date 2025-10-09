@@ -54,26 +54,31 @@ struct Log {
         }
     }
 
-    static private func log(_ message: Any, level: Level) {
+    static private func log(
+        _ message: Any,
+        level: Level,
+        file: String = #fileID,
+        function: String = #function
+    ) {
         #if DEBUG
-            let logger = Logger(
-                subsystem: OSLog.subsystem,
-                category: level.category
-            )
-            let logMessage = "\(level.category): \(message)"
-            switch level {
-            case .debug:
-                logger.debug("\(logMessage, privacy: .public)")
-            case .info:
-                logger.info("\(logMessage, privacy: .public)")
-            case .warning:
-                logger.warning("\(logMessage, privacy: .private)")
-            case .fault:
-                logger.log("\(logMessage, privacy: .private)")
-            case .error:
-                logger.error("\(logMessage, privacy: .private)")
-            }
+        let logger = Logger(
+            subsystem: OSLog.subsystem,
+            category: level.category
+        )
 
+        let logMessage = "\(level.category): [\(file)] \(function) -> \(message)"
+        switch level {
+        case .debug:
+            logger.debug("\(logMessage, privacy: .public)")
+        case .info:
+            logger.info("\(logMessage, privacy: .public)")
+        case .warning:
+            logger.warning("\(logMessage, privacy: .private)")
+        case .fault:
+            logger.log("\(logMessage, privacy: .private)")
+        case .error:
+            logger.error("\(logMessage, privacy: .private)")
+        }
         #endif
     }
 }
