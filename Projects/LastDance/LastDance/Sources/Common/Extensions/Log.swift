@@ -9,7 +9,6 @@ import Foundation
 import os.log
 
 struct Log {
-    
     /// # Level
     /// - debug : 디버깅 로그
     /// - info : 시스템 상태 파악 로그
