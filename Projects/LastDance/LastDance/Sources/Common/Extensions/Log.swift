@@ -53,21 +53,6 @@ struct Log {
                 return OSLog.error
             }
         }
-//
-//        fileprivate var osLogType: OSLogType {
-//            switch self {
-//            case .debug:
-//                return .debug
-//            case .info:
-//                return .info
-//            case .warning:
-//                return .warning
-//            case .fault:
-//                return .fault
-//            case .error:
-//                return .error
-//            }
-//        }
     }
 
     static private func log(_ message: Any, level: Level) {
