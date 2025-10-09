@@ -1,0 +1,82 @@
+//
+//  SwiftDataManager.swift
+//  LastDance
+//
+//  Created by 배현진 on 10/9/25.
+//
+
+import Foundation
+import SwiftData
+
+/// 앱 전역에서 SwiftData를 다루는 매니저.
+/// View 밖(ViewModel, Service 등)에서 데이터 접근 시 사용합니다.
+@MainActor
+final class SwiftDataManager {
+    static let shared = SwiftDataManager()
+
+    private(set) var container: ModelContainer?
+    var context: ModelContext {
+        guard let container = container else {
+            fatalError("ModelContainer가 아직 설정되지 않았습니다.")
+        }
+        return container.mainContext
+    }
+
+    private init() {}
+
+    /// 앱 초기화 시점에 ModelContainer를 주입
+    func configure(with container: ModelContainer) {
+        self.container = container
+    }
+    
+    // MARK: - CRUD
+
+    /// 새 객체 추가
+    func insert<T: PersistentModel>(_ object: T) {
+        context.insert(object)
+        saveContext()
+    }
+
+    /// 특정 객체 삭제
+    func delete<T: PersistentModel>(_ object: T) {
+        context.delete(object)
+        saveContext()
+    }
+
+    /// 모든 데이터 가져오기
+    func fetchAll<T: PersistentModel>(_ type: T.Type) -> [T] {
+        do {
+            let descriptor = FetchDescriptor<T>()
+            return try context.fetch(descriptor)
+        } catch {
+            print("Fetch 실패:", error)
+            return []
+        }
+    }
+    
+    /// 특정 id를 가진 객체 가져오기
+    func fetchById<T: PersistentModel & Identifiable>(_ type: T.Type, id: String) -> T? {
+        do {
+            let predicate = #Predicate<T> { ($0 as? any HasStringId)?.id == id }
+            let descriptor = FetchDescriptor<T>(predicate: predicate)
+            return try context.fetch(descriptor).first
+        } catch {
+            print("FetchById 실패: \(error)")
+            return nil
+        }
+    }
+
+    /// 저장
+    func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print("SwiftData 저장 실패:", error)
+        }
+    }
+}
+
+/// 문자열 id를 가진 모델을 위한 프로토콜
+protocol HasStringId {
+    var id: String { get }
+}
