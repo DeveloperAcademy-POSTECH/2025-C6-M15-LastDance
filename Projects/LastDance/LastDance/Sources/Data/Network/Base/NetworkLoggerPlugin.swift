@@ -12,7 +12,7 @@ struct NetworkLoggerPlugin: PluginType {
     /// Request 보낼 때 요청하는 함수
     func willSend(_ request: RequestType, target: TargetType) {
         guard let httpRequest = request.request else {
-            print("🚧 [HTTP Request] 유효하지 않은 요청")
+            Log.debug("🚧 [HTTP Request] 유효하지 않은 요청")
             return
         }
 
@@ -43,7 +43,7 @@ struct NetworkLoggerPlugin: PluginType {
         }
         httpLog.append("\n====================HTTP Response End====================")
 
-        print(httpLog)
+        Log.debug(httpLog)
     }
 
     /// Response 받을 때 요청하는 함수
@@ -90,7 +90,7 @@ struct NetworkLoggerPlugin: PluginType {
         }
         httpLog.append("------------------HTTP Response End------------------")
 
-        print(httpLog)
+        Log.debug(httpLog)
     }
 
     /// 네트워크 실패 시 함수
@@ -114,6 +114,6 @@ struct NetworkLoggerPlugin: PluginType {
         )
         httpLog.append("------------------HTTP Response End------------------")
 
-        print(httpLog)
+        Log.debug(httpLog)
     }
 }

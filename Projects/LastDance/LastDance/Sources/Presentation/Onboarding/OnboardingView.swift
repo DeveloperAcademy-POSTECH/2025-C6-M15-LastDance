@@ -12,6 +12,11 @@ struct OnboardingView: View {
     @StateObject private var viewModel = OnboardingViewModel()
     
     var body: some View {
-        Text("OnboardingView")
+        VStack {
+            Text("OnboardingView")
+        }
+        .onAppear {
+            Log.debug("디버깅")
+        }
     }
 }

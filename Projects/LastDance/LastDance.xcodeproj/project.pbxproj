@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
 		99E6F0B52E91EF48002ED9C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,6 +57,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		963572642E980F1D00B2FA79 /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		96B1CA1F2E9642D1003E7C1C /* Data */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Data;
@@ -67,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */,
 				96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */,
 				96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */,
 			);
@@ -75,11 +83,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		963572412E980E2400B2FA79 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				963572422E980E2400B2FA79 /* OSLog.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
+				963572412E980E2400B2FA79 /* Frameworks */,
 				99E6F0682E91E4A9002ED9C2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -232,8 +249,8 @@
 		99E6F0DB2E91F463002ED9C2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				963572642E980F1D00B2FA79 /* Extensions */,
 				99E6F0DE2E91F499002ED9C2 /* Utils */,
-				99E6F0DD2E91F48C002ED9C2 /* Extensions */,
 				99E6F0DC2E91F485002ED9C2 /* Components */,
 			);
 			path = Common;
@@ -244,13 +261,6 @@
 			children = (
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		99E6F0DD2E91F48C002ED9C2 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		99E6F0DE2E91F499002ED9C2 /* Utils */ = {
@@ -376,6 +386,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				963572642E980F1D00B2FA79 /* Extensions */,
 				96B1CA1F2E9642D1003E7C1C /* Data */,
 			);
 			name = LastDance;
