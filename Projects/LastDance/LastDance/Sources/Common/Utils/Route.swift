@@ -11,6 +11,7 @@ import Foundation
 enum Route: Hashable {
     case exhibitionList
     case exhibitionDetail(id: String)
+    case artworkDetail(id: String)
     case camera
     case reaction
     case archive
