@@ -10,7 +10,6 @@
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
-		99E6F0B52E91EF48002ED9C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
 		99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0A82E91EF48002ED9C2 /* LastDanceApp.swift */; };
 		99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0B32E91EF48002ED9C2 /* Item.swift */; };
@@ -37,8 +36,19 @@
 		99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F1082E97B0E3002ED9C2 /* CapturedArtwork.swift */; };
 		99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F10A2E97B0EA002ED9C2 /* Reaction.swift */; };
 		99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F10C2E97B0F1002ED9C2 /* IdentificatedArtwork.swift */; };
-		99E6F1102E97B146002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F10F2E97B142002ED9C2 /* SwiftDataManager.swift */; };
-		99E6F1122E97C482002ED9C2 /* MockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F1112E97C440002ED9C2 /* MockDataLoader.swift */; };
+		99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3892E989CFB002ED9C2 /* ArtworkRequestDto.swift */; };
+		99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F38B2E989CFB002ED9C2 /* ArtworkAPI.swift */; };
+		99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F38D2E989CFB002ED9C2 /* BaseResponse.swift */; };
+		99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F38E2E989CFB002ED9C2 /* BaseTargetType.swift */; };
+		99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F38F2E989CFB002ED9C2 /* NetworkError.swift */; };
+		99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3902E989CFB002ED9C2 /* NetworkLoggerPlugin.swift */; };
+		99E6F3A62E989CFB002ED9C2 /* ExhibitionRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3922E989CFB002ED9C2 /* ExhibitionRequestDto.swift */; };
+		99E6F3A72E989CFB002ED9C2 /* ExhibitionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3942E989CFB002ED9C2 /* ExhibitionAPI.swift */; };
+		99E6F3A82E989CFB002ED9C2 /* ReactionRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3962E989CFB002ED9C2 /* ReactionRequestDto.swift */; };
+		99E6F3A92E989CFB002ED9C2 /* ReactionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3972E989CFB002ED9C2 /* ReactionResponseDto.swift */; };
+		99E6F3AA2E989CFB002ED9C2 /* ReactionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */; };
+		99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */; };
+		99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,19 +82,25 @@
 		99E6F1082E97B0E3002ED9C2 /* CapturedArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedArtwork.swift; sourceTree = "<group>"; };
 		99E6F10A2E97B0EA002ED9C2 /* Reaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
 		99E6F10C2E97B0F1002ED9C2 /* IdentificatedArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentificatedArtwork.swift; sourceTree = "<group>"; };
-		99E6F10F2E97B142002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
-		99E6F1112E97C440002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
+		99E6F3892E989CFB002ED9C2 /* ArtworkRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkRequestDto.swift; sourceTree = "<group>"; };
+		99E6F38B2E989CFB002ED9C2 /* ArtworkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPI.swift; sourceTree = "<group>"; };
+		99E6F38D2E989CFB002ED9C2 /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
+		99E6F38E2E989CFB002ED9C2 /* BaseTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTargetType.swift; sourceTree = "<group>"; };
+		99E6F38F2E989CFB002ED9C2 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		99E6F3902E989CFB002ED9C2 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
+		99E6F3922E989CFB002ED9C2 /* ExhibitionRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionRequestDto.swift; sourceTree = "<group>"; };
+		99E6F3942E989CFB002ED9C2 /* ExhibitionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPI.swift; sourceTree = "<group>"; };
+		99E6F3962E989CFB002ED9C2 /* ReactionRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionRequestDto.swift; sourceTree = "<group>"; };
+		99E6F3972E989CFB002ED9C2 /* ReactionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionResponseDto.swift; sourceTree = "<group>"; };
+		99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPI.swift; sourceTree = "<group>"; };
+		99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
+		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		963572642E980F1D00B2FA79 /* Extensions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		96B1CA1F2E9642D1003E7C1C /* Data */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -229,7 +245,7 @@
 		99E6F0B12E91EF48002ED9C2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				96B1CA1F2E9642D1003E7C1C /* Data */,
+				99E6F39F2E989CFB002ED9C2 /* Data */,
 				99E6F0A92E91EF48002ED9C2 /* App */,
 				99E6F0DB2E91F463002ED9C2 /* Common */,
 				99E6F0D92E91F43D002ED9C2 /* Domain */,
@@ -264,14 +280,6 @@
 				99E6F0E12E91F603002ED9C2 /* Model */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		99E6F0DA2E91F459002ED9C2 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				99E6F10E2E97B110002ED9C2 /* Persistence */,
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		99E6F0DB2E91F463002ED9C2 /* Common */ = {
@@ -405,13 +413,96 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		99E6F10E2E97B110002ED9C2 /* Persistence */ = {
+		99E6F38A2E989CFB002ED9C2 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				99E6F1112E97C440002ED9C2 /* MockDataLoader.swift */,
-				99E6F10F2E97B142002ED9C2 /* SwiftDataManager.swift */,
+				99E6F3892E989CFB002ED9C2 /* ArtworkRequestDto.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99E6F38C2E989CFB002ED9C2 /* Artwork */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F38A2E989CFB002ED9C2 /* DTO */,
+				99E6F38B2E989CFB002ED9C2 /* ArtworkAPI.swift */,
+			);
+			path = Artwork;
+			sourceTree = "<group>";
+		};
+		99E6F3912E989CFB002ED9C2 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F38D2E989CFB002ED9C2 /* BaseResponse.swift */,
+				99E6F38E2E989CFB002ED9C2 /* BaseTargetType.swift */,
+				99E6F38F2E989CFB002ED9C2 /* NetworkError.swift */,
+				99E6F3902E989CFB002ED9C2 /* NetworkLoggerPlugin.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		99E6F3932E989CFB002ED9C2 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F3922E989CFB002ED9C2 /* ExhibitionRequestDto.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99E6F3952E989CFB002ED9C2 /* Exhibition */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F3932E989CFB002ED9C2 /* DTO */,
+				99E6F3942E989CFB002ED9C2 /* ExhibitionAPI.swift */,
+			);
+			path = Exhibition;
+			sourceTree = "<group>";
+		};
+		99E6F3982E989CFB002ED9C2 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F3962E989CFB002ED9C2 /* ReactionRequestDto.swift */,
+				99E6F3972E989CFB002ED9C2 /* ReactionResponseDto.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99E6F39A2E989CFB002ED9C2 /* Reaction */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F3982E989CFB002ED9C2 /* DTO */,
+				99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */,
+			);
+			path = Reaction;
+			sourceTree = "<group>";
+		};
+		99E6F39B2E989CFB002ED9C2 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F38C2E989CFB002ED9C2 /* Artwork */,
+				99E6F3912E989CFB002ED9C2 /* Base */,
+				99E6F3952E989CFB002ED9C2 /* Exhibition */,
+				99E6F39A2E989CFB002ED9C2 /* Reaction */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		99E6F39E2E989CFB002ED9C2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */,
+				99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */,
 			);
 			path = Persistence;
+			sourceTree = "<group>";
+		};
+		99E6F39F2E989CFB002ED9C2 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				99E6F39B2E989CFB002ED9C2 /* Network */,
+				99E6F39E2E989CFB002ED9C2 /* Persistence */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -432,7 +523,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				963572642E980F1D00B2FA79 /* Extensions */,
-				96B1CA1F2E9642D1003E7C1C /* Data */,
 			);
 			name = LastDance;
 			packageProductDependencies = (
@@ -485,7 +575,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99E6F0B52E91EF48002ED9C2 /* Preview Assets.xcassets in Resources */,
 				99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,7 +617,6 @@
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				99E6F0C82E91F18D002ED9C2 /* ExhibitionDetailView.swift in Sources */,
-				99E6F1122E97C482002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F0D42E91F255002ED9C2 /* ArchiveView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
@@ -539,11 +627,23 @@
 				99E6F0FF2E97B0CA002ED9C2 /* Exhibition.swift in Sources */,
 				99E6F0D02E91F217002ED9C2 /* ReactionInputView.swift in Sources */,
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
+				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
+				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
+				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
+				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
+				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
+				99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */,
+				99E6F3A62E989CFB002ED9C2 /* ExhibitionRequestDto.swift in Sources */,
+				99E6F3A72E989CFB002ED9C2 /* ExhibitionAPI.swift in Sources */,
+				99E6F3A82E989CFB002ED9C2 /* ReactionRequestDto.swift in Sources */,
+				99E6F3A92E989CFB002ED9C2 /* ReactionResponseDto.swift in Sources */,
+				99E6F3AA2E989CFB002ED9C2 /* ReactionAPI.swift in Sources */,
+				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
+				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* User.swift in Sources */,
-				99E6F1102E97B146002ED9C2 /* SwiftDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
