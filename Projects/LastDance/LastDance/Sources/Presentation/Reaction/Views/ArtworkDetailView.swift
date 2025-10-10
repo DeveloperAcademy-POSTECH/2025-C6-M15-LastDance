@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ArtworkDetailView: View {
+    @Environment(\.keyboardManager) var keyboardManager
     @Environment(\.modelContext) private var context
     let artworkId: String
     @Query private var allArtworks: [Artwork]
@@ -103,11 +104,16 @@ struct ArtworkDetailView: View {
 
                 }
                 .padding(.horizontal, 20)
+                .padding(.bottom, keyboardManager.keyboardHeight)
             }
             BottomButton
         }
-        .edgesIgnoringSafeArea(.bottom)
-        .navigationBarTitle("반응남기기", displayMode: .inline)
+//        .edgesIgnoringSafeArea(.bottom)
+//        .ignoresSafeArea(.keyboard, edges: .bottom)
+
+        .navigationBarTitle("반응 남기기", displayMode: .inline)
+        .animation(.easeOut(duration: 0.25), value: keyboardManager.keyboardHeight)
+
     }
 
     @ViewBuilder
@@ -216,7 +222,8 @@ struct ArtworkDetailView: View {
                 .stroke(.black, lineWidth: 1)
         )
         .padding(.horizontal, 20)
-        .padding(.bottom, 35)
+//        .padding(.bottom, 35)
+
     }
     
     /// 작품 반응을 저장하는 함수
