@@ -25,6 +25,10 @@ struct RootView: View {
                         ReactionInputView()
                     case .archive:
                         ArchiveView()
+                    case .category:
+                        CategoryView()
+                    case .completeReaction:
+                        CompleteReactionView()
                     }
                 }
         }

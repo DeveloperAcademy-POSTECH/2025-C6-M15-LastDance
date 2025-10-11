@@ -11,6 +11,8 @@
 		963573A92E9A4A8B00B2FA79 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A82E9A4A8B00B2FA79 /* CategoryView.swift */; };
 		963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */; };
 		963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */; };
+		963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */; };
+		963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573B32E9ABD4800B2FA79 /* BottomButton.swift */; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
@@ -59,6 +61,8 @@
 		963573A82E9A4A8B00B2FA79 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedButton.swift; sourceTree = "<group>"; };
+		963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
+		963573B32E9ABD4800B2FA79 /* BottomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButton.swift; sourceTree = "<group>"; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */,
+				963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */,
+				963573B32E9ABD4800B2FA79 /* BottomButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -632,6 +638,8 @@
 				963573A92E9A4A8B00B2FA79 /* CategoryView.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
+				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
+				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
 				99E6F1072E97B0E0002ED9C2 /* Venue.swift in Sources */,

@@ -28,18 +28,19 @@ struct CompleteReactionView: View {
 
             HStack {
                 OutlinedButton(title: "관람 끝내기") {
-                    // TODO: 관람 끝내기 기능 구현
+                    // TODO: 관람 끝내기 네비게이션 연결
                 }
                 
                 Spacer()
                 
                 OutlinedButton(title: "관람 계속하기") {
-                    // TODO: 관람 계속하기 기능 구현
+                    // TODO: 관람 계속하기 네비게이션 연결
                 }
             }
             .padding(.horizontal, 33)
         }
         .edgesIgnoringSafeArea(.bottom)
+        .navigationBarBackButtonHidden()
     }
 }
 
