@@ -49,7 +49,7 @@ final class SwiftDataManager {
             let descriptor = FetchDescriptor<T>()
             return try context.fetch(descriptor)
         } catch {
-            print("Fetch 실패:", error)
+            Log.error("Fetch 실패: \(error)")
             return []
         }
     }
@@ -61,7 +61,7 @@ final class SwiftDataManager {
             let descriptor = FetchDescriptor<T>(predicate: predicate)
             return try context.fetch(descriptor).first
         } catch {
-            print("FetchById 실패: \(error)")
+            Log.error("FetchById 실패: \(error)")
             return nil
         }
     }
@@ -71,7 +71,7 @@ final class SwiftDataManager {
         do {
             try context.save()
         } catch {
-            print("SwiftData 저장 실패:", error)
+            Log.error("SwiftData 저장 실패: \(error)")
         }
     }
 }

@@ -108,9 +108,6 @@ struct ArtworkDetailView: View {
             }
             BottomButton
         }
-//        .edgesIgnoringSafeArea(.bottom)
-//        .ignoresSafeArea(.keyboard, edges: .bottom)
-
         .navigationBarTitle("반응 남기기", displayMode: .inline)
         .animation(.easeOut(duration: 0.25), value: keyboardManager.keyboardHeight)
 
@@ -222,10 +219,9 @@ struct ArtworkDetailView: View {
                 .stroke(.black, lineWidth: 1)
         )
         .padding(.horizontal, 20)
-//        .padding(.bottom, 35)
-
     }
     
+    // TODO: 카테고리 기능 구현시 수정 필요
     /// 작품 반응을 저장하는 함수
     private func saveReaction() {
             guard message.isEmpty == false else { return }
@@ -244,9 +240,9 @@ struct ArtworkDetailView: View {
             do {
                 try context.save()
                 message = ""
-                print("✅ Reaction saved successfully.")
+                Log.debug("[ArtworkDetailView] 저장 완료")
             } catch {
-                print("❌ Reaction save failed: \(error)")
+                Log.debug("[ArtworkDetailView] 저장 실패: \(error)")
             }
         }
 }

@@ -93,9 +93,9 @@ enum MockDataLoader {
         do {
             try context.save()
             UserDefaults.standard.set(true, forKey: seedKey)
-            print("DEV seed completed.")
+            Log.debug("DEV seed completed.")
         } catch {
-            print("DEV seed failed: \(error)")
+            Log.debug("DEV seed failed: \(error)")
         }
         #endif
     }
@@ -114,7 +114,7 @@ enum MockDataLoader {
         _ = try? ctx.delete(model: IdentificatedArtwork.self)
         try? ctx.save()
         UserDefaults.standard.set(false, forKey: seedKey)
-        print("🧹 wiped all & seed flag reset")
+        Log.debug("🧹 wiped all & seed flag reset")
         #endif
     }
 }
