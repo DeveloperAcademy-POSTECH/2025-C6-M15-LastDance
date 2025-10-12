@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct LastDanceApp: App {
     let sharedModelContainer: ModelContainer
+    @StateObject private var keyboardManager = KeyboardManager()
     
     init() {
         do {
@@ -45,6 +46,7 @@ struct LastDanceApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(\.keyboardManager, keyboardManager)
                 .onAppear {
                     #if DEBUG
                     Task { @MainActor in
