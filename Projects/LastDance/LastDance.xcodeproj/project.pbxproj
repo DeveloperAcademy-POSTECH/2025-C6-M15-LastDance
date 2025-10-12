@@ -151,6 +151,8 @@
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
 		9635739C2E98F27100B2FA79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
