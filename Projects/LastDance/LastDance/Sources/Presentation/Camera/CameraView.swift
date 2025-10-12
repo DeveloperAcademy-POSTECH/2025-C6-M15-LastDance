@@ -11,6 +11,8 @@ import SwiftUI
 struct CameraView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = CameraViewModel()
+    
+    @State private var showConfirm = false
 
     var body: some View {
         GeometryReader { geo in
@@ -58,6 +60,28 @@ struct CameraView: View {
             }
         }
         .task { await viewModel.prepare() }
+        .onChange(of: viewModel.capturedImage) { _, new in
+            showConfirm = (new != nil)
+        }
+        // TODO: - 촬영 확인 화면 띄우는 방식에 따라 수정
+        .fullScreenCover(isPresented: $showConfirm) {
+            if let image = viewModel.capturedImage {
+                CaptureConfirmView(
+                    image: image,
+                    onUse: { _ in
+                        // TODO: 작품 인식시키거나 정보 입력으로 연결
+                        // 임시: 카메라 닫기
+                        router.popLast()
+                    },
+                    onRetake: {
+                        showConfirm = false
+                    }
+                )
+            } else {
+                // 예외적으로 nil이면 그냥 닫기
+                Color.black.ignoresSafeArea().onAppear { showConfirm = false }
+            }
+        }
         .onDisappear { viewModel.stop() }
     }
 }
@@ -70,4 +94,6 @@ enum CameraViewLayout {
     static let previewTopInset: CGFloat = 24
     /// 프리뷰 아래 여백
     static let previewBottomInset: CGFloat = 70
+    /// Confirm에서 프리뷰보다 더 작은 카드 폭 비율
+    static let confirmCardWidthRatio: CGFloat = 0.90
 }
