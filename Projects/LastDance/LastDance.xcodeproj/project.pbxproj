@@ -13,6 +13,7 @@
 		963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */; };
 		963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */; };
 		963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573B32E9ABD4800B2FA79 /* BottomButton.swift */; };
+		963573BF2E9B84D500B2FA79 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573BE2E9B84D500B2FA79 /* Log.swift */; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedButton.swift; sourceTree = "<group>"; };
 		963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
 		963573B32E9ABD4800B2FA79 /* BottomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButton.swift; sourceTree = "<group>"; };
+		963573BE2E9B84D500B2FA79 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -107,14 +109,6 @@
 		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		963572642E980F1D00B2FA79 /* Extensions */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		99E6F0642E91E4A9002ED9C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -145,6 +139,14 @@
 				963573B32E9ABD4800B2FA79 /* BottomButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		963573C02E9B84ED00B2FA79 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				963573BE2E9B84D500B2FA79 /* Log.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		99E6F05E2E91E4A9002ED9C2 = {
@@ -307,8 +309,8 @@
 		99E6F0DB2E91F463002ED9C2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				963573C02E9B84ED00B2FA79 /* Extensions */,
 				963573AC2E9A4F2B00B2FA79 /* Components */,
-				963572642E980F1D00B2FA79 /* Extensions */,
 				99E6F0DE2E91F499002ED9C2 /* Utils */,
 			);
 			path = Common;
@@ -536,9 +538,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				963572642E980F1D00B2FA79 /* Extensions */,
-			);
 			name = LastDance;
 			packageProductDependencies = (
 				96B1CA192E954A5C003E7C1C /* CombineMoya */,
@@ -623,6 +622,7 @@
 			files = (
 				99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */,
 				99E6F0C22E91F11E002ED9C2 /* ExhibitionListView.swift in Sources */,
+				963573BF2E9B84D500B2FA79 /* Log.swift in Sources */,
 				99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */,
 				99E6F0BB2E91EF7D002ED9C2 /* Route.swift in Sources */,
 				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
