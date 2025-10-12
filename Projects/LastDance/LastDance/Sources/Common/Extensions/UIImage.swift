@@ -5,6 +5,7 @@
 //  Created by 배현진 on 10/09/25.
 //
 
+import CoreMedia
 import UIKit
 
 extension UIImage {
@@ -46,5 +47,15 @@ extension UIImage {
             scale: self.scale,
             orientation: self.imageOrientation
         )
+    }
+    
+    /// SampleBuffer를 UIImage로 변환
+    static func from(sampleBuffer: CMSampleBuffer,
+                     orientation: UIImage.Orientation = .right) -> UIImage? {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return nil }
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let ctx = CIContext()
+        guard let cgImage = ctx.createCGImage(ciImage, from: ciImage.extent) else { return nil }
+        return UIImage(cgImage: cgImage, scale: 1.0, orientation: orientation)
     }
 }

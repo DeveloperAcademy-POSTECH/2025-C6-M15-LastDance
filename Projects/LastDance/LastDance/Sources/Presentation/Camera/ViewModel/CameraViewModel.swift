@@ -52,13 +52,8 @@ final class CameraViewModel: ObservableObject {
     }
 
     func capture() async {
-        do {
-            let image = try await manager.capturePhoto()
-            capturedImage = image
-            let cropped = image.cropped(toAspect: CameraViewLayout.aspect)
-            self.croppedForDisplay = cropped
-        } catch {
-            errorMessage = "촬영에 실패했습니다."
+        manager.captureSilent { image in
+            self.capturedImage = image
         }
     }
 }

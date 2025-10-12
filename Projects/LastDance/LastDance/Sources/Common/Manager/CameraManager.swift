@@ -16,6 +16,10 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
     private(set) var isConfigured = false
     private var photoProcessors: [Int64: PhotoCaptureProcessor] = [:]
+    
+    private let videoOutput = AVCaptureVideoDataOutput()
+    private let videoQueue = DispatchQueue(label: "camera.video.queue")
+    private(set) var lastVideoBuffer: CMSampleBuffer?
 
     // MARK: - Permission
     static func checkAuthorizationStatus() -> AVAuthorizationStatus {
@@ -68,6 +72,14 @@ final class CameraManager: NSObject, @unchecked Sendable {
                             }
                         }
                     }
+                    
+                    // 무음 스냅샷용 비디오 데이터
+                    self.videoOutput.alwaysDiscardsLateVideoFrames = true
+                    self.videoOutput.setSampleBufferDelegate(self, queue: self.videoQueue)
+                    if self.session.canAddOutput(self.videoOutput) {
+                        self.session.addOutput(self.videoOutput)
+                    }
+                    self.videoOutput.connection(with: .video)?.videoRotationAngle = 0.0
 
                     self.session.commitConfiguration()
                     self.isConfigured = true
@@ -119,6 +131,17 @@ final class CameraManager: NSObject, @unchecked Sendable {
             self.photoOutput.capturePhoto(with: settings, delegate: processor)
         }
     }
+    
+    // 무음 촬영 메서드 추가
+    func captureSilent(_ completion: @escaping (UIImage?) -> Void) {
+        videoQueue.async {
+            guard let buffer = self.lastVideoBuffer,
+                  let img = UIImage.from(sampleBuffer: buffer, orientation: .right) else {
+                DispatchQueue.main.async { completion(nil) }; return
+            }
+            DispatchQueue.main.async { completion(img) }
+        }
+    }
 
     // MARK: - Helpers
     private static func bestDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
@@ -137,7 +160,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
     }
 }
 
-// MARK: - Internal delegate bridge
+// MARK: - 사진 촬영을 위한 delegate
 private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelegate {
     let id: Int64
     private let completion: (Result<UIImage, Error>) -> Void
@@ -182,6 +205,14 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
         if !didFinish {
             finish(.failure(CameraManagerError.captureFailed))
         }
+    }
+}
+
+// MARK: - 영상 촬영을 위한 delegate
+extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        lastVideoBuffer = sampleBuffer
     }
 }
 
