@@ -14,19 +14,6 @@ struct OnboardingView: View {
     var body: some View {
         VStack {
             Text("OnboardingView")
-            
-            // 뷰 테스트 해보기 위한 임시 코드
-             Button(action: {
-                 router.push(.category)
-             }, label: {
-                 Text("CategoryView")
-             })
-            
-            Button(action: {
-                router.push(.completeReaction)
-            }, label: {
-                Text("CompleteReactionView")
-            })
         }
         .onAppear {
             Log.debug("디버깅")
