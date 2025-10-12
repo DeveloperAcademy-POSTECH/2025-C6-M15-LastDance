@@ -15,4 +15,6 @@ enum Route: Hashable {
     case camera
     case reaction
     case archive
+    case category
+    case completeReaction
 }
