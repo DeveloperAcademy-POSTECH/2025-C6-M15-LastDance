@@ -15,8 +15,5 @@ struct OnboardingView: View {
         VStack {
             Text("OnboardingView")
         }
-        .onAppear {
-            Log.debug("디버깅")
-        }
     }
 }

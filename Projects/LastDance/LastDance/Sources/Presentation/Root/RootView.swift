@@ -19,12 +19,18 @@ struct RootView: View {
                         ExhibitionListView()
                     case .exhibitionDetail(let id):
                         ExhibitionDetailView(exhibitionId: id)
+                    case .artworkDetail(let id):
+                        ArtworkDetailView(artworkId: id)
                     case .camera:
                         CameraView()
                     case .reaction:
                         ReactionInputView()
                     case .archive:
                         ArchiveView()
+                    case .category:
+                        CategoryView()
+                    case .completeReaction:
+                        CompleteReactionView()
                     }
                 }
         }
