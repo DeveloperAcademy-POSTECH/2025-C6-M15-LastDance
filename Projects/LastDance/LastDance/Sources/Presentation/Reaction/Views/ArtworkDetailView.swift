@@ -95,7 +95,7 @@ struct ArtworkDetailView: View {
 
                         CategoryTag
 
-                        Spacer().frame(height: 21)
+                        Spacer().frame(height: 27)
 
                         MessageEditor
 
@@ -108,10 +108,16 @@ struct ArtworkDetailView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, keyboardManager.keyboardHeight)
             }
-            BottomButton
+            
+            BottomButton(
+                text: "전송하기",
+                isEnabled: !viewModel.isSendButtonDisabled,
+                action: {
+                    viewModel.saveReaction(artworkId: artworkId, context: context)
+                }
+            )
         }
         .onAppear {
-            // UserDefaults에서 선택된 카테고리들을 읽어와서 viewModel에 설정
             if let savedCategories = UserDefaults.standard.array(forKey: "selectedCategories") as? [String] {
                 viewModel.selectedCategories = Set(savedCategories)
             }
@@ -143,7 +149,7 @@ struct ArtworkDetailView: View {
 
     @ViewBuilder
     private var MessageEditor: some View {
-        VStack(alignment: .leading, spacing: 9) {
+        VStack(alignment: .leading, spacing: 14) {
             Text("메시지")
 
             VStack(alignment: .trailing, spacing: 8) {
@@ -160,7 +166,7 @@ struct ArtworkDetailView: View {
                                 Color(red: 0.79, green: 0.79, blue: 0.79)
                             )
                             .padding(.top, 10)
-                            .padding(.leading, 10)  // 텍스트는 커서보다 약간 더 안쪽에 위치
+                            .padding(.leading, 10)
                             .allowsHitTesting(false)
                     }
 
@@ -189,30 +195,6 @@ struct ArtworkDetailView: View {
 
         }
     }
-
-    @ViewBuilder
-    private var BottomButton: some View {
-        Button(
-            action: {
-                viewModel.saveReaction(artworkId: artworkId, context: context)
-            },
-            label: {
-                HStack {
-                    Text("전송하기")
-                        .foregroundStyle(.black)
-                }
-            }
-        )
-        .padding(.vertical, 11)
-        .frame(maxWidth: .infinity, alignment: .center)
-        .overlay(
-            Rectangle()
-                .inset(by: 0.5)
-                .stroke(.black, lineWidth: 1)
-        )
-        .padding(.horizontal, 20)
-    }
-
 }
 
 #Preview {

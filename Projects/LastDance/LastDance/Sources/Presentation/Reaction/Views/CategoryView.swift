@@ -28,12 +28,12 @@ struct CategoryView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("태그")
-                .padding(.leading, 7)
+                .padding(.leading, 27)
             
             Spacer().frame(height: 10)
             
             Text("최대 4개 선택할 수 있어요")
-                .padding(.leading, 7)
+                .padding(.leading, 27)
             
             Spacer().frame(height: 20)
             
@@ -47,17 +47,17 @@ struct CategoryView: View {
                     }
                 }
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 30)
             
             Spacer()
             
-            BottomButton(text: "다음", action: {
-                // 선택된 카테고리들을 UserDefaults에 저장
+            BottomButton(text: "다음",
+                         isEnabled: !viewModel.selectedCategories.isEmpty,
+                         action: {
                 UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: "selectedCategories")
                 router.push(.artworkDetail(id: "artwork_light_01"))
             })
         }
-        .padding(.horizontal, 20)
         .navigationTitle("반응 남기기")
         .navigationBarTitleDisplayMode(.inline)
         .environmentObject(viewModel)
