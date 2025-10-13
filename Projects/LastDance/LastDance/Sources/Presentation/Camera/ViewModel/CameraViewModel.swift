@@ -15,6 +15,7 @@ final class CameraViewModel: ObservableObject {
     @Published var capturedImage: UIImage?
     @Published var croppedForDisplay: UIImage?
     @Published var errorMessage: String?
+    @Published var zoomScale: CGFloat = 1.0
 
     let manager = CameraManager()
 
@@ -55,5 +56,30 @@ final class CameraViewModel: ObservableObject {
         manager.captureSilent { image in
             self.capturedImage = image
         }
+    }
+}
+
+// MARK: - Zoom
+extension CameraViewModel {
+    /// 장치 기반 실제 허용 범위를 UI 스케일로 반영
+    var minZoomScale: CGFloat {
+        // 보통 0.5
+        manager.zoomBounds().min
+    }
+    var maxZoomScale: CGFloat {
+        // 기기에 따라 6.0 근방
+        manager.zoomBounds().max
+    }
+
+    /// 프리셋/슬라이더/드래그 공용 진입점
+    func selectZoomScale(_ scale: CGFloat, animated: Bool = true) {
+        let clamped = max(minZoomScale, min(maxZoomScale, scale))
+        zoomScale = clamped
+        manager.setZoomScale(clamped, animated: animated)
+    }
+
+    /// 드래그 종료 시 깔끔히 램프 종료
+    func endZoomInteraction() {
+        manager.cancelZoomRampIfNeeded()
     }
 }

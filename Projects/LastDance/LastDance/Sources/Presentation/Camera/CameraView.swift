@@ -24,39 +24,13 @@ struct CameraView: View {
             ZStack {
                 Color.black.ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    Spacer(minLength: CameraViewLayout.previewTopInset)
-                    
-                    Group {
-                        if viewModel.isAuthorized {
-                            CameraPreviewView(session: viewModel.manager.session)
-                        } else {
-                            Color.black
-                                .overlay(
-                                    Text("카메라 권한 필요")
-                                        .foregroundStyle(.white.opacity(0.6))
-                                        .font(.callout)
-                                )
-                        }
-                    }
-                    .aspectRatio(CameraViewLayout.aspect, contentMode: .fit)  // 3:4 박스 유지
-                    .frame(maxWidth: maxPreviewWidth, maxHeight: maxPreviewHeight) // 최대치만 제한
-                    .clipped()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.white.opacity(0.06), lineWidth: 1)
-                    )
+                Preview(
+                    viewModel: viewModel,
+                    maxWidth: maxPreviewWidth,
+                    maxHeight: maxPreviewHeight
+                )
 
-                    Spacer(minLength: CameraViewLayout.previewBottomInset)
-                }
-
-                VStack {
-                    Spacer()
-                    ShutterButton {
-                        Task { await viewModel.capture() }
-                    }
-                    .padding(.bottom, 20)
-                }
+                BottomControllerView(viewModel: viewModel)
             }
         }
         .task { await viewModel.prepare() }
@@ -83,6 +57,50 @@ struct CameraView: View {
             }
         }
         .onDisappear { viewModel.stop() }
+    }
+}
+
+private struct Preview: View {
+    @ObservedObject var viewModel: CameraViewModel
+    
+    var maxWidth: CGFloat?
+    var maxHeight: CGFloat?
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer(minLength: CameraViewLayout.previewTopInset)
+            
+            Group {
+                if viewModel.isAuthorized {
+                    CameraPreviewView(
+                        session: viewModel.manager.session,
+                        currentScaleProvider: { viewModel.zoomScale },
+                        applyScale: { newScale, animated in
+                            viewModel.selectZoomScale(newScale, animated: animated)
+                        },
+                        endInteraction: {
+                            viewModel.endZoomInteraction()
+                        }
+                    )
+                } else {
+                    Color.black
+                        .overlay(
+                            Text("카메라 권한 필요")
+                                .foregroundStyle(.white.opacity(0.6))
+                                .font(.callout)
+                        )
+                }
+            }
+            .aspectRatio(CameraViewLayout.aspect, contentMode: .fit)
+            .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+            .clipped()
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.white.opacity(0.06), lineWidth: 1)
+            )
+
+            Spacer(minLength: CameraViewLayout.previewBottomInset)
+        }
     }
 }
 

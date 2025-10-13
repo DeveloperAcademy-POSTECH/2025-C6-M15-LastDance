@@ -95,7 +95,15 @@ final class CameraManager: NSObject, @unchecked Sendable {
     // MARK: - Start/Stop
     func startRunning() {
         sessionQueue.async { if !self.session.isRunning { self.session.startRunning() } }
+        
+        // 초기 줌 배율을 1로 유지하기 위함
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
+            guard let self else { return }
+            self.setZoomScale(1.001, animated: false)
+            self.setZoomScale(1.0, animated: false)
+        }
     }
+    
     func stopRunning() {
         sessionQueue.async { if self.session.isRunning { self.session.stopRunning() } }
     }
@@ -145,18 +153,22 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
     // MARK: - Helpers
     private static func bestDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let discovery = AVCaptureDevice.DiscoverySession(
-            deviceTypes: [
-                .builtInWideAngleCamera,
-                .builtInDualCamera,
-                .builtInDualWideCamera,
-                .builtInTripleCamera
-            ],
-            mediaType: .video,
-            position: position
-        )
-        return discovery.devices.first
-            ?? AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
+        let preferredOrders: [AVCaptureDevice.DeviceType] = [
+            .builtInTripleCamera,
+            .builtInDualWideCamera,
+            .builtInDualCamera,
+            .builtInWideAngleCamera
+        ]
+
+        for type in preferredOrders {
+            let discovery = AVCaptureDevice.DiscoverySession(
+                deviceTypes: [type],
+                mediaType: .video,
+                position: position
+            )
+            if let device = discovery.devices.first { return device }
+        }
+        return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
     }
 }
 
@@ -216,7 +228,60 @@ extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
     }
 }
 
-enum CameraManagerError: Error {
+// MARK: - Zoom
+extension CameraManager {
+    /// UI에서 쓰는 스케일(0.5~6.0)을 장치 팩터로 매핑할 때 쓰는 계수
+    private var uiToDeviceFactor: CGFloat { 2.0 }
+
+    /// 장치가 지원하는 줌 범위를 UI 스케일(=device/uiToDeviceFactor)로 반환
+    func zoomBounds() -> (min: CGFloat, max: CGFloat) {
+        guard let device = videoDeviceInput?.device else { return (1.0, 1.0) }
+        // 가상 멀티카메라로 끊김 없이 렌즈 스위치
+        let minUI = max(0.5, device.minAvailableVideoZoomFactor / uiToDeviceFactor)
+        let maxUI = min(6.0, device.maxAvailableVideoZoomFactor / uiToDeviceFactor)
+        return (minUI, maxUI)
+    }
+
+    /// 스무스한 줌 동작
+    func setZoomScale(_ uiScale: CGFloat, animated: Bool = true, rate: Float = 12.0) {
+        guard let device = videoDeviceInput?.device else { return }
+
+        do {
+            try device.lockForConfiguration()
+            defer { device.unlockForConfiguration() }
+
+            // 장치 범위로 클램프
+            let minF = device.minAvailableVideoZoomFactor
+            let maxF = device.maxAvailableVideoZoomFactor
+
+            let targetFactor = max(minF, min(uiScale * uiToDeviceFactor, maxF))
+
+            // 불필요한 호출 억제
+            if abs(device.videoZoomFactor - targetFactor) < 0.003 { return }
+
+            if animated {
+                if device.isRampingVideoZoom { device.cancelVideoZoomRamp() }
+                device.ramp(toVideoZoomFactor: targetFactor, withRate: rate)
+            } else {
+                device.videoZoomFactor = targetFactor
+            }
+        } catch {
+            Log.error("setZoomScale 실패: \(error)")
+        }
+    }
+
+    /// 드래그 종료 시 호출(램프 중지)
+    func cancelZoomRampIfNeeded() {
+        guard let device = videoDeviceInput?.device else { return }
+        do {
+            try device.lockForConfiguration()
+            if device.isRampingVideoZoom { device.cancelVideoZoomRamp() }
+            device.unlockForConfiguration()
+        } catch { }
+    }
+}
+
+private enum CameraManagerError: Error {
     case unauthorized
     case configurationFailed
     case captureFailed
