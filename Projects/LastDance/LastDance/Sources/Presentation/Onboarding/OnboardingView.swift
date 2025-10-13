@@ -19,6 +19,11 @@ struct OnboardingView: View {
                 Text("IdentitySelectionView")
                     .foregroundStyle(.blue)
             }
+
+            NavigationLink(destination: ArchivingView()) {
+                Text("ArchivingView")
+                    .foregroundStyle(.blue)
+            }
         }
     }
 }

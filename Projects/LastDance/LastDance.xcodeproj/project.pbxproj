@@ -11,6 +11,9 @@
 		8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F492E9CE128005B8C12 /* IdentitySelectionViewModel.swift */; };
 		8C0F9F4C2E9CE192005B8C12 /* UserType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F4B2E9CE192005B8C12 /* UserType.swift */; };
 		8C0F9F4E2E9CE1CB005B8C12 /* CircleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F4D2E9CE1CB005B8C12 /* CircleSelectionButton.swift */; };
+		8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F4F2E9CE479005B8C12 /* CircleAddButton.swift */; };
+		8C0F9F522E9CE4B8005B8C12 /* ArchivingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F512E9CE4B8005B8C12 /* ArchivingView.swift */; };
+		8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F9F552E9CE508005B8C12 /* ArchivingViewModel.swift */; };
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
 		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
@@ -68,6 +71,9 @@
 		8C0F9F492E9CE128005B8C12 /* IdentitySelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentitySelectionViewModel.swift; sourceTree = "<group>"; };
 		8C0F9F4B2E9CE192005B8C12 /* UserType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserType.swift; sourceTree = "<group>"; };
 		8C0F9F4D2E9CE1CB005B8C12 /* CircleSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleSelectionButton.swift; sourceTree = "<group>"; };
+		8C0F9F4F2E9CE479005B8C12 /* CircleAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAddButton.swift; sourceTree = "<group>"; };
+		8C0F9F512E9CE4B8005B8C12 /* ArchivingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArchivingView.swift; path = LastDance/Sources/Presentation/Onboarding/ArchivingView.swift; sourceTree = SOURCE_ROOT; };
+		8C0F9F552E9CE508005B8C12 /* ArchivingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivingViewModel.swift; sourceTree = "<group>"; };
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
 		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -166,6 +172,7 @@
 				963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */,
 				963573B32E9ABD4800B2FA79 /* BottomButton.swift */,
 				8C0F9F4D2E9CE1CB005B8C12 /* CircleSelectionButton.swift */,
+				8C0F9F4F2E9CE479005B8C12 /* CircleAddButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -323,6 +330,7 @@
 				99E6F0E32E91F793002ED9C2 /* ViewModel */,
 				99E6F0E22E91F725002ED9C2 /* Views */,
 				99E6F0D52E91F291002ED9C2 /* OnboardingView.swift */,
+				8C0F9F512E9CE4B8005B8C12 /* ArchivingView.swift */,
 				8C0F9F472E9CE0F5005B8C12 /* IdentitySelectionView.swift */,
 			);
 			path = Onboarding;
@@ -384,6 +392,7 @@
 			children = (
 				99E6F0D72E91F29E002ED9C2 /* OnboardingViewModel.swift */,
 				8C0F9F492E9CE128005B8C12 /* IdentitySelectionViewModel.swift */,
+				8C0F9F552E9CE508005B8C12 /* ArchivingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -656,6 +665,7 @@
 				99E6F0CC2E91F1DC002ED9C2 /* CameraView.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
+				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
@@ -680,6 +690,7 @@
 				8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */,
 				963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
+				8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */,
 				8C0F9F482E9CE0F5005B8C12 /* IdentitySelectionView.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
 				8C0F9F4E2E9CE1CB005B8C12 /* CircleSelectionButton.swift in Sources */,
@@ -693,6 +704,7 @@
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
+				8C0F9F522E9CE4B8005B8C12 /* ArchivingView.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* User.swift in Sources */,
