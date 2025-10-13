@@ -1,0 +1,34 @@
+//
+//  CircleSelectionButton.swift
+//  LastDance
+//
+//  Created by donghee on 10/13/25.
+//
+
+import SwiftUI
+
+/// 원형 선택 버튼 컴포넌트
+struct CircleSelectionButton: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    init(title: String, isSelected: Bool, action: @escaping () -> Void) {
+        self.title = title
+        self.isSelected = isSelected
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(isSelected ? .white : .gray)
+                .frame(width: 200, height: 200)
+                .background(
+                    Circle()
+                        .fill(isSelected ? Color.black : Color(red: 0.93, green: 0.93, blue: 0.93))
+                )
+        }
+    }
+}

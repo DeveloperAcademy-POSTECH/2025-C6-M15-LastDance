@@ -14,6 +14,15 @@ struct OnboardingView: View {
     var body: some View {
         VStack {
             Text("OnboardingView")
+
+            NavigationLink(destination: IdentitySelectionView()) {
+                Text("IdentitySelectionView")
+                    .foregroundStyle(.blue)
+            }
         }
     }
+}
+
+#Preview {
+    OnboardingView()
 }
