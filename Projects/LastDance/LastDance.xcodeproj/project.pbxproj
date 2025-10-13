@@ -8,16 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
+		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
 		963573A92E9A4A8B00B2FA79 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A82E9A4A8B00B2FA79 /* CategoryView.swift */; };
 		963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */; };
 		963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */; };
 		963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */; };
 		963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573B32E9ABD4800B2FA79 /* BottomButton.swift */; };
 		963573BF2E9B84D500B2FA79 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573BE2E9B84D500B2FA79 /* Log.swift */; };
-		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
-		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
+		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
+		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
+		99DAB0AC2E9C495000379F27 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AB2E9C494B00379F27 /* UIImage.swift */; };
+		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
+		99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AF2E9C4BE400379F27 /* CaptureConfirmView.swift */; };
+		99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B32E9C765000379F27 /* BottomControllerView.swift */; };
+		99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
 		99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0A82E91EF48002ED9C2 /* LastDanceApp.swift */; };
 		99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0B32E91EF48002ED9C2 /* Item.swift */; };
@@ -61,14 +68,21 @@
 
 /* Begin PBXFileReference section */
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
+		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
+		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		963573A82E9A4A8B00B2FA79 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinedButton.swift; sourceTree = "<group>"; };
 		963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
 		963573B32E9ABD4800B2FA79 /* BottomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButton.swift; sourceTree = "<group>"; };
 		963573BE2E9B84D500B2FA79 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
-		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		99DAB0AB2E9C494B00379F27 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
+		99DAB0AF2E9C4BE400379F27 /* CaptureConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmView.swift; sourceTree = "<group>"; };
+		99DAB0B32E9C765000379F27 /* BottomControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControllerView.swift; sourceTree = "<group>"; };
+		99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomControlView.swift; sourceTree = "<group>"; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -135,6 +149,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9635739C2E98F27100B2FA79 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9635739F2E990ED800B2FA79 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				99DAB0A92E9C490300379F27 /* CameraManager.swift */,
+				963573A02E990EE000B2FA79 /* KeyboardManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		963573AC2E9A4F2B00B2FA79 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,25 +179,10 @@
 		963573C02E9B84ED00B2FA79 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				99DAB0AB2E9C494B00379F27 /* UIImage.swift */,
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		9635739C2E98F27100B2FA79 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		9635739F2E990ED800B2FA79 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				963573A02E990EE000B2FA79 /* KeyboardManager.swift */,
-			);
-			path = Manager;
 			sourceTree = "<group>";
 		};
 		99E6F05E2E91E4A9002ED9C2 = {
@@ -332,7 +348,6 @@
 				963573C02E9B84ED00B2FA79 /* Extensions */,
 				963573AC2E9A4F2B00B2FA79 /* Components */,
 				9635739F2E990ED800B2FA79 /* Manager */,
-				963572642E980F1D00B2FA79 /* Extensions */,
 				99E6F0DE2E91F499002ED9C2 /* Utils */,
 			);
 			path = Common;
@@ -410,6 +425,11 @@
 		99E6F0E82E91F7E2002ED9C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */,
+				99DAB0B32E9C765000379F27 /* BottomControllerView.swift */,
+				99DAB0AF2E9C4BE400379F27 /* CaptureConfirmView.swift */,
+				99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */,
+				99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -640,8 +660,10 @@
 				963573BF2E9B84D500B2FA79 /* Log.swift in Sources */,
 				99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */,
 				99E6F0BB2E91EF7D002ED9C2 /* Route.swift in Sources */,
+				99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */,
 				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
+				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
 				99E6F0CC2E91F1DC002ED9C2 /* CameraView.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
@@ -655,6 +677,7 @@
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
+				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
@@ -664,10 +687,13 @@
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
+				99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
+				99DAB0AC2E9C495000379F27 /* UIImage.swift in Sources */,
+				99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */,
 				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
 				99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */,
 				99E6F3A62E989CFB002ED9C2 /* ExhibitionRequestDto.swift in Sources */,
@@ -681,6 +707,7 @@
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* User.swift in Sources */,
+				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

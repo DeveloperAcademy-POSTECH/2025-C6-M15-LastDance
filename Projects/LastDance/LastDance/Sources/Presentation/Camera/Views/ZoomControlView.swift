@@ -67,7 +67,6 @@ struct ZoomControlView: View {
 }
 
 // MARK: - Circle Button
-
 private struct ZoomCircleButton: View {
     let text: String
     let isActive: Bool
@@ -92,7 +91,6 @@ private struct ZoomCircleButton: View {
 }
 
 // MARK: - Range/Config
-
 private struct ZoomRange {
     let label: String
     let min: CGFloat
@@ -121,7 +119,6 @@ private struct ZoomRange {
 }
 
 // MARK: - Layout
-
 private enum Layout {
     static let indicatorSpacing: CGFloat = 12
     static let indicatorPadding: CGFloat = 8
