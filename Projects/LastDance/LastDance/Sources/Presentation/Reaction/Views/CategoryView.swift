@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct CategoryView: View {
-    @State private var selectedCategories: Set<String> = []
-    
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ReactionInputViewModel()
+
     // 임시 카테고리
     let categories = [
         "음식", "여행", "운동", "음악",
@@ -40,9 +41,9 @@ struct CategoryView: View {
                 ForEach(categories, id: \.self) { category in
                     CategoryButton(
                         category: category,
-                        isSelected: selectedCategories.contains(category)
+                        isSelected: viewModel.selectedCategories.contains(category)
                     ) {
-                        toggleCategory(category)
+                        viewModel.toggleCategory(category)
                     }
                 }
             }
@@ -51,23 +52,14 @@ struct CategoryView: View {
             Spacer()
             
             BottomButton(text: "다음", action: {
-                
+                // 선택된 카테고리들을 UserDefaults에 저장
+                UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: "selectedCategories")
+                router.push(.artworkDetail(id: "artwork_light_01"))
             })
         }
         .padding(.horizontal, 20)
         .navigationTitle("반응 남기기")
         .navigationBarTitleDisplayMode(.inline)
+        .environmentObject(viewModel)
     }
-    
-    private func toggleCategory(_ category: String) {
-        if selectedCategories.contains(category) {
-            selectedCategories.remove(category)
-        } else if selectedCategories.count < 4 {
-            selectedCategories.insert(category)
-        }
-    }
-}
-
-#Preview {
-    CategoryView()
 }

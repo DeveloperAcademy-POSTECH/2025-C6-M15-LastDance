@@ -5,28 +5,29 @@
 //  Created by 신얀 on 10/10/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArtworkDetailView: View {
     @Environment(\.keyboardManager) var keyboardManager
     @Environment(\.modelContext) private var context
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ReactionInputViewModel()
+
     let artworkId: String
     @Query private var allArtworks: [Artwork]
     @Query private var allArtists: [Artist]
-    @State private var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
 
     private let placeholder = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
-    private let limit = 500
-    
+
     init(artworkId: String) {
         self.artworkId = artworkId
     }
-    
+
     private var artwork: Artwork? {
         allArtworks.first { $0.id == artworkId }
     }
-    
+
     private var artist: Artist? {
         guard let artistId = artwork?.artistId else { return nil }
         return allArtists.first { $0.id == artistId }
@@ -37,7 +38,8 @@ struct ArtworkDetailView: View {
             ScrollView {
                 VStack {
                     if let thumbnailURL = artwork?.thumbnailURL,
-                       thumbnailURL.hasPrefix("http") {
+                        thumbnailURL.hasPrefix("http")
+                    {
                         // 실제 URL인 경우
                         AsyncImage(url: URL(string: thumbnailURL)) { image in
                             image
@@ -108,48 +110,34 @@ struct ArtworkDetailView: View {
             }
             BottomButton
         }
+        .onAppear {
+            // UserDefaults에서 선택된 카테고리들을 읽어와서 viewModel에 설정
+            if let savedCategories = UserDefaults.standard.array(forKey: "selectedCategories") as? [String] {
+                viewModel.selectedCategories = Set(savedCategories)
+            }
+            Log.debug("[ArtworkDetailView]: \(viewModel.selectedCategories)")
+        }
+        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
         .navigationBarTitle("반응 남기기", displayMode: .inline)
-        .animation(.easeOut(duration: 0.25), value: keyboardManager.keyboardHeight)
-
+        .animation(
+            .easeOut(duration: 0.25),
+            value: keyboardManager.keyboardHeight
+        )
     }
 
     @ViewBuilder
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 9) {
-            Text("태그")
+            Text("태그*")
 
-            Button(
-                action: {
-
-                },
-                label: {
-                    ZStack {
-                        Rectangle()
-                            .frame(
-                                maxWidth: .infinity,
-                                maxHeight: 46,
-                                alignment: .leading
-                            )
-                            .foregroundStyle(.gray.opacity(0.1))
-                        HStack {
-                            Text("태그 선택하기")
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.right")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 18, height: 19)
-                        }
-                        .padding(10)
-                        .frame(
-                            maxWidth: .infinity,
-                            maxHeight: 46,
-                            alignment: .leading
-                        )
-                    }
-                }
-            )
+            HStack {
+                Text(
+                    Array(viewModel.selectedCategories).joined(
+                        separator: ", "
+                    )
+                )
+                .foregroundColor(.black)
+            }
         }
     }
 
@@ -162,35 +150,39 @@ struct ArtworkDetailView: View {
                 ZStack(alignment: .topLeading) {
 
                     Rectangle()
-                        .fill(Color.gray.opacity(0.1))
-                        .frame(minHeight: 100)
+                        .fill(Color.white)
+                        .frame(minHeight: 100, maxHeight: 152)
                         .cornerRadius(4)
 
-                    if message.isEmpty {
+                    if viewModel.message.isEmpty {
                         Text(placeholder)
-                            .foregroundStyle(.gray)
-                            .padding(10)
+                            .foregroundColor(
+                                Color(red: 0.79, green: 0.79, blue: 0.79)
+                            )
+                            .padding(.top, 10)
+                            .padding(.leading, 10)  // 텍스트는 커서보다 약간 더 안쪽에 위치
                             .allowsHitTesting(false)
                     }
 
-                    TextEditor(text: $message)
+                    TextEditor(text: $viewModel.message)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 5)
-                        .frame(minHeight: 100)
-                        .onChange(of: message) { newValue in
-                            if newValue.count > limit {
-                                message = String(newValue.prefix(limit))
-                            }
+                        .tint(Color(red: 0.35, green: 0.35, blue: 0.35))
+                        .padding(.top, 3)
+                        .padding(.leading, 5)
+                        .padding(.trailing, 5)
+                        .padding(.bottom, 10)
+                        .frame(height: 152)
+                        .onChange(of: viewModel.message) { newValue in
+                            viewModel.updateMessage(newValue: newValue)
                         }
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
                 )
 
-                Text("\(message.count)/\(limit)")
+                Text("\(viewModel.message.count)/\(viewModel.limit)")
                     .font(.caption)
                     .foregroundStyle(.gray)
             }
@@ -202,7 +194,7 @@ struct ArtworkDetailView: View {
     private var BottomButton: some View {
         Button(
             action: {
-                saveReaction()
+                viewModel.saveReaction(artworkId: artworkId, context: context)
             },
             label: {
                 HStack {
@@ -220,31 +212,7 @@ struct ArtworkDetailView: View {
         )
         .padding(.horizontal, 20)
     }
-    
-    // TODO: 카테고리 기능 구현시 수정 필요
-    /// 작품 반응을 저장하는 함수
-    private func saveReaction() {
-            guard message.isEmpty == false else { return }
 
-            let reaction = Reaction(
-                id: UUID().uuidString,
-                artworkId: artwork?.id ?? "",
-                userId: "mockUser", 
-                category: ["감동"],
-                comment: message,
-                createdAt: .now
-            )
-
-            context.insert(reaction)
-
-            do {
-                try context.save()
-                message = ""
-                Log.debug("[ArtworkDetailView] 저장 완료")
-            } catch {
-                Log.debug("[ArtworkDetailView] 저장 실패: \(error)")
-            }
-        }
 }
 
 #Preview {
