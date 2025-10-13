@@ -32,6 +32,13 @@ struct CameraView: View {
 
                 BottomControllerView(viewModel: viewModel)
             }
+            .overlay(alignment: .topLeading) {
+                CloseButton {
+                    router.popLast()
+                }
+                .padding(.top, 12)
+                .padding(.leading, 12)
+            }
         }
         .task { await viewModel.prepare() }
         .onChange(of: viewModel.capturedImage) { _, new in
@@ -101,6 +108,22 @@ private struct Preview: View {
 
             Spacer(minLength: CameraViewLayout.previewBottomInset)
         }
+    }
+}
+
+private struct CloseButton: View {
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "xmark")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundColor(.white)
+                .frame(width: 28, height: 28)
+                .padding(8)
+        }
+        .contentShape(Circle())
+        .accessibilityLabel(Text("닫기"))
     }
 }
 
