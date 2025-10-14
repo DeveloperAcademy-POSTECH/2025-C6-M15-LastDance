@@ -2,7 +2,7 @@
 //  ReactionInputViewModel.swift
 //  LastDance
 //
-//  Created by 배현진 on 10/5/25.
+//  Created by 배현진, 신얀 on 10/5/25.
 //
 
 import SwiftData
@@ -37,17 +37,19 @@ final class ReactionInputViewModel: ObservableObject {
         }
     }
 
-    // TODO: 카테고리 기능 구현시 수정 필요
     /// 작품 반응을 저장하는 함수
-    func saveReaction(artworkId: String, context: ModelContext) {
-        guard message.isEmpty == false else { return }
+    func saveReaction(artworkId: String, context: ModelContext, completion: @escaping (Bool) -> Void) {
+        guard !selectedCategories.isEmpty else {
+            completion(false)
+            return
+        }
 
         let reaction = Reaction(
             id: UUID().uuidString,
             artworkId: artworkId,
             userId: "mockUser",
-            category: ["감동"],
-            comment: message,
+            category: Array(selectedCategories),
+            comment: message.isEmpty ? nil : message,
             createdAt: .now
         )
 
@@ -56,9 +58,12 @@ final class ReactionInputViewModel: ObservableObject {
         do {
             try context.save()
             message = ""
-            Log.debug("[ArtworkDetailView] 저장 완료")
+            selectedCategories.removeAll()
+            Log.debug("[ReactionInputViewModel] 저장 완료")
+            completion(true)
         } catch {
-            Log.debug("[ArtworkDetailView] 저장 실패: \(error)")
+            Log.debug("[ReactionInputViewModel] 저장 실패: \(error)")
+            completion(false)
         }
     }
 }

@@ -11,7 +11,7 @@ import SwiftData
 struct ReactionFormView: View {
     let artworkId: String
     @Environment(\.modelContext) private var context
-    @StateObject private var viewModel = ReactionInputViewModel()
+    @ObservedObject var viewModel: ReactionInputViewModel
 
     private let placeholder = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
 
@@ -109,8 +109,4 @@ struct ReactionFormView: View {
 
         }
     }
-}
-
-#Preview {
-    ReactionFormView(artworkId: "artwork_light_01")
 }

@@ -30,8 +30,8 @@ struct ArtworkDetailView: View {
                         .padding(.bottom, -120)
 
                     Spacer().frame(height: 26)
-                    
-                    ReactionFormView(artworkId: artworkId)
+
+                    ReactionFormView(artworkId: artworkId, viewModel: viewModel)
 
                     Spacer()
                 }
@@ -42,7 +42,19 @@ struct ArtworkDetailView: View {
                 text: "전송하기",
                 isEnabled: !viewModel.isSendButtonDisabled,
                 action: {
-                    viewModel.saveReaction(artworkId: artworkId, context: context)
+                    Log.debug("- [ArtworkDetailView] artworkId: \(artworkId)")
+                    Log.debug("- [ArtworkDetailView] selectedCategories: \(Array(viewModel.selectedCategories))")
+                    Log.debug("- [ArtworkDetailView] message: \(viewModel.message)")
+
+                    viewModel.saveReaction(artworkId: artworkId, context: context) { success in
+                        if success {
+                            // 저장 완료시 다음 화면으로 이동하도록 구현
+                            Log.debug("[ArtworkDetailView] 저장 성공, 화면 이동")
+                            router.push(.completeReaction)
+                        } else {
+                            Log.debug("[ArtworkDetailView] 저장 실패")
+                        }
+                    }
                 }
             )
         }
