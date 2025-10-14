@@ -21,7 +21,6 @@ final class ExhibitionListViewModel: ObservableObject {
     /// 전시 목록 가져오기
     func fetchExhibitions() {
         exhibitions = dataManager.fetchAll(Exhibition.self)
-        Log.debug("📊 Fetched \(exhibitions.count) exhibitions")
         exhibitions.forEach { exhibition in
             Log.debug("  - \(exhibition.title)")
         }
