@@ -141,13 +141,16 @@ final class CameraManager: NSObject, @unchecked Sendable {
     }
     
     // 무음 촬영 메서드 추가
-    func captureSilent(_ completion: @escaping (UIImage?) -> Void) {
-        videoQueue.async {
-            guard let buffer = self.lastVideoBuffer,
-                  let img = UIImage.from(sampleBuffer: buffer, orientation: .right) else {
-                DispatchQueue.main.async { completion(nil) }; return
+    func captureSilent() async -> UIImage? {
+        await withCheckedContinuation { continuation in
+            videoQueue.async {
+                guard let buffer = self.lastVideoBuffer,
+                      let img = UIImage.from(sampleBuffer: buffer, orientation: .right) else {
+                    DispatchQueue.main.async { continuation.resume(returning: nil) }
+                    return
+                }
+                DispatchQueue.main.async { continuation.resume(returning: img) }
             }
-            DispatchQueue.main.async { completion(img) }
         }
     }
 

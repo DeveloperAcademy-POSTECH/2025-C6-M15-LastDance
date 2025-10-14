@@ -53,8 +53,10 @@ final class CameraViewModel: ObservableObject {
     }
 
     func capture() async {
-        manager.captureSilent { image in
+        if let image = await manager.captureSilent() {
             self.capturedImage = image
+        } else {
+            self.errorMessage = "무음 촬영 실패"
         }
     }
 }
