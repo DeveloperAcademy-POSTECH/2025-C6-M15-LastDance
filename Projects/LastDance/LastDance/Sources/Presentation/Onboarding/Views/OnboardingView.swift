@@ -13,23 +13,30 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack {
-            Text("OnboardingView")
-
-            NavigationLink(destination: IdentitySelectionView()) {
+            Button(action: {
+                router.push(.identitySelection)
+            }) {
                 Text("IdentitySelectionView")
                     .foregroundStyle(.blue)
             }
 
-            NavigationLink(destination: AudienceArchivingView()) {
+            Button(action: {
+                router.push(.audienceArchiving)
+            }) {
                 Text("AudienceArchivingView")
                     .foregroundStyle(.blue)
             }
-            NavigationLink(destination: ArticleArchivingView()) {
+
+            Button(action: {
+                router.push(.articleArchiving)
+            }) {
                 Text("ArticleArchivingView")
                     .foregroundStyle(.blue)
             }
 
-            NavigationLink(destination: ExhibitionListView()) {
+            Button(action: {
+                router.push(.exhibitionList)
+            }) {
                 Text("ExhibitionListView")
                     .foregroundStyle(.blue)
             }

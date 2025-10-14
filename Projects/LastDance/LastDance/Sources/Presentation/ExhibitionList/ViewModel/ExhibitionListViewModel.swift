@@ -9,22 +9,7 @@ import SwiftUI
 
 @MainActor
 final class ExhibitionListViewModel: ObservableObject {
-    @Published var exhibitions: [Exhibition] = []
     @Published var selectedExhibitionId: String? = nil
-
-    private let dataManager = SwiftDataManager.shared
-
-    init() {
-        fetchExhibitions()
-    }
-
-    /// 전시 목록 가져오기
-    func fetchExhibitions() {
-        exhibitions = dataManager.fetchAll(Exhibition.self)
-        exhibitions.forEach { exhibition in
-            Log.debug("  - \(exhibition.title)")
-        }
-    }
 
     /// 전시 선택 (이미 선택된 경우 선택 취소)
     func selectExhibition(_ exhibition: Exhibition) {

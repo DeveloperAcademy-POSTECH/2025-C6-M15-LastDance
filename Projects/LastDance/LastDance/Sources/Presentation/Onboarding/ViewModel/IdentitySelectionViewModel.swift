@@ -13,18 +13,13 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     private let dataManager = SwiftDataManager.shared
 
-    /// 작가 선택
-    func selectArtist() {
-        selectedType = .artist
+    /// 사용자 타입 선택
+    func selectUserType(_ type: UserType) {
+        selectedType = type
     }
 
-    /// 관람객 선택
-    func selectViewer() {
-        selectedType = .viewer
-    }
-
-    /// 다음 버튼 탭
-    func tapNextButton() {
+    /// 선택 확정 및 저장
+    func confirmSelection() {
         guard let selectedType = selectedType else {
             // TODO: 선택하지 않은 경우 예외 처리
             return

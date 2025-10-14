@@ -9,6 +9,9 @@ import Foundation
 
 /// 앱의 모든 화면 경로를 정의한 enum
 enum Route: Hashable {
+    case identitySelection
+    case audienceArchiving
+    case articleArchiving
     case exhibitionList
     case exhibitionDetail(id: String)
     case artworkDetail(id: String)

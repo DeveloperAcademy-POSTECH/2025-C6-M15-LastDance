@@ -28,7 +28,7 @@ struct ArticleArchivingView: View {
     var TitleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("나의 전시")
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 21, weight: .bold))
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -43,7 +43,7 @@ struct ArticleArchivingView: View {
             }
 
             Text("나의 작품에 어떤 반응을\n 남겼는지 확인해보세요")
-                .font(.system(size: 18, weight: .medium))
+                .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)

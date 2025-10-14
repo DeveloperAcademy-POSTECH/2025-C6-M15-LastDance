@@ -11,14 +11,10 @@ import SwiftUI
 struct CircleAddButton: View {
     let action: () -> Void
 
-    init(action: @escaping () -> Void) {
-        self.action = action
-    }
-
     var body: some View {
         Button(action: action) {
             Image(systemName: "plus")
-                .font(Font.custom("SF Pro", size: 24))
+                .font(.system(size: 24, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 71, height: 71)
                 .background(

@@ -13,12 +13,6 @@ struct CircleSelectionButton: View {
     let isSelected: Bool
     let action: () -> Void
 
-    init(title: String, isSelected: Bool, action: @escaping () -> Void) {
-        self.title = title
-        self.isSelected = isSelected
-        self.action = action
-    }
-
     var body: some View {
         Button(action: action) {
             Text(title)

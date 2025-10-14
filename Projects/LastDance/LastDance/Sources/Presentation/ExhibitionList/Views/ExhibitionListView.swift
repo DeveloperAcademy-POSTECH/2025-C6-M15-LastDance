@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ExhibitionListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ExhibitionListViewModel()
+    @Query private var exhibitions: [Exhibition]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,8 +48,8 @@ struct ExhibitionListView: View {
 
     var ExhibitionList: some View {
         ScrollView {
-            VStack(spacing: 0) {
-                ForEach(viewModel.exhibitions, id: \.id) { exhibition in
+            LazyVStack(spacing: 0) {
+                ForEach(exhibitions, id: \.id) { exhibition in
                     ExhibitionRow(
                         exhibition: exhibition,
                         isSelected: viewModel.selectedExhibitionId == exhibition.id

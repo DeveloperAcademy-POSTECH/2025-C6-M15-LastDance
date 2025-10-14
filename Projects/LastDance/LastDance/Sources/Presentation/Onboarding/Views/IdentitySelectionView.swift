@@ -43,19 +43,19 @@ struct IdentitySelectionView: View {
     
     var SelectionButtons: some View {
         VStack(spacing: 40) {
-            
+
             CircleSelectionButton(
                 title: UserType.artist.displayName,
                 isSelected: viewModel.selectedType == .artist
             ) {
-                viewModel.selectArtist()
+                viewModel.selectUserType(.artist)
             }
 
             CircleSelectionButton(
                 title: UserType.viewer.displayName,
                 isSelected: viewModel.selectedType == .viewer
             ) {
-                viewModel.selectViewer()
+                viewModel.selectUserType(.viewer)
             }
             Spacer()
         }
@@ -63,7 +63,7 @@ struct IdentitySelectionView: View {
 
     var NextButton: some View {
         BottomButton(text: "다음") {
-            viewModel.tapNextButton()
+            viewModel.confirmSelection()
         }
     }
 }
