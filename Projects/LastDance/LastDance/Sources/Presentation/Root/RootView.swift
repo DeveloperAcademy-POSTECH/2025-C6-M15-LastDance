@@ -23,6 +23,7 @@ struct RootView: View {
                         ArtworkDetailView(artworkId: id)
                     case .camera:
                         CameraView()
+                            .toolbar(.hidden, for: .navigationBar)
                     case .reaction:
                         ReactionInputView()
                     case .archive:
