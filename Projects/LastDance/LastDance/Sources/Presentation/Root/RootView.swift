@@ -31,6 +31,12 @@ struct RootView: View {
                         CategoryView()
                     case .completeReaction:
                         CompleteReactionView()
+                    case .articleExhibitionList:
+                        ArticleExhibitionListView()
+                    case .articleList(let selectedExhibitionId):
+                        ArticleListView(selectedExhibitionId: selectedExhibitionId)
+                    case .completeArticleList(let selectedExhibitionId, let selectedArtistId):
+                        CompleteArticleListView(selectedExhibitionId: selectedExhibitionId, selectedArtistId: selectedArtistId)
                     }
                 }
         }

@@ -27,8 +27,14 @@ enum MockDataLoader {
             geoLon: 126.9780
         )
 
-        // 샘플 Artist
+        // 샘플 Artists
         let artist = Artist(id: "artist_kim", name: "Kim", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist1 = Artist(id: "artist_kimjiin", name: "김진인", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist2 = Artist(id: "artist_namkunghyemin", name: "남궁혜민", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist3 = Artist(id: "artist_parksangmi", name: "박상미", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist4 = Artist(id: "artist_parksimhyeok", name: "박심혁", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist5 = Artist(id: "artist_parksihyeong", name: "박시형", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist6 = Artist(id: "artist_yuwusang", name: "유우상", exhibitions: ["exhibition_light"], receivedReactions: [])
 
         // 샘플 Exhibition
         let exhibition = Exhibition(
@@ -84,6 +90,12 @@ enum MockDataLoader {
         // 컨텍스트에 insert
         context.insert(venue)
         context.insert(artist)
+        context.insert(artist1)
+        context.insert(artist2)
+        context.insert(artist3)
+        context.insert(artist4)
+        context.insert(artist5)
+        context.insert(artist6)
         context.insert(exhibition)
         context.insert(artwork1); context.insert(artwork2)
         context.insert(user)

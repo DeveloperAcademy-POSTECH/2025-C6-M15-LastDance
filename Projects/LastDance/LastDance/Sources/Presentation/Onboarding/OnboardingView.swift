@@ -13,7 +13,34 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack {
-            Text("OnboardingView")
+            Button(action: {
+                router.push(.articleExhibitionList)
+            }) {
+                Text("ArticleExhibitionListView")
+                    .foregroundStyle(.blue)
+            }
+
+            Button(action: {
+                router.push(.articleList(selectedExhibitionId: "exhibition_light"))
+            }) {
+                Text("ArticleListView")
+                    .foregroundStyle(.blue)
+            }
+
+            Button(action: {
+                router.push(.completeArticleList(selectedExhibitionId: "exhibition_light", selectedArtistId: "artist_kimjiin"))
+            }) {
+                Text("CompleteArticleListView")
+                    .foregroundStyle(.blue)
+            }
+
+            Button(action: {
+                router.push(.exhibitionList)
+            }) {
+                Text("ExhibitionListView")
+                    .foregroundStyle(.blue)
+            }
         }
     }
 }
+
