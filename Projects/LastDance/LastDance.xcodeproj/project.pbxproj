@@ -31,7 +31,6 @@
 		99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0C92E91F1BF002ED9C2 /* CameraViewModel.swift */; };
 		99E6F0CC2E91F1DC002ED9C2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0CB2E91F1D9002ED9C2 /* CameraView.swift */; };
 		99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0CD2E91F1FE002ED9C2 /* ReactionInputViewModel.swift */; };
-		99E6F0D02E91F217002ED9C2 /* ReactionInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0CF2E91F215002ED9C2 /* ReactionInputView.swift */; };
 		99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0D12E91F246002ED9C2 /* ArchiveViewModel.swift */; };
 		99E6F0D42E91F255002ED9C2 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0D32E91F254002ED9C2 /* ArchiveView.swift */; };
 		99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0D52E91F291002ED9C2 /* OnboardingView.swift */; };
@@ -86,7 +85,6 @@
 		99E6F0C92E91F1BF002ED9C2 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		99E6F0CB2E91F1D9002ED9C2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		99E6F0CD2E91F1FE002ED9C2 /* ReactionInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionInputViewModel.swift; sourceTree = "<group>"; };
-		99E6F0CF2E91F215002ED9C2 /* ReactionInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionInputView.swift; sourceTree = "<group>"; };
 		99E6F0D12E91F246002ED9C2 /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
 		99E6F0D32E91F254002ED9C2 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		99E6F0D52E91F291002ED9C2 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 				D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */,
 				9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */,
 				D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */,
-				99E6F0CF2E91F215002ED9C2 /* ReactionInputView.swift */,
 				963573A82E9A4A8B00B2FA79 /* CategoryView.swift */,
 				963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */,
 			);
@@ -666,7 +663,6 @@
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
 				99E6F1072E97B0E0002ED9C2 /* Venue.swift in Sources */,
 				99E6F0FF2E97B0CA002ED9C2 /* Exhibition.swift in Sources */,
-				99E6F0D02E91F217002ED9C2 /* ReactionInputView.swift in Sources */,
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
 				D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */,

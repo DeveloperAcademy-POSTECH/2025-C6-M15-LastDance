@@ -14,16 +14,6 @@ struct OnboardingView: View {
     var body: some View {
         VStack {
             Text("OnboardingView")
-            
-            Button(action: {
-                router.push(.category)
-            }, label: {
-                Text("CategoryView로 이동")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            })
         }
     }
 }
