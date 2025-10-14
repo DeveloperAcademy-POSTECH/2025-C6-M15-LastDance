@@ -13,7 +13,7 @@ struct IdentitySelectionView: View {
     @StateObject private var viewModel = IdentitySelectionViewModel()
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 28) {
             TitleSection
 
             Spacer()
@@ -23,6 +23,8 @@ struct IdentitySelectionView: View {
             Spacer()
 
             NextButton
+            
+            Spacer()
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 34)
@@ -38,9 +40,10 @@ struct IdentitySelectionView: View {
         }
         .padding(.top, 80)
     }
-
+    
     var SelectionButtons: some View {
         VStack(spacing: 40) {
+            
             CircleSelectionButton(
                 title: UserType.artist.displayName,
                 isSelected: viewModel.selectedType == .artist
@@ -54,6 +57,7 @@ struct IdentitySelectionView: View {
             ) {
                 viewModel.selectViewer()
             }
+            Spacer()
         }
     }
 
@@ -62,4 +66,7 @@ struct IdentitySelectionView: View {
             viewModel.tapNextButton()
         }
     }
+}
+#Preview {
+    IdentitySelectionView()
 }

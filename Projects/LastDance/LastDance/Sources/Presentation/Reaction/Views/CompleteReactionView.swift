@@ -11,7 +11,7 @@ struct CompleteReactionView: View {
     var body: some View {
         VStack {
             Image(systemName: "checkmark.circle.fill")
-                .resizable()
+                .resizable() 
                 .frame(width: 94, height: 94)
                 .foregroundStyle(.gray)
                 .padding()

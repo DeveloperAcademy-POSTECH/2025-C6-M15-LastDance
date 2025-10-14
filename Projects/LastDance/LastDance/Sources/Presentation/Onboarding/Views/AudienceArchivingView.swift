@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 아카이빙 시작 뷰
-struct ArchivingView: View {
+struct AudienceArchivingView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArchivingViewModel()
 
@@ -51,5 +51,5 @@ struct ArchivingView: View {
     }
 }
 #Preview {
-    ArchivingView()
+    AudienceArchivingView()
 }

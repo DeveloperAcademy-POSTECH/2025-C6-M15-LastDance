@@ -20,8 +20,17 @@ struct OnboardingView: View {
                     .foregroundStyle(.blue)
             }
 
-            NavigationLink(destination: ArchivingView()) {
-                Text("ArchivingView")
+            NavigationLink(destination: AudienceArchivingView()) {
+                Text("AudienceArchivingView")
+                    .foregroundStyle(.blue)
+            }
+            NavigationLink(destination: ArticleArchivingView()) {
+                Text("ArticleArchivingView")
+                    .foregroundStyle(.blue)
+            }
+
+            NavigationLink(destination: ExhibitionListView()) {
+                Text("ExhibitionListView")
                     .foregroundStyle(.blue)
             }
         }
