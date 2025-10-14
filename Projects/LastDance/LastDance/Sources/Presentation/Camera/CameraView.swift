@@ -40,7 +40,7 @@ struct CameraView: View {
                 .padding(.leading, 12)
             }
         }
-        .task { await viewModel.prepare() }
+        .task { await viewModel.setupCameraSession() }
         .onChange(of: viewModel.capturedImage) { _, new in
             showConfirm = (new != nil)
         }
@@ -63,7 +63,7 @@ struct CameraView: View {
                 Color.black.ignoresSafeArea().onAppear { showConfirm = false }
             }
         }
-        .onDisappear { viewModel.stop() }
+        .onDisappear { viewModel.stopSession() }
     }
 }
 

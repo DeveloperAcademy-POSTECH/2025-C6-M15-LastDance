@@ -19,7 +19,39 @@ final class CameraViewModel: ObservableObject {
 
     let manager = CameraManager()
 
-    func prepare() async {
+    func setupCameraSession() async {
+        do {
+            try await requestCameraAuthorization()
+            try await configureCaptureSession()
+            startSession()
+        } catch {
+            handleCameraError(error)
+        }
+    }
+
+    /// 카메라 세션 시작
+    func startSession() {
+        manager.startRunning()
+        isRunning = true
+    }
+
+    /// 카메라 세션 중지
+    func stopSession() {
+        manager.stopRunning()
+        isRunning = false
+    }
+
+    /// 무음(비디오 프레임 스냅샷) 촬영
+    func captureSilentFrame() async {
+        if let image = await manager.captureSilent() {
+            self.capturedImage = image
+        } else {
+            self.errorMessage = "무음 촬영 실패"
+        }
+    }
+    
+    /// 카메라 권한을 요청합니다.
+    func requestCameraAuthorization() async throws {
         switch CameraManager.checkAuthorizationStatus() {
         case .authorized:
             isAuthorized = true
@@ -30,33 +62,25 @@ final class CameraViewModel: ObservableObject {
         }
 
         guard isAuthorized else {
-            errorMessage = "카메라 권한이 필요합니다. 설정에서 허용해주세요."
-            return
+            throw CameraError.unauthorized
         }
+    }
 
+    /// 권한 승인 후 세션을 구성합니다.
+    func configureCaptureSession() async throws {
         do {
             try await manager.configureIfNeeded()
-            start()
         } catch {
-            errorMessage = "카메라 설정에 실패했습니다."
+            throw CameraError.configurationFailed
         }
     }
-
-    func start() {
-        manager.startRunning()
-        isRunning = true
-    }
-
-    func stop() {
-        manager.stopRunning()
-        isRunning = false
-    }
-
-    func capture() async {
-        if let image = await manager.captureSilent() {
-            self.capturedImage = image
+    
+    /// 카메라 공통 에러 처리
+    func handleCameraError(_ error: Error) {
+        if let cameraError = error as? CameraError {
+            errorMessage = cameraError.localizedDescription
         } else {
-            self.errorMessage = "무음 촬영 실패"
+            errorMessage = "알 수 없는 오류가 발생했습니다."
         }
     }
 }

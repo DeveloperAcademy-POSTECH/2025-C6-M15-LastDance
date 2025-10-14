@@ -19,7 +19,7 @@ struct BottomControllerView: View {
                 .padding(.bottom, 40)
             
             ShutterButton {
-                Task { await viewModel.capture() }
+                Task { await viewModel.captureSilentFrame() }
             }
             .padding(.bottom, 40)
         }
