@@ -57,6 +57,8 @@
 		99E6F3AA2E989CFB002ED9C2 /* ReactionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */; };
 		99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */; };
 		99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */; };
+		D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */; };
+		D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +113,8 @@
 		99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPI.swift; sourceTree = "<group>"; };
 		99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
 		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
+		D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkInfoView.swift; sourceTree = "<group>"; };
+		D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionFormView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,7 +142,9 @@
 		9635739C2E98F27100B2FA79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */,
 				9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */,
+				D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */,
 				99E6F0CF2E91F215002ED9C2 /* ReactionInputView.swift */,
 				963573A82E9A4A8B00B2FA79 /* CategoryView.swift */,
 				963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */,
@@ -639,6 +645,7 @@
 				963573BF2E9B84D500B2FA79 /* Log.swift in Sources */,
 				99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */,
 				99E6F0BB2E91EF7D002ED9C2 /* Route.swift in Sources */,
+				D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */,
 				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				99E6F0CC2E91F1DC002ED9C2 /* CameraView.swift in Sources */,
@@ -662,6 +669,7 @@
 				99E6F0D02E91F217002ED9C2 /* ReactionInputView.swift in Sources */,
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
+				D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */,
