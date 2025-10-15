@@ -79,6 +79,7 @@
 		D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */; };
 		D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */; };
 		D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */; };
+		D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +157,7 @@
 		D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputArtworkInfoView.swift; sourceTree = "<group>"; };
+		D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 		963573AC2E9A4F2B00B2FA79 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */,
 				D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */,
 				D8C7C0952E9F3E6100FCB472 /* CustomNavigationBar.swift */,
 				963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */,
@@ -767,6 +770,7 @@
 				8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
 				D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */,
+				D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */,
 				D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */,
 				8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,

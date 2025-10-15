@@ -26,7 +26,11 @@ enum MockDataLoader {
         )
 
         // 샘플 Artist
-        let artist = Artist(id: "artist_kim", name: "Kim", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artistKim = Artist(id: "artist_kim", name: "Kim", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artistPark = Artist(id: "artist_park", name: "Park", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artistLee = Artist(id: "artist_lee", name: "Lee", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artistKong = Artist(id: "artist_kong", name: "Kong", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artistSoo = Artist(id: "artist_soo", name: "Soo", exhibitions: ["exhibition_light"], receivedReactions: [])
 
         // 샘플 Exhibition
         let exhibition = Exhibition(
@@ -44,17 +48,31 @@ enum MockDataLoader {
             id: "artwork_light_01",
             exhibitionId: exhibition.id,
             title: "Light #1",
-            artistId: artist.id,
+            artistId: artistKim.id,
             thumbnailURL: "mock_artworkImage_01"
         )
         let artwork2 = Artwork(
             id: "artwork_light_02",
             exhibitionId: exhibition.id,
             title: "Light #2",
-            artistId: artist.id,
+            artistId: artistKim.id,
             thumbnailURL: "mock_artworkImage_02"
         )
-        exhibition.artworks = [artwork1, artwork2]
+        let artwork3 = Artwork(
+            id: "artwork_light_02",
+            exhibitionId: exhibition.id,
+            title: "Light #2",
+            artistId: artistKim.id,
+            thumbnailURL: "mock_artworkImage_02"
+        )
+        let artwork4 = Artwork(
+            id: "artwork_light_02",
+            exhibitionId: exhibition.id,
+            title: "Light #2",
+            artistId: artistKim.id,
+            thumbnailURL: "mock_artworkImage_02"
+        )
+        exhibition.artworks = [artwork1, artwork2, artwork3, artwork4]
 
         // 로컬 생성 User (앱에서 만들어지는 데이터)
         let user = User(role: "Visitor")
@@ -77,11 +95,11 @@ enum MockDataLoader {
 
         // 관계 연결
         user.sentReactions.append(reaction1)
-        artist.receivedReactions.append(reaction1)
+        artistKim.receivedReactions.append(reaction1)
 
         // 컨텍스트에 insert
         context.insert(venue)
-        context.insert(artist)
+        context.insert(artistKim)
         context.insert(exhibition)
         context.insert(artwork1); context.insert(artwork2)
         context.insert(user)
