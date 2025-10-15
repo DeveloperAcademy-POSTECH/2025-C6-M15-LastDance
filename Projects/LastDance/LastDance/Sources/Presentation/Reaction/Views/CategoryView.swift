@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CategoryView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ReactionInputViewModel()
     @State private var selectedCategories: Set<String> = []
     
     // 임시 카테고리
@@ -27,12 +29,12 @@ struct CategoryView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("태그")
-                .padding(.leading, 7)
+                .padding(.leading, 27)
             
             Spacer().frame(height: 10)
             
             Text("최대 4개 선택할 수 있어요")
-                .padding(.leading, 7)
+                .padding(.leading, 27)
             
             Spacer().frame(height: 20)
             
@@ -40,34 +42,26 @@ struct CategoryView: View {
                 ForEach(categories, id: \.self) { category in
                     CategoryButton(
                         category: category,
-                        isSelected: selectedCategories.contains(category)
+                        isSelected: viewModel.selectedCategories.contains(category)
                     ) {
-                        toggleCategory(category)
+                        viewModel.toggleCategory(category)
                     }
                 }
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 30)
             
             Spacer()
             
-            BottomButton(text: "다음", action: {
-                
+            BottomButton(text: "다음",
+                         isEnabled: !viewModel.selectedCategories.isEmpty,
+                         action: {
+                UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: .selectedCategories)
+                router.push(.artworkDetail(id: "artwork_light_01"))
             })
         }
-        .padding(.horizontal, 20)
         .navigationTitle("반응 남기기")
         .navigationBarTitleDisplayMode(.inline)
-    }
-    
-    private func toggleCategory(_ category: String) {
-        if selectedCategories.contains(category) {
-            selectedCategories.remove(category)
-        } else if selectedCategories.count < 4 {
-            selectedCategories.insert(category)
-        }
+        .environmentObject(viewModel)
     }
 }
 
-#Preview {
-    CategoryView()
-}

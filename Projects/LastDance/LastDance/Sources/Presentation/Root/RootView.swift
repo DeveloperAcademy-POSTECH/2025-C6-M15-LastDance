@@ -15,17 +15,22 @@ struct RootView: View {
             OnboardingView()
                 .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .identitySelection:
+                        IdentitySelectionView()
+                    case .audienceArchiving:
+                        AudienceArchivingView()
+                    case .articleArchiving:
+                        ArticleArchivingView()
                     case .exhibitionList:
                         ExhibitionListView()
                     case .exhibitionDetail(let id):
                         ExhibitionDetailView(exhibitionId: id)
+                            .navigationBarBackButtonHidden(true)
                     case .artworkDetail(let id):
                         ArtworkDetailView(artworkId: id)
                     case .camera:
                         CameraView()
                             .toolbar(.hidden, for: .navigationBar)
-                    case .reaction:
-                        ReactionInputView()
                     case .archive:
                         ArchiveView()
                     case .category:

@@ -17,3 +17,8 @@ struct OnboardingView: View {
         }
     }
 }
+
+#Preview {
+    OnboardingView()
+        .environmentObject(NavigationRouter())
+}
