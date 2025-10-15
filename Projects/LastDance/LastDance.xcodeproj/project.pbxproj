@@ -79,6 +79,7 @@
 		D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */; };
 		D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */; };
 		D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */; };
+		D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AE2E9FBE7100FCB472 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +157,8 @@
 		D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8C7C0AE2E9FBE7100FCB472 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +239,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -399,6 +403,7 @@
 		99E6F0DE2E91F499002ED9C2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0AE2E9FBE7100FCB472 /* Config.swift */,
 				D8C7C08D2E9F38E700FCB472 /* Enum */,
 			);
 			path = Utils;
@@ -743,6 +748,7 @@
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
+				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
@@ -929,7 +935,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -962,7 +968,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
