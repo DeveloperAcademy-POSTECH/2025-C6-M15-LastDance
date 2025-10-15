@@ -32,7 +32,7 @@ public struct CustomBottomSheet<Content>: View where Content: View {
                         .foregroundColor(.gray)
                         .frame(width: 30, height: 5)
                 )
-            
+
             self.content
                 .frame(height: self.height)
         }
@@ -60,6 +60,7 @@ public struct CustomBottomSheet<Content>: View where Content: View {
                     }
                 })
         )
+
     }
 }
 

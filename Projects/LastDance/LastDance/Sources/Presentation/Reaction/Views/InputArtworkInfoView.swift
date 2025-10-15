@@ -11,8 +11,7 @@ import SwiftData
 struct InputArtworkInfoView: View {
     @EnvironmentObject private var router: NavigationRouter
 
-    @State private var showArtworkBottomSheet: Bool = false  // 작품 바텀시트의 상태를 알려주는 변수
-    @State private var showArtistBottomSheet: Bool = false  // 작가 바텀시트의 상태를 알려주는 변수
+    @State private var activeBottomSheet: BottomSheetType? = nil  // 현재 활성화된 바텀시트
     @State private var selectedTitle: String = ""
     @State private var selectedArtist: String = ""
 
@@ -22,14 +21,16 @@ struct InputArtworkInfoView: View {
     let image: UIImage
     var activeBtn: Bool = false  // 하단 버튼 활성화를 알려주는 변수
 
+    private var isBottomSheetActive: Bool {
+        activeBottomSheet != nil
+    }
+
     var body: some View {
 
         GeometryReader { geo in
             let cardW = geo.size.width * CameraViewLayout.confirmCardWidthRatio
             let cardH = cardW / CameraViewLayout.aspect
             ZStack(alignment: .bottom) {
-//                Color.black.opacity(0.8).ignoresSafeArea()
-
                 VStack {
                     Image(uiImage: image)
                         .resizable()
@@ -44,14 +45,14 @@ struct InputArtworkInfoView: View {
                             label: "제목",
                             value: selectedTitle,
                             placeholder: "작품 제목을 선택해주세요",
-                            action: { showArtworkBottomSheet = true }
+                            action: { activeBottomSheet = .artwork }
                         )
-                        
+
                         InputFieldButton(
                             label: "작가",
                             value: selectedArtist,
                             placeholder: "작가명을 알려주세요",
-                            action: { showArtistBottomSheet = true }
+                            action: { activeBottomSheet = .artist }
                         )
                     }
                     .padding(.horizontal, 24)
@@ -68,15 +69,30 @@ struct InputArtworkInfoView: View {
                     )
                     .padding(.bottom, 35)
                 }
-                
+
+                /// 바텀시트 배경
+                if isBottomSheetActive {
+                    Color.black.opacity(0.8)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            activeBottomSheet = nil
+                        }
+                }
+
                 /// 작품 제목 바텀시트
-                if showArtworkBottomSheet {
-                    CustomBottomSheet($showArtworkBottomSheet, height: 393) {
+                if activeBottomSheet == .artwork {
+                    CustomBottomSheet(
+                        Binding(
+                            get: { activeBottomSheet == .artwork },
+                            set: { if !$0 { activeBottomSheet = nil } }
+                        ),
+                        height: 393
+                    ) {
                         SelectionSheet(
                             title: "제목",
                             items: artworks.map { $0.title },
                             selectedItem: $selectedTitle,
-                            showBottomSheet: $showArtworkBottomSheet
+                            onDismiss: { activeBottomSheet = nil }
                         )
                     }
                     .onAppear {
@@ -88,13 +104,19 @@ struct InputArtworkInfoView: View {
                 }
 
                 /// 작가 바텀시트
-                if showArtistBottomSheet {
-                    CustomBottomSheet($showArtistBottomSheet, height: 393) {
+                if activeBottomSheet == .artist {
+                    CustomBottomSheet(
+                        Binding(
+                            get: { activeBottomSheet == .artist },
+                            set: { if !$0 { activeBottomSheet = nil } }
+                        ),
+                        height: 393
+                    ) {
                         SelectionSheet(
                             title: "작가",
                             items: artists.map { $0.name },
                             selectedItem: $selectedArtist,
-                            showBottomSheet: $showArtistBottomSheet
+                            onDismiss: { activeBottomSheet = nil }
                         )
                     }
                     .onAppear {
@@ -107,7 +129,6 @@ struct InputArtworkInfoView: View {
             }
         }
         .edgesIgnoringSafeArea(.bottom)
-        .animation(.interactiveSpring(), value: showArtistBottomSheet || showArtworkBottomSheet)
     }
 }
 
@@ -145,7 +166,7 @@ private struct SelectionSheet: View {
     let title: String
     let items: [String]
     @Binding var selectedItem: String
-    @Binding var showBottomSheet: Bool
+    let onDismiss: () -> Void
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -155,7 +176,7 @@ private struct SelectionSheet: View {
                 .padding(.horizontal, 24)
 
             Spacer().frame(height: 24)
-            
+
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(items, id: \.self) { item in
@@ -179,11 +200,8 @@ private struct SelectionSheet: View {
             }
             .padding(.horizontal, 12)
 
-            BottomButton(text: "완료", action: {
-                showBottomSheet = false
-            })
-            .padding(.bottom, 35)
+            BottomButton(text: "완료", action: onDismiss)
+                .padding(.bottom, 35)
         }
-//        .presentationDetents([.medium, .large])
     }
 }
