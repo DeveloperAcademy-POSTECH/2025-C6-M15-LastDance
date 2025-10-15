@@ -17,7 +17,9 @@ final class CameraViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var zoomScale: CGFloat = 1.0
     @Published var showSilentNotice = false
+    
     private(set) var hasShownSilentNotice = false
+    private var hideNoticeTask: Task<Void, Never>?
 
     let manager = CameraManager()
 
@@ -46,6 +48,10 @@ final class CameraViewModel: ObservableObject {
     func stopSession() {
         manager.stopRunning()
         isRunning = false
+        
+        hideNoticeTask?.cancel()
+        hideNoticeTask = nil
+        showSilentNotice = false
     }
 
     /// 무음(비디오 프레임 스냅샷) 촬영
@@ -92,16 +98,22 @@ final class CameraViewModel: ObservableObject {
     }
     
     // 무음촬영모드임을 알리는 애니메이션
-    private func showSilentNoticeTemporarily() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            showSilentNotice = true
-        }
-        Task {
-            try? await Task.sleep(for: .seconds(2))
-            withAnimation(.easeInOut(duration: 0.5)) {
-                showSilentNotice = false
+    private func showSilentNoticeTemporarily(visibleFor: Duration = .seconds(2)) {
+        showSilentNotice = true
+        hideNoticeTask?.cancel()
+        
+        hideNoticeTask = Task { [weak self] in
+            do {
+                try await Task.sleep(for: visibleFor)
+            } catch { return } // 취소됨
+            await MainActor.run { [weak self] in
+                self?.showSilentNotice = false
             }
         }
+    }
+    
+    deinit {
+        hideNoticeTask?.cancel()
     }
 }
 

@@ -13,6 +13,7 @@ struct CameraView: View {
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var showConfirm = false
+    @State private var noticeVisible = false
 
     var body: some View {
         GeometryReader { geo in
@@ -32,7 +33,7 @@ struct CameraView: View {
 
                 BottomControllerView(viewModel: viewModel)
                 
-                if viewModel.showSilentNotice {
+                if noticeVisible {
                     VStack {
                         HStack {
                             Image(systemName: "speaker.slash.fill")
@@ -52,7 +53,6 @@ struct CameraView: View {
                     }
                     .padding(.top, 40)
                     .zIndex(2)
-                    .animation(.easeInOut(duration: 0.3), value: viewModel.showSilentNotice)
                 }
             }
             .overlay(alignment: .topLeading) {
@@ -66,6 +66,15 @@ struct CameraView: View {
         .task { await viewModel.setupCameraSession() }
         .onChange(of: viewModel.capturedImage) { _, new in
             showConfirm = (new != nil)
+        }
+        .onChange(of: viewModel.showSilentNotice) { _, newValue in
+            withAnimation(.easeInOut(duration: newValue ? 0.3 : 0.5)) {
+                noticeVisible = newValue
+            }
+        }
+        .onAppear {
+            // 초기 동기화 (필요 시)
+            noticeVisible = viewModel.showSilentNotice
         }
         // TODO: - 촬영 확인 화면 띄우는 방식에 따라 수정
         .fullScreenCover(isPresented: $showConfirm) {
