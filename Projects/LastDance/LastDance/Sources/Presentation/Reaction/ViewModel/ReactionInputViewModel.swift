@@ -2,7 +2,7 @@
 //  ReactionInputViewModel.swift
 //  LastDance
 //
-//  Created by 배현진, 신얀 on 10/5/25.
+//  Created by 신얀 on 10/15/25.
 //
 
 import SwiftData
@@ -12,6 +12,10 @@ import SwiftUI
 final class ReactionInputViewModel: ObservableObject {
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
+    @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
+    @Published var selectedArtistName: String = ""    // 선택한 작가 이름
+
+    var selectedArtworkId: String?  // 선택한 작품 ID (내부 저장용)
 
     let limit = 500 // texteditor 최대 글자수 제한
 
@@ -36,6 +40,15 @@ final class ReactionInputViewModel: ObservableObject {
         } else if selectedCategories.count < 4 {
             selectedCategories.insert(category)
         }
+    }
+
+    /// 인식된 작품의 작품명과 작가 정보를 저장하는 함수
+    func setArtworkInfo(artworkTitle: String, artistName: String, artworkId: String, completion: @escaping (Bool) -> Void) {
+        self.selectedArtworkTitle = artworkTitle
+        self.selectedArtistName = artistName
+        self.selectedArtworkId = artworkId
+        Log.debug("[ReactionInputViewModel] 작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), ID: \(artworkId)")
+        completion(true)
     }
 
     /// 작품 반응을 저장하는 함수

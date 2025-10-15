@@ -10,17 +10,14 @@ import SwiftData
 
 struct InputArtworkInfoView: View {
     @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ReactionInputViewModel()
 
-    @State private var activeBottomSheet: BottomSheetType? = nil  // 현재 활성화된 바텀시트
-    @State private var selectedTitle: String = ""
-    @State private var selectedArtist: String = ""
+    @State private var activeBottomSheet: BottomSheetType? = nil  
 
     @Query private var artworks: [Artwork]
     @Query private var artists: [Artist]
 
     let image: UIImage
-    var activeBtn: Bool = false  // 하단 버튼 활성화를 알려주는 변수
-
     private var isBottomSheetActive: Bool {
         activeBottomSheet != nil
     }
@@ -43,14 +40,14 @@ struct InputArtworkInfoView: View {
                     VStack(spacing: 12) {
                         InputFieldButton(
                             label: "제목",
-                            value: selectedTitle,
+                            value: viewModel.selectedArtworkTitle,
                             placeholder: "작품 제목을 선택해주세요",
                             action: { activeBottomSheet = .artwork }
                         )
 
                         InputFieldButton(
                             label: "작가",
-                            value: selectedArtist,
+                            value: viewModel.selectedArtistName,
                             placeholder: "작가명을 알려주세요",
                             action: { activeBottomSheet = .artist }
                         )
@@ -61,16 +58,29 @@ struct InputArtworkInfoView: View {
 
                     BottomButton(
                         text: "다음",
-                        isEnabled: !selectedTitle.isEmpty
-                            && !selectedArtist.isEmpty,
+                        isEnabled: !viewModel.selectedArtworkTitle.isEmpty
+                            && !viewModel.selectedArtistName.isEmpty,
                         action: {
-                            router.push(.category)
+                            // 선택한 작품 찾기
+                            guard let selectedArtwork = artworks.first(where: { $0.title == viewModel.selectedArtworkTitle }) else {
+                                Log.error("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
+                                return
+                            }
+
+                            viewModel.setArtworkInfo(
+                                artworkTitle: viewModel.selectedArtworkTitle,
+                                artistName: viewModel.selectedArtistName,
+                                artworkId: selectedArtwork.id
+                            ) { success in
+                                if success {
+                                    router.push(.category)
+                                }
+                            }
                         }
                     )
                     .padding(.bottom, 35)
                 }
 
-                /// 바텀시트 배경
                 if isBottomSheetActive {
                     Color.black.opacity(0.8)
                         .ignoresSafeArea()
@@ -91,7 +101,7 @@ struct InputArtworkInfoView: View {
                         SelectionSheet(
                             title: "제목",
                             items: artworks.map { $0.title },
-                            selectedItem: $selectedTitle,
+                            selectedItem: $viewModel.selectedArtworkTitle,
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
@@ -115,7 +125,7 @@ struct InputArtworkInfoView: View {
                         SelectionSheet(
                             title: "작가",
                             items: artists.map { $0.name },
-                            selectedItem: $selectedArtist,
+                            selectedItem: $viewModel.selectedArtistName,
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
