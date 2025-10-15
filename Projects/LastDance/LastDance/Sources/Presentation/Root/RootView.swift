@@ -15,6 +15,12 @@ struct RootView: View {
             OnboardingView()
                 .navigationDestination(for: Route.self) { route in
                     switch route {
+                    case .identitySelection:
+                        IdentitySelectionView()
+                    case .audienceArchiving:
+                        AudienceArchivingView()
+                    case .articleArchiving:
+                        ArticleArchivingView()
                     case .exhibitionList:
                         ExhibitionListView()
                     case .exhibitionDetail(let id):

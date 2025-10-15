@@ -10,7 +10,8 @@ import SwiftUI
 struct CategoryView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
-
+    @State private var selectedCategories: Set<String> = []
+    
     // 임시 카테고리
     let categories = [
         "음식", "여행", "운동", "음악",
@@ -63,3 +64,4 @@ struct CategoryView: View {
         .environmentObject(viewModel)
     }
 }
+
