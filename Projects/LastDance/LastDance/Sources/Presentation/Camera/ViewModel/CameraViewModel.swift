@@ -16,6 +16,8 @@ final class CameraViewModel: ObservableObject {
     @Published var croppedForDisplay: UIImage?
     @Published var errorMessage: String?
     @Published var zoomScale: CGFloat = 1.0
+    @Published var showSilentNotice = false
+    private(set) var hasShownSilentNotice = false
 
     let manager = CameraManager()
 
@@ -24,6 +26,11 @@ final class CameraViewModel: ObservableObject {
             try await requestCameraAuthorization()
             try await configureCaptureSession()
             startSession()
+            
+            if !hasShownSilentNotice {
+                hasShownSilentNotice = true
+                showSilentNoticeTemporarily()
+            }
         } catch {
             handleCameraError(error)
         }
@@ -81,6 +88,19 @@ final class CameraViewModel: ObservableObject {
             errorMessage = cameraError.localizedDescription
         } else {
             errorMessage = "알 수 없는 오류가 발생했습니다."
+        }
+    }
+    
+    // 무음촬영모드임을 알리는 애니메이션
+    private func showSilentNoticeTemporarily() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            showSilentNotice = true
+        }
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            withAnimation(.easeInOut(duration: 0.5)) {
+                showSilentNotice = false
+            }
         }
     }
 }

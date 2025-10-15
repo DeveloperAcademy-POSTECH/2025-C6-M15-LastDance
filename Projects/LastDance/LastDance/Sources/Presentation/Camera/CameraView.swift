@@ -31,6 +31,29 @@ struct CameraView: View {
                 )
 
                 BottomControllerView(viewModel: viewModel)
+                
+                if viewModel.showSilentNotice {
+                    VStack {
+                        HStack {
+                            Image(systemName: "speaker.slash.fill")
+                                .foregroundStyle(.black)
+                            Text("카메라 소리가 나지 않으니 안심하세요!")
+                                .font(.subheadline)
+                                .foregroundStyle(.black)
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(.white)
+                        .clipShape(Capsule())
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .padding(.top, 8)
+                        
+                        Spacer()
+                    }
+                    .padding(.top, 40)
+                    .zIndex(2)
+                    .animation(.easeInOut(duration: 0.3), value: viewModel.showSilentNotice)
+                }
             }
             .overlay(alignment: .topLeading) {
                 CloseButton {
