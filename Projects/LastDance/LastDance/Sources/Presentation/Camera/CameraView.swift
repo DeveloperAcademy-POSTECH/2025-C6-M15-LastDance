@@ -112,6 +112,7 @@ private struct Preview: View {
                             viewModel.endZoomInteraction()
                         }
                     )
+                    .viewfinderCorners(length: 21, lineWidth: 3, color: .white, inset: 2)
                 } else {
                     Color.black
                         .overlay(
