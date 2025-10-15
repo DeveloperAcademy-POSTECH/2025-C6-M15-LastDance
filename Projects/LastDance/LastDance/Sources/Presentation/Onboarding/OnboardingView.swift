@@ -14,13 +14,6 @@ struct OnboardingView: View {
     var body: some View {
         VStack {
             Text("OnboardingView")
-
-            Button(action: {
-                router.push(.exhibitionDetail(id: "exhibition_light"))
-            }) {
-                Text("ExhibitionDetailView")
-                    .foregroundStyle(.blue)
-            }
         }
     }
 }

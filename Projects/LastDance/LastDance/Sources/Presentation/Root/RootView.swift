@@ -31,8 +31,6 @@ struct RootView: View {
                     case .camera:
                         CameraView()
                             .toolbar(.hidden, for: .navigationBar)
-                    case .reaction:
-                        ReactionInputView()
                     case .archive:
                         ArchiveView()
                     case .category:

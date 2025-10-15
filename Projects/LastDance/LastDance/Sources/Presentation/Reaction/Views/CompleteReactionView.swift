@@ -9,41 +9,43 @@ import SwiftUI
 
 struct CompleteReactionView: View {
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
+            Spacer()
+            
             Image(systemName: "checkmark.circle.fill")
-                .resizable() 
+                .resizable()
                 .frame(width: 94, height: 94)
-                .foregroundStyle(.gray)
+                .foregroundStyle(.black)
                 .padding()
+
+            Spacer().frame(height: 32)
 
             Text("전송 완료!")
                 .font(.title2)
                 .bold()
 
-            Spacer().frame(height: 12)
+            Spacer().frame(height: 14)
 
             Text("작가에게 반응을 보냈어요")
 
-            Spacer().frame(height: 197)
+            Spacer()
 
-            HStack {
-                OutlinedButton(title: "관람 끝내기") {
+            HStack(spacing: 19) {
+                OutlinedButton(title: "관람 끝내기", color: Color(red: 0.95, green: 0.95, blue: 0.95), textColor: Color(red: 0.39, green: 0.39, blue: 0.39))
+                {
                     // TODO: 관람 끝내기 네비게이션 연결
                 }
-                
-                Spacer()
-                
-                OutlinedButton(title: "관람 계속하기") {
+
+                OutlinedButton(
+                    title: "관람 계속하기",
+                    color: .black, textColor: .white
+                ) {
                     // TODO: 관람 계속하기 네비게이션 연결
                 }
             }
-            .padding(.horizontal, 33)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 12)
         }
-        .edgesIgnoringSafeArea(.bottom)
         .navigationBarBackButtonHidden()
     }
-}
-
-#Preview {
-    CompleteReactionView()
 }
