@@ -16,9 +16,7 @@ struct InputArtworkInfoView: View {
     @State private var selectedTitle: String = ""
     @State private var selectedArtist: String = ""
 
-    @Query(filter: #Predicate<Artwork> { $0.artistId == "artist_kim" })
-    private var kimArtworks: [Artwork]
-
+    @Query private var artworks: [Artwork]
     @Query private var artists: [Artist]
 
     let image: UIImage
@@ -30,7 +28,7 @@ struct InputArtworkInfoView: View {
             let cardW = geo.size.width * CameraViewLayout.confirmCardWidthRatio
             let cardH = cardW / CameraViewLayout.aspect
             ZStack(alignment: .bottom) {
-                Color(.blue).ignoresSafeArea()
+//                Color.black.opacity(0.8).ignoresSafeArea()
 
                 VStack {
                     Image(uiImage: image)
@@ -76,15 +74,15 @@ struct InputArtworkInfoView: View {
                     CustomBottomSheet($showArtworkBottomSheet, height: 393) {
                         SelectionSheet(
                             title: "제목",
-                            items: kimArtworks.map { $0.title },
+                            items: artworks.map { $0.title },
                             selectedItem: $selectedTitle,
                             showBottomSheet: $showArtworkBottomSheet
                         )
                     }
                     .onAppear {
-                        Log.debug("Kim Artworks count: \(kimArtworks.count)")
-                        kimArtworks.forEach { artwork in
-                            Log.debug("Artwork: \(artwork.title) (artistId: \(artwork.artistId))")
+                        Log.debug("Artworks count: \(artworks.count)")
+                        artworks.forEach { artwork in
+                            Log.debug("Artwork: \(artwork.title) (artistId: \(artwork.artistId ?? "nil"))")
                         }
                     }
                 }
@@ -110,11 +108,6 @@ struct InputArtworkInfoView: View {
         }
         .edgesIgnoringSafeArea(.bottom)
         .animation(.interactiveSpring(), value: showArtistBottomSheet || showArtworkBottomSheet)
-        .onAppear {
-            Log.debug("InputArtworkInfoView appeared")
-            Log.debug("Initial kimArtworks count: \(kimArtworks.count)")
-            Log.debug("Initial artists count: \(artists.count)")
-        }
     }
 }
 
@@ -158,9 +151,11 @@ private struct SelectionSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
-                .padding(.top, 22)
-                .padding(.horizontal, 34)
+                .padding(.top, 10)
+                .padding(.horizontal, 24)
 
+            Spacer().frame(height: 24)
+            
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(items, id: \.self) { item in
@@ -169,13 +164,16 @@ private struct SelectionSheet: View {
                         } label: {
                             HStack {
                                 Text(item)
-                                    .foregroundColor(!selectedItem.isEmpty ? Color(red: 0.94, green: 0.94, blue: 0.94) : .white)
+                                    .foregroundColor(.black)
+                                    .font(Font.custom("SF Pro Text", size: 17))
                                 Spacer()
                             }
-                            .padding()
+                            .padding(12)
+                            .frame(height: 44)
                         }
                         .background(selectedItem == item ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color.clear)
-                        .padding(.bottom, 12)
+                        .cornerRadius(4)
+                        .padding(.vertical, 6)
                     }
                 }
             }
