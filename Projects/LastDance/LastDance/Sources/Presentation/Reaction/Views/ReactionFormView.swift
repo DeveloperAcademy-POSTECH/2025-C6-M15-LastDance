@@ -31,7 +31,7 @@ struct ReactionFormView: View {
         }
         .padding(.horizontal, 28)
         .onAppear {
-            if let savedCategories = UserDefaults.standard.array(forKey: "selectedCategories") as? [String] {
+            if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
                 viewModel.selectedCategories = Set(savedCategories)
             }
             Log.debug("[ReactionFormView]: \(viewModel.selectedCategories)")

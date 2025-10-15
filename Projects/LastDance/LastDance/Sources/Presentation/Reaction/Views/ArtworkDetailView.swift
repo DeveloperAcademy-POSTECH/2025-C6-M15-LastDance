@@ -59,7 +59,7 @@ struct ArtworkDetailView: View {
             )
         }
         .onAppear {
-            if let savedCategories = UserDefaults.standard.array(forKey: "selectedCategories") as? [String] {
+            if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
                 viewModel.selectedCategories = Set(savedCategories)
             }
             Log.debug("[ArtworkDetailView]: \(viewModel.selectedCategories)")

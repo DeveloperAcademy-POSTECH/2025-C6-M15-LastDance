@@ -54,7 +54,7 @@ struct CategoryView: View {
             BottomButton(text: "다음",
                          isEnabled: !viewModel.selectedCategories.isEmpty,
                          action: {
-                UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: "selectedCategories")
+                UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: .selectedCategories)
                 router.push(.artworkDetail(id: "artwork_light_01"))
             })
         }

@@ -58,6 +58,8 @@
 		99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */; };
 		D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */; };
 		D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */; };
+		D8C7C08C2E9F362A00FCB472 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C08B2E9F362A00FCB472 /* UserDefaults.swift */; };
+		D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +116,8 @@
 		D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionFormView.swift; sourceTree = "<group>"; };
 		D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D8C7C08B2E9F362A00FCB472 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
+				D8C7C08B2E9F362A00FCB472 /* UserDefaults.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -345,7 +350,7 @@
 		99E6F0DE2E91F499002ED9C2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				99E6F0BA2E91EF7A002ED9C2 /* Route.swift */,
+				D8C7C08D2E9F38E700FCB472 /* Enum */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -541,6 +546,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */,
+				99E6F0BA2E91EF7A002ED9C2 /* Route.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -659,6 +673,7 @@
 				963573A92E9A4A8B00B2FA79 /* CategoryView.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
+				D8C7C08C2E9F362A00FCB472 /* UserDefaults.swift in Sources */,
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
 				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
@@ -668,6 +683,7 @@
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
 				D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */,
+				D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */,
