@@ -1,0 +1,37 @@
+//
+//  CustomNavigationBar.swift
+//  LastDance
+//
+//  Created by donghee on 10/15/25.
+//
+
+import SwiftUI
+
+/// 커스텀 네비게이션 바 컴포넌트
+struct CustomNavigationBar: ToolbarContent {
+    let title: String
+    let onBackButtonTap: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            BackButton(action: onBackButtonTap)
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(.black)
+        }
+    }
+}
+#Preview {
+    NavigationStack {
+        Text("컨텐츠 영역")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                CustomNavigationBar(title: "전시정보") {
+                    print("Back button tapped")
+                }
+            }
+    }
+}
