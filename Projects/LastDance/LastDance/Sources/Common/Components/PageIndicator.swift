@@ -16,9 +16,9 @@ struct PageIndicator: View {
         HStack(spacing: 0) {
             ForEach(0..<totalPages, id: \.self) { index in
                 Rectangle()
-                    .fill(index == currentPage ?Color.black.opacity(0.18) : Color.black )
+                    .fill(index == currentPage ? Color.black : Color.black.opacity(0.18))
                     .frame(height: 2)
-                    .frame(maxWidth: .infinity,)
+                    .frame(maxWidth: .infinity)
             }
         }
     }

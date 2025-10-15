@@ -17,7 +17,7 @@ struct ArticleListView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                PageIndicator(totalPages: 2, currentPage: 1)
+                PageIndicator(totalPages: 2, currentPage: 0)
                     .padding(.horizontal, -20)
 
                 titleSection
@@ -130,23 +130,6 @@ struct ArticleArtistRow: View {
                         .fill(isSelected ? Color(red: 0.93, green: 0.93, blue: 0.93) : Color.clear)
                 )
                 .padding(.horizontal, isSelected ? 8 : 0)
-        }
-    }
-}
-
-/// 페이지 인디케이터
-struct PageIndicatorForArticleList: View {
-    let totalPages: Int
-    let currentPage: Int
-
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<totalPages, id: \.self) { index in
-                Rectangle()
-                    .fill(index == currentPage ? Color.black : Color.black.opacity(0.18))
-                    .frame(height: 2)
-                    .frame(maxWidth: .infinity)
-            }
         }
     }
 }
