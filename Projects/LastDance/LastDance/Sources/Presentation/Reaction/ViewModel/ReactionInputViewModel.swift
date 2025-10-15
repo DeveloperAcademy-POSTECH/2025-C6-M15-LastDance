@@ -17,6 +17,7 @@ final class ReactionInputViewModel: ObservableObject {
 
     var selectedArtworkId: String?  // 선택한 작품 ID (내부 저장용)
 
+    private let dataManager = SwiftDataManager.shared
     let limit = 500 // texteditor 최대 글자수 제한
 
     // 하단버튼 유효성 검사
@@ -52,7 +53,7 @@ final class ReactionInputViewModel: ObservableObject {
     }
 
     /// 작품 반응을 저장하는 함수
-    func saveReaction(artworkId: String, context: ModelContext, completion: @escaping (Bool) -> Void) {
+    func saveReaction(artworkId: String, completion: @escaping (Bool) -> Void) {
         guard !selectedCategories.isEmpty else {
             completion(false)
             return
@@ -67,17 +68,11 @@ final class ReactionInputViewModel: ObservableObject {
             createdAt: .now
         )
 
-        context.insert(reaction)
+        dataManager.insert(reaction)
 
-        do {
-            try context.save()
-            message = ""
-            selectedCategories.removeAll()
-            Log.debug("[ReactionInputViewModel] 저장 완료")
-            completion(true)
-        } catch {
-            Log.debug("[ReactionInputViewModel] 저장 실패: \(error)")
-            completion(false)
-        }
+        message = ""
+        selectedCategories.removeAll()
+        Log.debug("[ReactionInputViewModel] 저장 완료")
+        completion(true)
     }
 }
