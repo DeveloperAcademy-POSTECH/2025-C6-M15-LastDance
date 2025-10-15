@@ -15,7 +15,7 @@ struct ExhibitionListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            TitleSection
+            titleSection
 
             ExhibitionList
 
@@ -30,7 +30,7 @@ struct ExhibitionListView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    var TitleSection: some View {
+    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("관람하려 온 전시를 알려주세요")
                 .font(.system(size: 24, weight: .bold))

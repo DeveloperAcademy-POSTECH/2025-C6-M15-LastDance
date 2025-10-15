@@ -14,7 +14,7 @@ struct ArticleArchivingView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            TitleSection
+            titleSection
             Spacer()
 
             AddButtonSection
@@ -25,7 +25,7 @@ struct ArticleArchivingView: View {
         .navigationBarBackButtonHidden(false)
     }
 
-    var TitleSection: some View {
+    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("나의 전시")
                 .font(.system(size: 21, weight: .bold))

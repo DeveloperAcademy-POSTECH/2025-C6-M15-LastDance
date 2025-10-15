@@ -14,7 +14,7 @@ struct IdentitySelectionView: View {
 
     var body: some View {
         VStack(spacing: 28) {
-            TitleSection
+            titleSection
 
             Spacer()
 
@@ -30,7 +30,7 @@ struct IdentitySelectionView: View {
         .padding(.bottom, 34)
     }
 
-    var TitleSection: some View {
+    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("어떤 방식으로 전시에 참여하고\n싶나요?")
                 .font(.system(size: 24, weight: .bold))
