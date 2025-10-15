@@ -21,40 +21,27 @@ final class ArchiveViewModel: ObservableObject {
         loadCurrentExhibition()
     }
     
-    // MARK: - Public Methods
-    
     func loadCapturedArtworks() {
         isLoading = true
-        
         Task {
             do {
-                let artworks = try await fetchCapturedArtworks()
-                await MainActor.run {
-                    self.capturedArtworks = artworks
-                    self.isLoading = false
-                }
+                self.capturedArtworks = try await fetchCapturedArtworks()
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                }
                 Log.error("Failed to load captured artworks: \(error)")
             }
+            self.isLoading = false
         }
     }
     
     func loadCurrentExhibition() {
         Task {
             do {
-                let exhibition = try await fetchCurrentExhibition()
-                await MainActor.run {
-                    self.currentExhibition = exhibition
-                }
+                self.currentExhibition = try await fetchCurrentExhibition()
             } catch {
-                Log.error("Failed to load current exhibition: \(error)")
+                Log.error("❌ Failed to load current exhibition: \(error)")
             }
         }
     }
-    
     
     var capturedArtworksCount: Int {
         capturedArtworks.count
@@ -67,8 +54,6 @@ final class ArchiveViewModel: ObservableObject {
     var hasArtworks: Bool {
         !capturedArtworks.isEmpty
     }
-    
-
     
     private func fetchCapturedArtworks() async throws -> [CapturedArtwork] {
         guard let container = swiftDataManager.container else {
@@ -85,6 +70,7 @@ final class ArchiveViewModel: ObservableObject {
     
     private func fetchCurrentExhibition() async throws -> Exhibition? {
         guard let container = swiftDataManager.container else {
+            Log.error("❌ Container not available")
             throw NSError(domain: "ArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
         }
         
@@ -92,5 +78,10 @@ final class ArchiveViewModel: ObservableObject {
         let descriptor = FetchDescriptor<Exhibition>()
         let exhibitions = try context.fetch(descriptor)
         return exhibitions.first
+    }
+    /// 대각선 효과
+    func getRotationAngle(for index: Int) -> Double {
+        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
+        return angles[index % angles.count]
     }
 }
