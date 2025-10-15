@@ -23,8 +23,6 @@ struct RootView: View {
                         ArtworkDetailView(artworkId: id)
                     case .camera:
                         CameraView()
-                    case .reaction:
-                        ReactionInputView()
                     case .archive:
                         ArchiveView()
                     case .category:

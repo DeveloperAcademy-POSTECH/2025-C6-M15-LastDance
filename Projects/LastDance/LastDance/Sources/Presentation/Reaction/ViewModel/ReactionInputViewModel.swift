@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 final class ReactionInputViewModel: ObservableObject {
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
