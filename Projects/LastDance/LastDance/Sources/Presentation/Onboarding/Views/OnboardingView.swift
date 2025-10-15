@@ -16,7 +16,7 @@ struct OnboardingView: View {
             Button(action: {
                 router.push(.category)
             }) {
-                Text("ReactionDetailView")
+                Text("categoryView")
             }
         }
     }

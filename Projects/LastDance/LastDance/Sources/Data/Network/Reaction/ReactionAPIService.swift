@@ -24,7 +24,12 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
             switch result {
             case .success(let response):
                 do {
-                    let responseDto = try JSONDecoder().decode(ReactionResponseDto.self, from: response.data)
+                    // 서버 응답 JSON 로깅
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("[ReactionAPIService] 서버 응답: \(jsonString)")
+                    }
+                    let reactionDetail = try JSONDecoder().decode(ReactionDetail.self, from: response.data)
+                    let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
                     completion(.success(responseDto))
                 } catch {
                     Log.debug("[ReactionAPIService] JSON 디코딩 실패: \(error)")
