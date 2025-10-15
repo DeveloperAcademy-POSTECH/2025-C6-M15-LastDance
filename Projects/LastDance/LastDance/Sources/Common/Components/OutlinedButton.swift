@@ -10,26 +10,26 @@ import SwiftUI
 
 struct OutlinedButton: View {
     let title: String
+    var color: Color
+    var textColor: Color
     let action: () -> Void
-    
+
     var body: some View {
         Button(
             action: action,
             label: {
                 Text(title)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(textColor)
+                    .bold()
+                    .frame(maxWidth: .infinity)
             }
         )
-        .padding(.horizontal, 38)
-        .padding(.vertical, 11)
-        .border(.black)
+        .frame(height: 54)
+        .background(color)
+        .cornerRadius(8)
         .overlay(
-            Rectangle()
-                .inset(by: 0.5)
-                .stroke(
-                    Color(.black),
-                    lineWidth: 1
-                )
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(color, lineWidth: 1)
         )
     }
 }
