@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import Moya
 
 @MainActor
 final class ReactionInputViewModel: ObservableObject {
@@ -14,6 +15,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedCategories: Set<String> = []
 
     let limit = 500 // texteditor 최대 글자수 제한
+    private let apiService = ReactionAPIService()
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
@@ -39,32 +41,36 @@ final class ReactionInputViewModel: ObservableObject {
     }
 
     /// 작품 반응을 저장하는 함수
-    func saveReaction(artworkId: String, context: ModelContext, completion: @escaping (Bool) -> Void) {
-        guard !selectedCategories.isEmpty else {
+    func saveReaction(artworkId: Int, visitorId: Int, visitId: Int, imageUrl: String?, tagIds: [Int], completion: @escaping (Bool) -> Void) {
+        guard !tagIds.isEmpty else {
             completion(false)
             return
         }
 
-        let reaction = Reaction(
-            id: UUID().uuidString,
+        let dto = ReactionRequestDto(
             artworkId: artworkId,
-            userId: "mockUser",
-            category: Array(selectedCategories),
+            visitorId: visitorId,
+            visitId: visitId,
             comment: message.isEmpty ? nil : message,
-            createdAt: .now
+            imageUrl: imageUrl,
+            tagIds: tagIds
         )
 
-        context.insert(reaction)
+        apiService.createReaction(dto: dto) { [weak self] result in
+            guard let self = self else { return }
 
-        do {
-            try context.save()
-            message = ""
-            selectedCategories.removeAll()
-            Log.debug("[ReactionInputViewModel] 저장 완료")
-            completion(true)
-        } catch {
-            Log.debug("[ReactionInputViewModel] 저장 실패: \(error)")
-            completion(false)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self.message = ""
+                    self.selectedCategories.removeAll()
+                    Log.debug("[ReactionInputViewModel] API 저장 완료: \(response)")
+                    completion(true)
+                case .failure(let error):
+                    Log.debug("[ReactionInputViewModel] API 저장 실패: \(error)")
+                    completion(false)
+                }
+            }
         }
     }
 }

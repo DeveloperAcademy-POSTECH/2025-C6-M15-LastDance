@@ -46,7 +46,20 @@ struct ArtworkDetailView: View {
                     Log.debug("- [ArtworkDetailView] selectedCategories: \(Array(viewModel.selectedCategories))")
                     Log.debug("- [ArtworkDetailView] message: \(viewModel.message)")
 
-                    viewModel.saveReaction(artworkId: artworkId, context: context) { success in
+                    // TODO: 실제 값으로 교체 필요
+                    let artworkIdInt = Int(artworkId) ?? 1
+                    let visitorId = 1  // 실제 visitor ID로 교체
+                    let visitId = 1    // 실제 visit ID로 교체
+                    let imageUrl: String? = nil  // 이미지 URL이 있으면 전달
+                    let tagIds: [Int] = []  // 선택된 카테고리를 태그 ID로 변환 필요
+
+                    viewModel.saveReaction(
+                        artworkId: artworkIdInt,
+                        visitorId: visitorId,
+                        visitId: visitId,
+                        imageUrl: imageUrl,
+                        tagIds: tagIds
+                    ) { success in
                         if success {
                             // 저장 완료시 다음 화면으로 이동하도록 구현
                             Log.debug("[ArtworkDetailView] 저장 성공, 화면 이동")
