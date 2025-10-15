@@ -18,11 +18,11 @@ struct IdentitySelectionView: View {
 
             Spacer()
 
-            SelectionButtons
+            selectionButtons
 
             Spacer()
 
-            NextButton
+            nextButton
             
             Spacer()
         }
@@ -41,7 +41,7 @@ struct IdentitySelectionView: View {
         .padding(.top, 80)
     }
     
-    var SelectionButtons: some View {
+    var selectionButtons: some View {
         VStack(spacing: 40) {
 
             CircleSelectionButton(
@@ -61,7 +61,7 @@ struct IdentitySelectionView: View {
         }
     }
 
-    var NextButton: some View {
+    var nextButton: some View {
         BottomButton(text: "다음") {
             viewModel.confirmSelection()
         }

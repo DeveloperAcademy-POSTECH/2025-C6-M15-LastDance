@@ -20,25 +20,29 @@ struct ArticleListView: View {
                 PageIndicator(totalPages: 2, currentPage: 1)
                     .padding(.horizontal, -20)
 
-                TitleSection
+                titleSection
 
-                SearchTextField
+                searchTextField
 
-                ArtistList(availableHeight: geometry.size.height - 300)
+                artistList(availableHeight: geometry.size.height - 300)
 
                 Spacer()
 
-                NextButton
+                nextButton
             }
+            .padding(.top, 18)
             .padding(.horizontal, 20)
             .padding(.bottom, 34)
-            .navigationBarBackButtonHidden(false)
-            .navigationTitle("전시찾기")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                CustomNavigationBar(title: "전시찾기") {
+                    router.popLast()
+                }
+            }
         }
     }
 
-    var TitleSection: some View {
+    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("어떤 작가님이신가요?")
                 .font(.system(size: 21, weight: .bold))
@@ -54,7 +58,7 @@ struct ArticleListView: View {
         .padding(.bottom, 16)
     }
 
-    var SearchTextField: some View {
+    var searchTextField: some View {
         TextField("작가명을 선택해주세요", text: $viewModel.searchText)
             .font(Font.custom("SF Pro Text", size: 17))
             .foregroundStyle(.black)
@@ -72,7 +76,7 @@ struct ArticleListView: View {
             .padding(.bottom, 8)
     }
 
-    func ArtistList(availableHeight: CGFloat) -> some View {
+    func artistList(availableHeight: CGFloat) -> some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.filteredArtists, id: \.id) { artist in
@@ -98,7 +102,7 @@ struct ArticleListView: View {
         )
     }
 
-    var NextButton: some View {
+    var nextButton: some View {
         BottomButton(text: "다음") {
             if let artistId = viewModel.tapNextButton() {
                 router.push(.completeArticleList(selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId))

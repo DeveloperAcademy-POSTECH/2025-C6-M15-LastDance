@@ -20,24 +20,28 @@ struct CompleteArticleListView: View {
         VStack(spacing: 0) {
             PageIndicator(totalPages: 2, currentPage: 2)
                 .padding(.horizontal, -28)
-            TitleSection
+            titleSection
                 .padding(.top, 14)
-            InfoSection
+            infoSection
                 .padding(.top, 14)
             Spacer()
-            FindExhibitionButton
+            findExhibitionButton
         }
+        .padding(.top, 18)
         .padding(.horizontal, 28)
         .padding(.bottom, 34)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle("전시찾기")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomNavigationBar(title: "전시찾기") {
+                router.popLast()
+            }
+        }
         .task {
             fetchData()
         }
     }
 
-    var TitleSection: some View {
+    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("어떤 작가님이신가요?")
                 .font(.system(size: 21, weight: .bold))
@@ -48,14 +52,14 @@ struct CompleteArticleListView: View {
         .padding(.bottom, 24)
     }
 
-    var InfoSection: some View {
+    var infoSection: some View {
         VStack(spacing: 28) {
             InfoRow(label: "작가명", value: artist?.name ?? "")
             InfoRow(label: "전시명", value: exhibition?.title ?? "")
         }
     }
 
-    var FindExhibitionButton: some View {
+    var findExhibitionButton: some View {
         BottomButton(text: "전시 찾기") {
             // TODO: 전시 찾기 기능
         }

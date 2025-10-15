@@ -23,6 +23,7 @@ struct RootView: View {
                         ArticleArchivingView()
                     case .exhibitionList:
                         ExhibitionListView()
+                            .navigationBarBackButtonHidden(true)
                     case .exhibitionDetail(let id):
                         ExhibitionDetailView(exhibitionId: id)
                             .navigationBarBackButtonHidden(true)
@@ -39,10 +40,13 @@ struct RootView: View {
                         CompleteReactionView()
                     case .articleExhibitionList:
                         ArticleExhibitionListView()
+                            .navigationBarBackButtonHidden(true)
                     case .articleList(let selectedExhibitionId):
                         ArticleListView(selectedExhibitionId: selectedExhibitionId)
+                            .navigationBarBackButtonHidden(true)
                     case .completeArticleList(let selectedExhibitionId, let selectedArtistId):
                         CompleteArticleListView(selectedExhibitionId: selectedExhibitionId, selectedArtistId: selectedArtistId)
+                            .navigationBarBackButtonHidden(true)
                     }
                 }
         }

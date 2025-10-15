@@ -12,9 +12,9 @@ struct ExhibitionDetailView: View {
     @StateObject private var viewModel = ExhibitionDetailViewModel()
 
     let exhibitionId: String
-
+    
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 18) {
             ScrollView {
                 if let exhibition = viewModel.exhibition {
                     VStack(spacing: 0) {
@@ -26,15 +26,11 @@ struct ExhibitionDetailView: View {
                             formatDateRange: viewModel.formatDateRange
                         )
                     }
-                } else {
-                    Text("전시 정보를 불러올 수 없습니다")
-                        .foregroundStyle(.gray)
-                        .padding(.top, 100)
                 }
             }
-
-            if viewModel.exhibition != nil {
-                ViewButton
+            
+            if viewModel.hasExhibition {
+                viewButton
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -43,12 +39,20 @@ struct ExhibitionDetailView: View {
                 router.popLast()
             }
         }
+        .customAlert(
+            isPresented: $viewModel.showErrorAlert,
+            title: "아쉬워요!",
+            message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
+            buttonText: "다시 찾기"
+        ) {
+            router.popLast()
+        }
         .task {
             viewModel.fetchExhibition(by: exhibitionId)
         }
     }
-
-    var ViewButton: some View {
+    
+    var viewButton: some View {
         BottomButton(text: "관람하기") {
             // TODO: 다음 화면으로 네비게이션
         }
@@ -60,7 +64,7 @@ struct ExhibitionDetailView: View {
 /// 전시 커버 이미지 섹션
 struct ExhibitionImageSection: View {
     let coverImageName: String?
-
+    
     var body: some View {
         if let imageName = coverImageName {
             Image(imageName)
@@ -85,19 +89,18 @@ struct ExhibitionInfoSection: View {
     let exhibition: Exhibition
     let artistNames: [String]
     let formatDateRange: (Date, Date) -> String
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(exhibition.title)
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
-
+            
             if !artistNames.isEmpty {
                 Text(artistNames.joined(separator: ", "))
                     .font(Font.custom("Pretendard", size: 16))
                     .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
             }
-
             Text(formatDateRange(exhibition.startDate, exhibition.endDate))
                 .font(Font.custom("Pretendard", size: 16))
                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))

@@ -12,7 +12,21 @@ struct OnboardingView: View {
     @StateObject private var viewModel = OnboardingViewModel()
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
+            Button(action: {
+                router.push(.exhibitionList)
+            }) {
+                Text("ExhibitionListView")
+                    .foregroundStyle(.blue)
+            }
+
+            Button(action: {
+                router.push(.exhibitionDetail(id: "exhibition_light"))
+            }) {
+                Text("ExhibitionDetailView")
+                    .foregroundStyle(.blue)
+            }
+
             Button(action: {
                 router.push(.articleExhibitionList)
             }) {
@@ -31,13 +45,6 @@ struct OnboardingView: View {
                 router.push(.completeArticleList(selectedExhibitionId: "exhibition_light", selectedArtistId: "artist_kimjiin"))
             }) {
                 Text("CompleteArticleListView")
-                    .foregroundStyle(.blue)
-            }
-
-            Button(action: {
-                router.push(.exhibitionList)
-            }) {
-                Text("ExhibitionListView")
                     .foregroundStyle(.blue)
             }
         }
