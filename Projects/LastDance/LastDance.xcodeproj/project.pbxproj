@@ -26,6 +26,7 @@
 		99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B32E9C765000379F27 /* BottomControllerView.swift */; };
 		99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */; };
 		99DAB0BF2E9EB78800379F27 /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0BE2E9EB78500379F27 /* CameraError.swift */; };
+		99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
 		99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0A82E91EF48002ED9C2 /* LastDanceApp.swift */; };
 		99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0B32E91EF48002ED9C2 /* Item.swift */; };
@@ -85,6 +86,7 @@
 		99DAB0B32E9C765000379F27 /* BottomControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControllerView.swift; sourceTree = "<group>"; };
 		99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomControlView.swift; sourceTree = "<group>"; };
 		99DAB0BE2E9EB78500379F27 /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
+		99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCornerMarks.swift; sourceTree = "<group>"; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 		99E6F0E82E91F7E2002ED9C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */,
 				99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */,
 				99DAB0B32E9C765000379F27 /* BottomControllerView.swift */,
 				99DAB0AF2E9C4BE400379F27 /* CaptureConfirmView.swift */,
@@ -698,6 +701,7 @@
 				99E6F0D62E91F29A002ED9C2 /* OnboardingView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
+				99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */,
 				99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				963573AB2E9A4A9A00B2FA79 /* CompleteReactionView.swift in Sources */,
