@@ -50,9 +50,7 @@ struct CameraView: View {
                 CaptureConfirmView(
                     image: image,
                     onUse: { _ in
-                        // TODO: 작품 인식시키거나 정보 입력으로 연결
-                        // 임시: 카메라 닫기
-                        router.popLast()
+                        router.push(.inputArtworkInfo(image: image))
                     },
                     onRetake: {
                         showConfirm = false
