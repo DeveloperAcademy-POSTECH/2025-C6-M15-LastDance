@@ -45,14 +45,23 @@ struct CameraView: View {
             showConfirm = (new != nil)
         }
         // TODO: - 촬영 확인 화면 띄우는 방식에 따라 수정
-        .fullScreenCover(isPresented: $showConfirm) {
+        .fullScreenCover(isPresented: $showConfirm, onDismiss: {
+            // fullScreenCover가 닫힌 후 capturedImage가 있으면 다음 화면으로 이동
+            if let image = viewModel.capturedImage {
+                router.push(.inputArtworkInfo(image: image))
+                viewModel.capturedImage = nil // 이미지 사용 후 초기화
+            }
+        }) {
             if let image = viewModel.capturedImage {
                 CaptureConfirmView(
                     image: image,
                     onUse: { _ in
-                        router.push(.inputArtworkInfo(image: image))
+                        Log.debug("onuse")
+                        showConfirm = false
                     },
                     onRetake: {
+                        Log.debug("onRetake")
+                        viewModel.capturedImage = nil // 재촬영 시 이미지 초기화
                         showConfirm = false
                     }
                 )
