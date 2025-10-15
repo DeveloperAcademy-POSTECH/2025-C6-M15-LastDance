@@ -29,23 +29,29 @@ struct CaptureConfirmView: View {
                         .frame(width: cardW, height: cardH)
                         .clipped()
                     
-                    HStack(spacing: 32) {
-                        Button {
-                            onRetake()
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 24, weight: .semibold))
-                                .padding(18)
-                                .background(.ultraThinMaterial, in: Circle())
-                        }
+                    ZStack {
                         Button {
                             onUse(image)
                         } label: {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 24, weight: .bold))
-                                .padding(18)
-                                .background(.ultraThinMaterial, in: Circle())
+                                .foregroundStyle(.white)
+                                .padding(8)
+                                .frame(width: 82, height: 82)
+                                .background(Color(red: 0.14, green: 0.14, blue: 0.14), in: Circle())
                         }
+                        
+                        Button {
+                            onRetake()
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(Color(red: 0.45, green: 0.45, blue: 0.45))
+                                .padding(8)
+                                .frame(width: 52, height: 52)
+                                .background(Color(red: 0.96, green: 0.96, blue: 0.96), in: Circle())
+                        }
+                        .offset(x: 100)
                     }
                     .padding(.top, 24)
                 }
