@@ -19,10 +19,12 @@ struct RootView: View {
                         ExhibitionListView()
                     case .exhibitionDetail(let id):
                         ExhibitionDetailView(exhibitionId: id)
+                            .navigationBarBackButtonHidden(true)
                     case .artworkDetail(let id):
                         ArtworkDetailView(artworkId: id)
                     case .camera:
                         CameraView()
+                            .toolbar(.hidden, for: .navigationBar)
                     case .archive:
                         ArchiveView()
                     case .category:

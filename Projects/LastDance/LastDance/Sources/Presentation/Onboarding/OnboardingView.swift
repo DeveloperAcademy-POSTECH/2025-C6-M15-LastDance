@@ -14,12 +14,11 @@ struct OnboardingView: View {
     var body: some View {
         VStack {
             Text("OnboardingView")
-            
-            Button(action: {
-                router.push(.artworkDetail(id: "artwork_light_01"))
-            }, label: {
-                Text("ArtworkDetailView")
-            })
         }
     }
+}
+
+#Preview {
+    OnboardingView()
+        .environmentObject(NavigationRouter())
 }
