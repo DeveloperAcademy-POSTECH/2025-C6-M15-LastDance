@@ -10,12 +10,10 @@ import SwiftData
 
 @MainActor
 enum MockDataLoader {
-    private static let seedKey = "seed.v1"
-
     /// 필요 시점에 한번만 시드 추가
     static func seedIfNeeded(container: ModelContainer) {
         #if DEBUG
-        guard UserDefaults.standard.bool(forKey: seedKey) == false else { return }
+        guard UserDefaults.standard.bool(forKey: .seed) == false else { return }
         let context = container.mainContext
 
         // 샘플 Venue
@@ -160,7 +158,7 @@ enum MockDataLoader {
 
         do {
             try context.save()
-            UserDefaults.standard.set(true, forKey: seedKey)
+            UserDefaults.standard.set(true, forKey: .seed)
             Log.debug("DEV seed completed.")
         } catch {
             Log.debug("DEV seed failed: \(error)")
@@ -181,7 +179,7 @@ enum MockDataLoader {
         _ = try? ctx.delete(model: Reaction.self)
         _ = try? ctx.delete(model: IdentificatedArtwork.self)
         try? ctx.save()
-        UserDefaults.standard.set(false, forKey: seedKey)
+        UserDefaults.standard.set(false, forKey: .seed)
         Log.debug("🧹 wiped all & seed flag reset")
         #endif
     }

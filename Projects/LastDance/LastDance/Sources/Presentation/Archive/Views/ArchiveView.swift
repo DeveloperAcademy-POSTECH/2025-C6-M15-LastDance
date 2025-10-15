@@ -14,6 +14,7 @@ struct ArchiveView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+    
             HStack {
                 Button(action: {
                     router.popLast()
@@ -35,7 +36,6 @@ struct ArchiveView: View {
             }
             .padding(.horizontal, 13)
             .padding(.top, 20)
-            
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(viewModel.exhibitionTitle)
@@ -54,6 +54,7 @@ struct ArchiveView: View {
                         .fontWeight(.medium)
                         .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
                     
+            
                     Text("\(viewModel.capturedArtworksCount)개의 작품")
                         .font(.custom("Pretendard", size: 18))
                         .fontWeight(.medium)
@@ -129,6 +130,7 @@ struct ArchiveView: View {
         }
     }
 }
+
 
 #Preview {
     ArchiveView()
