@@ -18,99 +18,27 @@ enum MockDataLoader {
 
         let venue = createVenue()
         let artists = createArtists()
-        let exhibition = createExhibition(venueId: venue.id)
-        let artworks = createArtworks(exhibitionId: exhibition.id, artists: artists)
+        let exhibitions = createExhibition(venueId: venue.id)
+        let artworks = createArtworks(exhibitionId: exhibitions[0].id, artists: artists)
         let user = User(role: "Visitor")
         let (capture, reaction) = createCaptureAndReaction(artworkId: artworks[0].id, userId: user.id.uuidString)
 
-        setupRelationships(user: user, reaction: reaction, artist: artists[0])
-        insertAllData(context: context, venue: venue, artists: artists, exhibition: exhibition,
-                     artworks: artworks, user: user, capture: capture, reaction: reaction)
-
-        do {
-            try context.save()
-            UserDefaults.standard.set(true, forKey: .seed)
-            Log.debug("DEV seed completed.")
-        } catch {
-            Log.debug("DEV seed failed: \(error)")
-        }
-        #endif
-    }
-
-    private static func createVenue() -> Venue {
-        Venue(id: "venue_seoulmuseum", name: "Seoul Museum", address: "Seoul",
-              geoLat: 37.5665, geoLon: 126.9780)
-    }
-
-    private static func createArtists() -> [Artist] {
-        [
-            Artist(id: "artist_kim", name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_park", name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_lee", name: "이도윤", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_kong", name: "공지우", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_soo", name: "서예준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_choi", name: "최하은", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_jung", name: "정우진", exhibitions: ["exhibition_light"], receivedReactions: [])
-        ]
-    }
-
-    private static func createExhibition(venueId: String) -> Exhibition {
-        Exhibition(
-            id: "exhibition_light",
-            title: "빛의 향연",
-            descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
-            startDate: Date().addingTimeInterval(-86400 * 3),
-            endDate: Date().addingTimeInterval(86400 * 14),
-            venueId: venueId,
-            coverImageName: "mock_exhibitionCoverImage"
-        )
-        
-        // 샘플 Exhibition 3개
-        let exhibition1 = Exhibition(
-            id: "exhibition_02",
-            title: "조샘초이 : 기억의 지층, 경계를 넘는 시선",
-            descriptionText: "조샘초이 작가의 개인전",
-            startDate: Date().addingTimeInterval(-86400 * 8),
-            endDate: Date().addingTimeInterval(86400 * 15),
-            venueId: venue.id,
-            coverImageName: "mock_exhibitionCoverImage"
-        )
-        
-        let exhibition2 = Exhibition(
-            id: "exhibition_03",
-            title: "기증작가 상설전: 박대성 소산수목",
-            descriptionText: "박대성 작가의 기증 작품 전시",
-            startDate: Date().addingTimeInterval(-86400 * 6),
-            endDate: Date().addingTimeInterval(86400 * 12),
-            venueId: venue.id,
-            coverImageName: "mock_artworkImage_02"
-        )
-        
-        let exhibition3 = Exhibition(
-            id: "exhibition_04",
-            title: "清年! 青年! 請年! - 맑고 푸른 그대에게 청한다",
-            descriptionText: "젊은 작가들의 작품 전시",
-            startDate: Date().addingTimeInterval(-86400 * 10),
-            endDate: Date().addingTimeInterval(86400 * 20),
-            venueId: venue.id,
-            coverImageName: "mock_artworkImage_01"
-        )
         // 샘플 Artworks
         let artwork1 = Artwork(
             id: "artwork_light_01",
-            exhibitionId: exhibition.id,
+            exhibitionId: exhibitions[0].id,
             title: "Light #1",
-            artistId: artist.id,
+            artistId: artists[0].id,
             thumbnailURL: "mock_artworkImage_01"
         )
         let artwork2 = Artwork(
             id: "artwork_light_02",
-            exhibitionId: exhibition.id,
+            exhibitionId: exhibitions[0].id,
             title: "Light #2",
-            artistId: artist.id,
+            artistId: artists[0].id,
             thumbnailURL: "mock_artworkImage_02"
         )
-        exhibition.artworks = [artwork1, artwork2]
+        exhibitions[0].artworks = [artwork1, artwork2]
 
         // 임시 캡처/반응 (6개의 캡처 생성)
         let capture1 = CapturedArtwork(
@@ -158,7 +86,88 @@ enum MockDataLoader {
             comment: "빛이 멋져요",
             createdAt: .now
         )
+        context.insert(artwork1); context.insert(artwork2)
+        context.insert(capture1)
+        context.insert(capture2)
+        context.insert(capture3)
+        context.insert(capture4)
+        context.insert(capture5)
+        context.insert(capture6)
+        context.insert(reaction1)
+        
+        setupRelationships(user: user, reaction: reaction, artist: artists[0])
+        insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,
+                     artworks: artworks, user: user, capture: capture, reaction: reaction)
+
+        do {
+            try context.save()
+            UserDefaults.standard.set(true, forKey: .seed)
+            Log.debug("DEV seed completed.")
+        } catch {
+            Log.debug("DEV seed failed: \(error)")
+        }
+        #endif
     }
+
+    private static func createVenue() -> Venue {
+        Venue(id: "venue_seoulmuseum", name: "Seoul Museum", address: "Seoul",
+              geoLat: 37.5665, geoLon: 126.9780)
+    }
+
+    private static func createArtists() -> [Artist] {
+        [
+            Artist(id: "artist_kim", name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_park", name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_lee", name: "이도윤", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_kong", name: "공지우", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_soo", name: "서예준", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_choi", name: "최하은", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: "artist_jung", name: "정우진", exhibitions: ["exhibition_light"], receivedReactions: [])
+        ]
+    }
+
+    
+    private static func createExhibition(venueId: String) -> [Exhibition] {
+        [
+            Exhibition(
+                id: "exhibition_light",
+                title: "빛의 향연",
+                descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
+                startDate: Date().addingTimeInterval(-86400 * 3),
+                endDate: Date().addingTimeInterval(86400 * 14),
+                venueId: venueId,
+                coverImageName: "mock_exhibitionCoverImage"
+            ),
+            Exhibition(
+                id: "exhibition_02",
+                title: "조샘초이 : 기억의 지층, 경계를 넘는 시선",
+                descriptionText: "조샘초이 작가의 개인전",
+                startDate: Date().addingTimeInterval(-86400 * 8),
+                endDate: Date().addingTimeInterval(86400 * 15),
+                venueId: venueId,
+                coverImageName: "mock_exhibitionCoverImage"
+            ),
+            Exhibition(
+                id: "exhibition_03",
+                title: "기증작가 상설전: 박대성 소산수목",
+                descriptionText: "박대성 작가의 기증 작품 전시",
+                startDate: Date().addingTimeInterval(-86400 * 6),
+                endDate: Date().addingTimeInterval(86400 * 12),
+                venueId: venueId,
+                coverImageName: "mock_artworkImage_02"
+            ),
+            Exhibition(
+                id: "exhibition_04",
+                title: "清年! 青年! 請年! - 맑고 푸른 그대에게 청한다",
+                descriptionText: "젊은 작가들의 작품 전시",
+                startDate: Date().addingTimeInterval(-86400 * 10),
+                endDate: Date().addingTimeInterval(86400 * 20),
+                venueId: venueId,
+                coverImageName: "mock_artworkImage_01"
+            )
+        ]
+    }
+
 
     private static func createArtworks(exhibitionId: String, artists: [Artist]) -> [Artwork] {
         let artworkData: [(String, String, String)] = [
@@ -195,23 +204,16 @@ enum MockDataLoader {
     }
 
     private static func insertAllData(context: ModelContext, venue: Venue, artists: [Artist],
-                                     exhibition: Exhibition, artworks: [Artwork], user: User,
+                                     exhibitions: [Exhibition], artworks: [Artwork], user: User,
                                      capture: CapturedArtwork, reaction: Reaction) {
         context.insert(venue)
         artists.forEach { context.insert($0) }
-        context.insert(exhibition)
-        context.insert(exhibition1)
-        context.insert(exhibition2)
-        context.insert(exhibition3)
-        context.insert(artwork1); context.insert(artwork2)
-        context.insert(capture1)
-        context.insert(capture2)
-        context.insert(capture3)
-        context.insert(capture4)
-        context.insert(capture5)
-        context.insert(capture6)
-        context.insert(reaction1)
-
+        exhibitions.forEach { context.insert($0) }
+        artworks.forEach { context.insert($0) }
+        context.insert(user)
+        context.insert(capture)
+        context.insert(reaction)
+        
         do {
             try context.save()
             UserDefaults.standard.set(true, forKey: .seed)
@@ -219,11 +221,6 @@ enum MockDataLoader {
         } catch {
             Log.debug("DEV seed failed: \(error)")
         }
-        #endif
-        artworks.forEach { context.insert($0) }
-        context.insert(user)
-        context.insert(capture)
-        context.insert(reaction)
     }
 
     /// 초기화가 필요할 때 전체 삭제 (개발용)
