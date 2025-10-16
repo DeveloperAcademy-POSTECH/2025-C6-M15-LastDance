@@ -37,6 +37,8 @@ struct RootView: View {
                         CategoryView()
                     case .completeReaction:
                         CompleteReactionView()
+                    case .inputArtworkInfo(let image):
+                        InputArtworkInfoView(image: image)
                     }
                 }
         }

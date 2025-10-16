@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ArtworkDetailView: View {
     @Environment(\.keyboardManager) var keyboardManager
-    @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
 
@@ -46,7 +45,7 @@ struct ArtworkDetailView: View {
                     Log.debug("- [ArtworkDetailView] selectedCategories: \(Array(viewModel.selectedCategories))")
                     Log.debug("- [ArtworkDetailView] message: \(viewModel.message)")
 
-                    viewModel.saveReaction(artworkId: artworkId, context: context) { success in
+                    viewModel.saveReaction(artworkId: artworkId) { success in
                         if success {
                             // 저장 완료시 다음 화면으로 이동하도록 구현
                             Log.debug("[ArtworkDetailView] 저장 성공, 화면 이동")
