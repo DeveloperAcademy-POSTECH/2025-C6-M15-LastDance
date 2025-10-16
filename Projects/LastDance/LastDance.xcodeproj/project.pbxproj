@@ -82,6 +82,7 @@
 		D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AE2E9FBE7100FCB472 /* Config.swift */; };
 		D8C7C0B12E9FEFD900FCB472 /* ReactionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0B02E9FEFCE00FCB472 /* ReactionAPIService.swift */; };
 		D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */; };
+		D8C7C2882EA091E500FCB472 /* ErrorResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -164,6 +165,7 @@
 		D8C7C0B02E9FEFCE00FCB472 /* ReactionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPIService.swift; sourceTree = "<group>"; };
 		D8C7C27D2E9FFAE600FCB472 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReactionResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseDto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +553,7 @@
 		99E6F3912E989CFB002ED9C2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C2862EA091D900FCB472 /* DTO */,
 				99E6F38D2E989CFB002ED9C2 /* BaseResponse.swift */,
 				99E6F38E2E989CFB002ED9C2 /* BaseTargetType.swift */,
 				99E6F38F2E989CFB002ED9C2 /* NetworkError.swift */,
@@ -655,6 +658,14 @@
 				D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		D8C7C2862EA091D900FCB472 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -808,6 +819,7 @@
 				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
 				99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */,
 				99DAB0BF2E9EB78800379F27 /* CameraError.swift in Sources */,
+				D8C7C2882EA091E500FCB472 /* ErrorResponseDto.swift in Sources */,
 				99E6F3A62E989CFB002ED9C2 /* ExhibitionRequestDto.swift in Sources */,
 				99E6F3A72E989CFB002ED9C2 /* ExhibitionAPI.swift in Sources */,
 				99E6F3A82E989CFB002ED9C2 /* ReactionRequestDto.swift in Sources */,

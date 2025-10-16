@@ -61,13 +61,13 @@ final class ReactionInputViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 switch result {
-                case .success(let response):
+                case .success:
                     self.message = ""
                     self.selectedCategories.removeAll()
-                    Log.debug("[ReactionInputViewModel] API 저장 완료: \(response)")
+                    Log.debug("[ReactionInputViewModel] 반응 저장 성공")
                     completion(true)
                 case .failure(let error):
-                    Log.debug("[ReactionInputViewModel] API 저장 실패: \(error)")
+                    Log.debug("[ReactionInputViewModel] 반응 저장 실패: \(error)")
                     completion(false)
                 }
             }
@@ -84,6 +84,22 @@ final class ReactionInputViewModel: ObservableObject {
                 Log.debug("[ArtworkDetailView] ✅ 반응 조회 성공! 조회된 반응 수: \(reactions.count)")
             case .failure(let error):
                 Log.debug("[ArtworkDetailView] ❌ 반응 조회 실패: \(error)")
+            }
+        }
+    }
+
+    /// 반응 상세 조회 API 테스트 함수
+    func getDetailReactionAPI(reactionId: Int) {
+        Log.debug("[ReactionInputViewModel] 반응 상세 조회 API 테스트 시작 - reactionId: \(reactionId)")
+
+        apiService.getDetailReaction(reactionId: reactionId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    Log.debug("[ReactionInputViewModel] ✅ 반응 상세 조회 성공!")
+                case .failure(let error):
+                    Log.debug("[ReactionInputViewModel] ❌ 반응 상세 조회 실패: \(error.localizedDescription)")
+                }
             }
         }
     }

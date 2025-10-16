@@ -10,6 +10,7 @@ import Moya
 enum ReactionAPI {
     case createReaction(dto: ReactionRequestDto)
     case getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?)
+    case getDetailReaction(reactionId: Int)
 }
 
 extension ReactionAPI: BaseTargetType {
@@ -17,6 +18,8 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction, .getReactions:
             return "/api/v1/reactions"
+        case .getDetailReaction(let reactionId):
+            return "/api/v1/reactions/\(reactionId)"
         }
     }
     
@@ -24,14 +27,14 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction:
             return .post
-        case .getReactions:
+        case .getReactions, .getDetailReaction:
             return .get
         }
     }
     
     var queryParameters: [String : Any]? {
         switch self {
-        case .createReaction:
+        case .createReaction, .getDetailReaction:
             return nil
         case .getReactions(let artworkId, let visitorId, let visitId):
             var params: [String: Any] = [:]
@@ -52,7 +55,7 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction(let dto):
             return dto
-        case .getReactions:
+        case .getReactions, .getDetailReaction:
             return nil
         }
     }
