@@ -56,7 +56,7 @@ struct CategoryView: View {
                          isEnabled: !viewModel.selectedCategories.isEmpty,
                          action: {
                 UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: .selectedCategories)
-                router.push(.artworkDetail(id: "artwork_light_01"))
+                router.push(.artworkDetail(id: 1))
             })
         }
         .navigationTitle("반응 남기기")

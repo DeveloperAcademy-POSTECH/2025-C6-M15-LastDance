@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ArtworkInfoView: View {
-    let artworkId: String
+    let artworkId: Int
     @Query private var allArtworks: [Artwork]
     @Query private var allArtists: [Artist]
 
@@ -89,5 +89,5 @@ struct ArtworkInfoView: View {
 }
 
 #Preview {
-    ArtworkInfoView(artworkId: "artwork_light_01")
+    ArtworkInfoView(artworkId: 1)
 }

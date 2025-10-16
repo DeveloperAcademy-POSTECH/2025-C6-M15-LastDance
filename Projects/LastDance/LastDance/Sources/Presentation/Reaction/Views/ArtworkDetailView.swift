@@ -13,9 +13,11 @@ struct ArtworkDetailView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
 
-    let artworkId: String
+    private let apiService = ReactionAPIService()
 
-    init(artworkId: String) {
+    let artworkId: Int
+
+    init(artworkId: Int) {
         self.artworkId = artworkId
     }
 
@@ -45,9 +47,21 @@ struct ArtworkDetailView: View {
                     Log.debug("- [ArtworkDetailView] selectedCategories: \(Array(viewModel.selectedCategories))")
                     Log.debug("- [ArtworkDetailView] message: \(viewModel.message)")
 
-                    viewModel.saveReaction(artworkId: artworkId) { success in
+                    // TODO: 실제 값으로 교체 필요
+                    let visitorId = 1  // 실제 visitor ID로 교체
+                    let visitId = 1    // 실제 visit ID로 교체
+                    let imageUrl: String? = nil  // 이미지 URL이 있으면 전달
+                    // 테스트를 위해 임시 tagIds 설정 (실제로는 선택된 카테고리를 태그 ID로 변환 필요)
+                    let tagIds: [Int] = [1, 2, 3]
+
+                    viewModel.saveReaction(
+                        artworkId: artworkId,
+                        visitorId: visitorId,
+                        visitId: visitId,
+                        imageUrl: imageUrl,
+                        tagIds: tagIds
+                    ) { success in
                         if success {
-                            // 저장 완료시 다음 화면으로 이동하도록 구현
                             Log.debug("[ArtworkDetailView] 저장 성공, 화면 이동")
                             router.push(.completeReaction)
                         } else {
@@ -79,8 +93,4 @@ struct ArtworkDetailView: View {
             value: keyboardManager.keyboardHeight
         )
     }
-}
-
-#Preview {
-    ArtworkDetailView(artworkId: "artwork_light_01")
 }

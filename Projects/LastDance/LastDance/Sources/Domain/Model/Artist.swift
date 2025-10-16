@@ -10,12 +10,12 @@ import SwiftData
 
 @Model
 final class Artist {
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: Int
     var name: String
     var exhibitions: [String] = []          // 전시 ID 목록
     var receivedReactions: [Reaction] = []  // 관계형 데이터
 
-    init(id: String,
+    init(id: Int,
          name: String,
          exhibitions: [String] = [],
          receivedReactions: [Reaction] = []) {

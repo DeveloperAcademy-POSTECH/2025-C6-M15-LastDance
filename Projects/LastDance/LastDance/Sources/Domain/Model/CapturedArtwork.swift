@@ -10,14 +10,14 @@ import SwiftData
 
 @Model
 final class CapturedArtwork {
-    var id: String
-    var artworkId: String?
+    var id: Int
+    var artworkId: Int?
     var localImagePath: String
     var createdAt: Date
     var note: String?
 
-    init(id: String,
-         artworkId: String? = nil,
+    init(id: Int,
+         artworkId: Int? = nil,
          localImagePath: String,
          createdAt: Date = .now,
          note: String? = nil) {
