@@ -82,6 +82,8 @@
 		D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */; };
 		D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */; };
 		D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */; };
+		D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */; };
+		D8C7C2972EA0F90300FCB472 /* ExhibitionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,6 +164,9 @@
 		D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 		D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetType.swift; sourceTree = "<group>"; };
+		D8C7C2932EA0F53300FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
+		D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +249,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
+				D8C7C2932EA0F53300FCB472 /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -560,6 +566,7 @@
 			isa = PBXGroup;
 			children = (
 				99E6F3922E989CFB002ED9C2 /* ExhibitionRequestDto.swift */,
+				D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -569,6 +576,7 @@
 			children = (
 				99E6F3932E989CFB002ED9C2 /* DTO */,
 				99E6F3942E989CFB002ED9C2 /* ExhibitionAPI.swift */,
+				D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */,
 			);
 			path = Exhibition;
 			sourceTree = "<group>";
@@ -746,6 +754,7 @@
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
+				D8C7C2972EA0F90300FCB472 /* ExhibitionResponseDto.swift in Sources */,
 				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
@@ -754,6 +763,7 @@
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
+				D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
