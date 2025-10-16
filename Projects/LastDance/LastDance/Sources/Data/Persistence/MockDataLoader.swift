@@ -18,13 +18,85 @@ enum MockDataLoader {
 
         let venue = createVenue()
         let artists = createArtists()
-        let exhibition = createExhibition(venueId: venue.id)
-        let artworks = createArtworks(exhibitionId: exhibition.id, artists: artists)
+        let exhibitions = createExhibition(venueId: venue.id)
+        let artworks = createArtworks(exhibitionId: exhibitions[0].id, artists: artists)
         let user = User(role: "Visitor")
         let (capture, reaction) = createCaptureAndReaction(artworkId: artworks[0].id, userId: user.id.uuidString)
 
+        // 샘플 Artworks
+        let artwork1 = Artwork(
+            id: "artwork_light_01",
+            exhibitionId: exhibitions[0].id,
+            title: "Light #1",
+            artistId: artists[0].id,
+            thumbnailURL: "mock_artworkImage_01"
+        )
+        let artwork2 = Artwork(
+            id: "artwork_light_02",
+            exhibitionId: exhibitions[0].id,
+            title: "Light #2",
+            artistId: artists[0].id,
+            thumbnailURL: "mock_artworkImage_02"
+        )
+        exhibitions[0].artworks = [artwork1, artwork2]
+
+        // 임시 캡처/반응 (6개의 캡처 생성)
+        let capture1 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            localImagePath: "file:///tmp/mock1.jpg",
+            createdAt: .now.addingTimeInterval(-300)
+        )
+        let capture2 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            localImagePath: "mock_artworkImage_01",
+            createdAt: .now.addingTimeInterval(-200)
+        )
+        let capture3 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork2.id,
+            localImagePath: "mock_artworkImage_02",
+            createdAt: .now.addingTimeInterval(-100)
+        )
+        let capture4 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork2.id,
+            localImagePath: "mock_artworkImage_01",
+            createdAt: .now
+        )
+        let capture5 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork2.id,
+            localImagePath: "mock_artworkImage_01",
+            createdAt: .now
+        )
+        let capture6 = CapturedArtwork(
+            id: UUID().uuidString,
+            artworkId: artwork2.id,
+            localImagePath: "mock_artworkImage_02",
+            createdAt: .now
+        )
+        
+        let reaction1  = Reaction(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            userId: user.id.uuidString,
+            category: ["좋아요"],
+            comment: "빛이 멋져요",
+            createdAt: .now
+        )
+        context.insert(artwork1); context.insert(artwork2)
+        context.insert(capture1)
+        context.insert(capture2)
+        context.insert(capture3)
+        context.insert(capture4)
+        context.insert(capture5)
+        context.insert(capture6)
+        context.insert(reaction1)
+        
         setupRelationships(user: user, reaction: reaction, artist: artists[0])
-        insertAllData(context: context, venue: venue, artists: artists, exhibition: exhibition,
+        insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,
                      artworks: artworks, user: user, capture: capture, reaction: reaction)
 
         do {
@@ -54,17 +126,48 @@ enum MockDataLoader {
         ]
     }
 
-    private static func createExhibition(venueId: String) -> Exhibition {
-        Exhibition(
-            id: "exhibition_light",
-            title: "빛의 향연",
-            descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
-            startDate: Date().addingTimeInterval(-86400 * 3),
-            endDate: Date().addingTimeInterval(86400 * 14),
-            venueId: venueId,
-            coverImageName: "mock_exhibitionCoverImage"
-        )
+    
+    private static func createExhibition(venueId: String) -> [Exhibition] {
+        [
+            Exhibition(
+                id: "exhibition_light",
+                title: "빛의 향연",
+                descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
+                startDate: Date().addingTimeInterval(-86400 * 3),
+                endDate: Date().addingTimeInterval(86400 * 14),
+                venueId: venueId,
+                coverImageName: "mock_exhibitionCoverImage"
+            ),
+            Exhibition(
+                id: "exhibition_02",
+                title: "조샘초이 : 기억의 지층, 경계를 넘는 시선",
+                descriptionText: "조샘초이 작가의 개인전",
+                startDate: Date().addingTimeInterval(-86400 * 8),
+                endDate: Date().addingTimeInterval(86400 * 15),
+                venueId: venueId,
+                coverImageName: "mock_exhibitionCoverImage"
+            ),
+            Exhibition(
+                id: "exhibition_03",
+                title: "기증작가 상설전: 박대성 소산수목",
+                descriptionText: "박대성 작가의 기증 작품 전시",
+                startDate: Date().addingTimeInterval(-86400 * 6),
+                endDate: Date().addingTimeInterval(86400 * 12),
+                venueId: venueId,
+                coverImageName: "mock_artworkImage_02"
+            ),
+            Exhibition(
+                id: "exhibition_04",
+                title: "清年! 青年! 請年! - 맑고 푸른 그대에게 청한다",
+                descriptionText: "젊은 작가들의 작품 전시",
+                startDate: Date().addingTimeInterval(-86400 * 10),
+                endDate: Date().addingTimeInterval(86400 * 20),
+                venueId: venueId,
+                coverImageName: "mock_artworkImage_01"
+            )
+        ]
     }
+
 
     private static func createArtworks(exhibitionId: String, artists: [Artist]) -> [Artwork] {
         let artworkData: [(String, String, String)] = [
@@ -101,15 +204,23 @@ enum MockDataLoader {
     }
 
     private static func insertAllData(context: ModelContext, venue: Venue, artists: [Artist],
-                                     exhibition: Exhibition, artworks: [Artwork], user: User,
+                                     exhibitions: [Exhibition], artworks: [Artwork], user: User,
                                      capture: CapturedArtwork, reaction: Reaction) {
         context.insert(venue)
         artists.forEach { context.insert($0) }
-        context.insert(exhibition)
+        exhibitions.forEach { context.insert($0) }
         artworks.forEach { context.insert($0) }
         context.insert(user)
         context.insert(capture)
         context.insert(reaction)
+        
+        do {
+            try context.save()
+            UserDefaults.standard.set(true, forKey: .seed)
+            Log.debug("DEV seed completed.")
+        } catch {
+            Log.debug("DEV seed failed: \(error)")
+        }
     }
 
     /// 초기화가 필요할 때 전체 삭제 (개발용)
