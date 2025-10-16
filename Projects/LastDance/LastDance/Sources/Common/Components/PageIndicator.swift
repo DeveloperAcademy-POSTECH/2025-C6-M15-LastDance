@@ -14,9 +14,9 @@ struct PageIndicator: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(0..<totalPages, id: \.self) { index in
+            ForEach(1...totalPages, id: \.self) { page in
                 Rectangle()
-                    .fill(index == currentPage ? Color.black : Color.black.opacity(0.18))
+                    .fill(page <= currentPage ? Color.black : Color.black.opacity(0.18))
                     .frame(height: 2)
                     .frame(maxWidth: .infinity)
             }
@@ -26,10 +26,8 @@ struct PageIndicator: View {
 
 #Preview {
     VStack(spacing: 20) {
-        PageIndicator(totalPages: 2, currentPage: 0)
         PageIndicator(totalPages: 2, currentPage: 1)
         PageIndicator(totalPages: 2, currentPage: 2)
-
     }
     .padding()
 }

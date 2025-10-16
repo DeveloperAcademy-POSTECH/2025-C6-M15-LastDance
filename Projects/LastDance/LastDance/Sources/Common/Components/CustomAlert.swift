@@ -17,16 +17,13 @@ struct CustomAlert: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(title)
-                .font(
-                Font.custom("Pretendard", size: 18)
-                .weight(.semibold)
-                )
+                .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(.black)
                 .padding(.top, 24)
 
             Text(message)
                 .font(.system(size: 14, weight: .regular))
-                .foregroundColor(.black)
+                .foregroundColor(Color(red: 0.38, green: 0.38, blue: 0.38))
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
@@ -77,24 +74,6 @@ struct CustomAlertModifier: ViewModifier {
                 )
             }
         }
-    }
-}
-
-extension View {
-    func customAlert(
-        isPresented: Binding<Bool>,
-        title: String,
-        message: String,
-        buttonText: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        modifier(CustomAlertModifier(
-            isPresented: isPresented,
-            title: title,
-            message: message,
-            buttonText: buttonText,
-            action: action
-        ))
     }
 }
 

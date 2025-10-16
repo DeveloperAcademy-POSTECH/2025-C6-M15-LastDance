@@ -7,25 +7,43 @@
 
 import SwiftUI
 
+struct CompleteArticleListInfoSection: View {
+    let viewModel: CompleteArticleListViewModel
+
+    var body: some View {
+        VStack(spacing: 28) {
+            InfoRow(label: "작가명", value: viewModel.artist?.name ?? "")
+            InfoRow(label: "전시명", value: viewModel.exhibition?.title ?? "")
+        }
+    }
+}
+
+struct CompleteArticleListFindButton: View {
+    var body: some View {
+        BottomButton(text: "전시 찾기") {
+            // TODO: 전시 찾기 기능
+        }
+    }
+}
+
 struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = CompleteArticleListViewModel()
 
     let selectedExhibitionId: String
     let selectedArtistId: String
-
-    @State private var exhibition: Exhibition?
-    @State private var artist: Artist?
 
     var body: some View {
         VStack(spacing: 0) {
             PageIndicator(totalPages: 2, currentPage: 2)
                 .padding(.horizontal, -28)
-            titleSection
+            TitleSection(title: "어떤 작가님이신가요?", subtitle: nil)
+                .padding(.bottom, 8)
                 .padding(.top, 14)
-            infoSection
+            CompleteArticleListInfoSection(viewModel: viewModel)
                 .padding(.top, 14)
             Spacer()
-            findExhibitionButton
+            CompleteArticleListFindButton()
         }
         .padding(.top, 18)
         .padding(.horizontal, 28)
@@ -37,41 +55,8 @@ struct CompleteArticleListView: View {
             }
         }
         .task {
-            fetchData()
+            viewModel.fetchData(exhibitionId: selectedExhibitionId, artistId: selectedArtistId)
         }
-    }
-
-    var titleSection: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("어떤 작가님이신가요?")
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(.black)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.top, 20)
-        .padding(.bottom, 24)
-    }
-
-    var infoSection: some View {
-        VStack(spacing: 28) {
-            InfoRow(label: "작가명", value: artist?.name ?? "")
-            InfoRow(label: "전시명", value: exhibition?.title ?? "")
-        }
-    }
-
-    var findExhibitionButton: some View {
-        BottomButton(text: "전시 찾기") {
-            // TODO: 전시 찾기 기능
-        }
-    }
-
-    private func fetchData() {
-        let dataManager = SwiftDataManager.shared
-        let allExhibitions = dataManager.fetchAll(Exhibition.self)
-        let allArtists = dataManager.fetchAll(Artist.self)
-
-        exhibition = allExhibitions.first { $0.id == selectedExhibitionId }
-        artist = allArtists.first { $0.id == selectedArtistId }
     }
 }
 

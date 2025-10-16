@@ -7,59 +7,11 @@
 
 import SwiftUI
 
-struct ArticleListView: View {
-    @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ArticleListViewModel()
-    @Environment(\.keyboardManager) private var keyboardManager
-
-    let selectedExhibitionId: String
+struct ArticleListSearchTextField: View {
+    @Binding var searchText: String
 
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                PageIndicator(totalPages: 2, currentPage: 0)
-                    .padding(.horizontal, -20)
-
-                titleSection
-
-                searchTextField
-
-                artistList(availableHeight: geometry.size.height - 300)
-
-                Spacer()
-
-                nextButton
-            }
-            .padding(.top, 18)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 34)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                CustomNavigationBar(title: "전시찾기") {
-                    router.popLast()
-                }
-            }
-        }
-    }
-
-    var titleSection: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("어떤 작가님이신가요?")
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(.black)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text("작가명")
-                .font(Font.custom("SF Pro Text", size: 17))
-                .foregroundStyle(Color.black)
-                .padding(.top, 28)
-        }
-        .padding(.top, 20)
-        .padding(.bottom, 16)
-    }
-
-    var searchTextField: some View {
-        TextField("작가명을 선택해주세요", text: $viewModel.searchText)
+        TextField("작가명을 선택해주세요", text: $searchText)
             .font(Font.custom("SF Pro Text", size: 17))
             .foregroundStyle(.black)
             .padding(.horizontal, 16)
@@ -75,8 +27,12 @@ struct ArticleListView: View {
             )
             .padding(.bottom, 8)
     }
+}
 
-    func artistList(availableHeight: CGFloat) -> some View {
+struct ArticleListContent: View {
+    let viewModel: ArticleListViewModel
+
+    var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.filteredArtists, id: \.id) { artist in
@@ -90,7 +46,7 @@ struct ArticleListView: View {
             }
             .padding(.vertical, 8)
         }
-        .frame(height: 400)
+        .frame(height: 300)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.white)
@@ -101,11 +57,56 @@ struct ArticleListView: View {
                 .stroke(Color.black.opacity(0.18), lineWidth: 1)
         )
     }
+}
 
-    var nextButton: some View {
+struct ArticleListNextButton: View {
+    @EnvironmentObject private var router: NavigationRouter
+    let selectedExhibitionId: String
+    let viewModel: ArticleListViewModel
+
+    var body: some View {
         BottomButton(text: "다음") {
             if let artistId = viewModel.tapNextButton() {
                 router.push(.completeArticleList(selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId))
+            }
+        }
+    }
+}
+
+struct ArticleListView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ArticleListViewModel()
+    @Environment(\.keyboardManager) private var keyboardManager
+
+    let selectedExhibitionId: String
+
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                PageIndicator(totalPages: 2, currentPage: 1)
+                    .padding(.horizontal, -20)
+
+                TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
+
+                ArticleListSearchTextField(searchText: $viewModel.searchText)
+
+                ArticleListContent(viewModel: viewModel)
+
+                Spacer()
+
+                ArticleListNextButton(
+                    selectedExhibitionId: selectedExhibitionId,
+                    viewModel: viewModel
+                )
+            }
+            .padding(.top, 18)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 34)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                CustomNavigationBar(title: "전시찾기") {
+                    router.popLast()
+                }
             }
         }
     }

@@ -7,30 +7,8 @@
 
 import SwiftUI
 
-/// 사용자 정체성 선택 뷰 (작가/관람객)
-struct IdentitySelectionView: View {
-    @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = IdentitySelectionViewModel()
-
+struct IdentitySelectionTitleSection: View {
     var body: some View {
-        VStack(spacing: 28) {
-            titleSection
-
-            Spacer()
-
-            selectionButtons
-
-            Spacer()
-
-            nextButton
-            
-            Spacer()
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 34)
-    }
-
-    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("어떤 방식으로 전시에 참여하고\n싶나요?")
                 .font(.system(size: 24, weight: .bold))
@@ -40,10 +18,13 @@ struct IdentitySelectionView: View {
         }
         .padding(.top, 80)
     }
-    
-    var selectionButtons: some View {
-        VStack(spacing: 40) {
+}
 
+struct IdentitySelectionButtons: View {
+    let viewModel: IdentitySelectionViewModel
+
+    var body: some View {
+        VStack(spacing: 40) {
             CircleSelectionButton(
                 title: UserType.artist.displayName,
                 isSelected: viewModel.selectedType == .artist
@@ -60,13 +41,42 @@ struct IdentitySelectionView: View {
             Spacer()
         }
     }
+}
 
-    var nextButton: some View {
+struct IdentitySelectionNextButton: View {
+    let viewModel: IdentitySelectionViewModel
+
+    var body: some View {
         BottomButton(text: "다음") {
             viewModel.confirmSelection()
         }
     }
 }
+
+/// 사용자 정체성 선택 뷰 (작가/관람객)
+struct IdentitySelectionView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = IdentitySelectionViewModel()
+
+    var body: some View {
+        VStack(spacing: 28) {
+            IdentitySelectionTitleSection()
+
+            Spacer()
+
+            IdentitySelectionButtons(viewModel: viewModel)
+
+            Spacer()
+
+            IdentitySelectionNextButton(viewModel: viewModel)
+
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 34)
+    }
+}
+
 #Preview {
     IdentitySelectionView()
 }
