@@ -15,7 +15,7 @@ final class CompleteArticleListViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
 
     /// 전시 및 작가 정보 가져오기
-    func fetchData(exhibitionId: String, artistId: String) {
+    func fetchData(exhibitionId: String, artistId: Int) {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 
