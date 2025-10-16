@@ -10,15 +10,43 @@ import SwiftData
 
 @MainActor
 final class ArchiveViewModel: ObservableObject {
+    
     @Published var capturedArtworks: [CapturedArtwork] = []
     @Published var currentExhibition: Exhibition?
     @Published var isLoading = false
     
     private let swiftDataManager = SwiftDataManager.shared
     
+    var capturedArtworksCount: Int {
+        capturedArtworks.count
+    }
+    
+    var exhibitionTitle: String {
+        currentExhibition?.title ?? "전시 정보 없음"
+    }
+    
+    var hasArtworks: Bool {
+        !capturedArtworks.isEmpty
+    }
+    
     init() {
-        loadCapturedArtworks()
-        loadCurrentExhibition()
+        loadData()
+    }
+    
+    func loadData() {
+        isLoading = true
+        Task {
+            do {
+                // 먼저 캡처된 작품들 로드
+                self.capturedArtworks = try await fetchCapturedArtworks()
+                
+                // 캡처된 작품들을 기반으로 전시 정보 로드
+                self.currentExhibition = try await fetchCurrentExhibition()
+            } catch {
+                Log.error("Failed to load data: \(error)")
+            }
+            self.isLoading = false
+        }
     }
     
     func loadCapturedArtworks() {
@@ -43,16 +71,10 @@ final class ArchiveViewModel: ObservableObject {
         }
     }
     
-    var capturedArtworksCount: Int {
-        capturedArtworks.count
-    }
-    
-    var exhibitionTitle: String {
-        currentExhibition?.title ?? "전시 정보 없음"
-    }
-    
-    var hasArtworks: Bool {
-        !capturedArtworks.isEmpty
+    /// 대각선 효과
+    func getRotationAngle(for index: Int) -> Double {
+        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
+        return angles[index % angles.count]
     }
     
     private func fetchCapturedArtworks() async throws -> [CapturedArtwork] {
@@ -75,13 +97,38 @@ final class ArchiveViewModel: ObservableObject {
         }
         
         let context = container.mainContext
-        let descriptor = FetchDescriptor<Exhibition>()
-        let exhibitions = try context.fetch(descriptor)
-        return exhibitions.first
-    }
-    /// 대각선 효과
-    func getRotationAngle(for index: Int) -> Double {
-        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
-        return angles[index % angles.count]
+        
+        // 캡처된 작품들 먼저 가져오기
+        let capturedArtworks = try await fetchCapturedArtworks()
+        
+        // 캡처된 작품이 없으면 nil 반환
+        guard let firstCaptured = capturedArtworks.first,
+              let artworkId = firstCaptured.artworkId else {
+            return nil
+        }
+
+        let artworkDescriptor = FetchDescriptor<Artwork>(
+            predicate: #Predicate<Artwork> { artwork in
+                artwork.id == artworkId
+            }
+        )
+        guard let artwork = try context.fetch(artworkDescriptor).first else {
+            Log.error("❌ Artwork not found for id: \(artworkId)")
+            return nil
+        }
+
+        let exhibitionId = artwork.exhibitionId
+        let exhibitionDescriptor = FetchDescriptor<Exhibition>(
+            predicate: #Predicate<Exhibition> { exhibition in
+                exhibition.id == exhibitionId
+            }
+        )
+        let exhibition = try context.fetch(exhibitionDescriptor).first
+        
+        if exhibition == nil {
+            Log.error("❌ Exhibition not found for id: \(exhibitionId)")
+        }
+        
+        return exhibition
     }
 }

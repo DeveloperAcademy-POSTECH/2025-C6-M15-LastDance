@@ -54,7 +54,6 @@ struct ArtistReactionView: View {
                         }
                         .frame(width: 155, height: 219)
                         .onTapGesture {
-                            router.push(.artistReactionArchive)
                         }
                         // 전시 제목
                         Text(viewModel.exhibitionTitle)
@@ -69,7 +68,6 @@ struct ArtistReactionView: View {
             }
         }
         .background(Color.white)
-        .navigationBarHidden(true)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼
             Button(action: {

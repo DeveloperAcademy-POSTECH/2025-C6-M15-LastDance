@@ -1,5 +1,5 @@
 //
-//  ArchiveViewHome.swift
+//  ArchiveHomeView.swift
 //  LastDance
 //
 //  Created by 광로 on 10/11/25.
@@ -7,22 +7,24 @@
 
 import SwiftUI
 
-struct ArchiveViewHome: View {
-    @StateObject private var viewModel = ArchiveViewHomeViewModel()
+struct ArchiveHomeView: View {
+    @StateObject private var viewModel = ArchiveHomeViewModel()
     @EnvironmentObject private var router: NavigationRouter
     
+    private let gridColumns: [GridItem] = [
+        GridItem(.fixed(155), spacing: 16),
+        GridItem(.fixed(155), spacing: 16)
+    ]
+    
     var body: some View {
-        VStack(spacing: 0) {
-            // 상단 타이틀
-            HStack {
-                Text("나의 전시")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.black)
-                Spacer()
-            }
-            .padding(.horizontal, 40)
-            .padding(.top, 20)
-
+        VStack(alignment: .leading, spacing: 0) {
+        
+            Text("나의 전시")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.black)
+                .padding(.horizontal, 40)
+                .padding(.top, 20)
+            
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -31,20 +33,17 @@ struct ArchiveViewHome: View {
                 // 전시 그리드
                 ScrollView {
                     LazyVGrid(
-                        columns: [
-                            GridItem(.fixed(155), spacing: 16),
-                            GridItem(.fixed(155), spacing: 16)
-                        ],
+                        columns: gridColumns,
                         spacing: 24
                     ) {
-                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
+                        ForEach(0..<viewModel.exhibitions.count, id: \.self) { index in
+                            let exhibition = viewModel.exhibitions[index]
                             ExhibitionCardView(
                                 exhibition: exhibition,
                                 dateString: viewModel.dateString(for: exhibition)
                             )
                             .offset(y: index % 2 == 0 ? 0 : 40)
                             .onTapGesture {
-                                router.push(.exhibitionArchive(exhibition: exhibition))
                             }
                         }
                     }
@@ -55,17 +54,8 @@ struct ArchiveViewHome: View {
             } else {
                 // 빈 상태
                 VStack(spacing: 38) {
-                    Button(action: {
+                    CircleAddButton {
                         router.push(.exhibitionList)
-                    }) {
-                        Circle()
-                            .fill(Color.black)
-                            .frame(width: 70, height: 70)
-                            .overlay(
-                                Image(systemName: "plus")
-                                    .font(.system(size: 32, weight: .medium))
-                                    .foregroundColor(.white)
-                            )
                     }
                     Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
                         .font(.system(size: 18, weight: .medium))
@@ -77,22 +67,11 @@ struct ArchiveViewHome: View {
             }
         }
         .background(Color.white)
-        .navigationBarHidden(true)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼 (전시가 있을 때만)
             if viewModel.hasExhibitions {
-                Button(action: {
+                CircleAddButton {
                     router.push(.exhibitionList)
-                }) {
-                    Circle()
-                        .fill(Color.black)
-                        .frame(width: 70, height: 70)
-                        .overlay(
-                            Image(systemName: "plus")
-                                .font(.system(size: 24, weight: .medium))
-                                .foregroundColor(.white)
-                        )
-                        .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
                 }
                 .padding(.trailing, 24)
                 .padding(.bottom, 40)
@@ -100,7 +79,6 @@ struct ArchiveViewHome: View {
         }
     }
 }
-
 struct ExhibitionCardView: View {
     let exhibition: Exhibition
     let dateString: String
@@ -142,8 +120,7 @@ struct ExhibitionCardView: View {
 }
 
 #Preview {
-    ArchiveViewHome()
+    ArchiveHomeView()
         .environmentObject(NavigationRouter())
         .modelContainer(SwiftDataManager.shared.container!)
 }
-

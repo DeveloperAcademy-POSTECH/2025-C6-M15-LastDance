@@ -8,13 +8,6 @@
 import SwiftUI
 import SwiftData
 
-struct ReactionItem: Identifiable {
-    let id = UUID()
-    let imageName: String
-    let reactionCount: Int
-    let category: String
-}
-
 @MainActor
 final class ArtistReactionArchiveViewModel: ObservableObject {
     @Published var exhibition: Exhibition?

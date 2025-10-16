@@ -41,9 +41,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     }
     
     var exhibitionDateString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.M.d"
-        return formatter.string(from: exhibition.startDate)
+        return exhibition.startDate.toShortDateString()
     }
     
     var hasReactions: Bool {

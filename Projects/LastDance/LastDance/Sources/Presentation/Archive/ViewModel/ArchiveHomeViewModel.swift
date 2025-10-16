@@ -1,5 +1,5 @@
 //
-//  ArchiveViewHomeViewModel.swift
+//  ArchiveHomeViewModel.swift
 //  LastDance
 //
 //  Created by 광로 on 10/11/25.
@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @MainActor
-final class ArchiveViewHomeViewModel: ObservableObject {
+final class ArchiveHomeViewModel: ObservableObject {
     @Published private(set) var exhibitions: [Exhibition] = []
     @Published var isLoading = false
     
@@ -21,14 +21,12 @@ final class ArchiveViewHomeViewModel: ObservableObject {
     
     func loadExhibitions() {
         isLoading = true
-        Task {
-            do {
-                self.exhibitions = try await fetchExhibitions()
-            } catch {
-                Log.error("Failed to load exhibitions: \(error)")
-            }
-            self.isLoading = false
+        do {
+            self.exhibitions = try fetchExhibitions()
+        } catch {
+            Log.error("Failed to load exhibitions: \(error)")
         }
+        self.isLoading = false
     }
     
     var hasExhibitions: Bool {
@@ -36,14 +34,12 @@ final class ArchiveViewHomeViewModel: ObservableObject {
     }
     
     func dateString(for exhibition: Exhibition) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.M.d"
-        return formatter.string(from: exhibition.startDate)
+        return exhibition.startDate.toShortDateString()
     }
     
-    private func fetchExhibitions() async throws -> [Exhibition] {
+    private func fetchExhibitions() throws -> [Exhibition] {
         guard let container = swiftDataManager.container else {
-            throw NSError(domain: "ArchiveViewHomeViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
+            throw NSError(domain: "ArchiveHomeViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
         }
         
         let context = container.mainContext

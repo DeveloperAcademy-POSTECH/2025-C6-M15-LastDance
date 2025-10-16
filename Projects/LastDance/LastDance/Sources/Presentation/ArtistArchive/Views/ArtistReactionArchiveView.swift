@@ -1,5 +1,5 @@
 //
-//  ArtistReactionArchive.swift
+//  ArtistReactionArchiveView.swift
 //  LastDance
 //
 //  Created by 광로 on 10/14/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct ArtistReactionArchive: View {
+struct ArtistReactionArchiveView: View {
     @StateObject private var viewModel = ArtistReactionArchiveViewModel()
     @EnvironmentObject private var router: NavigationRouter
     
@@ -98,6 +98,5 @@ struct ArtistReactionArchive: View {
             }
         }
         .background(Color.white)
-        .navigationBarHidden(true)
     }
 }
