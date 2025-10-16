@@ -93,6 +93,8 @@
 		D8C7C2922EA0D10700FCB472 /* TagDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */; };
 		D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */; };
 		D8C7C2972EA0F90300FCB472 /* ExhibitionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */; };
+		D8C7C29A2EA1208800FCB472 /* ExhibitionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */; };
+		D8C7C29C2EA121AA00FCB472 /* MakeExhibitionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C29B2EA1219200FCB472 /* MakeExhibitionResponseDto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,6 +188,8 @@
 		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2982EA111B500FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionStatus.swift; sourceTree = "<group>"; };
+		D8C7C29B2EA1219200FCB472 /* MakeExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeExhibitionResponseDto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,8 +591,8 @@
 		99E6F3932E989CFB002ED9C2 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C29D2EA13BE500FCB472 /* Response */,
 				99E6F3922E989CFB002ED9C2 /* ExhibitionRequestDto.swift */,
-				D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -654,6 +658,7 @@
 		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */,
 				D8C7C2892EA0D02500FCB472 /* APIVersion.swift */,
 				D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */,
 				D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */,
@@ -696,6 +701,15 @@
 				D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		D8C7C29D2EA13BE500FCB472 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */,
+				D8C7C29B2EA1219200FCB472 /* MakeExhibitionResponseDto.swift */,
+			);
+			path = Response;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -796,6 +810,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8C7C29A2EA1208800FCB472 /* ExhibitionStatus.swift in Sources */,
 				99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */,
 				963573BF2E9B84D500B2FA79 /* Log.swift in Sources */,
 				99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */,
@@ -813,6 +828,7 @@
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
+				D8C7C29C2EA121AA00FCB472 /* MakeExhibitionResponseDto.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
@@ -1009,7 +1025,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1044,7 +1059,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -23,11 +23,15 @@ struct ExhibitionListView: View {
 
             RegisterButton
         }
-        .padding(.horizontal, 20)
+//        .padding(.horizontal, 20)
         .padding(.bottom, 34)
         .navigationBarBackButtonHidden(false)
         .navigationTitle("전시찾기")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.getExhibitions()
+            viewModel.makeExhibitionList()
+        }
     }
 
     var titleSection: some View {
@@ -44,6 +48,7 @@ struct ExhibitionListView: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 16)
+        .padding(.horizontal, 20)
     }
 
     var ExhibitionList: some View {
@@ -59,6 +64,7 @@ struct ExhibitionListView: View {
                 }
             }
         }
+        .padding(.horizontal, 20)
     }
 
     var RegisterButton: some View {

@@ -17,7 +17,7 @@ struct ExhibitionResponseDto: Codable {
     let venue_id: Int
     let cover_image_url: String?
     let created_at: String
-    let updated_at: String
+    let updated_at: String?
 }
 
 // MARK: ExhibitionResponseDto

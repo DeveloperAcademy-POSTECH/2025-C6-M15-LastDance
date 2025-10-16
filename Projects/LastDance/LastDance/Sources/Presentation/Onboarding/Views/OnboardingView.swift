@@ -13,7 +13,12 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack {
-            Text("OnboardingView")
+//            Text("OnboardingView")
+            Button(action: {
+                router.push(.exhibitionList)
+            }, label: {
+                Text("전시 찾기")
+            })
         }
     }
 }

@@ -25,14 +25,14 @@ enum MockDataLoader {
 
         // 샘플 Artworks
         let artwork1 = Artwork(
-            id: "artwork_light_01",
+            id: 101,
             exhibitionId: exhibitions[0].id,
             title: "Light #1",
             artistId: artists[0].id,
             thumbnailURL: "mock_artworkImage_01"
         )
         let artwork2 = Artwork(
-            id: "artwork_light_02",
+            id: 102,
             exhibitionId: exhibitions[0].id,
             title: "Light #2",
             artistId: artists[0].id,
@@ -42,42 +42,42 @@ enum MockDataLoader {
 
         // 임시 캡처/반응 (6개의 캡처 생성)
         let capture1 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 201,
             artworkId: artwork1.id,
             localImagePath: "file:///tmp/mock1.jpg",
             createdAt: .now.addingTimeInterval(-300)
         )
         let capture2 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 202,
             artworkId: artwork1.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now.addingTimeInterval(-200)
         )
         let capture3 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 203,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_02",
             createdAt: .now.addingTimeInterval(-100)
         )
         let capture4 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 204,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now
         )
         let capture5 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 205,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now
         )
         let capture6 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 206,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_02",
             createdAt: .now
         )
-        
+
         let reaction1  = Reaction(
             id: UUID().uuidString,
             artworkId: artwork1.id,
@@ -191,7 +191,7 @@ enum MockDataLoader {
 
     private static func createCaptureAndReaction(artworkId: Int, userId: String)
         -> (CapturedArtwork, Reaction) {
-        let capture = CapturedArtwork(id: 1, artworkId: artworkId,
+        let capture = CapturedArtwork(id: 200, artworkId: artworkId,
                                      localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
         let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, userId: userId,
                                category: ["좋아요"], comment: "빛이 멋져요", createdAt: .now)

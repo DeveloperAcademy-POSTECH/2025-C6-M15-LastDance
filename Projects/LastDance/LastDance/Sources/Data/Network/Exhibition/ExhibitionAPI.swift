@@ -7,22 +7,16 @@
 
 import Moya
 
-enum ExhibitionStatus: String {
-    case ongoing = "ongoing"
-    case upcoming = "upcoming"
-    case past = "past"
-}
-
 enum ExhibitionAPI {
     case getExhibitions(status: String?, venue_id: Int?)
+    case makeExhibition(dto: ExhibitionRequestDto)
 }
 
 extension ExhibitionAPI: BaseTargetType {
     var path: String {
         switch self {
-            // TODO: 리액션 api 연동 머지 되면 수정할 예정
-        case .getExhibitions:
-            return "/api/v1/exhibitions"
+        case .getExhibitions, .makeExhibition:
+            return "\(APIVersion.version1)/exhibitions"
         }
     }
     
@@ -30,6 +24,8 @@ extension ExhibitionAPI: BaseTargetType {
         switch self {
         case .getExhibitions:
             return .get
+        case .makeExhibition:
+            return .post
         }
     }
     
@@ -44,6 +40,8 @@ extension ExhibitionAPI: BaseTargetType {
                 params["venue_id"] = venue_id
             }
             return params.isEmpty ? nil : params
+        case .makeExhibition:
+            return nil
         }
     }
     
@@ -51,6 +49,8 @@ extension ExhibitionAPI: BaseTargetType {
         switch self {
         case .getExhibitions:
             return nil
+        case .makeExhibition(let dto):
+            return dto
         }
     }
 }
