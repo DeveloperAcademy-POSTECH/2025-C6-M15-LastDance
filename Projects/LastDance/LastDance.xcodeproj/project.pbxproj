@@ -79,6 +79,9 @@
 		D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */; };
 		D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */; };
 		D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */; };
+		D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */; };
+		D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */; };
+		D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +159,9 @@
 		D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputArtworkInfoView.swift; sourceTree = "<group>"; };
+		D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
+		D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +189,7 @@
 		9635739C2E98F27100B2FA79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */,
 				D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */,
 				D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */,
 				D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */,
@@ -204,6 +211,7 @@
 		963573AC2E9A4F2B00B2FA79 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */,
 				D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */,
 				D8C7C0952E9F3E6100FCB472 /* CustomNavigationBar.swift */,
 				963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */,
@@ -615,6 +623,7 @@
 		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */,
 				D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */,
 				99E6F0BA2E91EF7A002ED9C2 /* Route.swift */,
 			);
@@ -739,6 +748,7 @@
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
 				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
+				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
@@ -767,6 +777,7 @@
 				8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
 				D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */,
+				D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */,
 				D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */,
 				8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
@@ -790,6 +801,7 @@
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
 				8C3B37B52E9EB7C0003FF185 /* IdentitySelectionView.swift in Sources */,
 				8C3B37B62E9EB7C0003FF185 /* ArticleArchivingView.swift in Sources */,
+				D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
