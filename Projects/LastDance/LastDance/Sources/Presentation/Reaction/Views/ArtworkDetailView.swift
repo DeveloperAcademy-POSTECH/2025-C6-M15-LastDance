@@ -35,21 +35,6 @@ struct ArtworkDetailView: View {
 
                     ReactionFormView(artworkId: artworkId, viewModel: viewModel)
 
-                    // 테스트 버튼
-                    Button(action: {
-                            viewModel.getReactionsAPI(artworkId: artworkId)
-                    }) {
-                        Text("반응 조회 API 테스트")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-
                     Spacer()
                 }
                 .padding(.bottom, keyboardManager.keyboardHeight)
