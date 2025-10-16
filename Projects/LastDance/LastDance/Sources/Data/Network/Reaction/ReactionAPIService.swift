@@ -33,7 +33,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("[ReactionAPIService] 서버 응답: \(jsonString)")
                     }
-                    let reactionDetail = try JSONDecoder().decode(ReactionDetail.self, from: response.data)
+                    let reactionDetail = try JSONDecoder().decode(ReactionDetailResponseDto.self, from: response.data)
                     let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
 
                     // DTO를 Model로 변환하여 로컬에 저장
@@ -102,7 +102,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("[ReactionAPIService] 상세 조회 응답: \(jsonString)")
                     }
-                    let reactionDetail = try JSONDecoder().decode(ReactionDetail.self, from: response.data)
+                    let reactionDetail = try JSONDecoder().decode(ReactionDetailResponseDto.self, from: response.data)
                     let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
 
                     DispatchQueue.main.async {
@@ -132,7 +132,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
     // MARK: - Mapper
 
     /// ReactionDetail DTO를 Reaction Model로 변환
-    private func mapDtoToModel(_ dto: ReactionDetail) -> Reaction {
+    private func mapDtoToModel(_ dto: ReactionDetailResponseDto) -> Reaction {
         // tags를 category 문자열 배열로 변환
         let categories = dto.tags.map { $0.name }
 
