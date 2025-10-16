@@ -11,14 +11,14 @@ import SwiftData
 @Model
 final class Reaction {
     var id: String
-    var artworkId: String
+    var artworkId: Int
     var userId: String
     var category: [String]
     var comment: String?
     var createdAt: Date
 
     init(id: String,
-         artworkId: String,
+         artworkId: Int,
          userId: String,
          category: [String],
          comment: String? = nil,

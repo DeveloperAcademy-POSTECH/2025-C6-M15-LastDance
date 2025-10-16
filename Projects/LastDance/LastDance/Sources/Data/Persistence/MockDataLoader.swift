@@ -116,13 +116,13 @@ enum MockDataLoader {
 
     private static func createArtists() -> [Artist] {
         [
-            Artist(id: "artist_kim", name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_park", name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_lee", name: "이도윤", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_kong", name: "공지우", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_soo", name: "서예준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_choi", name: "최하은", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: "artist_jung", name: "정우진", exhibitions: ["exhibition_light"], receivedReactions: [])
+            Artist(id: 1, name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 2, name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 3, name: "이도윤", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 4, name: "공지우", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 5, name: "서예준", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 6, name: "최하은", exhibitions: ["exhibition_light"], receivedReactions: []),
+            Artist(id: 7, name: "정우진", exhibitions: ["exhibition_light"], receivedReactions: [])
         ]
     }
 
@@ -170,28 +170,28 @@ enum MockDataLoader {
 
 
     private static func createArtworks(exhibitionId: String, artists: [Artist]) -> [Artwork] {
-        let artworkData: [(String, String, String)] = [
-            ("artwork_light_01", "빛의 흐름", artists[0].id),
-            ("artwork_light_02", "새벽의 속삭임", artists[0].id),
-            ("artwork_light_03", "무한의 경계", artists[1].id),
-            ("artwork_light_04", "고요한 울림", artists[2].id),
-            ("artwork_light_05", "시간의 파편", artists[3].id),
-            ("artwork_light_06", "영원의 순간", artists[4].id),
-            ("artwork_light_07", "기억의 잔향", artists[5].id),
-            ("artwork_light_08", "침묵의 시", artists[6].id),
-            ("artwork_light_09", "꿈의 여정", artists[0].id),
-            ("artwork_light_10", "빛나는 그림자", artists[1].id)
+        let artworkData: [(Int, String, Int)] = [
+            (1, "빛의 흐름", artists[0].id),
+            (2, "새벽의 속삭임", artists[0].id),
+            (3, "무한의 경계", artists[1].id),
+            (4, "고요한 울림", artists[2].id),
+            (5, "시간의 파편", artists[3].id),
+            (6, "영원의 순간", artists[4].id),
+            (7, "기억의 잔향", artists[5].id),
+            (8, "침묵의 시", artists[6].id),
+            (9, "꿈의 여정", artists[0].id),
+            (10, "빛나는 그림자", artists[1].id)
         ]
 
-        return artworkData.enumerated().map { index, data in
+        return artworkData.map { data in
             Artwork(id: data.0, exhibitionId: exhibitionId, title: data.1,
-                   artistId: data.2, thumbnailURL: "mock_artworkImage_\(String(format: "%02d", index + 1))")
+                   artistId: data.2, thumbnailURL: "mock_artworkImage_\(String(format: "%02d", data.0))")
         }
     }
 
-    private static func createCaptureAndReaction(artworkId: String, userId: String)
+    private static func createCaptureAndReaction(artworkId: Int, userId: String)
         -> (CapturedArtwork, Reaction) {
-        let capture = CapturedArtwork(id: UUID().uuidString, artworkId: artworkId,
+        let capture = CapturedArtwork(id: 1, artworkId: artworkId,
                                      localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
         let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, userId: userId,
                                category: ["좋아요"], comment: "빛이 멋져요", createdAt: .now)

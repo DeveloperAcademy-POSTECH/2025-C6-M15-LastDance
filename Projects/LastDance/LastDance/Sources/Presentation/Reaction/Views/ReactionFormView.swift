@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ReactionFormView: View {
-    let artworkId: String
+    let artworkId: Int
     @Environment(\.modelContext) private var context
     @ObservedObject var viewModel: ReactionInputViewModel
 
