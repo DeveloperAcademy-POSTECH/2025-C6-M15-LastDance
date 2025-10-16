@@ -1,0 +1,36 @@
+//
+//  SelectionRow.swift
+//  LastDance
+//
+//  Created by donghee on 10/16/25.
+//
+
+import SwiftUI
+
+/// 선택 가능한 목록 행 컴포넌트
+struct SelectionRow: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 16, weight: .regular))
+                .foregroundStyle(.black)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.white)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .inset(by: 1)
+                        .stroke(isSelected ? Color.black : Color.black.opacity(0.18), lineWidth: isSelected ? 2 : 1)
+                )
+        }
+        .padding(.bottom, 8)
+    }
+}
