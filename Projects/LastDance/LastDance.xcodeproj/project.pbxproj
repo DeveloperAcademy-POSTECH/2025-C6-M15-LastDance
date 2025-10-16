@@ -86,6 +86,7 @@
 		D8C7C0B12E9FEFD900FCB472 /* ReactionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0B02E9FEFCE00FCB472 /* ReactionAPIService.swift */; };
 		D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */; };
 		D8C7C2882EA091E500FCB472 /* ErrorResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */; };
+		D8C7C28A2EA0D02900FCB472 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2892EA0D02500FCB472 /* APIVersion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -172,6 +173,7 @@
 		D8C7C27D2E9FFAE600FCB472 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReactionResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2872EA091E500FCB472 /* ErrorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2892EA0D02500FCB472 /* APIVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -638,6 +640,7 @@
 		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C2892EA0D02500FCB472 /* APIVersion.swift */,
 				D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */,
 				D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */,
 				99E6F0BA2E91EF7A002ED9C2 /* Route.swift */,
@@ -815,6 +818,7 @@
 				99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				8C0F9F4C2E9CE192005B8C12 /* UserType.swift in Sources */,
+				D8C7C28A2EA0D02900FCB472 /* APIVersion.swift in Sources */,
 				8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
 				D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */,
