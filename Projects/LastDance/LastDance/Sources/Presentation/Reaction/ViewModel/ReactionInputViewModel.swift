@@ -73,4 +73,18 @@ final class ReactionInputViewModel: ObservableObject {
             }
         }
     }
+    
+    // TODO: 실제데이터 연동 후 파라미터 교체 예정
+    func getReactionsAPI(artworkId: Int) {
+        Log.debug("[ArtworkDetailView] 반응 조회 API 테스트 시작")
+
+        apiService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { result in
+            switch result {
+            case .success(let reactions):
+                Log.debug("[ArtworkDetailView] ✅ 반응 조회 성공! 조회된 반응 수: \(reactions.count)")
+            case .failure(let error):
+                Log.debug("[ArtworkDetailView] ❌ 반응 조회 실패: \(error)")
+            }
+        }
+    }
 }

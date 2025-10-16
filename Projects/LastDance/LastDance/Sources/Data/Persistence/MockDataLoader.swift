@@ -26,7 +26,7 @@ enum MockDataLoader {
         )
 
         // 샘플 Artist
-        let artist = Artist(id: "artist_kim", name: "Kim", exhibitions: ["exhibition_light"], receivedReactions: [])
+        let artist = Artist(id: 1, name: "Kim", exhibitions: ["exhibition_light"], receivedReactions: [])
 
         // 샘플 Exhibition
         let exhibition = Exhibition(
@@ -41,14 +41,14 @@ enum MockDataLoader {
 
         // 샘플 Artworks
         let artwork1 = Artwork(
-            id: "artwork_light_01",
+            id: 1,
             exhibitionId: exhibition.id,
             title: "Light #1",
             artistId: artist.id,
             thumbnailURL: "mock_artworkImage_01"
         )
         let artwork2 = Artwork(
-            id: "artwork_light_02",
+            id: 2,
             exhibitionId: exhibition.id,
             title: "Light #2",
             artistId: artist.id,
@@ -61,7 +61,7 @@ enum MockDataLoader {
 
         // 임시 캡처/반응
         let capture1 = CapturedArtwork(
-            id: UUID().uuidString,
+            id: 1,
             artworkId: artwork1.id,
             localImagePath: "file:///tmp/mock1.jpg",
             createdAt: .now

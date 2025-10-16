@@ -14,7 +14,7 @@ enum Route: Hashable {
     case articleArchiving
     case exhibitionList
     case exhibitionDetail(id: String)
-    case artworkDetail(id: String)
+    case artworkDetail(id: Int)
     case camera
     case archive
     case category
