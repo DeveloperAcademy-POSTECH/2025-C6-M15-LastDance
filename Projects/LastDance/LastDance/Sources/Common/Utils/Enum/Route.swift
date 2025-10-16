@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// 앱의 모든 화면 경로를 정의한 enum
 enum Route: Hashable {
@@ -16,6 +17,7 @@ enum Route: Hashable {
     case exhibitionDetail(id: String)
     case artworkDetail(id: String)
     case camera
+    case inputArtworkInfo(image: UIImage)
     case archive
     case category
     case completeReaction

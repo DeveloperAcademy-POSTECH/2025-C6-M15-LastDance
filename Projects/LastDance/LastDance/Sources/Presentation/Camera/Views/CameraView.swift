@@ -13,6 +13,7 @@ struct CameraView: View {
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var showConfirm = false
+    @State private var noticeVisible = false
 
     var body: some View {
         GeometryReader { geo in
@@ -31,6 +32,28 @@ struct CameraView: View {
                 )
 
                 BottomControllerView(viewModel: viewModel)
+                
+                if noticeVisible {
+                    VStack {
+                        HStack {
+                            Image(systemName: "speaker.slash.fill")
+                                .foregroundStyle(.black)
+                            Text("카메라 소리가 나지 않으니 안심하세요!")
+                                .font(.subheadline)
+                                .foregroundStyle(.black)
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(.white)
+                        .clipShape(Capsule())
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .padding(.top, 8)
+                        
+                        Spacer()
+                    }
+                    .padding(.top, 40)
+                    .zIndex(2)
+                }
             }
             .overlay(alignment: .topLeading) {
                 CloseButton {
@@ -44,17 +67,33 @@ struct CameraView: View {
         .onChange(of: viewModel.capturedImage) { _, new in
             showConfirm = (new != nil)
         }
+        .onChange(of: viewModel.showSilentNotice) { _, newValue in
+            withAnimation(.easeInOut(duration: newValue ? 0.3 : 0.5)) {
+                noticeVisible = newValue
+            }
+        }
+        .onAppear {
+            // 초기 동기화 (필요 시)
+            noticeVisible = viewModel.showSilentNotice
+        }
         // TODO: - 촬영 확인 화면 띄우는 방식에 따라 수정
-        .fullScreenCover(isPresented: $showConfirm) {
+        .fullScreenCover(isPresented: $showConfirm, onDismiss: {
+            // fullScreenCover가 닫힌 후 capturedImage가 있으면 다음 화면으로 이동
+            if let image = viewModel.capturedImage {
+                router.push(.inputArtworkInfo(image: image))
+                viewModel.capturedImage = nil // 이미지 사용 후 초기화
+            }
+        }) {
             if let image = viewModel.capturedImage {
                 CaptureConfirmView(
                     image: image,
                     onUse: { _ in
-                        // TODO: 작품 인식시키거나 정보 입력으로 연결
-                        // 임시: 카메라 닫기
-                        router.popLast()
+                        Log.debug("onuse")
+                        showConfirm = false
                     },
                     onRetake: {
+                        Log.debug("onRetake")
+                        viewModel.capturedImage = nil // 재촬영 시 이미지 초기화
                         showConfirm = false
                     }
                 )
@@ -89,6 +128,7 @@ private struct Preview: View {
                             viewModel.endZoomInteraction()
                         }
                     )
+                    .viewfinderCorners(length: 21, lineWidth: 3, color: .white, inset: 2)
                 } else {
                     Color.black
                         .overlay(

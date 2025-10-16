@@ -47,6 +47,7 @@
 		99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B32E9C765000379F27 /* BottomControllerView.swift */; };
 		99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */; };
 		99DAB0BF2E9EB78800379F27 /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0BE2E9EB78500379F27 /* CameraError.swift */; };
+		99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */; };
 		99E6F0B62E91EF48002ED9C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */; };
 		99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0A82E91EF48002ED9C2 /* LastDanceApp.swift */; };
 		99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F0B32E91EF48002ED9C2 /* Item.swift */; };
@@ -89,6 +90,9 @@
 		D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */; };
 		D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */; };
 		D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */; };
+		D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */; };
+		D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */; };
+		D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +134,7 @@
 		99DAB0B32E9C765000379F27 /* BottomControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControllerView.swift; sourceTree = "<group>"; };
 		99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomControlView.swift; sourceTree = "<group>"; };
 		99DAB0BE2E9EB78500379F27 /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
+		99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCornerMarks.swift; sourceTree = "<group>"; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0A42E91EF48002ED9C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		99E6F0A62E91EF48002ED9C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -176,6 +181,9 @@
 		D8C7C0972E9F3EFA00FCB472 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteReactionView.swift; sourceTree = "<group>"; };
 		D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputArtworkInfoView.swift; sourceTree = "<group>"; };
+		D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
+		D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +211,7 @@
 		9635739C2E98F27100B2FA79 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */,
 				D8C7C0992E9F3F1700FCB472 /* CompleteReactionView.swift */,
 				D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */,
 				D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */,
@@ -228,6 +237,7 @@
 				963573AF2E9ABC6400B2FA79 /* CategoryButton.swift */,
 				963573B32E9ABD4800B2FA79 /* BottomButton.swift */,
 				8C3B37A52E9E7089003FF185 /* PageIndicator.swift */,
+				D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */,
 				D8C7C09B2E9F3F7800FCB472 /* BackButton.swift */,
 				D8C7C0952E9F3E6100FCB472 /* CustomNavigationBar.swift */,
 				963573AD2E9A4F6E00B2FA79 /* OutlinedButton.swift */,
@@ -507,6 +517,7 @@
 		99E6F0E82E91F7E2002ED9C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				99DAB0C22E9F33E100379F27 /* PreviewCornerMarks.swift */,
 				8C3B37BD2E9EB857003FF185 /* CameraView.swift */,
 				99DAB0B72E9C7B7B00379F27 /* ZoomControlView.swift */,
 				99DAB0B32E9C765000379F27 /* BottomControllerView.swift */,
@@ -644,6 +655,7 @@
 		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */,
 				D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */,
 				99E6F0BA2E91EF7A002ED9C2 /* Route.swift */,
 			);
@@ -769,6 +781,7 @@
 				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				8C3B37A82E9E716C003FF185 /* ArticleListView.swift in Sources */,
+				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
@@ -791,6 +804,7 @@
 				99E6F3A02E989CFB002ED9C2 /* ArtworkRequestDto.swift in Sources */,
 				8C3B37A22E9E69BC003FF185 /* ArticleExhibitionListView.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
+				99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */,
 				99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				8C3B37AC2E9E7C95003FF185 /* CompleteArticleListView.swift in Sources */,
@@ -799,6 +813,7 @@
 				8C0F9F4A2E9CE128005B8C12 /* IdentitySelectionViewModel.swift in Sources */,
 				99E6F3A22E989CFB002ED9C2 /* BaseResponse.swift in Sources */,
 				D8C7C0982E9F3EFA00FCB472 /* CategoryView.swift in Sources */,
+				D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */,
 				D8C7C09C2E9F3F7800FCB472 /* BackButton.swift in Sources */,
 				8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
@@ -823,6 +838,7 @@
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
 				8C3B37B52E9EB7C0003FF185 /* IdentitySelectionView.swift in Sources */,
 				8C3B37B62E9EB7C0003FF185 /* ArticleArchivingView.swift in Sources */,
+				D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
@@ -968,6 +984,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1000,6 +1017,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
