@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ArtworkDetailView: View {
     @Environment(\.keyboardManager) var keyboardManager
-    @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
 
@@ -34,18 +33,6 @@ struct ArtworkDetailView: View {
                     Spacer().frame(height: 26)
 
                     ReactionFormView(artworkId: artworkId, viewModel: viewModel)
-
-                    // 테스트 버튼
-                    Button(action: {
-                        viewModel.getDetailReactionAPI(reactionId: 1)
-                    }) {
-                        Text("반응 상세 조회 API 테스트 (reactionId: 1)")
-                            .foregroundColor(.blue)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(8)
-                    }
-                    .padding()
 
                     Spacer()
                 }
