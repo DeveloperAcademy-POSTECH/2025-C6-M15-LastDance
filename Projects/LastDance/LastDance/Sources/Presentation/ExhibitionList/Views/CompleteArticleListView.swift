@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct CompleteArticleListInfoSection: View {
-    let viewModel: CompleteArticleListViewModel
+//MARK: - CompleteArticleListInfoView
+struct CompleteArticleListInfoView: View {
+    @ObservedObject var viewModel: CompleteArticleListViewModel       // 주입받음
 
     var body: some View {
         VStack(spacing: 28) {
@@ -18,7 +19,7 @@ struct CompleteArticleListInfoSection: View {
     }
 }
 
-struct CompleteArticleListFindButton: View {
+struct CompleteArticleListFindButtonView: View {
     var body: some View {
         BottomButton(text: "전시 찾기") {
             // TODO: 전시 찾기 기능
@@ -28,7 +29,7 @@ struct CompleteArticleListFindButton: View {
 
 struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = CompleteArticleListViewModel()
+    @StateObject private var viewModel = CompleteArticleListViewModel() //최상위 위치
 
     let selectedExhibitionId: String
     let selectedArtistId: String
@@ -40,10 +41,10 @@ struct CompleteArticleListView: View {
             TitleSection(title: "어떤 작가님이신가요?", subtitle: nil)
                 .padding(.bottom, 8)
                 .padding(.top, 14)
-            CompleteArticleListInfoSection(viewModel: viewModel)
+            CompleteArticleListInfoView(viewModel: viewModel)   //실제 주입
                 .padding(.top, 14)
             Spacer()
-            CompleteArticleListFindButton()
+            CompleteArticleListFindButtonView()
         }
         .padding(.top, 18)
         .padding(.horizontal, 28)

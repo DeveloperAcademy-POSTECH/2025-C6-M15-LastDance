@@ -39,6 +39,12 @@ struct RootView: View {
                         CompleteReactionView()
                     case .inputArtworkInfo(let image):
                         InputArtworkInfoView(image: image)
+                    case .articleExhibitionList:
+                        ArticleExhibitionListView()
+                    case .articleList(let selectedExhibitionId):
+                        ArticleListView(selectedExhibitionId: selectedExhibitionId)
+                    case .completeArticleList(let selectedExhibitionId, let selectedArtistId):
+                        CompleteArticleListView(selectedExhibitionId: selectedExhibitionId, selectedArtistId: selectedArtistId)
                     }
                 }
         }

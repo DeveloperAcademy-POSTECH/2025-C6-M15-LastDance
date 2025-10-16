@@ -28,7 +28,7 @@ struct ExhibitionListTitleSection: View {
 
 struct ExhibitionListContent: View {
     let exhibitions: [Exhibition]
-    let viewModel: ExhibitionListViewModel
+    @ObservedObject var viewModel: ExhibitionListViewModel
 
     var body: some View {
         ScrollView {
@@ -47,7 +47,7 @@ struct ExhibitionListContent: View {
 }
 
 struct ExhibitionListRegisterButton: View {
-    let viewModel: ExhibitionListViewModel
+    @ObservedObject var viewModel: ExhibitionListViewModel
 
     var body: some View {
         BottomButton(text: "등록하기") {

@@ -30,7 +30,7 @@ struct ArticleListSearchTextField: View {
 }
 
 struct ArticleListContent: View {
-    let viewModel: ArticleListViewModel
+    @ObservedObject var viewModel: ArticleListViewModel
 
     var body: some View {
         ScrollView {
@@ -62,7 +62,7 @@ struct ArticleListContent: View {
 struct ArticleListNextButton: View {
     @EnvironmentObject private var router: NavigationRouter
     let selectedExhibitionId: String
-    let viewModel: ArticleListViewModel
+    @ObservedObject var viewModel: ArticleListViewModel
 
     var body: some View {
         BottomButton(text: "다음") {

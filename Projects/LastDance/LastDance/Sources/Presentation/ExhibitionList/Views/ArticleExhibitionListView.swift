@@ -10,7 +10,7 @@ import SwiftData
 
 struct ArticleExhibitionListContent: View {
     let exhibitions: [Exhibition]
-    let viewModel: ArticleExhibitionListViewModel
+    @ObservedObject var viewModel: ArticleExhibitionListViewModel
 
     var body: some View {
         ScrollView {
@@ -30,7 +30,7 @@ struct ArticleExhibitionListContent: View {
 
 struct ArticleExhibitionListNextButton: View {
     @EnvironmentObject private var router: NavigationRouter
-    let viewModel: ArticleExhibitionListViewModel
+    @ObservedObject var viewModel: ArticleExhibitionListViewModel
 
     var body: some View {
         BottomButton(text: "다음") {
