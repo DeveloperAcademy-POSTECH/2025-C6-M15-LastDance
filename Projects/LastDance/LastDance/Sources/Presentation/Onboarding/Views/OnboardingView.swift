@@ -13,11 +13,7 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack {
-            Button(action: {
-                router.push(.camera)
-            }, label: {
-                Text("camera")
-            })
+            Text("OnboardingView")
         }
     }
 }
