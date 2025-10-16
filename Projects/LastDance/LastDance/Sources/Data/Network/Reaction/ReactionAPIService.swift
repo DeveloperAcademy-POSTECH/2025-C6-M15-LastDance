@@ -42,10 +42,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                         SwiftDataManager.shared.insert(reaction)
                         Log.debug("[ReactionAPIService] 로컬 저장 완료")
                     }
-
                     completion(.success(responseDto))
                 } catch {
-                    Log.debug("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -55,14 +54,17 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
                     Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
                 }
-                Log.debug("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
     }
 
     /// 전체 반응 조회하기 함수
-    func getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?, completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void) {
+    func getReactions(artworkId: Int?,
+                      visitorId: Int?,
+                      visitId: Int?,
+                      completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void) {
         Log.debug("[ReactionAPIService] 요청 파라미터 - artworkId: \(String(describing: artworkId)), visitorId: \(String(describing: visitorId)), visitId: \(String(describing: visitId))")
 
         provider.request(.getReactions(artworkId: artworkId, visitorId: visitorId, visitId: visitId)) { result in
@@ -75,7 +77,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let reactions = try JSONDecoder().decode([GetReactionResponseDto].self, from: response.data)
                     completion(.success(reactions))
                 } catch {
-                    Log.debug("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -85,7 +87,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
                     Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
                 }
-                Log.debug("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -113,7 +115,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
 
                     completion(.success(responseDto))
                 } catch {
-                    Log.debug("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -123,7 +125,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
                     Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
                 }
-                Log.debug("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }

@@ -82,8 +82,6 @@
 		D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */; };
 		D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */; };
 		D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */; };
-		D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */; };
-		D8C7C2972EA0F90300FCB472 /* ExhibitionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */; };
 		D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0AE2E9FBE7100FCB472 /* Config.swift */; };
 		D8C7C0B12E9FEFD900FCB472 /* ReactionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C0B02E9FEFCE00FCB472 /* ReactionAPIService.swift */; };
 		D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2812EA0026000FCB472 /* GetReactionResponseDto.swift */; };
@@ -93,6 +91,8 @@
 		D8C7C28E2EA0D0C200FCB472 /* ArtworkDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C28D2EA0D0B900FCB472 /* ArtworkDetailResponseDto.swift */; };
 		D8C7C2902EA0D0ED00FCB472 /* VisitorResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */; };
 		D8C7C2922EA0D10700FCB472 /* TagDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */; };
+		D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */; };
+		D8C7C2972EA0F90300FCB472 /* ExhibitionResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -173,10 +173,6 @@
 		D8C7C0A42E9F4A8700FCB472 /* InputArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7C0A82E9F728F00FCB472 /* CustomBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheet.swift; sourceTree = "<group>"; };
 		D8C7C0AA2E9F891000FCB472 /* BottomSheetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetType.swift; sourceTree = "<group>"; };
-		D8C7C2932EA0F53300FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
-		D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
-		D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8C7C0AE2E9FBE7100FCB472 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		D8C7C0B02E9FEFCE00FCB472 /* ReactionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPIService.swift; sourceTree = "<group>"; };
 		D8C7C27D2E9FFAE600FCB472 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -187,6 +183,9 @@
 		D8C7C28D2EA0D0B900FCB472 /* ArtworkDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
+		D8C7C2962EA0F90300FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2982EA111B500FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,8 +268,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
-				D8C7C2932EA0F53300FCB472 /* Config.xcconfig */,
-				D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */,
+				D8C7C2982EA111B500FCB472 /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -889,7 +887,6 @@
 /* Begin XCBuildConfiguration section */
 		99E6F0752E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -953,7 +950,6 @@
 		};
 		99E6F0762E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1010,7 +1006,6 @@
 		};
 		99E6F0782E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1046,7 +1041,6 @@
 		};
 		99E6F0792E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C0AD2E9FBD9900FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
