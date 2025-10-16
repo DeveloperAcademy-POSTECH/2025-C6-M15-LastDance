@@ -54,7 +54,7 @@ struct ExhibitionDetailView: View {
     
     var viewButton: some View {
         BottomButton(text: "관람하기") {
-            // TODO: 다음 화면으로 네비게이션
+            router.push(.archive(id: exhibitionId))
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 34)
