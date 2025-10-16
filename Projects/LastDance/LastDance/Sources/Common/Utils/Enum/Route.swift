@@ -21,4 +21,7 @@ enum Route: Hashable {
     case archive
     case category
     case completeReaction
+    case articleExhibitionList
+    case articleList(selectedExhibitionId: String)
+    case completeArticleList(selectedExhibitionId: String, selectedArtistId: String)
 }

@@ -11,6 +11,7 @@ import SwiftUI
 final class ExhibitionDetailViewModel: ObservableObject {
     @Published var exhibition: Exhibition?
     @Published var artistNames: [String] = []
+    @Published var showErrorAlert = false
 
     private let dataManager = SwiftDataManager.shared
 
@@ -23,7 +24,14 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
         if exhibition != nil {
             fetchArtistNames()
+        } else {
+            showErrorAlert = true
         }
+    }
+
+    /// 전시 정보 존재 여부
+    var hasExhibition: Bool {
+        exhibition != nil
     }
 
     /// 작가 이름 가져오기

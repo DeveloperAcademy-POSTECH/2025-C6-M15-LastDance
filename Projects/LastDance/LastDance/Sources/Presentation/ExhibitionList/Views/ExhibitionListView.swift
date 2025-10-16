@@ -8,29 +8,8 @@
 import SwiftUI
 import SwiftData
 
-struct ExhibitionListView: View {
-    @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ExhibitionListViewModel()
-    @Query private var exhibitions: [Exhibition]
-
+struct ExhibitionListTitleSection: View {
     var body: some View {
-        VStack(spacing: 0) {
-            titleSection
-
-            ExhibitionList
-
-            Spacer()
-
-            RegisterButton
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 34)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle("전시찾기")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-
-    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("관람하려 온 전시를 알려주세요")
                 .font(.system(size: 24, weight: .bold))
@@ -45,13 +24,18 @@ struct ExhibitionListView: View {
         .padding(.top, 20)
         .padding(.bottom, 16)
     }
+}
 
-    var ExhibitionList: some View {
+struct ExhibitionListContent: View {
+    let exhibitions: [Exhibition]
+    @ObservedObject var viewModel: ExhibitionListViewModel
+
+    var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(exhibitions, id: \.id) { exhibition in
-                    ExhibitionRow(
-                        exhibition: exhibition,
+                    SelectionRow(
+                        title: exhibition.title,
                         isSelected: viewModel.selectedExhibitionId == exhibition.id
                     ) {
                         viewModel.selectExhibition(exhibition)
@@ -60,41 +44,45 @@ struct ExhibitionListView: View {
             }
         }
     }
+}
 
-    var RegisterButton: some View {
+struct ExhibitionListRegisterButton: View {
+    @ObservedObject var viewModel: ExhibitionListViewModel
+
+    var body: some View {
         BottomButton(text: "등록하기") {
             viewModel.tapRegisterButton()
         }
     }
 }
 
-/// 전시 목록 행 컴포넌트
-struct ExhibitionRow: View {
-    let exhibition: Exhibition
-    let isSelected: Bool
-    let action: () -> Void
+struct ExhibitionListView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ExhibitionListViewModel()
+    @Query private var exhibitions: [Exhibition]
 
     var body: some View {
-        Button(action: action) {
-            Text(exhibition.title)
-                .font(.system(size: 16, weight: .regular))
-                .foregroundStyle(.black)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.white)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .inset(by: 1)
-                        .stroke(isSelected ? Color.black : Color.black.opacity(0.18), lineWidth: isSelected ? 2 : 1)
-                )
+        VStack(spacing: 0) {
+            ExhibitionListTitleSection()
+
+            ExhibitionListContent(exhibitions: exhibitions, viewModel: viewModel)
+
+            Spacer()
+
+            ExhibitionListRegisterButton(viewModel: viewModel)
         }
-        .padding(.bottom, 8)
+        .padding(.top, 18)
+        .padding(.horizontal, 20)
+        .padding(.bottom, 34)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomNavigationBar(title: "전시찾기") {
+                router.popLast()
+            }
+        }
     }
 }
-#Preview{
+
+#Preview {
     ExhibitionListView()
 }

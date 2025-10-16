@@ -7,25 +7,8 @@
 
 import SwiftUI
 
-/// 아카이빙 시작 뷰
-struct ArticleArchivingView: View {
-    @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ArchivingViewModel()
-
+struct ArticleArchivingTitleSection: View {
     var body: some View {
-        VStack(spacing: 0) {
-            titleSection
-            Spacer()
-
-            AddButtonSection
-
-            Spacer()
-        }
-        .padding(.horizontal, 20)
-        .navigationBarBackButtonHidden(false)
-    }
-
-    var titleSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("나의 전시")
                 .font(.system(size: 21, weight: .bold))
@@ -35,8 +18,12 @@ struct ArticleArchivingView: View {
         .padding(.top, 20)
         .padding(.leading, 20)
     }
+}
 
-    var AddButtonSection: some View {
+struct ArticleArchivingAddButtonSection: View {
+    let viewModel: ArchivingViewModel
+
+    var body: some View {
         VStack(spacing: 40) {
             CircleAddButton {
                 viewModel.tapAddButton()
@@ -50,6 +37,26 @@ struct ArticleArchivingView: View {
         }
     }
 }
+
+/// 아카이빙 시작 뷰
+struct ArticleArchivingView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ArchivingViewModel()
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ArticleArchivingTitleSection()
+            Spacer()
+
+            ArticleArchivingAddButtonSection(viewModel: viewModel)
+
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .navigationBarBackButtonHidden(false)
+    }
+}
+
 #Preview {
     ArticleArchivingView()
 }

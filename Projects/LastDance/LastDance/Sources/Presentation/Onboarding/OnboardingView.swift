@@ -12,13 +12,7 @@ struct OnboardingView: View {
     @StateObject private var viewModel = OnboardingViewModel()
     
     var body: some View {
-        VStack {
-            Text("OnboardingView")
-        }
+        
     }
 }
 
-#Preview {
-    OnboardingView()
-        .environmentObject(NavigationRouter())
-}
