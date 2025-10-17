@@ -16,7 +16,7 @@ final class ArticleListViewModel: ObservableObject {
             filterArtists()
         }
     }
-    @Published var selectedArtistId: String? = nil
+    @Published var selectedArtistId: Int? = nil
 
     private let dataManager = SwiftDataManager.shared
 
@@ -45,16 +45,16 @@ final class ArticleListViewModel: ObservableObject {
 
     /// 작가 선택 (이미 선택된 경우 선택 취소)
     func selectArtist(_ artist: Artist) {
-        let artistIdString = artist.id.hashValue.description
-        if selectedArtistId == artistIdString {
+        let artistIdInt = artist.id.hashValue
+        if selectedArtistId == artistIdInt {
             selectedArtistId = nil
         } else {
-            selectedArtistId = artistIdString
+            selectedArtistId = artistIdInt
         }
     }
 
     /// 다음 버튼 탭
-    func tapNextButton() -> String? {
+    func tapNextButton() -> Int? {
         guard let selectedId = selectedArtistId else {
             // TODO: 작가를 선택하지 않은 경우 예외 처리
             return nil

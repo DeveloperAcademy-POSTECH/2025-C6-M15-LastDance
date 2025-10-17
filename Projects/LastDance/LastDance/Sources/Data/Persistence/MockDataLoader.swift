@@ -25,14 +25,14 @@ enum MockDataLoader {
 
         // 샘플 Artworks
         let artwork1 = Artwork(
-            id: 101,
+            id: 11,
             exhibitionId: exhibitions[0].id,
             title: "Light #1",
             artistId: artists[0].id,
             thumbnailURL: "mock_artworkImage_01"
         )
         let artwork2 = Artwork(
-            id: 102,
+            id: 12,
             exhibitionId: exhibitions[0].id,
             title: "Light #2",
             artistId: artists[0].id,
@@ -42,37 +42,37 @@ enum MockDataLoader {
 
         // 임시 캡처/반응 (6개의 캡처 생성)
         let capture1 = CapturedArtwork(
-            id: 201,
+            id: 2,
             artworkId: artwork1.id,
             localImagePath: "file:///tmp/mock1.jpg",
             createdAt: .now.addingTimeInterval(-300)
         )
         let capture2 = CapturedArtwork(
-            id: 202,
+            id: 3,
             artworkId: artwork1.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now.addingTimeInterval(-200)
         )
         let capture3 = CapturedArtwork(
-            id: 203,
+            id: 4,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_02",
             createdAt: .now.addingTimeInterval(-100)
         )
         let capture4 = CapturedArtwork(
-            id: 204,
+            id: 5,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now
         )
         let capture5 = CapturedArtwork(
-            id: 205,
+            id: 6,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_01",
             createdAt: .now
         )
         let capture6 = CapturedArtwork(
-            id: 206,
+            id: 7,
             artworkId: artwork2.id,
             localImagePath: "mock_artworkImage_02",
             createdAt: .now

@@ -47,10 +47,10 @@ struct ArticleListContent: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.filteredArtists, id: \.id) { artist in
-                    let artistIdString = artist.id.hashValue.description
+                    let artistIdInt = artist.id.hashValue
                     ArticleArtistRow(
                         artist: artist,
-                        isSelected: viewModel.selectedArtistId == artistIdString
+                        isSelected: viewModel.selectedArtistId == artistIdInt
                     ) {
                         viewModel.selectArtist(artist)
                     }
