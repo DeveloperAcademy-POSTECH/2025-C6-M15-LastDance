@@ -20,10 +20,25 @@ struct CompleteArticleListInfoView: View {
 }
 
 struct CompleteArticleListFindButtonView: View {
+    @EnvironmentObject private var router: NavigationRouter
+    @ObservedObject var viewModel: CompleteArticleListViewModel
+    @State private var showNotFoundAlert = false
+    
     var body: some View {
         BottomButton(text: "전시 찾기") {
-            // TODO: 전시 찾기 기능
+            if let id = viewModel.findExhibitionIdByCurrentFields() {
+                // 전시 상세로 이동
+                router.push(.exhibitionDetail(id: id))
+            } else {
+                showNotFoundAlert = true
+            }
         }
+        .customAlert(
+            isPresented: $showNotFoundAlert,
+            title: "찾지 못했어요",
+            message: "작가명/전시명을 다시 확인해 주세요.",
+            buttonText: "확인"
+        ) { }
     }
 }
 
@@ -44,7 +59,7 @@ struct CompleteArticleListView: View {
             CompleteArticleListInfoView(viewModel: viewModel)   //실제 주입
                 .padding(.top, 14)
             Spacer()
-            CompleteArticleListFindButtonView()
+            CompleteArticleListFindButtonView(viewModel: viewModel)
         }
         .padding(.top, 18)
         .padding(.horizontal, 28)

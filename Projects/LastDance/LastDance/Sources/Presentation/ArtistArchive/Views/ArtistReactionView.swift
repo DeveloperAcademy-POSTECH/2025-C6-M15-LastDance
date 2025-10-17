@@ -54,6 +54,7 @@ struct ArtistReactionView: View {
                         }
                         .frame(width: 155, height: 219)
                         .onTapGesture {
+                            router.push(.artistReactionArchiveView)
                         }
                         // 전시 제목
                         Text(viewModel.exhibitionTitle)

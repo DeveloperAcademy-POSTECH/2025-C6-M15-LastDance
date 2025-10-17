@@ -26,6 +26,5 @@ final class ExhibitionListViewModel: ObservableObject {
             // TODO: 전시를 선택하지 않은 경우 예외 처리
             return
         }
-        // TODO: 다음 화면으로 네비게이션
     }
 }
