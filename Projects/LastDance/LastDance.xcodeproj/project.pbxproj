@@ -102,6 +102,7 @@
 		D8C7C28E2EA0D0C200FCB472 /* ArtworkDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C28D2EA0D0B900FCB472 /* ArtworkDetailResponseDto.swift */; };
 		D8C7C2902EA0D0ED00FCB472 /* VisitorResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */; };
 		D8C7C2922EA0D10700FCB472 /* TagDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */; };
+		D8C7C2C82EA29A1100FCB472 /* ArtworkAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +206,7 @@
 		D8C7C28D2EA0D0B900FCB472 /* ArtworkDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPIService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -597,6 +599,7 @@
 			isa = PBXGroup;
 			children = (
 				99E6F38A2E989CFB002ED9C2 /* DTO */,
+				D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */,
 				99E6F38B2E989CFB002ED9C2 /* ArtworkAPI.swift */,
 			);
 			path = Artwork;
@@ -893,6 +896,7 @@
 				8C3B37AA2E9E7932003FF185 /* ArticleListViewModel.swift in Sources */,
 				99DAB0BF2E9EB78800379F27 /* CameraError.swift in Sources */,
 				D8C7C2882EA091E500FCB472 /* ErrorResponseDto.swift in Sources */,
+				D8C7C2C82EA29A1100FCB472 /* ArtworkAPIService.swift in Sources */,
 				99E6F3A62E989CFB002ED9C2 /* ExhibitionRequestDto.swift in Sources */,
 				99191E1F2EA1994900D2F71A /* CompleteArticleListViewModel.swift in Sources */,
 				99E6F3A72E989CFB002ED9C2 /* ExhibitionAPI.swift in Sources */,
