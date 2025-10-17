@@ -132,7 +132,6 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
     }
 
     // MARK: - Mapper
-
     /// ReactionDetail DTO를 Reaction Model로 변환
     private func mapDtoToModel(_ dto: ReactionDetailResponseDto) -> Reaction {
         // tags를 category 문자열 배열로 변환

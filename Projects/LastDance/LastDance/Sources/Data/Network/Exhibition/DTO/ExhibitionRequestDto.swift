@@ -9,8 +9,10 @@ import Foundation
 
 struct ExhibitionRequestDto: Codable {
     let title: String
-    let artist_id: Int
-    let description: String?
-    let year: Int?
-    let thumbnail_url: String?
+    let description_text: String?
+    let start_date: String
+    let end_date: String?
+    let venue_id: Int
+    let cover_image_url: String?
+    let artwork_ids: [Int]?
 }

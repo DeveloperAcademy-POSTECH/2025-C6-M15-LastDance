@@ -114,7 +114,7 @@ enum MockDataLoader {
               geoLat: 37.5665, geoLon: 126.9780)
     }
 
-    private static func createArtists() -> [Artist] {
+    static func createArtists() -> [Artist] {
         [
             Artist(id: 1, name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
             Artist(id: 2, name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),

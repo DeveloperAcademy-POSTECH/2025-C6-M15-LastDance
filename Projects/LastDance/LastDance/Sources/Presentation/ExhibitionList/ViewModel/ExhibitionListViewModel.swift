@@ -69,27 +69,37 @@ final class ExhibitionListViewModel: ObservableObject {
         }
     }
 
+    // TODO: 작가 플로우 연결되면 해당 VM에 옮길 예정
     /// 전시 생성 api 연동
     func makeExhibitionList() {
         isLoading = true
         resultMessage = ""
         errorMessage = ""
 
-        // dataManager에서 첫 번째 Artwork 가져오기
+        // dataManager에서 데이터 가져오기
         let artworks = dataManager.fetchAll(Artwork.self)
-        guard let firstArtwork = artworks.first,
-              let artistId = firstArtwork.artistId else {
-            errorMessage = "❌ 실패: 로컬에 Artwork 데이터가 없거나 artistId가 없습니다."
+        let venues = dataManager.fetchAll(Venue.self)
+
+        guard let firstArtwork = artworks.first else {
+            errorMessage = "❌ 실패: 로컬에 Artwork 데이터가 없습니다."
+            isLoading = false
+            return
+        }
+
+        guard let firstVenue = venues.first else {
+            errorMessage = "❌ 실패: 로컬에 Venue 데이터가 없습니다."
             isLoading = false
             return
         }
 
         let testDto = ExhibitionRequestDto(
             title: firstArtwork.title,
-            artist_id: artistId,
-            description: "Test exhibition created from local data",
-            year: 2025,
-            thumbnail_url: firstArtwork.thumbnailURL
+            description_text: "Test exhibition created from local data",
+            start_date: Date().toAPIDateString(),
+            end_date: Date().addingTimeInterval(86400 * 30).toAPIDateString(), // 30일 후
+            venue_id: Int(firstVenue.id.replacingOccurrences(of: "venue_", with: "")) ?? 1,
+            cover_image_url: firstArtwork.thumbnailURL,
+            artwork_ids: [firstArtwork.id]
         )
 
         apiService.makeExhibition(dto: testDto) { [weak self] result in
@@ -98,14 +108,15 @@ final class ExhibitionListViewModel: ObservableObject {
 
                 switch result {
                 case .success(let response):
+                    let artworkCount = response.artworks?.count ?? 0
                     self?.resultMessage = """
-                    ✅ 성공!
+                    ✅ 전시 생성 성공!
                     ID: \(response.id)
                     Title: \(response.title)
-                    Artist: \(response.artist.name)
-                    Exhibitions: \(response.exhibitions.count)개
+                    Venue: \(response.venue.name)
+                    Artworks: \(artworkCount)개
                     """
-                    Log.debug("[ExhibitionListViewModel] API 성공: \(response)")
+                    Log.debug("[ExhibitionListViewModel] 전시 생성 성공: \(response.title)")
 
                 case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {

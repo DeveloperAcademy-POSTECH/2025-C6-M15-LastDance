@@ -69,11 +69,8 @@ struct IdentitySelectionView: View {
             Spacer()
 
             IdentitySelectionNextButton(viewModel: viewModel)
-
-            Spacer()
         }
         .padding(.horizontal, 20)
-        .padding(.bottom, 34)
     }
 }
 

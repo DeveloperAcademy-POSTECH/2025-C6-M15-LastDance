@@ -63,6 +63,8 @@ struct ExhibitionListView: View {
     @StateObject private var viewModel = ExhibitionListViewModel()
     @Query private var exhibitions: [Exhibition]
 
+    private let dataManager = SwiftDataManager.shared
+
     var body: some View {
         VStack(spacing: 0) {
             ExhibitionListTitleSection()
@@ -74,7 +76,6 @@ struct ExhibitionListView: View {
             ExhibitionListRegisterButton(viewModel: viewModel)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {
@@ -82,8 +83,25 @@ struct ExhibitionListView: View {
             }
         }
         .onAppear {
-            viewModel.getExhibitions()
+//            viewModel.getExhibitions()
+
+            // 전시 생성 API 테스트
+            testMakeExhibition()
         }
+    }
+
+    // MARK: - API Test Helper
+    private func testMakeExhibition() {
+        // SwiftDataManager에서 저장된 Artist 데이터 가져오기
+        let artists = dataManager.fetchAll(Artist.self)
+        guard let firstArtist = artists.first else {
+            Log.error("[ExhibitionListView] SwiftData에 Artist 데이터가 없습니다.")
+            return
+        }
+
+        // 전시 생성 API 호출 (ViewModel의 makeExhibitionList 메서드 사용)
+        viewModel.makeExhibitionList()
+        Log.debug("[ExhibitionListView] 전시 생성 API 테스트 실행 (Artist ID: \(firstArtist.id), Name: \(firstArtist.name))")
     }
 }
 
