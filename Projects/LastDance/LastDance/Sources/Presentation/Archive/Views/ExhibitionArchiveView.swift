@@ -71,7 +71,7 @@ struct ExhibitionArchiveView: View {
                             ReactionCardView(
                                 reaction: reaction,
                                 artwork: viewModel.artwork(for: reaction),
-                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: "", exhibitionId: "", title: ""))
+                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: 0, exhibitionId: "", title: ""))
                             )
                         }
                     }

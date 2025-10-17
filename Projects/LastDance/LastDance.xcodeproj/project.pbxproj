@@ -103,7 +103,12 @@
 		D8C7C2902EA0D0ED00FCB472 /* VisitorResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */; };
 		D8C7C2922EA0D10700FCB472 /* TagDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */; };
 		D8C7C2C82EA29A1100FCB472 /* ArtworkAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */; };
-		D8C7C2CA2EA2A16300FCB472 /* MakeArtworkResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C92EA2A14F00FCB472 /* MakeArtworkResponseDto.swift */; };
+		D8C7C2CA2EA2A16300FCB472 /* ArtworkResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */; };
+		D8C7C2CC2EA2A6F100FCB472 /* ExhibitionArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2CB2EA2A6F100FCB472 /* ExhibitionArchiveView.swift */; };
+		D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */; };
+		D8C7C2D02EA2A70100FCB472 /* ArchiveViewHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2CF2EA2A70100FCB472 /* ArchiveViewHome.swift */; };
+		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
+		D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,7 +213,12 @@
 		D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPIService.swift; sourceTree = "<group>"; };
-		D8C7C2C92EA2A14F00FCB472 /* MakeArtworkResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeArtworkResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkResponseDto.swift; sourceTree = "<group>"; };
+		D8C7C2CB2EA2A6F100FCB472 /* ExhibitionArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveView.swift; sourceTree = "<group>"; };
+		D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeView.swift; sourceTree = "<group>"; };
+		D8C7C2CF2EA2A70100FCB472 /* ArchiveViewHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewHome.swift; sourceTree = "<group>"; };
+		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
+		D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -576,7 +586,10 @@
 		99E6F0EC2E91F7FE002ED9C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D8C7C2CF2EA2A70100FCB472 /* ArchiveViewHome.swift */,
 				8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */,
+				D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */,
+				D8C7C2CB2EA2A6F100FCB472 /* ExhibitionArchiveView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -585,6 +598,8 @@
 			isa = PBXGroup;
 			children = (
 				99E6F0D12E91F246002ED9C2 /* ArchiveViewModel.swift */,
+				D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */,
+				D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -592,7 +607,7 @@
 		99E6F38A2E989CFB002ED9C2 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				D8C7C2C92EA2A14F00FCB472 /* MakeArtworkResponseDto.swift */,
+				D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */,
 				99E6F3892E989CFB002ED9C2 /* MakeArtworkRequestDto.swift */,
 			);
 			path = DTO;
@@ -838,20 +853,23 @@
 				D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */,
 				99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */,
 				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
-				D8C7C2CA2EA2A16300FCB472 /* MakeArtworkResponseDto.swift in Sources */,
+				D8C7C2CA2EA2A16300FCB472 /* ArtworkResponseDto.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
 				D8C7C28E2EA0D0C200FCB472 /* ArtworkDetailResponseDto.swift in Sources */,
+				D8C7C2CC2EA2A6F100FCB472 /* ExhibitionArchiveView.swift in Sources */,
 				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				8C3B37A82E9E716C003FF185 /* ArticleListView.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
+				D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99191E212EA199A100D2F71A /* TitleSection.swift in Sources */,
+				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
@@ -871,6 +889,7 @@
 				D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */,
 				8C3B37BC2E9EB838003FF185 /* ExhibitionDetailView.swift in Sources */,
 				99191E272EA199F300D2F71A /* View+CustomAlert.swift in Sources */,
+				D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* MakeArtworkRequestDto.swift in Sources */,
 				8C3B37A22E9E69BC003FF185 /* ArticleExhibitionListView.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
@@ -909,6 +928,7 @@
 				99E6F3AA2E989CFB002ED9C2 /* ReactionAPI.swift in Sources */,
 				D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */,
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
+				D8C7C2D02EA2A70100FCB472 /* ArchiveViewHome.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,

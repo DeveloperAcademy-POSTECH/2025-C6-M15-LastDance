@@ -1,5 +1,5 @@
 //
-//  MakeArtworkResponseDto.swift
+//  ArtworkResponseDto.swift
 //  LastDance
 //
 //  Created by 아우신얀 on 10/18/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MakeArtworkResponseDto: Codable {
+struct ArtworkResponseDto: Codable {
     let id: Int
     let title: String
     let artist_id: Int
