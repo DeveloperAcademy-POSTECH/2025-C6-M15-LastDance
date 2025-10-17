@@ -65,10 +65,19 @@ struct RootView: View {
                     InputArtworkInfoView(image: image)
                 case .articleExhibitionList:
                     ArticleExhibitionListView()
+                        .navigationBarBackButtonHidden(true)
                 case .articleList(let selectedExhibitionId):
                     ArticleListView(selectedExhibitionId: selectedExhibitionId)
+                        .navigationBarBackButtonHidden(true)
                 case .completeArticleList(let selectedExhibitionId, let selectedArtistId):
                     CompleteArticleListView(selectedExhibitionId: selectedExhibitionId, selectedArtistId: selectedArtistId)
+                        .navigationBarBackButtonHidden(true)
+                case .artistReaction:
+                    ArtistReactionView()
+                        .toolbar(.hidden, for: .navigationBar)
+                case .artistReactionArchiveView:
+                    ArtistReactionArchiveView()
+                        .toolbar(.hidden, for: .navigationBar)
                 }
             }
         }

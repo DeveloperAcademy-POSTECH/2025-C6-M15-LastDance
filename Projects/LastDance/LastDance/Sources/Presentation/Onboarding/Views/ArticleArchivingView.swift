@@ -21,12 +21,15 @@ struct ArticleArchivingTitleSection: View {
 }
 
 struct ArticleArchivingAddButtonSection: View {
+    @EnvironmentObject private var router: NavigationRouter
+    
     let viewModel: ArchivingViewModel
 
     var body: some View {
         VStack(spacing: 40) {
             CircleAddButton {
                 viewModel.tapAddButton()
+                router.push(.articleExhibitionList)
             }
 
             Text("나의 작품에 어떤 반응을\n 남겼는지 확인해보세요")
