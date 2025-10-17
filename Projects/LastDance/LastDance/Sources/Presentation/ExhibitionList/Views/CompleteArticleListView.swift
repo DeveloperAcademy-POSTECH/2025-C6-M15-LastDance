@@ -32,7 +32,7 @@ struct CompleteArticleListView: View {
     @StateObject private var viewModel = CompleteArticleListViewModel() //최상위 위치
 
     let selectedExhibitionId: String
-    let selectedArtistId: String
+    let selectedArtistId: Int
 
     var body: some View {
         VStack(spacing: 0) {
@@ -84,12 +84,4 @@ struct InfoRow: View {
                 )
         }
     }
-}
-
-#Preview {
-    CompleteArticleListView(
-        selectedExhibitionId: "exhibition_light",
-        selectedArtistId: "artist_kimjiin"
-    )
-    .environmentObject(NavigationRouter())
 }
