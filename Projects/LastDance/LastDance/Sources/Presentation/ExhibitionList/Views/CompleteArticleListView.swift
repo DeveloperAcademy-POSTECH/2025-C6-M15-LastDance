@@ -88,8 +88,8 @@ struct InfoRow: View {
 
 #Preview {
     CompleteArticleListView(
-        selectedExhibitionId: "exhibition_light",
-        selectedArtistId: "artist_kimjiin"
+        selectedExhibitionId: "1",
+        selectedArtistId: "1"
     )
     .environmentObject(NavigationRouter())
 }
