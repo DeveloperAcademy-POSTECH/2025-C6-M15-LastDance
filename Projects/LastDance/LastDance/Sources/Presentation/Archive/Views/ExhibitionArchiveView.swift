@@ -27,6 +27,17 @@ struct ExhibitionArchiveView: View {
         })
     }
 
+    // 해당 전시에서 사용자가 반응을 남긴 작품들만 필터링
+    private func reactedArtworks() -> [Artwork] {
+        let reactionArtworkIds = Set(viewModel.reactions.map { $0.artworkId })
+        return viewModel.artworks.filter { reactionArtworkIds.contains($0.id) }
+    }
+
+    // 반응을 남긴 작품이 있는지 확인
+    private func hasReactedArtworks() -> Bool {
+        !reactedArtworks().isEmpty
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -70,7 +81,7 @@ struct ExhibitionArchiveView: View {
                     ProgressView()
                         .scaleEffect(1.2)
                         .frame(maxWidth: .infinity, minHeight: 400)
-                } else if viewModel.hasReactions {
+                } else if hasReactedArtworks() {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
@@ -79,12 +90,14 @@ struct ExhibitionArchiveView: View {
                         ],
                         spacing: 24
                     ) {
-                        ForEach(viewModel.reactions, id: \.id) { reaction in
-                            ReactionCardView(
-                                reaction: reaction,
-                                artwork: exhibition?.artworks.first { $0.id == reaction.artworkId },
-                                artist: viewModel.artist(for: exhibition?.artworks.first { $0.id == reaction.artworkId } ?? Artwork(id: 0, exhibitionId: "", title: ""))
-                            )
+                        ForEach(reactedArtworks(), id: \.id) { artwork in
+                            if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                                ReactionCardView(
+                                    reaction: reaction,
+                                    artwork: artwork,
+                                    artist: viewModel.artist(for: artwork)
+                                )
+                            }
                         }
                     }
                     .padding(.horizontal, 32)
@@ -102,8 +115,8 @@ struct ExhibitionArchiveView: View {
         .background(Color.white)
         .onAppear {
             viewModel.loadData()
-            Log.debug("???: \(exhibition?.createdAt)")
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

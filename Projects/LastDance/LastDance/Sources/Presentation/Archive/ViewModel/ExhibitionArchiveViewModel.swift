@@ -43,13 +43,6 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                     // API 응답 후 로컬 데이터 로드
                     Task { @MainActor in
                         do {
-                            // SwiftData에 저장된 Exhibition Model 확인
-                            if let exhibition = self.swiftDataManager.fetchById(Exhibition.self, id: String(self.exhibitionId)) {
-                                Log.debug("[ExhibitionArchiveViewModel] Exhibition Model 로드 완료: \(exhibition.title)")
-                            } else {
-                                Log.error("[ExhibitionArchiveViewModel] Exhibition Model을 찾을 수 없습니다. id: \(self.exhibitionId)")
-                            }
-
                             // 최신 로컬 데이터 가져오기
                             self.reactions = try await self.fetchReactions()
                             self.artworks  = try await self.fetchArtworks()
@@ -86,13 +79,31 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ExhibitionArchiveViewModel", code: 1)
         }
-        
+
         let context = container.mainContext
-        let descriptor = FetchDescriptor<Reaction>(
+
+        // 먼저 해당 전시의 모든 작품 ID를 가져옴
+        let exhibitionIdString = String(exhibitionId)
+        let artworkDescriptor = FetchDescriptor<Artwork>(
+            predicate: #Predicate<Artwork> { artwork in
+                artwork.exhibitionId == exhibitionIdString
+            }
+        )
+        let artworks = try context.fetch(artworkDescriptor)
+        let artworkIds = Set(artworks.map { $0.id })
+
+        Log.debug("[ExhibitionArchiveViewModel] 전시 ID \(self.exhibitionId)의 작품 IDs: \(artworkIds)")
+
+        // 모든 반응을 가져온 후 해당 전시 작품에 대한 것만 필터링
+        let reactionDescriptor = FetchDescriptor<Reaction>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
-        
-        return try context.fetch(descriptor)
+        let allReactions = try context.fetch(reactionDescriptor)
+        let filteredReactions = allReactions.filter { artworkIds.contains($0.artworkId) }
+
+        Log.debug("[ExhibitionArchiveViewModel] 전체 반응: \(allReactions.count), 필터링된 반응: \(filteredReactions.count)")
+
+        return filteredReactions
     }
     
     private func fetchArtworks() async throws -> [Artwork] {

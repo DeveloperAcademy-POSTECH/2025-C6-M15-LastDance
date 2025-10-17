@@ -109,8 +109,23 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         let exhibition = exhibitionDto.toEntity()
+
+                        // Artworks 독립적으로 저장
+                        if let artworkInfos = exhibitionDto.artworks {
+                            for artworkInfo in artworkInfos {
+                                let artwork = Artwork(
+                                    id: artworkInfo.id,
+                                    exhibitionId: String(exhibitionDto.id),
+                                    title: artworkInfo.title,
+                                    artistId: artworkInfo.artist_id,
+                                    thumbnailURL: artworkInfo.thumbnail_url
+                                )
+                                SwiftDataManager.shared.insert(artwork)
+                            }
+                            Log.debug("[ExhibitionAPIService] 전시 및 작품 로컬 저장 완료 (\(artworkInfos.count)개)")
+                        }
+
                         SwiftDataManager.shared.insert(exhibition)
-                        Log.debug("[ExhibitionAPIService] 전시 상세 로컬 저장 완료")
                     }
 
                     completion(.success(exhibitionDto))
