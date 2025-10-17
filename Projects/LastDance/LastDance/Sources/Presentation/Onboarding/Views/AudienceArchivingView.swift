@@ -21,12 +21,14 @@ struct AudienceArchivingTitleSection: View {
 }
 
 struct AudienceArchivingAddButtonSection: View {
-    let viewModel: ArchivingViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    @ObservedObject var viewModel: ArchivingViewModel
 
     var body: some View {
         VStack(spacing: 40) {
             CircleAddButton {
                 viewModel.tapAddButton()
+                router.push(.exhibitionList)
             }
 
             Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
@@ -40,7 +42,6 @@ struct AudienceArchivingAddButtonSection: View {
 
 /// 아카이빙 시작 뷰
 struct AudienceArchivingView: View {
-    @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArchivingViewModel()
 
     var body: some View {

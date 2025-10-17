@@ -26,7 +26,6 @@ final class IdentitySelectionViewModel: ObservableObject {
         }
 
         saveUserType(selectedType)
-        // TODO: 다음 온보딩 화면으로 네비게이션
     }
 
     /// 사용자 타입 저장
@@ -40,5 +39,6 @@ final class IdentitySelectionViewModel: ObservableObject {
             let newUser = User(role: type.rawValue)
             dataManager.insert(newUser)
         }
+        UserDefaults.standard.set(type.rawValue, forKey: UserDefaultsKey.userType.key)
     }
 }
