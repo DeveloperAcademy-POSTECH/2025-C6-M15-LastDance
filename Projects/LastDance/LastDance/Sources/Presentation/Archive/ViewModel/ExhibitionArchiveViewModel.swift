@@ -18,67 +18,57 @@ final class ExhibitionArchiveViewModel: ObservableObject {
 
     private let swiftDataManager = SwiftDataManager.shared
     private let apiService: ExhibitionAPIServiceProtocol
-    private let exhibitionId: Int
-    let exhibition: Exhibition
+    let exhibitionId: Int
 
     init(apiService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(), exhibitionId: Int) {
         self.apiService = apiService
         self.exhibitionId = exhibitionId
-
-        // 로컬에서 Exhibition 조회, 없으면 임시 객체 생성
-        if let localExhibition = swiftDataManager.fetchById(Exhibition.self, id: String(exhibitionId)) {
-            self.exhibition = localExhibition
-        } else {
-            // 임시 Exhibition 객체 생성 (API 호출 전까지 사용)
-            self.exhibition = Exhibition(
-                id: String(exhibitionId),
-                title: "로딩 중...",
-                startDate: Date(),
-                endDate: Date()
-            )
-        }
     }
     
     func loadData() {
         isLoading = true
         errorMessage = ""
 
-        // 로컬 데이터 로드
-        Task { @MainActor in
-            do {
-                self.reactions = try await fetchReactions()
-                self.artworks  = try await fetchArtworks()
-                self.artists   = try await fetchArtists()
-            } catch {
-                Log.error("[ExhibitionArchiveViewModel] 로컬 데이터 로드 실패: \(error)")
-            }
-        }
-
         // API에서 전시 상세 조회
         apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
+            guard let self = self else { return }
+
             DispatchQueue.main.async {
-                self?.isLoading = false
+                self.isLoading = false
 
                 switch result {
-                case .success(let exhibitionDto):
-                    Log.debug("[ExhibitionArchiveViewModel] 전시 상세 조회 성공: \(exhibitionDto.title)")
+                case .success:
+                    Log.debug("[ExhibitionArchiveViewModel] 전시 상세 조회 API 성공")
+
+                    // API 응답 후 로컬 데이터 로드
+                    Task { @MainActor in
+                        do {
+                            // SwiftData에 저장된 Exhibition Model 확인
+                            if let exhibition = self.swiftDataManager.fetchById(Exhibition.self, id: String(self.exhibitionId)) {
+                                Log.debug("[ExhibitionArchiveViewModel] Exhibition Model 로드 완료: \(exhibition.title)")
+                            } else {
+                                Log.error("[ExhibitionArchiveViewModel] Exhibition Model을 찾을 수 없습니다. id: \(self.exhibitionId)")
+                            }
+
+                            // 최신 로컬 데이터 가져오기
+                            self.reactions = try await self.fetchReactions()
+                            self.artworks  = try await self.fetchArtworks()
+                            self.artists   = try await self.fetchArtists()
+
+                            Log.debug("[ExhibitionArchiveViewModel] 로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
+                        } catch {
+                            Log.error("[ExhibitionArchiveViewModel] 로컬 데이터 로드 실패: \(error)")
+                        }
+                    }
 
                 case .failure(let error):
-                    self?.errorMessage = "전시 정보를 불러오는데 실패했습니다."
+                    self.errorMessage = "전시 정보를 불러오는데 실패했습니다."
                     Log.error("[ExhibitionArchiveViewModel] 전시 상세 조회 실패: \(error)")
                 }
             }
         }
     }
 
-    var exhibitionTitle: String {
-        exhibition.title
-    }
-
-    var exhibitionDateString: String {
-        return exhibition.startDate.toShortDateString()
-    }
-    
     var hasReactions: Bool {
         !reactions.isEmpty
     }

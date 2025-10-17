@@ -6,15 +6,27 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ExhibitionArchiveView: View {
     @StateObject private var viewModel: ExhibitionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
+    @Query private var exhibitions: [Exhibition]
+
+    private var exhibition: Exhibition? {
+        exhibitions.first
+    }
 
     init(exhibitionId: Int) {
         _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibitionId: exhibitionId))
+
+            // 해당 id에 맞는 Exhibition 정보만 가져옴
+        let exhibitionIdString = String(exhibitionId)
+        _exhibitions = Query(filter: #Predicate<Exhibition> { exhibition in
+            exhibition.id == exhibitionIdString
+        })
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -33,17 +45,17 @@ struct ExhibitionArchiveView: View {
             
             // 전시 제목
             HStack {
-                Text(viewModel.exhibitionTitle)
+                Text(exhibition?.title ?? "전시 정보 로딩 중...")
                     .font(.system(size: 22, weight: .bold))
                     .foregroundColor(.black)
                 Spacer()
             }
             .padding(.horizontal, 20)
             .padding(.top, 14)
-            
+
             // 날짜
             HStack {
-                Text(viewModel.exhibitionDateString)
+                Text(exhibition?.createdAt ?? "")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.gray)
                 Spacer()
@@ -70,8 +82,8 @@ struct ExhibitionArchiveView: View {
                         ForEach(viewModel.reactions, id: \.id) { reaction in
                             ReactionCardView(
                                 reaction: reaction,
-                                artwork: viewModel.artwork(for: reaction),
-                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: 0, exhibitionId: "", title: ""))
+                                artwork: exhibition?.artworks.first { $0.id == reaction.artworkId },
+                                artist: viewModel.artist(for: exhibition?.artworks.first { $0.id == reaction.artworkId } ?? Artwork(id: 0, exhibitionId: "", title: ""))
                             )
                         }
                     }
@@ -90,6 +102,7 @@ struct ExhibitionArchiveView: View {
         .background(Color.white)
         .onAppear {
             viewModel.loadData()
+            Log.debug("???: \(exhibition?.createdAt)")
         }
     }
 }
@@ -151,9 +164,3 @@ struct ReactionCardView: View {
         }
     }
 }
-
-//#Preview {
-//    return ExhibitionArchiveView(exhibitionId: 1)
-//        .environmentObject(NavigationRouter())
-//        .modelContainer(SwiftDataManager.shared.container!)
-//}

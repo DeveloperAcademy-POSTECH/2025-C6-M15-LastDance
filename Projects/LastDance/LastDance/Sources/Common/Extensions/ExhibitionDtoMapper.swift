@@ -17,23 +17,23 @@ protocol ExhibitionDtoMappableProtocol {
     var end_date: String { get }
     var venue_id: Int { get }
     var cover_image_url: String? { get }
+    var created_at: String { get }
+    var updated_at: String? { get }
 }
 
 // MARK: ExhibitionDtoMappable
 extension ExhibitionDtoMappableProtocol {
     func toEntity() -> Exhibition {
-        let dateFormatter = ISO8601DateFormatter()
-        let start = dateFormatter.date(from: start_date) ?? Date()
-        let end = dateFormatter.date(from: end_date) ?? Date()
-
         return Exhibition(
             id: String(id),
             title: title,
             descriptionText: description_text,
-            startDate: start,
-            endDate: end,
+            startDate: Date.formatAPIDate(from: start_date),
+            endDate: Date.formatAPIDate(from: end_date),
             venueId: String(venue_id),
-            coverImageName: cover_image_url
+            coverImageName: cover_image_url,
+            createdAt: Date.formatAPIDate(from: created_at),
+            updatedAt: updated_at.flatMap { Date.formatAPIDate(from: $0) }
         )
     }
 }
