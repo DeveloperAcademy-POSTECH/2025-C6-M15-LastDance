@@ -15,9 +15,9 @@ struct OnboardingView: View {
         VStack {
 //            Text("OnboardingView")
             Button(action: {
-                router.push(.exhibitionList)
+                router.push(.exhibitionArchive(exhibitionId: 1))
             }, label: {
-                Text("전시 찾기")
+                Text("ExhibitionArchiveView")
             })
         }
     }

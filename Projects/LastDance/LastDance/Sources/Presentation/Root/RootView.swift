@@ -26,6 +26,8 @@ struct RootView: View {
                     case .exhibitionDetail(let id):
                         ExhibitionDetailView(exhibitionId: id)
                             .navigationBarBackButtonHidden(true)
+                    case .exhibitionArchive(let exhibitionId):
+                        ExhibitionArchiveView(exhibitionId: exhibitionId)
                     case .artworkDetail(let id):
                         ArtworkDetailView(artworkId: id)
                     case .camera:

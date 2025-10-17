@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct MakeExhibitionResponseDto: Codable {
+struct ExhibitionResponseDto: Codable {
     let id: Int
     let title: String
     let description_text: String?

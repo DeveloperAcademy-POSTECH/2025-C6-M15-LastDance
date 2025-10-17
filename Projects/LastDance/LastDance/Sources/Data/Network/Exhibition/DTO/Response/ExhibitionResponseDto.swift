@@ -2,13 +2,12 @@
 //  ExhibitionResponseDto.swift
 //  LastDance
 //
-//  Created by D��� on 10/16/25.
+//  Created by 아우신얀 on 10/16/25.
 //
 
 import Foundation
 
-// MARK: ExhibitionResponseDto
-struct ExhibitionResponseDto: Codable {
+struct ExhibitionResponseDto: Codable, ExhibitionDtoMappableProtocol {
     let id: Int
     let title: String
     let description_text: String?
@@ -18,24 +17,27 @@ struct ExhibitionResponseDto: Codable {
     let cover_image_url: String?
     let created_at: String
     let updated_at: String?
-}
+    let venue: VenueInfo
+    let artworks: [ArtworkInfo]?
 
-// MARK: ExhibitionResponseDto
-/// 해당 파일에서만 사용되는 extension 입니다.
-extension ExhibitionResponseDto {
-    func toEntity() -> Exhibition {
-        let dateFormatter = ISO8601DateFormatter()
-        let start = dateFormatter.date(from: start_date) ?? Date()
-        let end = dateFormatter.date(from: end_date) ?? Date()
+    struct VenueInfo: Codable {
+        let id: Int
+        let name: String
+        let address: String?
+        let geo_lat: Double?
+        let geo_lon: Double?
+        let created_at: String
+        let updated_at: String?
+    }
 
-        return Exhibition(
-            id: String(id),
-            title: title,
-            descriptionText: description_text,
-            startDate: start,
-            endDate: end,
-            venueId: String(venue_id),
-            coverImageName: cover_image_url
-        )
+    struct ArtworkInfo: Codable {
+        let id: Int
+        let title: String
+        let artist_id: Int
+        let description: String?
+        let year: Int?
+        let thumbnail_url: String?
+        let created_at: String
+        let updated_at: String?
     }
 }

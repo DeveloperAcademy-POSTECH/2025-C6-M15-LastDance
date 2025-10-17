@@ -10,9 +10,9 @@ import SwiftUI
 struct ExhibitionArchiveView: View {
     @StateObject private var viewModel: ExhibitionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
-    init(exhibition: Exhibition) {
-        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibition: exhibition))
+
+    init(exhibitionId: Int) {
+        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibitionId: exhibitionId))
     }
     
     var body: some View {
@@ -71,7 +71,7 @@ struct ExhibitionArchiveView: View {
                             ReactionCardView(
                                 reaction: reaction,
                                 artwork: viewModel.artwork(for: reaction),
-                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: "", exhibitionId: "", title: ""))
+                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: 0, exhibitionId: "", title: ""))
                             )
                         }
                     }
@@ -88,6 +88,9 @@ struct ExhibitionArchiveView: View {
             }
         }
         .background(Color.white)
+        .onAppear {
+            viewModel.loadData()
+        }
     }
 }
 
@@ -149,14 +152,8 @@ struct ReactionCardView: View {
     }
 }
 
-#Preview {
-    let exhibition = Exhibition(
-        id: "preview",
-        title: "빛의 향연",
-        startDate: Date(),
-        endDate: Date()
-    )
-    return ExhibitionArchiveView(exhibition: exhibition)
-        .environmentObject(NavigationRouter())
-        .modelContainer(SwiftDataManager.shared.container!)
-}
+//#Preview {
+//    return ExhibitionArchiveView(exhibitionId: 1)
+//        .environmentObject(NavigationRouter())
+//        .modelContainer(SwiftDataManager.shared.container!)
+//}

@@ -83,25 +83,8 @@ struct ExhibitionListView: View {
             }
         }
         .onAppear {
-//            viewModel.getExhibitions()
-
-            // 전시 생성 API 테스트
-            testMakeExhibition()
+            viewModel.getExhibitions()
         }
-    }
-
-    // MARK: - API Test Helper
-    private func testMakeExhibition() {
-        // SwiftDataManager에서 저장된 Artist 데이터 가져오기
-        let artists = dataManager.fetchAll(Artist.self)
-        guard let firstArtist = artists.first else {
-            Log.error("[ExhibitionListView] SwiftData에 Artist 데이터가 없습니다.")
-            return
-        }
-
-        // 전시 생성 API 호출 (ViewModel의 makeExhibitionList 메서드 사용)
-        viewModel.makeExhibitionList()
-        Log.debug("[ExhibitionListView] 전시 생성 API 테스트 실행 (Artist ID: \(firstArtist.id), Name: \(firstArtist.name))")
     }
 }
 
