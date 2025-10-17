@@ -25,28 +25,25 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         self.exhibitionId = exhibitionId
     }
     
+    /// 전시 상세 조회 api 호출
     func loadData() {
         isLoading = true
         errorMessage = ""
 
-        // API에서 전시 상세 조회
         apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
                 self.isLoading = false
-
                 switch result {
                 case .success:
                     Log.debug("[ExhibitionArchiveViewModel] 전시 상세 조회 API 성공")
 
-                    // API 응답 후 로컬 데이터 로드
                     Task { @MainActor in
                         do {
-                            // 최신 로컬 데이터 가져오기
                             self.reactions = try await self.fetchReactions()
-                            self.artworks  = try await self.fetchArtworks()
                             self.artists   = try await self.fetchArtists()
+                            self.artworks = try await self.fetchArtworksForExhibition()
 
                             Log.debug("[ExhibitionArchiveViewModel] 로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
                         } catch {
@@ -62,19 +59,24 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         }
     }
 
-    var hasReactions: Bool {
-        !reactions.isEmpty
+    /// 반응을 남긴 작품들만 필터링
+    func getReactedArtworks() -> [Artwork] {
+        let reactionArtworkIds = Set(reactions.map { $0.artworkId })
+        return artworks.filter { reactionArtworkIds.contains($0.id) }
     }
-    
-    func artwork(for reaction: Reaction) -> Artwork? {
-        artworks.first { $0.id == reaction.artworkId }
+
+    /// 반응을 남긴 작품이 있는지 확인하는 함수
+    func hasReactedArtworks() -> Bool {
+        !getReactedArtworks().isEmpty
     }
-    
+
+    /// 작품 ID로 작가 정보를 찾아주는 함수
     func artist(for artwork: Artwork) -> Artist? {
         guard let artistId = artwork.artistId else { return nil }
         return artists.first { $0.id == artistId }
     }
     
+    /// 해당 전시의 반응만 조회
     private func fetchReactions() async throws -> [Reaction] {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ExhibitionArchiveViewModel", code: 1)
@@ -82,41 +84,42 @@ final class ExhibitionArchiveViewModel: ObservableObject {
 
         let context = container.mainContext
 
-        // 먼저 해당 전시의 모든 작품 ID를 가져옴
+        // 해당 전시의 작품 ID 조회
         let exhibitionIdString = String(exhibitionId)
         let artworkDescriptor = FetchDescriptor<Artwork>(
             predicate: #Predicate<Artwork> { artwork in
                 artwork.exhibitionId == exhibitionIdString
             }
         )
-        let artworks = try context.fetch(artworkDescriptor)
-        let artworkIds = Set(artworks.map { $0.id })
+        let exhibitionArtworks = try context.fetch(artworkDescriptor)
+        let artworkIds = Set(exhibitionArtworks.map { $0.id })
 
-        Log.debug("[ExhibitionArchiveViewModel] 전시 ID \(self.exhibitionId)의 작품 IDs: \(artworkIds)")
-
-        // 모든 반응을 가져온 후 해당 전시 작품에 대한 것만 필터링
+        // 모든 반응 조회 후 해당 전시 작품의 반응만 필터링
         let reactionDescriptor = FetchDescriptor<Reaction>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
         let allReactions = try context.fetch(reactionDescriptor)
-        let filteredReactions = allReactions.filter { artworkIds.contains($0.artworkId) }
 
-        Log.debug("[ExhibitionArchiveViewModel] 전체 반응: \(allReactions.count), 필터링된 반응: \(filteredReactions.count)")
-
-        return filteredReactions
+        return allReactions.filter { artworkIds.contains($0.artworkId) }
     }
     
-    private func fetchArtworks() async throws -> [Artwork] {
+    /// 해당 전시의 작품만 조회
+    private func fetchArtworksForExhibition() async throws -> [Artwork] {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ExhibitionArchiveViewModel", code: 1)
         }
-        
+
         let context = container.mainContext
-        let descriptor = FetchDescriptor<Artwork>()
-        
+        let exhibitionIdString = String(exhibitionId)
+        let descriptor = FetchDescriptor<Artwork>(
+            predicate: #Predicate<Artwork> { artwork in
+                artwork.exhibitionId == exhibitionIdString
+            }
+        )
         return try context.fetch(descriptor)
     }
     
+    /// 작가 정보 가져오기 (artist 함수에서 못가져 올 경우를 대비)
     private func fetchArtists() async throws -> [Artist] {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ExhibitionArchiveViewModel", code: 1)

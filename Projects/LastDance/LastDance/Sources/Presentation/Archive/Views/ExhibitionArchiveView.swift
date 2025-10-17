@@ -27,17 +27,6 @@ struct ExhibitionArchiveView: View {
         })
     }
 
-    // 해당 전시에서 사용자가 반응을 남긴 작품들만 필터링
-    private func reactedArtworks() -> [Artwork] {
-        let reactionArtworkIds = Set(viewModel.reactions.map { $0.artworkId })
-        return viewModel.artworks.filter { reactionArtworkIds.contains($0.id) }
-    }
-
-    // 반응을 남긴 작품이 있는지 확인
-    private func hasReactedArtworks() -> Bool {
-        !reactedArtworks().isEmpty
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -81,7 +70,7 @@ struct ExhibitionArchiveView: View {
                     ProgressView()
                         .scaleEffect(1.2)
                         .frame(maxWidth: .infinity, minHeight: 400)
-                } else if hasReactedArtworks() {
+                } else if viewModel.hasReactedArtworks() {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
@@ -90,7 +79,7 @@ struct ExhibitionArchiveView: View {
                         ],
                         spacing: 24
                     ) {
-                        ForEach(reactedArtworks(), id: \.id) { artwork in
+                        ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
                             if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
                                 ReactionCardView(
                                     reaction: reaction,
