@@ -26,7 +26,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     func getArtworks(artistId: Int?, exhibitionId: Int?, completion: @escaping (Result<[ArtworkDetailResponseDto], Error>) -> Void) {
         Log.debug("[ArtworkAPIService] 요청 파라미터 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
 
-        provider.request(.getArtworks(artist_id: artistId, exhibition_id: exhibitionId)) { result in
+        provider.request(.getArtworks(artistId: artistId, exhibitionId: exhibitionId)) { result in
             switch result {
             case .success(let response):
                 do {

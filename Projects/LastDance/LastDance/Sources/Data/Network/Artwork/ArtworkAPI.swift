@@ -8,13 +8,14 @@
 import Moya
 
 enum ArtworkAPI {
-    case getArtworks(artist_id: Int?, exhibition_id: Int?)
+    case getArtworks(artistId: Int?, exhibitionId: Int?)
+    case makeArtwork(dto: MakeArtworkRequestDto)
 }
 
 extension ArtworkAPI: BaseTargetType {
     var path: String {
         switch self {
-        case .getArtworks(let artist_id, let exhibition_id):
+        case .getArtworks(let artistId, let exhibitionId), .makeArtwork:
             return "\(APIVersion.v1API)/artworks"
         }
     }
@@ -23,20 +24,24 @@ extension ArtworkAPI: BaseTargetType {
         switch self {
         case .getArtworks:
             return .get
+        case .makeArtwork:
+            return .post
         }
     }
     
     var queryParameters: [String : Any]? {
         switch self {
-        case .getArtworks(let artist_id, let exhibition_id):
+        case .getArtworks(let artistId, let exhibitionId):
             var params: [String: Any] = [:]
-            if let artist_id = artist_id {
+            if let artistId = artist_id {
                 params["artist_id"] = artist_id
             }
-            if let exhibition_id = exhibition_id {
+            if let exhibitionId = exhibition_id {
                 params["exhibition_id"] = exhibition_id
             }
             return params.isEmpty ? nil : params
+        case .makeArtwork:
+            return nil
         }
     }
     
@@ -44,6 +49,8 @@ extension ArtworkAPI: BaseTargetType {
         switch self {
         case .getArtworks:
             return nil
+        case .makeArtwork(let dto):
+            return dto
         }
     }
 }
