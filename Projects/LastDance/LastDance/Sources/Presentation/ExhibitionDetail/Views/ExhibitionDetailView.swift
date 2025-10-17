@@ -59,7 +59,6 @@ struct ExhibitionDetailView: View {
             initialUserType = UserType(rawValue: userTypeValue)
         }
         let isArtist = (initialUserType?.displayName == "작가")
-        print("\(isArtist)")
         let title = isArtist ? "내 전시가 맞아요" : "관람하기"
 
         return BottomButton(text: title) {
