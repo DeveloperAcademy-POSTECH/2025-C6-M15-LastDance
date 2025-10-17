@@ -21,6 +21,7 @@ final class ReactionInputViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
     let limit = 500 // texteditor 최대 글자수 제한
     private let apiService = ReactionAPIService()
+    private let artworkAPIService = ArtworkAPIService()
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
@@ -113,6 +114,22 @@ final class ReactionInputViewModel: ObservableObject {
                     Log.debug("[ReactionInputViewModel] ✅ 반응 상세 조회 성공!")
                 case .failure(let error):
                     Log.debug("[ReactionInputViewModel] ❌ 반응 상세 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    /// 작품 목록 조회 API 함수
+    func fetchArtworks(artistId: Int? = nil, exhibitionId: Int? = nil) {
+        Log.debug("[ReactionInputViewModel] 작품 목록 조회 API 호출 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
+
+        artworkAPIService.getArtworks(artistId: artistId, exhibitionId: exhibitionId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let artworks):
+                    Log.debug("[ReactionInputViewModel] ✅ 작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
+                case .failure(let error):
+                    Log.error("[ReactionInputViewModel] ❌ 작품 목록 조회 실패: \(error.localizedDescription)")
                 }
             }
         }
