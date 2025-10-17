@@ -2,7 +2,7 @@
 //  TotalExhibitionResponseDto.swift
 //  LastDance
 //
-//  Created by D��� on 10/16/25.
+//  Created by 신얀 on 10/16/25.
 //
 
 import Foundation
