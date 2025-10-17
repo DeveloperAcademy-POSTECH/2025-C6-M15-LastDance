@@ -40,6 +40,11 @@
 		99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E222EA199B300D2F71A /* SelectionRow.swift */; };
 		99191E252EA199BB00D2F71A /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E242EA199BB00D2F71A /* CustomAlert.swift */; };
 		99191E272EA199F300D2F71A /* View+CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E262EA199F300D2F71A /* View+CustomAlert.swift */; };
+		99191E452EA1C43F00D2F71A /* ArtistReactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E3F2EA1C43F00D2F71A /* ArtistReactionViewModel.swift */; };
+		99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E3E2EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift */; };
+		99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E412EA1C43F00D2F71A /* ArtistReactionArchiveView.swift */; };
+		99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E422EA1C43F00D2F71A /* ArtistReactionView.swift */; };
+		99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -137,6 +142,11 @@
 		99191E222EA199B300D2F71A /* SelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRow.swift; sourceTree = "<group>"; };
 		99191E242EA199BB00D2F71A /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		99191E262EA199F300D2F71A /* View+CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CustomAlert.swift"; sourceTree = "<group>"; };
+		99191E3E2EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionArchiveViewModel.swift; sourceTree = "<group>"; };
+		99191E3F2EA1C43F00D2F71A /* ArtistReactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionViewModel.swift; sourceTree = "<group>"; };
+		99191E412EA1C43F00D2F71A /* ArtistReactionArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionArchiveView.swift; sourceTree = "<group>"; };
+		99191E422EA1C43F00D2F71A /* ArtistReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionView.swift; sourceTree = "<group>"; };
+		99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionItem.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -281,6 +291,33 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		99191E402EA1C43F00D2F71A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				99191E3E2EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift */,
+				99191E3F2EA1C43F00D2F71A /* ArtistReactionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		99191E432EA1C43F00D2F71A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				99191E412EA1C43F00D2F71A /* ArtistReactionArchiveView.swift */,
+				99191E422EA1C43F00D2F71A /* ArtistReactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		99191E442EA1C43F00D2F71A /* ArtistArchive */ = {
+			isa = PBXGroup;
+			children = (
+				99191E402EA1C43F00D2F71A /* ViewModel */,
+				99191E432EA1C43F00D2F71A /* Views */,
+			);
+			path = ArtistArchive;
+			sourceTree = "<group>";
+		};
 		99DAB0BD2E9EB77900379F27 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
@@ -398,6 +435,7 @@
 				99E6F0AB2E91EF48002ED9C2 /* Camera */,
 				99E6F0AE2E91EF48002ED9C2 /* Reaction */,
 				99E6F0AA2E91EF48002ED9C2 /* Archive */,
+				99191E442EA1C43F00D2F71A /* ArtistArchive */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -476,6 +514,7 @@
 				99E6F0FE2E97B0C6002ED9C2 /* Exhibition.swift */,
 				99E6F0B32E91EF48002ED9C2 /* Item.swift */,
 				8C0F9F4B2E9CE192005B8C12 /* UserType.swift */,
+				99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -854,6 +893,7 @@
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
+				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
 				99E6F1072E97B0E0002ED9C2 /* Venue.swift in Sources */,
@@ -910,6 +950,10 @@
 				D8C7C0B12E9FEFD900FCB472 /* ReactionAPIService.swift in Sources */,
 				D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
+				99191E452EA1C43F00D2F71A /* ArtistReactionViewModel.swift in Sources */,
+				99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */,
+				99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */,
+				99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */,
