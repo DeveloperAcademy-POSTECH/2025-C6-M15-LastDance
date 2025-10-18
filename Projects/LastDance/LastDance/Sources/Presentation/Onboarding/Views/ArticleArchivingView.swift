@@ -57,9 +57,6 @@ struct ArticleArchivingView: View {
         }
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden(false)
-        .onAppear {
-            viewModel.fetchAllArtists()
-        }
     }
 }
 
