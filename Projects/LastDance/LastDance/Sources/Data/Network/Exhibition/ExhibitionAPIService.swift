@@ -38,7 +38,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ExhibitionAPIService] 서버 응답: \(jsonString)")
+                        Log.debug("\(jsonString)")
                     }
 
                     // 배열로 직접 디코딩
@@ -50,16 +50,16 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                             let exhibition = exhibitionDto.toEntity()
                             SwiftDataManager.shared.insert(exhibition)
                         }
-                        Log.debug("[ExhibitionAPIService] 로컬 저장 완료: \(exhibitions.count)개")
+                        Log.debug("로컬 저장 완료: \(exhibitions.count)개")
                     }
 
                     completion(.success(exhibitions))
                 } catch {
-                    Log.fault("[ExhibitionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                Log.error("[ExhibitionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -74,18 +74,18 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ExhibitionAPIService] makeExhibition 서버 응답: \(jsonString)")
+                        Log.debug("makeExhibition 서버 응답: \(jsonString)")
                     }
 
                     let exhibition = try JSONDecoder().decode(ExhibitionResponseDto.self, from: response.data)
-                    Log.debug("[ExhibitionAPIService] 전시 생성 성공: \(exhibition.title)")
+                    Log.debug("전시 생성 성공: \(exhibition.title)")
                     completion(.success(exhibition))
                 } catch {
-                    Log.fault("[ExhibitionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                Log.error("[ExhibitionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -99,12 +99,12 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ExhibitionAPIService] getDetailExhibition 서버 응답: \(jsonString)")
+                        Log.debug("getDetailExhibition 서버 응답: \(jsonString)")
                     }
 
                     // 직접 디코딩
                     let exhibitionDto = try JSONDecoder().decode(ExhibitionResponseDto.self, from: response.data)
-                    Log.debug("[ExhibitionAPIService] 전시 상세 조회 성공: \(exhibitionDto.title)")
+                    Log.debug("전시 상세 조회 성공: \(exhibitionDto.title)")
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -122,7 +122,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                 )
                                 SwiftDataManager.shared.insert(artwork)
                             }
-                            Log.debug("[ExhibitionAPIService] 전시 및 작품 로컬 저장 완료 (\(artworkInfos.count)개)")
+                            Log.debug("전시 및 작품 로컬 저장 완료 (\(artworkInfos.count)개)")
                         }
 
                         SwiftDataManager.shared.insert(exhibition)
@@ -130,11 +130,11 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
 
                     completion(.success(exhibitionDto))
                 } catch {
-                    Log.fault("[ExhibitionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
-                Log.error("[ExhibitionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }

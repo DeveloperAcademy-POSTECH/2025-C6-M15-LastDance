@@ -31,7 +31,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
             case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ReactionAPIService] 서버 응답: \(jsonString)")
+                        Log.debug("서버 응답: \(jsonString)")
                     }
                     let reactionDetail = try JSONDecoder().decode(ReactionDetailResponseDto.self, from: response.data)
                     let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
@@ -40,11 +40,11 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     DispatchQueue.main.async {
                         let reaction = self.mapDtoToModel(reactionDetail)
                         SwiftDataManager.shared.insert(reaction)
-                        Log.debug("[ReactionAPIService] 로컬 저장 완료")
+                        Log.debug("로컬 저장 완료")
                     }
                     completion(.success(responseDto))
                 } catch {
-                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -52,9 +52,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
+                    Log.debug("Validation Error: \(errorMessages)")
                 }
-                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -65,19 +65,19 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                       visitorId: Int?,
                       visitId: Int?,
                       completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void) {
-        Log.debug("[ReactionAPIService] 요청 파라미터 - artworkId: \(String(describing: artworkId)), visitorId: \(String(describing: visitorId)), visitId: \(String(describing: visitId))")
+        Log.debug("요청 파라미터 - artworkId: \(String(describing: artworkId)), visitorId: \(String(describing: visitorId)), visitId: \(String(describing: visitId))")
 
         provider.request(.getReactions(artworkId: artworkId, visitorId: visitorId, visitId: visitId)) { result in
             switch result {
             case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ReactionAPIService] 전체 조회 응답: \(jsonString)")
+                        Log.debug("전체 조회 응답: \(jsonString)")
                     }
                     let reactions = try JSONDecoder().decode([GetReactionResponseDto].self, from: response.data)
                     completion(.success(reactions))
                 } catch {
-                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -85,9 +85,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
+                    Log.debug("Validation Error: \(errorMessages)")
                 }
-                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -95,14 +95,14 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
     
     /// 반응 상세 조회하기 함수
     func getDetailReaction(reactionId: Int, completion: @escaping (Result<ReactionResponseDto, Error>) -> Void) {
-        Log.debug("[ReactionAPIService] 요청 파라미터 - reactionId: \(String(describing: reactionId))")
+        Log.debug("요청 파라미터 - reactionId: \(String(describing: reactionId))")
 
         provider.request(.getDetailReaction(reactionId: reactionId)) { result in
             switch result {
             case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[ReactionAPIService] 상세 조회 응답: \(jsonString)")
+                        Log.debug("상세 조회 응답: \(jsonString)")
                     }
                     let reactionDetail = try JSONDecoder().decode(ReactionDetailResponseDto.self, from: response.data)
                     let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
@@ -110,12 +110,12 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     DispatchQueue.main.async {
                         let reaction = self.mapDtoToModel(reactionDetail)
                         SwiftDataManager.shared.insert(reaction)
-                        Log.debug("[ReactionAPIService] 로컬 저장 완료")
+                        Log.debug("로컬 저장 완료")
                     }
 
                     completion(.success(responseDto))
                 } catch {
-                    Log.error("[ReactionAPIService] JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -123,9 +123,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("[ReactionAPIService] Validation Error: \(errorMessages)")
+                    Log.debug("Validation Error: \(errorMessages)")
                 }
-                Log.error("[ReactionAPIService] API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }

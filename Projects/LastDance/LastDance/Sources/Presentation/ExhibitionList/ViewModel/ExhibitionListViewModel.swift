@@ -55,7 +55,7 @@ final class ExhibitionListViewModel: ObservableObject {
                     ✅ 전시 조회 성공!
                     총 \(exhibitions.count)개의 전시
                     """
-                    Log.debug("[ExhibitionListViewModel] 전시 조회 성공: \(exhibitions.count)개")
+                    Log.debug("전시 조회 성공: \(exhibitions.count)개")
 
                 case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
@@ -63,7 +63,7 @@ final class ExhibitionListViewModel: ObservableObject {
                     } else {
                         self?.errorMessage = "❌ 실패: \(error.localizedDescription)"
                     }
-                    Log.error("[ExhibitionListViewModel] 전시 조회 실패: \(error)")
+                    Log.error("전시 조회 실패: \(error)")
                 }
             }
         }
@@ -116,7 +116,7 @@ final class ExhibitionListViewModel: ObservableObject {
                     Venue: \(response.venue.name)
                     Artworks: \(artworkCount)개
                     """
-                    Log.debug("[ExhibitionListViewModel] 전시 생성 성공: \(response.title)")
+                    Log.debug("전시 생성 성공: \(response.title)")
 
                 case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
@@ -124,7 +124,7 @@ final class ExhibitionListViewModel: ObservableObject {
                     } else {
                         self?.errorMessage = "❌ 실패: \(error.localizedDescription)"
                     }
-                    Log.error("[ExhibitionListViewModel] API 실패: \(error)")
+                    Log.error("API 실패: \(error)")
                 }
             }
         }

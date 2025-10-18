@@ -19,11 +19,11 @@ final class CompleteArticleListViewModel: ObservableObject {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 
-        Log.debug("[CompleteArticleListViewModel] 전체 전시 수: \(allExhibitions.count), 전체 작가 수: \(allArtists.count)")
+        Log.debug("전체 전시 수: \(allExhibitions.count), 전체 작가 수: \(allArtists.count)")
 
         exhibition = allExhibitions.first { $0.id == exhibitionId }
         artist = allArtists.first { $0.id == artistId }
 
-        Log.debug("[CompleteArticleListViewModel] 로컬 DB 조회 - 전시: \(exhibition?.title ?? "없음"), 작가: \(artist?.name ?? "없음")")
+        Log.debug("로컬 DB 조회 - 전시: \(exhibition?.title ?? "없음"), 작가: \(artist?.name ?? "없음")")
     }
 }

@@ -37,7 +37,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                 self.isLoading = false
                 switch result {
                 case .success:
-                    Log.debug("[ExhibitionArchiveViewModel] 전시 상세 조회 API 성공")
+                    Log.debug("전시 상세 조회 API 성공")
 
                     Task { @MainActor in
                         do {
@@ -45,15 +45,15 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                             self.artists   = try await self.fetchArtists()
                             self.artworks = try await self.fetchArtworksForExhibition()
 
-                            Log.debug("[ExhibitionArchiveViewModel] 로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
+                            Log.debug("로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
                         } catch {
-                            Log.error("[ExhibitionArchiveViewModel] 로컬 데이터 로드 실패: \(error)")
+                            Log.error("로컬 데이터 로드 실패: \(error)")
                         }
                     }
 
                 case .failure(let error):
                     self.errorMessage = "전시 정보를 불러오는데 실패했습니다."
-                    Log.error("[ExhibitionArchiveViewModel] 전시 상세 조회 실패: \(error)")
+                    Log.error("전시 상세 조회 실패: \(error)")
                 }
             }
         }
