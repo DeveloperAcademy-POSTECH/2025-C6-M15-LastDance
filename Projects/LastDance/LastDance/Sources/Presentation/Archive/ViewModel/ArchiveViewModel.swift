@@ -10,7 +10,6 @@ import SwiftData
 
 @MainActor
 final class ArchiveViewModel: ObservableObject {
-    
     @Published var capturedArtworks: [CapturedArtwork] = []
     @Published var currentExhibition: Exhibition?
     @Published var isLoading = false

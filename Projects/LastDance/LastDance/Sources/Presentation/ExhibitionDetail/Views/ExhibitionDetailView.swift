@@ -100,7 +100,7 @@ struct ExhibitionImageSection: View {
 struct ExhibitionInfoSection: View {
     let exhibition: Exhibition
     let artistNames: [String]
-    let formatDateRange: (Date, Date) -> String
+    let formatDateRange: (String, String) -> String
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

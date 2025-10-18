@@ -2,7 +2,7 @@
 //  CompleteArticleListViewModel.swift
 //  LastDance
 //
-//  Created by donghee on 10/16/25.
+//  Created by donghee, 신얀 on 10/16/25.
 //
 
 import SwiftUI
@@ -19,8 +19,12 @@ final class CompleteArticleListViewModel: ObservableObject {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 
+        Log.debug("전체 전시 수: \(allExhibitions.count), 전체 작가 수: \(allArtists.count)")
+
         exhibition = allExhibitions.first { $0.id == exhibitionId }
         artist = allArtists.first { $0.id == artistId }
+
+        Log.debug("로컬 DB 조회 - 전시: \(exhibition?.title ?? "없음"), 작가: \(artist?.name ?? "없음")")
     }
     
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
