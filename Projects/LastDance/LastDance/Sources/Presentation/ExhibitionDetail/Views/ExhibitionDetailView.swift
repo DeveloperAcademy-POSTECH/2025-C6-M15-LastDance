@@ -30,7 +30,7 @@ struct ExhibitionDetailView: View {
             }
             
             if viewModel.hasExhibition {
-                viewButton
+                actionButton
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -52,9 +52,21 @@ struct ExhibitionDetailView: View {
         }
     }
     
-    var viewButton: some View {
-        BottomButton(text: "관람하기") {
-            // TODO: 다음 화면으로 네비게이션
+    /// 관람객/작가에 따라 텍스트와 라우팅 분기
+    private var actionButton: some View {
+        var initialUserType: UserType?
+        if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
+            initialUserType = UserType(rawValue: userTypeValue)
+        }
+        let isArtist = (initialUserType?.displayName == "작가")
+        let title = isArtist ? "내 전시가 맞아요" : "관람하기"
+
+        return BottomButton(text: title) {
+            if isArtist {
+                router.push(.artistReaction)
+            } else {
+                router.push(.archive(id: exhibitionId))
+            }
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 34)

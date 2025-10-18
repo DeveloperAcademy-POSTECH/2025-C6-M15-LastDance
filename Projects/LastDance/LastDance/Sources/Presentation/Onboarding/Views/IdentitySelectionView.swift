@@ -21,7 +21,7 @@ struct IdentitySelectionTitleSection: View {
 }
 
 struct IdentitySelectionButtons: View {
-    let viewModel: IdentitySelectionViewModel
+    @ObservedObject var viewModel: IdentitySelectionViewModel
 
     var body: some View {
         VStack(spacing: 40) {
@@ -44,20 +44,31 @@ struct IdentitySelectionButtons: View {
 }
 
 struct IdentitySelectionNextButton: View {
-    let viewModel: IdentitySelectionViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    @ObservedObject var viewModel: IdentitySelectionViewModel
 
     var body: some View {
-        BottomButton(text: "다음") {
+        BottomButton(
+            text: "다음",
+            isEnabled: viewModel.selectedType != nil
+        ) {
             viewModel.confirmSelection()
+            
+            guard let selectedType = viewModel.selectedType else { return }
+            switch selectedType {
+            case .artist:
+                router.push(.articleArchiving)
+            case .viewer:
+                router.push(.audienceArchiving)
+            }
         }
     }
 }
 
 /// 사용자 정체성 선택 뷰 (작가/관람객)
 struct IdentitySelectionView: View {
-    @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = IdentitySelectionViewModel()
-
+    
     var body: some View {
         VStack(spacing: 28) {
             IdentitySelectionTitleSection()

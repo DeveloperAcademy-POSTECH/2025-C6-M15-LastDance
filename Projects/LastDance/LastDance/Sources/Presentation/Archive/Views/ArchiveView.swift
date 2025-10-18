@@ -12,6 +12,10 @@ struct ArchiveView: View {
     @StateObject private var viewModel = ArchiveViewModel()
     @EnvironmentObject private var router: NavigationRouter
     
+    
+    // TODO: - 이전 화면에서 넘겨받은 exhivitionId. 이것을 이용해 fetchCurrentExhibition 수정 필요.
+    let exhibitionId: String
+    
     var body: some View {
         VStack(spacing: 0) {
             ArchiveHeaderView {
@@ -142,10 +146,4 @@ struct ArchiveEmptyStateView: View {
             .lineSpacing(8)
             .frame(maxWidth: .infinity, minHeight: 400)
     }
-}
-
-#Preview {
-    ArchiveView()
-        .environmentObject(NavigationRouter())
-        .modelContainer(SwiftDataManager.shared.container!)
 }

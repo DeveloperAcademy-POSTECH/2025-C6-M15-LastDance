@@ -28,8 +28,9 @@ struct ExhibitionListTitleSection: View {
 }
 
 struct ExhibitionListContent: View {
-    let exhibitions: [Exhibition]
     @ObservedObject var viewModel: ExhibitionListViewModel
+    
+    let exhibitions: [Exhibition]
 
     var body: some View {
         ScrollView {
@@ -49,11 +50,17 @@ struct ExhibitionListContent: View {
 }
 
 struct ExhibitionListRegisterButton: View {
+    @EnvironmentObject private var router: NavigationRouter
     @ObservedObject var viewModel: ExhibitionListViewModel
 
     var body: some View {
-        BottomButton(text: "등록하기") {
-            viewModel.tapRegisterButton()
+        BottomButton(
+            text: "등록하기",
+            isEnabled: viewModel.selectedExhibitionId != nil
+        ) {
+            if let exhibitionId = viewModel.selectedExhibitionId {
+                router.push(.exhibitionDetail(id: exhibitionId))
+            }
         }
     }
 }
@@ -69,7 +76,7 @@ struct ExhibitionListView: View {
         VStack(spacing: 0) {
             ExhibitionListTitleSection()
 
-            ExhibitionListContent(exhibitions: exhibitions, viewModel: viewModel)
+            ExhibitionListContent(viewModel: viewModel, exhibitions: exhibitions)
 
             Spacer()
 

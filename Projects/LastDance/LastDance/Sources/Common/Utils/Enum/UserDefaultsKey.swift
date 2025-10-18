@@ -9,6 +9,7 @@
 enum UserDefaultsKey: String {
     case selectedCategories
     case seed = "seed.v1"
+    case userType
 
     var key: String {
         return self.rawValue
