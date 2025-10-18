@@ -52,7 +52,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
@@ -85,7 +85,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
@@ -123,7 +123,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
