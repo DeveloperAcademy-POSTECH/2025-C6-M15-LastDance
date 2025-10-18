@@ -5,6 +5,7 @@
 //  Created by donghee on 10/13/25.
 //
 
+import Moya
 import SwiftUI
 
 @MainActor
@@ -12,6 +13,7 @@ final class IdentitySelectionViewModel: ObservableObject {
     @Published var selectedType: UserType?
 
     private let dataManager = SwiftDataManager.shared
+    private let visitorService = VisitorAPIService()
 
     /// 사용자 타입 선택
     func selectUserType(_ type: UserType) {
@@ -26,19 +28,61 @@ final class IdentitySelectionViewModel: ObservableObject {
         }
 
         saveUserType(selectedType)
+        
+        if selectedType == .viewer {
+            createVisitorAPI()
+        }
     }
 
     /// 사용자 타입 저장
     private func saveUserType(_ type: UserType) {
-        let users = dataManager.fetchAll(User.self)
-
-        if let existingUser = users.first {
-            existingUser.role = type.rawValue
-            dataManager.saveContext()
-        } else {
-            let newUser = User(role: type.rawValue)
-            dataManager.insert(newUser)
-        }
         UserDefaults.standard.set(type.rawValue, forKey: UserDefaultsKey.userType.key)
+        Log.info("User type saved: \(type.rawValue)")
+    }
+    
+    /// visitor생성 API 호출
+    private func createVisitorAPI() {
+
+        let uuid = loadOrCreateVisitorUUID()
+        
+        let request = VisitorCreateRequestDto(uuid: uuid, name: nil)
+        
+        visitorService.createVisitor(request: request) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let dto):
+                    UserDefaults.standard.set(
+                        dto.uuid,
+                        forKey: UserDefaultsKey.visitorUUID.rawValue)
+                    Log.debug("[IdentitySelection] Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
+                    
+                    let visitor = Visitor(
+                        id: dto.id,
+                        uuid: dto.uuid,
+                        name: dto.name
+                    )
+                    self.dataManager.insert(visitor)
+                case .failure(let error):
+                    if let moyaError = error as? MoyaError,
+                       let data = moyaError.response?.data,
+                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                        Log.warning("[IdentitySelection] Visitor create validation error: \(messages)")
+                    }
+                    Log.error("[IdentitySelection] Visitor create failed: \(error)")
+                }
+            }
+        }
+    }
+    
+    /// 저장된 uuid가 있으면 재사용, 없으면 새로 생성해서 저장
+    private func loadOrCreateVisitorUUID() -> String {
+        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) {
+            return existing
+        }
+        let newUUID = UUID().uuidString
+        UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.rawValue)
+        return newUUID
     }
 }

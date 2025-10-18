@@ -9,6 +9,7 @@ import SwiftUI
 
 @MainActor
 final class ArchivingViewModel: ObservableObject {
+    private let visitorService = VisitorAPIService()
 
     /// 추가 버튼 탭
     func tapAddButton() {
