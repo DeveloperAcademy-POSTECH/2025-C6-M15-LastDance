@@ -55,9 +55,6 @@ struct AudienceArchivingView: View {
         }
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden(false)
-        .onAppear {
-            viewModel.loadVisitorAPI()
-        }
     }
 }
 
