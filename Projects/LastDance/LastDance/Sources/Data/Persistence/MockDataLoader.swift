@@ -77,7 +77,7 @@ enum MockDataLoader {
             localImagePath: "mock_artworkImage_02",
             createdAt: .now
         )
-        
+
         let reaction1  = Reaction(
             id: UUID().uuidString,
             artworkId: artwork1.id,
@@ -114,7 +114,7 @@ enum MockDataLoader {
               geoLat: 37.5665, geoLon: 126.9780)
     }
 
-    private static func createArtists() -> [Artist] {
+    static func createArtists() -> [Artist] {
         [
             Artist(id: 1, name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
             Artist(id: 2, name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
@@ -128,42 +128,52 @@ enum MockDataLoader {
 
     
     private static func createExhibition(venueId: String) -> [Exhibition] {
-        [
+        let isoFormatter = ISO8601DateFormatter()
+
+        return [
             Exhibition(
                 id: "exhibition_light",
                 title: "빛의 향연",
                 descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
-                startDate: Date().addingTimeInterval(-86400 * 3),
-                endDate: Date().addingTimeInterval(86400 * 14),
+                startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 3)),
+                endDate: isoFormatter.string(from: Date().addingTimeInterval(86400 * 14)),
                 venueId: venueId,
-                coverImageName: "mock_exhibitionCoverImage"
+                coverImageName: "mock_exhibitionCoverImage",
+                createdAt: isoFormatter.string(from: Date()),
+                updatedAt: nil
             ),
             Exhibition(
                 id: "exhibition_02",
                 title: "조샘초이 : 기억의 지층, 경계를 넘는 시선",
                 descriptionText: "조샘초이 작가의 개인전",
-                startDate: Date().addingTimeInterval(-86400 * 8),
-                endDate: Date().addingTimeInterval(86400 * 15),
+                startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 8)),
+                endDate: isoFormatter.string(from: Date().addingTimeInterval(86400 * 15)),
                 venueId: venueId,
-                coverImageName: "mock_exhibitionCoverImage"
+                coverImageName: "mock_exhibitionCoverImage",
+                createdAt: isoFormatter.string(from: Date()),
+                updatedAt: nil
             ),
             Exhibition(
                 id: "exhibition_03",
                 title: "기증작가 상설전: 박대성 소산수목",
                 descriptionText: "박대성 작가의 기증 작품 전시",
-                startDate: Date().addingTimeInterval(-86400 * 6),
-                endDate: Date().addingTimeInterval(86400 * 12),
+                startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 6)),
+                endDate: isoFormatter.string(from: Date().addingTimeInterval(86400 * 12)),
                 venueId: venueId,
-                coverImageName: "mock_artworkImage_02"
+                coverImageName: "mock_artworkImage_02",
+                createdAt: isoFormatter.string(from: Date()),
+                updatedAt: nil
             ),
             Exhibition(
                 id: "exhibition_04",
                 title: "清年! 青年! 請年! - 맑고 푸른 그대에게 청한다",
                 descriptionText: "젊은 작가들의 작품 전시",
-                startDate: Date().addingTimeInterval(-86400 * 10),
-                endDate: Date().addingTimeInterval(86400 * 20),
+                startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 10)),
+                endDate: isoFormatter.string(from: Date().addingTimeInterval(86400 * 20)),
                 venueId: venueId,
-                coverImageName: "mock_artworkImage_01"
+                coverImageName: "mock_artworkImage_01",
+                createdAt: isoFormatter.string(from: Date()),
+                updatedAt: nil
             )
         ]
     }
@@ -191,7 +201,7 @@ enum MockDataLoader {
 
     private static func createCaptureAndReaction(artworkId: Int, visitorId: Int)
         -> (CapturedArtwork, Reaction) {
-        let capture = CapturedArtwork(id: 1, artworkId: artworkId,
+        let capture = CapturedArtwork(id: 200, artworkId: artworkId,
                                      localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
         let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
                                category: ["좋아요"], comment: "빛이 멋져요", createdAt: .now)

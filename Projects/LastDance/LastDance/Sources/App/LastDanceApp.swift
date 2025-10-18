@@ -28,7 +28,7 @@ struct LastDanceApp: App {
             
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false
+                isStoredInMemoryOnly: false 
             )
 
             self.sharedModelContainer = try ModelContainer(

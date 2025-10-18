@@ -45,10 +45,11 @@ final class ArticleListViewModel: ObservableObject {
 
     /// 작가 선택 (이미 선택된 경우 선택 취소)
     func selectArtist(_ artist: Artist) {
-        if selectedArtistId == artist.id {
+        let artistIdInt = artist.id.hashValue
+        if selectedArtistId == artistIdInt {
             selectedArtistId = nil
         } else {
-            selectedArtistId = artist.id
+            selectedArtistId = artistIdInt
         }
     }
 

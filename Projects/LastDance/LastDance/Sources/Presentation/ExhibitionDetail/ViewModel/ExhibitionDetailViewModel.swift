@@ -46,14 +46,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
     }
 
     /// 날짜 범위 포맷팅
-    func formatDateRange(start: Date, end: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월 d일(E)"
-        formatter.locale = Locale(identifier: "ko_KR")
-
-        let startString = formatter.string(from: start)
-        let endString = formatter.string(from: end)
-
-        return "\(startString)~ \(endString)"
+    func formatDateRange(start: String, end: String) -> String {
+        return Date.formatDateRange(start: start, end: end)
     }
 }

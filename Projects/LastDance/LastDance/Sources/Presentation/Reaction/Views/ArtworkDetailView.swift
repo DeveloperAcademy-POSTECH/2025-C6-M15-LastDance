@@ -43,9 +43,9 @@ struct ArtworkDetailView: View {
                 text: "전송하기",
                 isEnabled: !viewModel.isSendButtonDisabled,
                 action: {
-                    Log.debug("- artworkId: \(artworkId)")
-                    Log.debug("- selectedCategories: \(Array(viewModel.selectedCategories))")
-                    Log.debug("- message: \(viewModel.message)")
+                    Log.debug("artworkId: \(artworkId)")
+                    Log.debug("selectedCategories: \(Array(viewModel.selectedCategories))")
+                    Log.debug("message: \(viewModel.message)")
 
                     // TODO: 실제 값으로 교체 필요
                     let visitorId = 1  // 실제 visitor ID로 교체
@@ -62,10 +62,10 @@ struct ArtworkDetailView: View {
                         tagIds: tagIds
                     ) { success in
                         if success {
-                            Log.debug("Reaction 저장 성공, 화면 이동")
+                            Log.debug("저장 성공, 화면 이동")
                             router.push(.completeReaction)
                         } else {
-                            Log.debug("Reaction 저장 실패")
+                            Log.debug("저장 실패")
                         }
                     }
                 }

@@ -17,9 +17,9 @@ extension ReactionAPI: BaseTargetType {
     var path: String {
         switch self {
         case .createReaction, .getReactions:
-            return "\(APIVersion.v1API)/reactions"
+            return "\(APIVersion.version1)/reactions"
         case .getDetailReaction(let reactionId):
-            return "\(APIVersion.v1API)/reactions/\(reactionId)"
+            return "\(APIVersion.version1)/reactions/\(reactionId)"
         }
     }
     

@@ -13,19 +13,23 @@ final class Exhibition {
     @Attribute(.unique) var id: String
     var title: String
     var descriptionText: String?
-    var startDate: Date
-    var endDate: Date
+    var startDate: String
+    var endDate: String
     var artworks: [Artwork] = []
     var venueId: String?
     var coverImageName: String?
+    var createdAt: String?
+    var updatedAt: String?
 
     init(id: String,
          title: String,
          descriptionText: String? = nil,
-         startDate: Date,
-         endDate: Date,
+         startDate: String,
+         endDate: String,
          venueId: String? = nil,
-         coverImageName: String? = nil) {
+         coverImageName: String? = nil,
+         createdAt: String? = nil,
+         updatedAt: String? = nil) {
         self.id = id
         self.title = title
         self.descriptionText = descriptionText
@@ -33,5 +37,7 @@ final class Exhibition {
         self.endDate = endDate
         self.venueId = venueId
         self.coverImageName = coverImageName
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
     }
 }
