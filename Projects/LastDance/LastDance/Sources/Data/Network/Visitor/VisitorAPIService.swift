@@ -49,7 +49,7 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[VisitorAPIService] getVisitors 응답: \(json)")
+                        Log.debug("getVisitors 응답: \(json)")
                     }
                     let items = try JSONDecoder().decode(
                         [VisitorListResponseDto].self,
@@ -57,16 +57,16 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     )
                     completion(.success(items))
                 } catch {
-                    Log.error("[VisitorAPIService] 디코딩 실패: \(error)")
+                    Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
             case .failure(let error):
                 if let data = error.response?.data,
                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("[VisitorAPIService] Validation Error: \(messages)")
+                    Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("[VisitorAPIService] API 실패: \(error)")
+                Log.error("API 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -83,7 +83,7 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[VisitorAPIService] createVisitor 응답: \(json)")
+                        Log.debug("createVisitor 응답: \(json)")
                     }
                     let dto = try JSONDecoder().decode(
                         VisitorDetailResponseDto.self,
@@ -91,16 +91,16 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     )
                     completion(.success(dto))
                 } catch {
-                    Log.error("[VisitorAPIService] 디코딩 실패: \(error)")
+                    Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
             case .failure(let error):
                 if let data = error.response?.data,
                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("[VisitorAPIService] Validation Error: \(messages)")
+                    Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("[VisitorAPIService] API 실패: \(error)")
+                Log.error("API 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -117,7 +117,7 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[VisitorAPIService] getVisitor 응답: \(json)")
+                        Log.debug("getVisitor 응답: \(json)")
                     }
                     let dto = try JSONDecoder().decode(
                         VisitorDetailResponseDto.self,
@@ -125,16 +125,16 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     )
                     completion(.success(dto))
                 } catch {
-                    Log.error("[VisitorAPIService] 디코딩 실패: \(error)")
+                    Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
             case .failure(let error):
                 if let data = error.response?.data,
                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("[VisitorAPIService] Validation Error: \(messages)")
+                    Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("[VisitorAPIService] API 실패: \(error)")
+                Log.error("API 실패: \(error)")
                 completion(.failure(error))
             }
         }

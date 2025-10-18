@@ -50,7 +50,7 @@ final class ReactionInputViewModel: ObservableObject {
         self.selectedArtworkTitle = artworkTitle
         self.selectedArtistName = artistName
         self.selectedArtworkId = artworkId
-        Log.debug("[ReactionInputViewModel] 작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), ID: \(artworkId)")
+        Log.debug("작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), ID: \(artworkId)")
         completion(true)
     }
 
@@ -78,10 +78,10 @@ final class ReactionInputViewModel: ObservableObject {
                 case .success:
                     self.message = ""
                     self.selectedCategories.removeAll()
-                    Log.debug("[ReactionInputViewModel] 반응 저장 성공")
+                    Log.debug("반응 저장 성공")
                     completion(true)
                 case .failure(let error):
-                    Log.debug("[ReactionInputViewModel] 반응 저장 실패: \(error)")
+                    Log.debug("반응 저장 실패: \(error)")
                     completion(false)
                 }
             }
@@ -90,29 +90,29 @@ final class ReactionInputViewModel: ObservableObject {
     
     // TODO: 실제데이터 연동 후 파라미터 교체 예정
     func getReactionsAPI(artworkId: Int) {
-        Log.debug("[ArtworkDetailView] 반응 조회 API 테스트 시작")
+        Log.debug("반응 조회 API 테스트 시작")
 
         apiService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { result in
             switch result {
             case .success(let reactions):
-                Log.debug("[ArtworkDetailView] ✅ 반응 조회 성공! 조회된 반응 수: \(reactions.count)")
+                Log.debug("✅ 반응 조회 성공! 조회된 반응 수: \(reactions.count)")
             case .failure(let error):
-                Log.debug("[ArtworkDetailView] ❌ 반응 조회 실패: \(error)")
+                Log.debug("❌ 반응 조회 실패: \(error)")
             }
         }
     }
 
     /// 반응 상세 조회 API 함수
     func getDetailReactionAPI(reactionId: Int) {
-        Log.debug("[ReactionInputViewModel] 반응 상세 조회 API 테스트 시작 - reactionId: \(reactionId)")
+        Log.debug("반응 상세 조회 API 테스트 시작 - reactionId: \(reactionId)")
 
         apiService.getDetailReaction(reactionId: reactionId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    Log.debug("[ReactionInputViewModel] ✅ 반응 상세 조회 성공!")
+                    Log.debug("✅ 반응 상세 조회 성공!")
                 case .failure(let error):
-                    Log.debug("[ReactionInputViewModel] ❌ 반응 상세 조회 실패: \(error.localizedDescription)")
+                    Log.debug("❌ 반응 상세 조회 실패: \(error.localizedDescription)")
                 }
             }
         }

@@ -34,7 +34,7 @@ struct ReactionFormView: View {
             if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
                 viewModel.selectedCategories = Set(savedCategories)
             }
-            Log.debug("[ReactionFormView]: \(viewModel.selectedCategories)")
+            Log.debug("선택된 카테고리: \(viewModel.selectedCategories)")
         }
     }
 
