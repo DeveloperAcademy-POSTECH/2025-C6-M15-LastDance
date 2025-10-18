@@ -45,6 +45,11 @@
 		99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E412EA1C43F00D2F71A /* ArtistReactionArchiveView.swift */; };
 		99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E422EA1C43F00D2F71A /* ArtistReactionView.swift */; };
 		99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */; };
+		99191E602EA2F95100D2F71A /* VisitorAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E5F2EA2F94C00D2F71A /* VisitorAPI.swift */; };
+		99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E612EA2F95400D2F71A /* VisitorAPIService.swift */; };
+		99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */; };
+		99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */; };
+		99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -147,6 +152,11 @@
 		99191E412EA1C43F00D2F71A /* ArtistReactionArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionArchiveView.swift; sourceTree = "<group>"; };
 		99191E422EA1C43F00D2F71A /* ArtistReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionView.swift; sourceTree = "<group>"; };
 		99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionItem.swift; sourceTree = "<group>"; };
+		99191E5F2EA2F94C00D2F71A /* VisitorAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorAPI.swift; sourceTree = "<group>"; };
+		99191E612EA2F95400D2F71A /* VisitorAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorAPIService.swift; sourceTree = "<group>"; };
+		99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorDetailResponseDto.swift; sourceTree = "<group>"; };
+		99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCreateRequestDto.swift; sourceTree = "<group>"; };
+		99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorListResponseDto.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -316,6 +326,42 @@
 				99191E432EA1C43F00D2F71A /* Views */,
 			);
 			path = ArtistArchive;
+			sourceTree = "<group>";
+		};
+		99191E5D2EA2F93300D2F71A /* Visitor */ = {
+			isa = PBXGroup;
+			children = (
+				99191E5E2EA2F93F00D2F71A /* DTO */,
+				99191E612EA2F95400D2F71A /* VisitorAPIService.swift */,
+				99191E5F2EA2F94C00D2F71A /* VisitorAPI.swift */,
+			);
+			path = Visitor;
+			sourceTree = "<group>";
+		};
+		99191E5E2EA2F93F00D2F71A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99191E6C2EA3179C00D2F71A /* Response */,
+				99191E6B2EA3178F00D2F71A /* Request */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99191E6B2EA3178F00D2F71A /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		99191E6C2EA3179C00D2F71A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */,
+				99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */,
+			);
+			path = Response;
 			sourceTree = "<group>";
 		};
 		99DAB0BD2E9EB77900379F27 /* Errors */ = {
@@ -692,6 +738,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				99191E5D2EA2F93300D2F71A /* Visitor */,
 				99E6F38C2E989CFB002ED9C2 /* Artwork */,
 				99E6F3912E989CFB002ED9C2 /* Base */,
 				99E6F3952E989CFB002ED9C2 /* Exhibition */,
@@ -870,6 +917,7 @@
 				99E6F0BB2E91EF7D002ED9C2 /* Route.swift in Sources */,
 				D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */,
 				99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */,
+				99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */,
 				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
@@ -878,6 +926,7 @@
 				D8C7C28E2EA0D0C200FCB472 /* ArtworkDetailResponseDto.swift in Sources */,
 				8C0F9F502E9CE479005B8C12 /* CircleAddButton.swift in Sources */,
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
+				99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */,
 				8C3B37A82E9E716C003FF185 /* ArticleListView.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
@@ -891,6 +940,7 @@
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
 				D8C7C28C2EA0D0A200FCB472 /* ReactionDetailResponseDto.swift in Sources */,
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
+				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
@@ -942,6 +992,7 @@
 				D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */,
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
+				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
@@ -951,6 +1002,7 @@
 				D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */,
 				99E6F0B92E91EF48002ED9C2 /* Item.swift in Sources */,
 				99191E452EA1C43F00D2F71A /* ArtistReactionViewModel.swift in Sources */,
+				99191E602EA2F95100D2F71A /* VisitorAPI.swift in Sources */,
 				99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */,
 				99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */,
 				99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */,
