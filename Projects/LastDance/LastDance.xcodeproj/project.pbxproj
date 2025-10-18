@@ -50,6 +50,11 @@
 		99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */; };
 		99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */; };
 		99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */; };
+		99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */; };
+		99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */; };
+		99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */; };
+		99191E7C2EA36B0A00D2F71A /* ArtistAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E7B2EA36B0500D2F71A /* ArtistAPI.swift */; };
+		99191E7E2EA36B1100D2F71A /* ArtistAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E7D2EA36B0D00D2F71A /* ArtistAPIService.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -157,6 +162,11 @@
 		99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCreateRequestDto.swift; sourceTree = "<group>"; };
 		99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorListResponseDto.swift; sourceTree = "<group>"; };
+		99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListResponseDto.swift; sourceTree = "<group>"; };
+		99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailResponseDto.swift; sourceTree = "<group>"; };
+		99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistCreateRequestDto.swift; sourceTree = "<group>"; };
+		99191E7B2EA36B0500D2F71A /* ArtistAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPI.swift; sourceTree = "<group>"; };
+		99191E7D2EA36B0D00D2F71A /* ArtistAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPIService.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -360,6 +370,42 @@
 			children = (
 				99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */,
 				99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		99191E712EA3655200D2F71A /* Artist */ = {
+			isa = PBXGroup;
+			children = (
+				99191E722EA3655A00D2F71A /* DTO */,
+			);
+			path = Artist;
+			sourceTree = "<group>";
+		};
+		99191E722EA3655A00D2F71A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99191E7D2EA36B0D00D2F71A /* ArtistAPIService.swift */,
+				99191E7B2EA36B0500D2F71A /* ArtistAPI.swift */,
+				99191E742EA3656400D2F71A /* Response */,
+				99191E732EA3655E00D2F71A /* Request */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99191E732EA3655E00D2F71A /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		99191E742EA3656400D2F71A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */,
+				99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -738,6 +784,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				99191E712EA3655200D2F71A /* Artist */,
 				99191E5D2EA2F93300D2F71A /* Visitor */,
 				99E6F38C2E989CFB002ED9C2 /* Artwork */,
 				99E6F3912E989CFB002ED9C2 /* Base */,
@@ -928,6 +975,7 @@
 				99E6F0C62E91F175002ED9C2 /* ExhibitionDetailViewModel.swift in Sources */,
 				99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */,
 				8C3B37A82E9E716C003FF185 /* ArticleListView.swift in Sources */,
+				99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
@@ -937,13 +985,16 @@
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
+				99191E7E2EA36B1100D2F71A /* ArtistAPIService.swift in Sources */,
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
 				D8C7C28C2EA0D0A200FCB472 /* ReactionDetailResponseDto.swift in Sources */,
 				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
 				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
+				99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
+				99191E7C2EA36B0A00D2F71A /* ArtistAPI.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
 				99E6F1072E97B0E0002ED9C2 /* Venue.swift in Sources */,
@@ -1011,6 +1062,7 @@
 				99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */,
 				8C3B37A42E9E6A5C003FF185 /* ArticleExhibitionListViewModel.swift in Sources */,
 				8C3B37A62E9E7089003FF185 /* PageIndicator.swift in Sources */,
+				99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* Visitor.swift in Sources */,
 				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 			);
