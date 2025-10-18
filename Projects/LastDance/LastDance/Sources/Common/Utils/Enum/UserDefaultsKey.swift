@@ -10,7 +10,10 @@ enum UserDefaultsKey: String {
     case selectedCategories
     case seed = "seed.v1"
     case userType
-
+    
+    /// 방문객 UUID 정보 Key
+    case visitorUUID
+    
     var key: String {
         return self.rawValue
     }
