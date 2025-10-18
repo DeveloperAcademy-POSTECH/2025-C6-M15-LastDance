@@ -25,7 +25,9 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
     }
 
     /// 전시 전체 조회 api
-    func getExhibitions(status: String?, venueId: Int?, completion: @escaping (Result<[TotalExhibitionResponseDto], Error>) -> Void) {
+    func getExhibitions(status: String?,
+                        venueId: Int?,
+                        completion: @escaping (Result<[TotalExhibitionResponseDto], Error>)-> Void) {
         // String을 ExhibitionStatus enum으로 변환
         let exhibitionStatus: ExhibitionStatus? = {
             guard let status = status else { return nil }
@@ -92,7 +94,8 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
     }
     
     /// 전시 상세 조회 api
-    func getDetailExhibition(exhibitionId: Int, completion: @escaping (Result<ExhibitionResponseDto, any Error>) -> Void) {
+    func getDetailExhibition(exhibitionId: Int,
+                             completion: @escaping (Result<ExhibitionResponseDto, any Error>) -> Void) {
         provider.request(.getDetailExhibition(exhibition_id: exhibitionId)) { result in
             switch result {
             case .success(let response):
