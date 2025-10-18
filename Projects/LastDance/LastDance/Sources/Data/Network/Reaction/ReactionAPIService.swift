@@ -143,7 +143,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
         return Reaction(
             id: String(dto.id),
             artworkId: dto.artwork_id,
-            userId: String(dto.visitor_id),
+            visitorId: dto.visitor_id,
             category: categories,
             comment: dto.comment,
             createdAt: createdAt

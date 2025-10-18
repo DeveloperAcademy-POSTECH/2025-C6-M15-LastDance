@@ -12,20 +12,20 @@ import SwiftData
 final class Reaction {
     var id: String
     var artworkId: Int
-    var userId: String
+    var visitorId: Int
     var category: [String]
     var comment: String?
     var createdAt: Date
 
     init(id: String,
          artworkId: Int,
-         userId: String,
+         visitorId: Int,
          category: [String],
          comment: String? = nil,
          createdAt: Date = .now) {
         self.id = id
         self.artworkId = artworkId
-        self.userId = userId
+        self.visitorId = visitorId
         self.category = category
         self.comment = comment
         self.createdAt = createdAt

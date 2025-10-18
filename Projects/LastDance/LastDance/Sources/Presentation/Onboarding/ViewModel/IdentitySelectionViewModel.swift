@@ -36,16 +36,8 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     /// 사용자 타입 저장
     private func saveUserType(_ type: UserType) {
-        let users = dataManager.fetchAll(User.self)
-
-        if let existingUser = users.first {
-            existingUser.role = type.rawValue
-            dataManager.saveContext()
-        } else {
-            let newUser = User(role: type.rawValue)
-            dataManager.insert(newUser)
-        }
         UserDefaults.standard.set(type.rawValue, forKey: UserDefaultsKey.userType.key)
+        Log.info("User type saved: \(type.rawValue)")
     }
     
     /// visitor생성 API 호출
@@ -63,18 +55,22 @@ final class IdentitySelectionViewModel: ObservableObject {
                     UserDefaults.standard.set(
                         dto.uuid,
                         forKey: UserDefaultsKey.visitorUUID.rawValue)
-                    Log.debug("Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
+                    Log.debug("[IdentitySelection] Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
                     
-                    // TODO: - SwiftData에 Visitor 저장하고 싶다면 여기서 Model 만들어 insert
-                    
+                    let visitor = Visitor(
+                        id: dto.id,
+                        uuid: dto.uuid,
+                        name: dto.name
+                    )
+                    self.dataManager.insert(visitor)
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
                        let data = moyaError.response?.data,
                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                        Log.warning("Visitor create validation error: \(messages)")
+                        Log.warning("[IdentitySelection] Visitor create validation error: \(messages)")
                     }
-                    Log.error("Visitor create failed: \(error)")
+                    Log.error("[IdentitySelection] Visitor create failed: \(error)")
                 }
             }
         }
@@ -82,9 +78,7 @@ final class IdentitySelectionViewModel: ObservableObject {
     
     /// 저장된 uuid가 있으면 재사용, 없으면 새로 생성해서 저장
     private func loadOrCreateVisitorUUID() -> String {
-        if let existing = UserDefaults.standard.string(
-            forKey: UserDefaultsKey.visitorUUID.rawValue
-        ) {
+        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) {
             return existing
         }
         let newUUID = UUID().uuidString
