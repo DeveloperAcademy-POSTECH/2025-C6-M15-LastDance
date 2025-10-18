@@ -18,4 +18,38 @@ final class ArchivingViewModel: ObservableObject {
     func tapAddButton() {
         // TODO: 전시 추가 또는 다음 화면으로 네비게이션
     }
+    
+    /// 서버에 있는 모든 작가 정보 로드 (확인용)
+    func loadAllArtists(onComplete: (() -> Void)? = nil) {
+        artistService.getArtists { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let list):
+                    Log.info("Get Artists success. count=\(list.count)")
+                case .failure(let error):
+                    if let moyaError = error as? MoyaError,
+                       let data = moyaError.response?.data,
+                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                        Log.warning("Get Artist validation: \(messages)")
+                    } else {
+                        Log.error("Get Artist failed: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    /// 서버에 있는 모든 방문객 정보 로드 (확인용)
+    func loadVisitorAPI() {
+        visitorService.getVisitors { result in
+            switch result {
+            case .success(let list):
+                Log.debug("방문자 수: \(list.count)")
+            case .failure(let err):
+                Log.debug("목록 실패: \(err)")
+            }
+        }
+    }
 }

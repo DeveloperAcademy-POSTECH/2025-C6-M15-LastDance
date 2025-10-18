@@ -55,6 +55,8 @@
 		99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */; };
 		99191E872EA38A6100D2F71A /* ArtistAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E862EA38A6100D2F71A /* ArtistAPI.swift */; };
 		99191E892EA38A6800D2F71A /* ArtistAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E882EA38A6800D2F71A /* ArtistAPIService.swift */; };
+		99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */; };
+		99191E922EA3E55200D2F71A /* ArtistMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E912EA3E54C00D2F71A /* ArtistMapper.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -167,6 +169,8 @@
 		99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistCreateRequestDto.swift; sourceTree = "<group>"; };
 		99191E862EA38A6100D2F71A /* ArtistAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPI.swift; sourceTree = "<group>"; };
 		99191E882EA38A6800D2F71A /* ArtistAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPIService.swift; sourceTree = "<group>"; };
+		99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorMapper.swift; sourceTree = "<group>"; };
+		99191E912EA3E54C00D2F71A /* ArtistMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMapper.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -342,8 +346,8 @@
 			isa = PBXGroup;
 			children = (
 				99191E5E2EA2F93F00D2F71A /* DTO */,
-				99191E612EA2F95400D2F71A /* VisitorAPIService.swift */,
 				99191E5F2EA2F94C00D2F71A /* VisitorAPI.swift */,
+				99191E612EA2F95400D2F71A /* VisitorAPIService.swift */,
 			);
 			path = Visitor;
 			sourceTree = "<group>";
@@ -408,6 +412,15 @@
 				99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */,
 			);
 			path = Response;
+			sourceTree = "<group>";
+		};
+		99191E8E2EA3E50F00D2F71A /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				99191E912EA3E54C00D2F71A /* ArtistMapper.swift */,
+				99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */,
+			);
+			path = Mapper;
 			sourceTree = "<group>";
 		};
 		99DAB0BD2E9EB77900379F27 /* Errors */ = {
@@ -567,6 +580,7 @@
 		99E6F0D92E91F43D002ED9C2 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				99191E8E2EA3E50F00D2F71A /* Mapper */,
 				99E6F0E12E91F603002ED9C2 /* Model */,
 			);
 			path = Domain;
@@ -995,6 +1009,7 @@
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
+				99191E922EA3E55200D2F71A /* ArtistMapper.swift in Sources */,
 				99E6F1072E97B0E0002ED9C2 /* Venue.swift in Sources */,
 				99E6F0FF2E97B0CA002ED9C2 /* Exhibition.swift in Sources */,
 				D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */,
@@ -1057,6 +1072,7 @@
 				99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */,
 				99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */,
 				99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */,
+				99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */,

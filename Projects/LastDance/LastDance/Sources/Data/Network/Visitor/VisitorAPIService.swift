@@ -55,6 +55,16 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                         [VisitorListResponseDto].self,
                         from: response.data
                     )
+                    
+                    DispatchQueue.main.async {
+                        items.forEach { dto in
+                            let model = VisitorMapper.toModel(from: dto)
+                            SwiftDataManager.shared.upsertVisitor(model)
+                        }
+                        // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
+                        SwiftDataManager.shared.printAllVisitors()
+                    }
+                    
                     completion(.success(items))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -151,7 +161,7 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("[VisitorAPIService] getVisitorByUUID 응답: \(json)")
+                        Log.debug("getVisitorByUUID 응답: \(json)")
                     }
                     let dto = try JSONDecoder().decode(
                         VisitorDetailResponseDto.self,
@@ -159,16 +169,16 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     )
                     completion(.success(dto))
                 } catch {
-                    Log.error("[VisitorAPIService] 디코딩 실패: \(error)")
+                    Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
             case .failure(let error):
                 if let data = error.response?.data,
                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                     let message = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("[VisitorAPIService] Validation Error: \(message)")
+                    Log.warning("Validation Error: \(message)")
                 }
-                Log.error("[VisitorAPIService] API 실패: \(error)")
+                Log.error("API 실패: \(error)")
                 completion(.failure(error))
             }
         }
