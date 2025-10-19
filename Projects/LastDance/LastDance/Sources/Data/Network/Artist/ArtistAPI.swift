@@ -18,11 +18,11 @@ extension ArtistAPI: BaseTargetType {
     var path: String {
         switch self {
         case .getArtists, .createArtist:
-            return "\(APIVersion.v1API)/artists"
+            return "\(APIVersion.version1)/artists"
         case .getArtist(let id):
-            return "\(APIVersion.v1API)/artists/\(id)"
+            return "\(APIVersion.version1)/artists/\(id)"
         case .getArtistByUUID(let uuid):
-            return "\(APIVersion.v1API)/artists/uuid/\(uuid)"
+            return "\(APIVersion.version1)/artists/uuid/\(uuid)"
         }
     }
 
