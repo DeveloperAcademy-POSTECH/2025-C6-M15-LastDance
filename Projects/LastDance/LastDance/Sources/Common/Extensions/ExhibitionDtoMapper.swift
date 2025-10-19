@@ -30,7 +30,7 @@ extension ExhibitionDtoMappableProtocol {
             descriptionText: description_text,
             startDate: Date.formatAPIDate(from: start_date),
             endDate: Date.formatAPIDate(from: end_date),
-            venueId: String(venue_id),
+            venueId: venue_id,
             coverImageName: cover_image_url,
             createdAt: Date.formatAPIDate(from: created_at),
             updatedAt: updated_at.flatMap { Date.formatAPIDate(from: $0) }

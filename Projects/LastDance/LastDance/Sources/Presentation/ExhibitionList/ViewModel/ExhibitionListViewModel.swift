@@ -96,7 +96,7 @@ final class ExhibitionListViewModel: ObservableObject {
             description_text: "Test exhibition created from local data",
             start_date: Date().toAPIDateString(),
             end_date: Date().addingTimeInterval(86400 * 30).toAPIDateString(), // 30일 후
-            venue_id: Int(firstVenue.id.replacingOccurrences(of: "venue_", with: "")) ?? 1,
+            venue_id: firstVenue.id,
             cover_image_url: firstArtwork.thumbnailURL,
             artwork_ids: [firstArtwork.id]
         )

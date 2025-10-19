@@ -110,7 +110,7 @@ enum MockDataLoader {
     }
 
     private static func createVenue() -> Venue {
-        Venue(id: "venue_seoulmuseum", name: "Seoul Museum", address: "Seoul",
+        Venue(id: 1, name: "Seoul Museum", address: "Seoul",
               geoLat: 37.5665, geoLon: 126.9780)
     }
 
@@ -127,7 +127,7 @@ enum MockDataLoader {
     }
 
     
-    private static func createExhibition(venueId: String) -> [Exhibition] {
+    private static func createExhibition(venueId: Int) -> [Exhibition] {
         let isoFormatter = ISO8601DateFormatter()
 
         return [
