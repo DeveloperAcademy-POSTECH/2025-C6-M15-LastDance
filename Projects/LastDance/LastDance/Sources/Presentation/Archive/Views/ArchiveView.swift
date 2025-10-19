@@ -32,67 +32,66 @@ struct ArchiveView: View {
                 .padding(.bottom, 10)
             
             GeometryReader { geometry in
-                    ZStack(alignment: .top) {
-                        // 고정 배경 (화면에 맞게)
-                        Image("bauhausArt08")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: geometry.size.width, height: geometry.size.height * 2.5)
-                            .clipped()
-                            .offset(x: 0 ,y: -180)
-                            .opacity(0.6)
-                            .overlay(
-                                LinearGradient(
-                                    stops: [
-                                        Gradient.Stop(color: .white.opacity(0), location: 0.00),
-                                        Gradient.Stop(color: .white.opacity(0.7), location: 1.00),
-                                    ],
-                                    startPoint: UnitPoint(x: 0.456, y: 0.5),
-                                    endPoint: UnitPoint(x: 0, y: 0.5)
-                                )
+                ZStack(alignment: .top) {
+                    // 고정 배경
+                    Image("bauhausArt08")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: geometry.size.width, height: geometry.size.height * 2.5)
+                        .clipped()
+                        .offset(x: 0 ,y: -180)
+                        .opacity(0.6)
+                        .overlay(
+                            LinearGradient(
+                                stops: [
+                                    Gradient.Stop(color: .white.opacity(0), location: 0.00),
+                                    Gradient.Stop(color: .white.opacity(0.7), location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0.456, y: 0.5),
+                                endPoint: UnitPoint(x: 0, y: 0.5)
                             )
-                        
-                        ScrollView {
-                            VStack(spacing: 0) {
-                                if viewModel.isLoading {
-                                    ProgressView()
-                                        .scaleEffect(1.2)
-                                        .frame(maxWidth: .infinity, minHeight: 400)
-                                } else if viewModel.hasArtworks {
-                                    ArtworkGridView(
-                                        artworks: viewModel.capturedArtworks,
-                                        getRotationAngle: viewModel.getRotationAngle
-                                    )
-                                } else {
-                                    ArchiveEmptyStateView {
-                                        router.push(.camera)
-                                    }
-                                }
-                                
-                                // 충분한 스크롤 공간 (배경 페이드를 보기 위해)
-                                Color.clear
-                                    .frame(height: 600)
-                            }
-                            .frame(minHeight: geometry.size.height + 400)
-                        }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                    }
-                    .mask(
-                        LinearGradient(
-                            colors: [
-                                Color.black,
-                                Color.black,
-                                Color.black,
-                                Color.black.opacity(0.8),
-                                Color.black.opacity(0.5),
-                                Color.black.opacity(0.2),
-                                Color.clear
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
                         )
-                    )
+                    
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            if viewModel.isLoading {
+                                ProgressView()
+                                    .scaleEffect(1.2)
+                                    .frame(maxWidth: .infinity, minHeight: 400)
+                            } else if viewModel.hasArtworks {
+                                ArtworkGridView(
+                                    artworks: viewModel.capturedArtworks,
+                                    getRotationAngle: viewModel.getRotationAngle
+                                )
+                            } else {
+                                ArchiveEmptyStateView {
+                                    router.push(.camera)
+                                }
+                            }
+                            
+                            Color.clear
+                                .frame(height: 600)
+                        }
+                        .frame(minHeight: geometry.size.height + 400)
+                    }
+                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
+                .mask(
+                    LinearGradient(
+                        colors: [
+                            Color.black,
+                            Color.black,
+                            Color.black,
+                            Color.black.opacity(0.8),
+                            Color.black.opacity(0.5),
+                            Color.black.opacity(0.2),
+                            Color.clear
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+            }
         }
         .background(
             LinearGradient(
@@ -101,11 +100,11 @@ struct ArchiveView: View {
                 endPoint: .bottom
             )
         )
-            .safeAreaInset(edge: .bottom) {
-                CameraActionButtonView {
-                    router.push(.camera)
-                }
+        .safeAreaInset(edge: .bottom) {
+            CameraActionButtonView {
+                router.push(.camera)
             }
+        }
     }
 }
 
@@ -226,7 +225,7 @@ struct CameraActionButtonView: View {
     
     var body: some View {
         VStack(spacing: 22) {
-            // 툴팁 공간 (고정 높이)
+            // 툴팁
             ZStack {
                 if showTooltip {
                     TooltipView(text: "마음에 드는 작품을 찾아\n사진을 찍어보세요!")
@@ -235,7 +234,7 @@ struct CameraActionButtonView: View {
                 }
             }
             .frame(height: 50)
-            // Aperture 버튼 (중앙 고정)
+            // 촬영 버튼
             Button(action: action) {
                 Image("Aperture")
                     .resizable()
