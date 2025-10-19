@@ -46,15 +46,14 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                         from: response.data
                     )
                     
-//                    TODO: - develop 기능 머지 후 적용 필요
-//                    DispatchQueue.main.async {
-//                        items.forEach { dto in
-//                            let model = VenueMapper.toModel(from: dto)
-//                            SwiftDataManager.shared.upsertVenue(model)
-//                        }
-//                        // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
-//                        SwiftDataManager.shared.printAllVenues()
-//                    }
+                    DispatchQueue.main.async {
+                        items.forEach { dto in
+                            let model = VenueMapper.toModel(from: dto)
+                            SwiftDataManager.shared.upsertVenue(model)
+                        }
+                        // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
+                        SwiftDataManager.shared.printAllVenues()
+                    }
                     
                     completion(.success(items))
                 } catch {
@@ -104,5 +103,18 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                 completion(.failure(error))
             }
         }
+    }
+}
+
+// TODO: - develop 기능 머지 후 Mapper 폴더로 이동
+enum VenueMapper {
+    static func toModel(from dto: VenueListResponseDto) -> Venue {
+        Venue(
+            id: dto.id,
+            name: dto.name,
+            address: dto.address,
+            geoLat: dto.geo_lat,
+            geoLon: dto.geo_lon
+        )
     }
 }

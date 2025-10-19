@@ -16,7 +16,7 @@ final class Exhibition {
     var startDate: String
     var endDate: String
     var artworks: [Artwork] = []
-    var venueId: String?
+    var venueId: Int?
     var coverImageName: String?
     var createdAt: String?
     var updatedAt: String?
@@ -26,7 +26,7 @@ final class Exhibition {
          descriptionText: String? = nil,
          startDate: String,
          endDate: String,
-         venueId: String? = nil,
+         venueId: Int? = nil,
          coverImageName: String? = nil,
          createdAt: String? = nil,
          updatedAt: String? = nil) {
