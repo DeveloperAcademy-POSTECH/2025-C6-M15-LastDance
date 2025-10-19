@@ -55,6 +55,10 @@ struct AudienceArchivingView: View {
         }
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden(false)
+        .onAppear {
+            // TODO: - Visitor 전체 목록 가져오기 확인용 (나중에 제거)
+            viewModel.loadVisitorAPI()
+        }
     }
 }
 
