@@ -14,6 +14,7 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     private let dataManager = SwiftDataManager.shared
     private let visitorService = VisitorAPIService()
+    private let venueService = VenueAPIService()
 
     /// 사용자 타입 선택
     func selectUserType(_ type: UserType) {
@@ -84,5 +85,27 @@ final class IdentitySelectionViewModel: ObservableObject {
         let newUUID = UUID().uuidString
         UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.rawValue)
         return newUUID
+    }
+    
+    /// 서버에 있는 모든 전시장 정보 로드 (확인용)
+    func loadAllVenues(onComplete: (() -> Void)? = nil) {
+        venueService.getVenues { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let list):
+                    Log.info("success. count=\(list.count)")
+                case .failure(let error):
+                    if let moyaError = error as? MoyaError,
+                       let data = moyaError.response?.data,
+                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                        Log.warning("validation: \(messages)")
+                    } else {
+                        Log.error("failed: \(error)")
+                    }
+                }
+            }
+        }
     }
 }
