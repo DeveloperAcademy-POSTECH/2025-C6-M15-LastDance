@@ -23,19 +23,24 @@ struct InputArtworkInfoView: View {
     }
 
     var body: some View {
-
-        GeometryReader { geo in
-            let cardW = geo.size.width * CameraViewLayout.confirmCardWidthRatio
-            let cardH = cardW / CameraViewLayout.aspect
             ZStack(alignment: .bottom) {
                 VStack {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: cardW, height: cardH)
-                        .clipped()
+                    Spacer().frame(height: 24)
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white)
+                            .frame(width: 311, height: 411)
+                            .shadow(color: .black.opacity(0.24), radius: 6, x: 0, y: 0)
+                        
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 283, height: 386)
+                            .clipped()
+                    }
 
-                    Spacer().frame(height: 20)
+                    Spacer().frame(height: 36)
 
                     VStack(spacing: 12) {
                         InputFieldButton(
@@ -63,7 +68,7 @@ struct InputArtworkInfoView: View {
                         action: {
                             // 선택한 작품 찾기
                             guard let selectedArtwork = artworks.first(where: { $0.title == viewModel.selectedArtworkTitle }) else {
-                                Log.error("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
+                                Log.debug("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
                                 return
                             }
 
@@ -80,6 +85,7 @@ struct InputArtworkInfoView: View {
                     )
                     .padding(.bottom, 35)
                 }
+                .background(Color.white)
 
                 if isBottomSheetActive {
                     Color.black.opacity(0.8)
@@ -105,12 +111,6 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
-//                    .onAppear {
-//                        Log.debug("Artworks count: \(artworks.count)")
-//                        artworks.forEach { artwork in
-//                            Log.debug("Artwork: \(artwork.title) (artistId: \(artwork.artistId ?? "nil"))")
-//                        }
-//                    }
                 }
 
                 /// 작가 바텀시트
@@ -129,16 +129,9 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
-                    .onAppear {
-                        Log.debug("Artists count: \(artists.count)")
-                        artists.forEach { artist in
-                            Log.debug("Artist: \(artist.name) (id: \(artist.id))")
-                        }
-                    }
                 }
             }
-        }
-        .edgesIgnoringSafeArea(.bottom)
+            .edgesIgnoringSafeArea(.bottom)
     }
 }
 
@@ -154,7 +147,6 @@ private struct InputFieldButton: View {
             Button(action: action) {
                 Text(label)
                     .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
-                    .padding(.horizontal, 12)
                 Spacer()
 
                 Text(value.isEmpty ? placeholder : value)
@@ -166,7 +158,7 @@ private struct InputFieldButton: View {
             }
             .frame(minHeight: 60)
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 14)
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
     }
 }
@@ -203,7 +195,7 @@ private struct SelectionSheet: View {
                             .frame(height: 44)
                         }
                         .background(selectedItem == item ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color.clear)
-                        .cornerRadius(4)
+                        .cornerRadius(12)
                         .padding(.vertical, 6)
                     }
                 }

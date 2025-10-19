@@ -1043,7 +1043,6 @@
 				D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */,
 				99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */,
 				99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */,
-				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
 				D8C7C2A12EA1497100FCB472 /* CompleteArticleListViewModel.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				D8C7C2AF2EA1E95000FCB472 /* ExhibitionArchiveView.swift in Sources */,
@@ -1071,10 +1070,8 @@
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
 				D8C7C28C2EA0D0A200FCB472 /* ReactionDetailResponseDto.swift in Sources */,
-				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
 				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
-				963573B02E9ABC6400B2FA79 /* CategoryButton.swift in Sources */,
 				99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
@@ -1295,7 +1292,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

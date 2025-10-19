@@ -10,7 +10,7 @@ import SwiftUI
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
     @State private var userType: UserType?
-    
+
     init() {
         var initialUserType: UserType?
         if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
@@ -18,20 +18,23 @@ struct RootView: View {
         }
         _userType = State(initialValue: initialUserType)
     }
-    
+
     var body: some View {
         NavigationStack(path: $router.path) {
             Group {
-                if let userType = userType {
-                    switch userType {
-                    case .artist:
-                        ArticleArchivingView()
-                    case .viewer:
-                        AudienceArchivingView()
-                    }
-                } else {
-                    IdentitySelectionView()
-                }
+                // 테스트를 위해 CameraView를 첫 화면으로 설정
+                CameraView()
+
+//                if let userType = userType {
+//                    switch userType {
+//                    case .artist:
+//                        ArticleArchivingView()
+//                    case .viewer:
+//                        AudienceArchivingView()
+//                    }
+//                } else {
+//                    IdentitySelectionView()
+//                }
             }
             .navigationDestination(for: Route.self) { route in
                 switch route {
@@ -85,5 +88,29 @@ struct RootView: View {
             }
         }
         .environmentObject(router)
+    }
+
+    // 테스트용 더미 이미지 생성
+    private func createTestImage() -> UIImage {
+        let size = CGSize(width: 400, height: 600)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { context in
+            UIColor.systemGray5.setFill()
+            context.fill(CGRect(origin: .zero, size: size))
+
+            let text = "테스트 이미지"
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 24),
+                .foregroundColor: UIColor.label
+            ]
+            let textSize = text.size(withAttributes: attributes)
+            let textRect = CGRect(
+                x: (size.width - textSize.width) / 2,
+                y: (size.height - textSize.height) / 2,
+                width: textSize.width,
+                height: textSize.height
+            )
+            text.draw(in: textRect, withAttributes: attributes)
+        }
     }
 }
