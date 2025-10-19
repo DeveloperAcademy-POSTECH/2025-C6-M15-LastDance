@@ -80,7 +80,7 @@ struct CameraView: View {
         .fullScreenCover(isPresented: $showConfirm, onDismiss: {
             // fullScreenCover가 닫힌 후 capturedImage가 있으면 다음 화면으로 이동
             if let image = viewModel.capturedImage {
-                router.push(.inputArtworkInfo(image: image))
+                router.push(.inputArtworkInfo(image: image, exhibitionId: nil, artistId: nil))
                 viewModel.capturedImage = nil // 이미지 사용 후 초기화
             }
         }) {
