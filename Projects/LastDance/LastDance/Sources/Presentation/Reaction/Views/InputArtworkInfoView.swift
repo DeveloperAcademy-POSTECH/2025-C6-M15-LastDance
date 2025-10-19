@@ -18,6 +18,9 @@ struct InputArtworkInfoView: View {
     @Query private var artists: [Artist]
 
     let image: UIImage
+    let exhibitionId: Int?
+    let artistId: Int?
+
     private var isBottomSheetActive: Bool {
         activeBottomSheet != nil
     }
@@ -105,12 +108,9 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
-//                    .onAppear {
-//                        Log.debug("Artworks count: \(artworks.count)")
-//                        artworks.forEach { artwork in
-//                            Log.debug("Artwork: \(artwork.title) (artistId: \(artwork.artistId ?? "nil"))")
-//                        }
-//                    }
+                    .onAppear {
+                        viewModel.fetchArtworks(artistId: artistId, exhibitionId: exhibitionId)
+                    }
                 }
 
                 /// 작가 바텀시트

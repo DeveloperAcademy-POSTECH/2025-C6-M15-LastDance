@@ -14,6 +14,7 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     private let dataManager = SwiftDataManager.shared
     private let visitorService = VisitorAPIService()
+    private let artistService = ArtistAPIService()
     private let venueService = VenueAPIService()
 
     /// 사용자 타입 선택
@@ -30,8 +31,12 @@ final class IdentitySelectionViewModel: ObservableObject {
 
         saveUserType(selectedType)
         
-        if selectedType == .viewer {
+        switch selectedType {
+        case .viewer:
             createVisitorAPI()
+        case .artist:
+            // TODO: - 이후에 실제 이름으로 연결 필요
+            createArtistAPI(name: "박작가")
         }
     }
 
@@ -42,11 +47,11 @@ final class IdentitySelectionViewModel: ObservableObject {
     }
     
     /// visitor생성 API 호출
-    private func createVisitorAPI() {
+    private func createVisitorAPI(name: String? = nil) {
 
         let uuid = loadOrCreateVisitorUUID()
         
-        let request = VisitorCreateRequestDto(uuid: uuid, name: nil)
+        let request = VisitorCreateRequestDto(uuid: uuid, name: name)
         
         visitorService.createVisitor(request: request) { [weak self] result in
             guard let self else { return }
@@ -56,7 +61,7 @@ final class IdentitySelectionViewModel: ObservableObject {
                     UserDefaults.standard.set(
                         dto.uuid,
                         forKey: UserDefaultsKey.visitorUUID.rawValue)
-                    Log.debug("[IdentitySelection] Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
+                    Log.debug("Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
                     
                     let visitor = Visitor(
                         id: dto.id,
@@ -69,14 +74,55 @@ final class IdentitySelectionViewModel: ObservableObject {
                        let data = moyaError.response?.data,
                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                        Log.warning("[IdentitySelection] Visitor create validation error: \(messages)")
+                        Log.warning("Visitor create validation error: \(messages)")
                     }
-                    Log.error("[IdentitySelection] Visitor create failed: \(error)")
+                    Log.error("Visitor create failed: \(error)")
                 }
             }
         }
     }
     
+    /// Artist 생성 API 호출
+    private func createArtistAPI(
+        name: String? = nil,
+        bio: String? = nil,
+        email: String? = nil) {
+        // 이미 생성돼 있다면 스킵 (원하면 캐시 키 체크)
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.artistUUID.rawValue) != nil {
+            Log.debug("Artist already exists. skip create.")
+            return
+        }
+
+        let request = ArtistCreateRequestDto(name: name, bio: bio, email: email)
+
+        artistService.createArtist(request: request) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let dto):
+                    // 캐시
+                    UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
+                    Log.info("Artist created. id=\(dto.id), uuid=\(dto.uuid)")
+                    
+                    let artist = Artist(
+                        id: dto.id,
+                        name: dto.name
+                    )
+                    self.dataManager.insert(artist)
+
+                case .failure(let error):
+                    if let moyaError = error as? MoyaError,
+                       let data = moyaError.response?.data,
+                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                        Log.warning("Artist create validation error: \(messages)")
+                    }
+                    Log.error("Artist create failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
     /// 저장된 uuid가 있으면 재사용, 없으면 새로 생성해서 저장
     private func loadOrCreateVisitorUUID() -> String {
         if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) {
