@@ -14,6 +14,9 @@ enum UserDefaultsKey: String {
     /// 방문객 UUID 정보 Key
     case visitorUUID
     
+    /// 작가 UUID 정보 Key
+    case artistUUID
+    
     var key: String {
         return self.rawValue
     }

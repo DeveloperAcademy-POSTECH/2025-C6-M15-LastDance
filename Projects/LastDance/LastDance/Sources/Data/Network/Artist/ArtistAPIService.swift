@@ -1,71 +1,68 @@
 //
-//  VisitorAPIService.swift
+//  ArtistAPIService.swift
 //  LastDance
 //
-//  Created by 배현진 on 10/17/25.
+//  Created by 배현진 on 10/18/25.
 //
 
 import Foundation
 import Moya
 
-// MARK: VisitorAPIServiceProtocol
-protocol VisitorAPIServiceProtocol {
-    func getVisitors(
-        completion: @escaping (Result<[VisitorListResponseDto], Error>)
+// MARK: - ArtistAPIServiceProtocol
+protocol ArtistAPIServiceProtocol {
+    func getArtists(
+        completion: @escaping (Result<[ArtistListItemDto], Error>)
         -> Void
     )
-    func createVisitor(
-        request: VisitorCreateRequestDto,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+    func createArtist(
+        request: ArtistCreateRequestDto,
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     )
-    func getVisitor(
+    func getArtist(
         id: Int,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     )
-    func getVisitorByUUID(
+    func getArtistByUUID(
         _ uuid: String,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     )
 }
 
-// MARK: VisitorAPIService
-final class VisitorAPIService: VisitorAPIServiceProtocol {
-    private let provider: MoyaProvider<VisitorAPI>
+// MARK: -ArtistAPIService
+final class ArtistAPIService: ArtistAPIServiceProtocol {
+    private let provider: MoyaProvider<ArtistAPI>
 
-    init(provider: MoyaProvider<VisitorAPI> = MoyaProvider<VisitorAPI>(plugins: [NetworkLoggerPlugin()])) {
+    init(provider: MoyaProvider<ArtistAPI> = MoyaProvider<ArtistAPI>(plugins: [NetworkLoggerPlugin()])) {
         self.provider = provider
     }
 
-    /// Visitor 목록 가져오기 함수
-    func getVisitors(
-        completion: @escaping (Result<[VisitorListResponseDto], Error>)
+    /// Artist 전체 목록 가져오기 함수
+    func getArtists(
+        completion: @escaping (Result<[ArtistListItemDto], Error>)
         -> Void
     ) {
-        provider.request(.getVisitors) { result in
+        provider.request(.getArtists) { result in
             switch result {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("getVisitors 응답: \(json)")
+                        Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let items = try JSONDecoder().decode(
-                        [VisitorListResponseDto].self,
-                        from: response.data
-                    )
+                    let list = try JSONDecoder().decode([ArtistListItemDto].self, from: response.data)
                     
                     DispatchQueue.main.async {
-                        items.forEach { dto in
-                            let model = VisitorMapper.toModel(from: dto)
-                            SwiftDataManager.shared.upsertVisitor(model)
+                        list.forEach { dto in
+                            let model = ArtistMapper.toModel(from: dto)
+                            SwiftDataManager.shared.upsertArtist(model)
                         }
-                        // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
-                        SwiftDataManager.shared.printAllVisitors()
+                        // TODO: - 전체 Artist 확인 용도 (이후에 제거 가능)
+                        SwiftDataManager.shared.printAllArtists()
                     }
                     
-                    completion(.success(items))
+                    completion(.success(list))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
@@ -76,29 +73,27 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("API 실패: \(error)")
+                Log.error("API 요청 실패: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
     }
 
-    /// Visitor 정보 저장 함수
-    func createVisitor(
-        request: VisitorCreateRequestDto,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+    /// Artist 정보 생성 함수
+    func createArtist(
+        request: ArtistCreateRequestDto,
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     ) {
-        provider.request(.createVisitor(dto: request)) { result in
+        provider.request(.createArtist(dto: request)) { result in
             switch result {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("createVisitor 응답: \(json)")
+                        Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(
-                        VisitorDetailResponseDto.self,
-                        from: response.data
-                    )
+                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
+                    Log.info("Artist created. id=\(dto.id), uuid=\(dto.uuid)")
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -110,29 +105,26 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("API 실패: \(error)")
+                Log.error("API 요청 실패: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
     }
 
-    /// id로 Visitor 정보 가져오기 함수
-    func getVisitor(
+    /// id 정보로 특정 Artist 가져오기 함수
+    func getArtist(
         id: Int,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     ) {
-        provider.request(.getVisitor(id: id)) { result in
+        provider.request(.getArtist(id: id)) { result in
             switch result {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("getVisitor 응답: \(json)")
+                        Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(
-                        VisitorDetailResponseDto.self,
-                        from: response.data
-                    )
+                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -144,29 +136,26 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("API 실패: \(error)")
+                Log.error("API 요청 실패: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
     }
 
-    /// UUID로 Visitor 정보 가져오기 함수
-    func getVisitorByUUID(
+    /// UUID 정보로 특정 Artist 정보 가져오기
+    func getArtistByUUID(
         _ uuid: String,
-        completion: @escaping (Result<VisitorDetailResponseDto, Error>)
+        completion: @escaping (Result<ArtistDetailResponseDto, Error>)
         -> Void
     ) {
-        provider.request(.getVisitorByUUID(uuid: uuid)) { result in
+        provider.request(.getArtistByUUID(uuid: uuid)) { result in
             switch result {
             case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
-                        Log.debug("getVisitorByUUID 응답: \(json)")
+                        Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(
-                        VisitorDetailResponseDto.self,
-                        from: response.data
-                    )
+                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -175,10 +164,10 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
             case .failure(let error):
                 if let data = error.response?.data,
                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
-                    let message = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("Validation Error: \(message)")
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
                 }
-                Log.error("API 실패: \(error)")
+                Log.error("API 요청 실패: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }

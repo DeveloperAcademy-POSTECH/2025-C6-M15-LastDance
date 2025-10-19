@@ -29,11 +29,6 @@ extension Date {
 
     private static let isoFormatter = ISO8601DateFormatter()
 
-    /// 짧은 날짜 형식으로 변환 (yyyy.M.d)
-    func toShortDateString() -> String {
-        return Date.shortDateFormatter.string(from: self)
-    }
-
     /// API 요청용 날짜 형식으로 변환 (yyyy-MM-dd)
     func toAPIDateString() -> String {
         return Date.apiDateFormatter.string(from: self)
@@ -75,6 +70,14 @@ extension Date {
            let match = regex.firstMatch(in: isoString, range: NSRange(isoString.startIndex..., in: isoString)),
            let range = Range(match.range, in: isoString) {
             return String(isoString[range])
+        }
+        return isoString
+    }
+
+    /// ISO8601 String을 짧은 날짜 형식으로 변환 (yyyy.M.d)
+    static func formatShortDate(from isoString: String) -> String {
+        if let date = isoFormatter.date(from: isoString) {
+            return shortDateFormatter.string(from: date)
         }
         return isoString
     }

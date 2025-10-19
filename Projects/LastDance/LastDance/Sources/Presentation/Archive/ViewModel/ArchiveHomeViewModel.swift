@@ -44,6 +44,7 @@ final class ArchiveHomeViewModel: ObservableObject {
     }
     
     func dateString(for exhibition: Exhibition) -> String {
+
         return Date.formatDisplayDate(from: exhibition.startDate)
     }
     
