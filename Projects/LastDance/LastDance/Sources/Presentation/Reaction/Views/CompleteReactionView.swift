@@ -21,7 +21,7 @@ struct CompleteReactionView: View {
             Text("전송 완료!")
                 .font(.title2)
                 .bold()
-                .lineSpacing(5)
+                .lineSpacing(10)
 
             Spacer().frame(height: 8)
 
