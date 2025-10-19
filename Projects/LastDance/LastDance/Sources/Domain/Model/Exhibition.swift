@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class Exhibition {
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: Int
     var title: String
     var descriptionText: String?
     var startDate: String
@@ -21,7 +21,7 @@ final class Exhibition {
     var createdAt: String?
     var updatedAt: String?
 
-    init(id: String,
+    init(id: Int,
          title: String,
          descriptionText: String? = nil,
          startDate: String,

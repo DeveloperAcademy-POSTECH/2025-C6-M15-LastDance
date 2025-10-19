@@ -116,13 +116,13 @@ enum MockDataLoader {
 
     static func createArtists() -> [Artist] {
         [
-            Artist(id: 1, name: "김민준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 2, name: "박서연", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 3, name: "이도윤", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 4, name: "공지우", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 5, name: "서예준", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 6, name: "최하은", exhibitions: ["exhibition_light"], receivedReactions: []),
-            Artist(id: 7, name: "정우진", exhibitions: ["exhibition_light"], receivedReactions: [])
+            Artist(id: 1, name: "김민준", exhibitions: [3], receivedReactions: []),
+            Artist(id: 2, name: "박서연", exhibitions: [3], receivedReactions: []),
+            Artist(id: 3, name: "이도윤", exhibitions: [3], receivedReactions: []),
+            Artist(id: 4, name: "공지우", exhibitions: [3], receivedReactions: []),
+            Artist(id: 5, name: "서예준", exhibitions: [3], receivedReactions: []),
+            Artist(id: 6, name: "최하은", exhibitions: [3], receivedReactions: []),
+            Artist(id: 7, name: "정우진", exhibitions: [3], receivedReactions: [])
         ]
     }
 
@@ -132,7 +132,7 @@ enum MockDataLoader {
 
         return [
             Exhibition(
-                id: "exhibition_light",
+                id: 1,
                 title: "빛의 향연",
                 descriptionText: "현대 미술에서 빛의 감각을 탐구하는 전시",
                 startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 3)),
@@ -143,7 +143,7 @@ enum MockDataLoader {
                 updatedAt: nil
             ),
             Exhibition(
-                id: "exhibition_02",
+                id: 2,
                 title: "조샘초이 : 기억의 지층, 경계를 넘는 시선",
                 descriptionText: "조샘초이 작가의 개인전",
                 startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 8)),
@@ -154,7 +154,7 @@ enum MockDataLoader {
                 updatedAt: nil
             ),
             Exhibition(
-                id: "exhibition_03",
+                id: 3,
                 title: "기증작가 상설전: 박대성 소산수목",
                 descriptionText: "박대성 작가의 기증 작품 전시",
                 startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 6)),
@@ -165,7 +165,7 @@ enum MockDataLoader {
                 updatedAt: nil
             ),
             Exhibition(
-                id: "exhibition_04",
+                id: 4,
                 title: "清年! 青年! 請年! - 맑고 푸른 그대에게 청한다",
                 descriptionText: "젊은 작가들의 작품 전시",
                 startDate: isoFormatter.string(from: Date().addingTimeInterval(-86400 * 10)),
@@ -179,7 +179,7 @@ enum MockDataLoader {
     }
 
 
-    private static func createArtworks(exhibitionId: String, artists: [Artist]) -> [Artwork] {
+    private static func createArtworks(exhibitionId: Int, artists: [Artist]) -> [Artwork] {
         let artworkData: [(Int, String, Int)] = [
             (1, "빛의 흐름", artists[0].id),
             (2, "새벽의 속삭임", artists[0].id),

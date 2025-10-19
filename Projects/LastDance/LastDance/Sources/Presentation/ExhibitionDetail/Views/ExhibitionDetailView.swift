@@ -11,7 +11,7 @@ struct ExhibitionDetailView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ExhibitionDetailViewModel()
 
-    let exhibitionId: String
+    let exhibitionId: Int
     
     var body: some View {
         VStack(spacing: 18) {
@@ -124,6 +124,6 @@ struct ExhibitionInfoSection: View {
 }
 
 #Preview {
-    ExhibitionDetailView(exhibitionId: "exhibition_light")
+    ExhibitionDetailView(exhibitionId: 1)
         .environmentObject(NavigationRouter())
 }

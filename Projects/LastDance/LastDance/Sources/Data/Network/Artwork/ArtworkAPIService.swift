@@ -142,7 +142,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     private func mapDtoToModel(_ dto: ArtworkDetailResponseDto, exhibitionId: Int?) -> Artwork {
         return Artwork(
             id: dto.id,
-            exhibitionId: exhibitionId != nil ? String(exhibitionId!) : "",
+            exhibitionId: exhibitionId != nil ? exhibitionId! : 0,
             title: dto.title,
             artistId: dto.artist_id,
             thumbnailURL: dto.thumbnail_url

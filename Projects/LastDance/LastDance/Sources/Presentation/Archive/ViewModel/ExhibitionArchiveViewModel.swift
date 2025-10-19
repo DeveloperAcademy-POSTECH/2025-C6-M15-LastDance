@@ -88,10 +88,9 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         let context = container.mainContext
 
         // 해당 전시의 작품 ID 조회
-        let exhibitionIdString = String(exhibitionId)
         let artworkDescriptor = FetchDescriptor<Artwork>(
             predicate: #Predicate<Artwork> { artwork in
-                artwork.exhibitionId == exhibitionIdString
+                artwork.exhibitionId == exhibitionId
             }
         )
         let exhibitionArtworks = try context.fetch(artworkDescriptor)
@@ -113,10 +112,9 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         }
 
         let context = container.mainContext
-        let exhibitionIdString = String(exhibitionId)
         let descriptor = FetchDescriptor<Artwork>(
             predicate: #Predicate<Artwork> { artwork in
-                artwork.exhibitionId == exhibitionIdString
+                artwork.exhibitionId == exhibitionId
             }
         )
         return try context.fetch(descriptor)
@@ -152,4 +150,3 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         }
     }
 }
-

@@ -14,7 +14,7 @@ struct ArchiveView: View {
     
     
     // TODO: - 이전 화면에서 넘겨받은 exhivitionId. 이것을 이용해 fetchCurrentExhibition 수정 필요.
-    let exhibitionId: String
+    let exhibitionId: Int
     
     var body: some View {
         VStack(spacing: 0) {

@@ -50,7 +50,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     DispatchQueue.main.async {
                         for exhibitionDto in exhibitions {
                             let exhibition = exhibitionDto.toEntity()
-                            SwiftDataManager.shared.insert(exhibition)
+                            SwiftDataManager.shared.upsertExhibition(exhibition)
                         }
                         Log.debug("로컬 저장 완료: \(exhibitions.count)개")
                     }
@@ -118,7 +118,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                             for artworkInfo in artworkInfos {
                                 let artwork = Artwork(
                                     id: artworkInfo.id,
-                                    exhibitionId: String(exhibitionDto.id),
+                                    exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
                                     artistId: artworkInfo.artist_id,
                                     thumbnailURL: artworkInfo.thumbnail_url

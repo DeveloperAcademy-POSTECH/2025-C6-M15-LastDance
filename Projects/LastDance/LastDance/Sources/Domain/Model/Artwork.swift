@@ -11,14 +11,14 @@ import SwiftData
 @Model
 final class Artwork {
     @Attribute(.unique) var id: Int
-    var exhibitionId: String
+    var exhibitionId: Int
     var title: String
     var artistId: Int?
     var thumbnailURL: String?
 
     // 관계 역참조는 별도 선언 없이 exhibition.artworks로 관리
     init(id: Int,
-         exhibitionId: String,
+         exhibitionId: Int,
          title: String,
          artistId: Int? = nil,
          thumbnailURL: String? = nil) {

@@ -116,6 +116,26 @@ extension SwiftDataManager {
             insert(newValue)
         }
     }
+    
+    /// Exhitibion 전체 목록 저장 - 중복 방지
+    func upsertExhibition(_ newValue: Exhibition) {
+        let all = fetchAll(Exhibition.self)
+        if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.title = newValue.title
+            existing.descriptionText = newValue.descriptionText
+            existing.startDate = newValue.startDate
+            existing.endDate = newValue.endDate
+            existing.artworks = newValue.artworks
+            existing.venueId = newValue.venueId
+            existing.coverImageName = newValue.coverImageName
+            existing.createdAt = newValue.createdAt
+            existing.updatedAt = newValue.updatedAt
+            
+            saveContext()
+        } else {
+            insert(newValue)
+        }
+    }
   
     /// 전체 Venue 확인용 출력문
     func printAllVenues() {

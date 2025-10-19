@@ -14,17 +14,17 @@ enum Route: Hashable {
     case audienceArchiving
     case articleArchiving
     case exhibitionList
-    case exhibitionDetail(id: String)
+    case exhibitionDetail(id: Int)
     case exhibitionArchive(exhibitionId: Int)
     case artworkDetail(id: Int)
     case camera
     case inputArtworkInfo(image: UIImage, exhibitionId: Int?, artistId: Int?)
-    case archive(id: String)
+    case archive(id: Int)
     case category
     case completeReaction
     case articleExhibitionList
-    case articleList(selectedExhibitionId: String)
-    case completeArticleList(selectedExhibitionId: String, selectedArtistId: Int)
+    case articleList(selectedExhibitionId: Int)
+    case completeArticleList(selectedExhibitionId: Int, selectedArtistId: Int)
     case artistReaction
     case artistReactionArchiveView
 }
