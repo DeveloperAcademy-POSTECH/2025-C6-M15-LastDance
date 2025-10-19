@@ -21,23 +21,18 @@ struct RootView: View {
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            // 임시 테스트: ExhibitionArchiveView를 루트로 설정
-            ExhibitionArchiveView(exhibitionId: 1)
-                .toolbar(.hidden, for: .navigationBar)
-
-            // 원래 코드 (테스트 후 복원 필요)
-//            Group {
-//                if let userType = userType {
-//                    switch userType {
-//                    case .artist:
-//                        ArticleArchivingView()
-//                    case .viewer:
-//                        AudienceArchivingView()
-//                    }
-//                } else {
-//                    IdentitySelectionView()
-//                }
-//            }
+            Group {
+                if let userType = userType {
+                    switch userType {
+                    case .artist:
+                        ArticleArchivingView()
+                    case .viewer:
+                        AudienceArchivingView()
+                    }
+                } else {
+                    IdentitySelectionView()
+                }
+            }
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .identitySelection:
