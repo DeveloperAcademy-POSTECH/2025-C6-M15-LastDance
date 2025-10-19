@@ -86,28 +86,4 @@ struct RootView: View {
         }
         .environmentObject(router)
     }
-
-    // 테스트용 더미 이미지 생성
-    private func createTestImage() -> UIImage {
-        let size = CGSize(width: 400, height: 600)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { context in
-            UIColor.systemGray5.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
-
-            let text = "테스트 이미지"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 24),
-                .foregroundColor: UIColor.label
-            ]
-            let textSize = text.size(withAttributes: attributes)
-            let textRect = CGRect(
-                x: (size.width - textSize.width) / 2,
-                y: (size.height - textSize.height) / 2,
-                width: textSize.width,
-                height: textSize.height
-            )
-            text.draw(in: textRect, withAttributes: attributes)
-        }
-    }
 }
