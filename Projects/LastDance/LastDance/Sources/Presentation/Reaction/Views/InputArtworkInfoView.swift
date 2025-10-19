@@ -78,7 +78,8 @@ struct InputArtworkInfoView: View {
                                 artworkId: selectedArtwork.id
                             ) { success in
                                 if success {
-                                    router.push(.category)
+                                    //
+                                    router.push(.artworkDetail(id: <#T##Int#>))
                                 }
                             }
                         }

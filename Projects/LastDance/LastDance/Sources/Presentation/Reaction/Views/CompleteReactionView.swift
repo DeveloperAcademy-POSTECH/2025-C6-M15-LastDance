@@ -12,21 +12,22 @@ struct CompleteReactionView: View {
         VStack(alignment: .center) {
             Spacer()
             
-            Image(systemName: "checkmark.circle.fill")
+            Image("envelope")
                 .resizable()
                 .frame(width: 94, height: 94)
-                .foregroundStyle(.black)
                 .padding()
 
-            Spacer().frame(height: 32)
+            Spacer().frame(height: 14) // or 25
 
             Text("전송 완료!")
                 .font(.title2)
                 .bold()
+                .lineSpacing(5)
 
-            Spacer().frame(height: 14)
+            Spacer().frame(height: 8)
 
             Text("작가에게 반응을 보냈어요")
+                .foregroundColor(Color(red: 0.31, green: 0.31, blue: 0.31))
 
             Spacer()
 
