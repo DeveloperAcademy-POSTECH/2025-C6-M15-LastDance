@@ -18,7 +18,7 @@ struct ExhibitionListTitleSection: View {
 
             Text("전시명")
                 .font(.system(size: 14, weight: .regular))
-                .foregroundStyle(Color(red: 0.6, green: 0.6, blue: 0.6))
+                .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.52))
                 .padding(.top, 24)
         }
         .padding(.top, 20)
