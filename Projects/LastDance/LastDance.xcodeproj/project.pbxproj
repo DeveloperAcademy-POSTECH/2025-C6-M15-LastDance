@@ -152,6 +152,12 @@
 		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
 		D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */; };
 		D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */; };
+		D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */; };
+		D8DB5DBE2EA558E200F4596B /* VisitHistoriesAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */; };
+		D8DB5DC02EA5595300F4596B /* MakeVisitHistoriesRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */; };
+		D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */; };
+		D8DB5DC42EA561BE00F4596B /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */; };
+		D8DB5DC62EA561E300F4596B /* VisitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC52EA561E300F4596B /* VisitHistory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -305,6 +311,12 @@
 		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPI.swift; sourceTree = "<group>"; };
+		D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPIService.swift; sourceTree = "<group>"; };
+		D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeVisitHistoriesRequestDto.swift; sourceTree = "<group>"; };
+		D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorHistoriesResponseDto.swift; sourceTree = "<group>"; };
+		D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
+		D8DB5DC52EA561E300F4596B /* VisitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -487,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				99191E912EA3E54C00D2F71A /* ArtistMapper.swift */,
+				D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */,
 				99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */,
 			);
 			path = Mapper;
@@ -761,6 +774,7 @@
 				99191EAD2EA4A21C00D2F71A /* Tag.swift */,
 				99E6F10C2E97B0F1002ED9C2 /* IdentificatedArtwork.swift */,
 				99E6F10A2E97B0EA002ED9C2 /* Reaction.swift */,
+				D8DB5DC52EA561E300F4596B /* VisitHistory.swift */,
 				99E6F1082E97B0E3002ED9C2 /* CapturedArtwork.swift */,
 				99E6F1062E97B0DD002ED9C2 /* Venue.swift */,
 				99E6F1042E97B0D9002ED9C2 /* Visitor.swift */,
@@ -958,6 +972,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D8DB5DB92EA558B900F4596B /* VisitHistories */,
 				99191EB32EA4AA5A00D2F71A /* Tag */,
 				99191E9E2EA4972800D2F71A /* TagCategory */,
 				99191E712EA3655200D2F71A /* Artist */,
@@ -1067,6 +1082,25 @@
 				D8C7C2B92EA27E6600FCB472 /* OutlinedButton.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		D8DB5DB92EA558B900F4596B /* VisitHistories */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */,
+				D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */,
+				D8DB5DBA2EA558CB00F4596B /* DTO */,
+			);
+			path = VisitHistories;
+			sourceTree = "<group>";
+		};
+		D8DB5DBA2EA558CB00F4596B /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */,
+				D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1199,6 +1233,7 @@
 				D8C7C29C2EA121AA00FCB472 /* ExhibitionResponseDto.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				99191EA62EA497D300D2F71A /* TagCategoryAPI.swift in Sources */,
+				D8DB5DBE2EA558E200F4596B /* VisitHistoriesAPIService.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99191E212EA199A100D2F71A /* TitleSection.swift in Sources */,
 				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
@@ -1236,6 +1271,7 @@
 				99191EAC2EA498DA00D2F71A /* TagAPIService.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
 				D8C7C2AD2EA1E11700FCB472 /* Date+Extensions.swift in Sources */,
+				D8DB5DC62EA561E300F4596B /* VisitHistory.swift in Sources */,
 				8C3B37AC2E9E7C95003FF185 /* CompleteArticleListView.swift in Sources */,
 				D8C7C2902EA0D0ED00FCB472 /* VisitorResponseDto.swift in Sources */,
 				8C0F9F4C2E9CE192005B8C12 /* UserType.swift in Sources */,
@@ -1273,6 +1309,7 @@
 				D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */,
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
+				D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */,
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,
@@ -1283,6 +1320,7 @@
 				8C3B37B62E9EB7C0003FF185 /* ArticleArchivingView.swift in Sources */,
 				D8C7C0B12E9FEFD900FCB472 /* ReactionAPIService.swift in Sources */,
 				D8C7C2C62EA27EBF00FCB472 /* BackButton.swift in Sources */,
+				D8DB5DC02EA5595300F4596B /* MakeVisitHistoriesRequestDto.swift in Sources */,
 				D8C7C2B12EA1E95700FCB472 /* ExhibitionArchiveViewModel.swift in Sources */,
 				99191EA42EA497A300D2F71A /* TagCategoryDetailResponseDto.swift in Sources */,
 				D8C7C0AB2E9F891500FCB472 /* BottomSheetType.swift in Sources */,
@@ -1302,6 +1340,8 @@
 				8C3B37A62E9E7089003FF185 /* PageIndicator.swift in Sources */,
 				99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* Visitor.swift in Sources */,
+				D8DB5DC42EA561BE00F4596B /* VisitHistoryMapper.swift in Sources */,
+				D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */,
 				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 				D8C7C2BB2EA27E6600FCB472 /* BottomButton.swift in Sources */,
 				99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */,
