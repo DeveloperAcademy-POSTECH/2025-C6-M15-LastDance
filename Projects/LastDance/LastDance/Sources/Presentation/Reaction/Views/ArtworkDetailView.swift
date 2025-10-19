@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ArtworkDetailView: View {
     @Environment(\.keyboardManager) var keyboardManager
+    @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
 
@@ -20,6 +21,7 @@ struct ArtworkDetailView: View {
 
     @State private var showAlert = false
     @State private var alertType: AlertType = .confirmation
+    @State private var exhibitionId: String = ""
 
     init(artworkId: Int, capturedImage: UIImage? = nil) {
         self.artworkId = artworkId
@@ -57,7 +59,6 @@ struct ArtworkDetailView: View {
             )
         }
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
-        .navigationBarTitle("반응 남기기", displayMode: .inline)
         .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .principal) {

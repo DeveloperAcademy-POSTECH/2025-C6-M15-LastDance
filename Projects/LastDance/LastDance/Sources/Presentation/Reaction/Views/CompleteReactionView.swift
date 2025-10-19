@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CompleteReactionView: View {
+    @EnvironmentObject private var router: NavigationRouter
+
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
@@ -33,14 +35,14 @@ struct CompleteReactionView: View {
             HStack(spacing: 19) {
                 OutlinedButton(title: "관람 끝내기", color: Color(red: 0.95, green: 0.95, blue: 0.95), textColor: Color(red: 0.39, green: 0.39, blue: 0.39))
                 {
-                    // TODO: 관람 끝내기 네비게이션 연결
+                    // TODO: 라우팅 연결 필요 (아카이빙 홈 뷰)
                 }
 
                 OutlinedButton(
                     title: "관람 계속하기",
                     color: .black, textColor: .white
                 ) {
-                    // TODO: 관람 계속하기 네비게이션 연결
+                    // TODO: 라우팅 연결 필요 (아카이빙뷰)
                 }
             }
             .padding(.horizontal, 20)

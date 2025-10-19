@@ -9,13 +9,16 @@ import SwiftUI
 import SwiftData
 
 struct ArchiveView: View {
-    @StateObject private var viewModel = ArchiveViewModel()
     @EnvironmentObject private var router: NavigationRouter
-    
-    
-    // TODO: - 이전 화면에서 넘겨받은 exhivitionId. 이것을 이용해 fetchCurrentExhibition 수정 필요.
+    @StateObject private var viewModel: ArchiveViewModel
+
     let exhibitionId: String
-    
+
+    init(exhibitionId: String) {
+        self.exhibitionId = exhibitionId
+        _viewModel = StateObject(wrappedValue: ArchiveViewModel(exhibitionId: exhibitionId))
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ArchiveHeaderView {
