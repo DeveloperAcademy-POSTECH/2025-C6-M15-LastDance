@@ -15,6 +15,7 @@ final class ArchiveViewModel: ObservableObject {
     @Published var isLoading = false
     
     private let swiftDataManager = SwiftDataManager.shared
+    private let exhibitionId: String
     
     var capturedArtworksCount: Int {
         capturedArtworks.count
@@ -28,7 +29,8 @@ final class ArchiveViewModel: ObservableObject {
         !capturedArtworks.isEmpty
     }
     
-    init() {
+    init(exhibitionId: String) {
+        self.exhibitionId = exhibitionId
         loadData()
     }
     
@@ -36,37 +38,12 @@ final class ArchiveViewModel: ObservableObject {
         isLoading = true
         Task {
             do {
-                // 먼저 캡처된 작품들 로드
-                self.capturedArtworks = try await fetchCapturedArtworks()
-                
-                // 캡처된 작품들을 기반으로 전시 정보 로드
                 self.currentExhibition = try await fetchCurrentExhibition()
+                self.capturedArtworks = try await fetchCapturedArtworksForCurrentExhibition()
             } catch {
                 Log.error("Failed to load data: \(error)")
             }
             self.isLoading = false
-        }
-    }
-    
-    func loadCapturedArtworks() {
-        isLoading = true
-        Task {
-            do {
-                self.capturedArtworks = try await fetchCapturedArtworks()
-            } catch {
-                Log.error("Failed to load captured artworks: \(error)")
-            }
-            self.isLoading = false
-        }
-    }
-    
-    func loadCurrentExhibition() {
-        Task {
-            do {
-                self.currentExhibition = try await fetchCurrentExhibition()
-            } catch {
-                Log.error("❌ Failed to load current exhibition: \(error)")
-            }
         }
     }
     
@@ -76,17 +53,35 @@ final class ArchiveViewModel: ObservableObject {
         return angles[index % angles.count]
     }
     
-    private func fetchCapturedArtworks() async throws -> [CapturedArtwork] {
+    private func fetchCapturedArtworksForCurrentExhibition() async throws -> [CapturedArtwork] {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
         }
         
         let context = container.mainContext
-        let descriptor = FetchDescriptor<CapturedArtwork>(
+        let currentExhibitionId = self.exhibitionId
+        
+        // 현재 전시의 모든 작품 ID 가져오기
+        let artworkDescriptor = FetchDescriptor<Artwork>(
+            predicate: #Predicate<Artwork> { artwork in
+                artwork.exhibitionId == currentExhibitionId
+            }
+        )
+        let artworks = try context.fetch(artworkDescriptor)
+        let artworkIds = artworks.map { $0.id }
+        
+        // 해당 작품들의 CapturedArtwork만 필터링
+        let capturedDescriptor = FetchDescriptor<CapturedArtwork>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
+        let allCaptured = try context.fetch(capturedDescriptor)
         
-        return try context.fetch(descriptor)
+        return allCaptured.filter { captured in
+            if let artworkId = captured.artworkId {
+                return artworkIds.contains(artworkId)
+            }
+            return false
+        }
     }
     
     private func fetchCurrentExhibition() async throws -> Exhibition? {
@@ -96,36 +91,17 @@ final class ArchiveViewModel: ObservableObject {
         }
         
         let context = container.mainContext
-        
-        // 캡처된 작품들 먼저 가져오기
-        let capturedArtworks = try await fetchCapturedArtworks()
-        
-        // 캡처된 작품이 없으면 nil 반환
-        guard let firstCaptured = capturedArtworks.first,
-              let artworkId = firstCaptured.artworkId else {
-            return nil
-        }
-
-        let artworkDescriptor = FetchDescriptor<Artwork>(
-            predicate: #Predicate<Artwork> { artwork in
-                artwork.id == artworkId
-            }
-        )
-        guard let artwork = try context.fetch(artworkDescriptor).first else {
-            Log.error("❌ Artwork not found for id: \(artworkId)")
-            return nil
-        }
-
-        let exhibitionId = artwork.exhibitionId
+        let currentExhibitionId = self.exhibitionId
         let exhibitionDescriptor = FetchDescriptor<Exhibition>(
             predicate: #Predicate<Exhibition> { exhibition in
-                exhibition.id == exhibitionId
+                exhibition.id == currentExhibitionId
             }
         )
+        
         let exhibition = try context.fetch(exhibitionDescriptor).first
         
         if exhibition == nil {
-            Log.error("❌ Exhibition not found for id: \(exhibitionId)")
+            Log.error("❌ Exhibition not found for id: \(self.exhibitionId)")
         }
         
         return exhibition

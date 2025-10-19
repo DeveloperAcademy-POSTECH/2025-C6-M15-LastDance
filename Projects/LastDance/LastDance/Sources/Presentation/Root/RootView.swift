@@ -21,18 +21,7 @@ struct RootView: View {
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            Group {
-                if let userType = userType {
-                    switch userType {
-                    case .artist:
-                        ArticleArchivingView()
-                    case .viewer:
-                        AudienceArchivingView()
-                    }
-                } else {
-                    IdentitySelectionView()
-                }
-            }
+            ArchiveView(exhibitionId: "kwangro")
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .identitySelection:
@@ -81,6 +70,8 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
+                case .archiveHome:
+                    ArchiveHomeView()
                 }
             }
         }

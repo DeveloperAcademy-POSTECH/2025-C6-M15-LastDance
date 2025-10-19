@@ -13,13 +13,13 @@ struct TooltipView: View {
     var body: some View {
         // 캡슐 모양 툴팁
         Text(text)
-            .font(.system(size: 15, weight: .regular))
+            .font(.system(size: 14, weight: .regular))
             .foregroundColor(.white)
             .multilineTextAlignment(.center)
             .lineSpacing(2)
             .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 14)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
             .background(
                 RoundedCornerRectangle(cornerRadius: 12)
                     .fill(Color.black)
