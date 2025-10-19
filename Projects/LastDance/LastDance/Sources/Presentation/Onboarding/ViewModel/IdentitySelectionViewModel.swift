@@ -55,7 +55,7 @@ final class IdentitySelectionViewModel: ObservableObject {
                     UserDefaults.standard.set(
                         dto.uuid,
                         forKey: UserDefaultsKey.visitorUUID.rawValue)
-                    Log.debug("[IdentitySelection] Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
+                    Log.debug("Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
                     
                     let visitor = Visitor(
                         id: dto.id,
@@ -68,9 +68,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                        let data = moyaError.response?.data,
                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                        Log.warning("[IdentitySelection] Visitor create validation error: \(messages)")
+                        Log.warning("Visitor create validation error: \(messages)")
                     }
-                    Log.error("[IdentitySelection] Visitor create failed: \(error)")
+                    Log.error("Visitor create failed: \(error)")
                 }
             }
         }

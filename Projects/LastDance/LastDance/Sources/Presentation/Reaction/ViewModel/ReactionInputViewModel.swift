@@ -96,9 +96,9 @@ final class ReactionInputViewModel: ObservableObject {
         apiService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { result in
             switch result {
             case .success(let reactions):
-                Log.debug("✅ 반응 조회 성공! 조회된 반응 수: \(reactions.count)")
+                Log.debug("반응 조회 성공! 조회된 반응 수: \(reactions.count)")
             case .failure(let error):
-                Log.debug("❌ 반응 조회 실패: \(error)")
+                Log.debug("반응 조회 실패: \(error)")
             }
         }
     }
@@ -111,9 +111,9 @@ final class ReactionInputViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    Log.debug("✅ 반응 상세 조회 성공!")
+                    Log.debug("반응 상세 조회 성공!")
                 case .failure(let error):
-                    Log.debug("❌ 반응 상세 조회 실패: \(error.localizedDescription)")
+                    Log.debug("반응 상세 조회 실패: \(error.localizedDescription)")
                 }
             }
         }
@@ -121,15 +121,15 @@ final class ReactionInputViewModel: ObservableObject {
 
     /// 작품 목록 조회 API 함수
     func fetchArtworks(artistId: Int? = nil, exhibitionId: Int? = nil) {
-        Log.debug("[ReactionInputViewModel] 작품 목록 조회 API 호출 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
+        Log.debug("작품 목록 조회 API 호출 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
 
         artworkAPIService.getArtworks(artistId: artistId, exhibitionId: exhibitionId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let artworks):
-                    Log.debug("[ReactionInputViewModel] ✅ 작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
+                    Log.debug("작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
                 case .failure(let error):
-                    Log.error("[ReactionInputViewModel] ❌ 작품 목록 조회 실패: \(error.localizedDescription)")
+                    Log.error("작품 목록 조회 실패: \(error.localizedDescription)")
                 }
             }
         }
