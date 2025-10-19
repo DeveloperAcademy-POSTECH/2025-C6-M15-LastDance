@@ -45,6 +45,16 @@
 		99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */; };
 		99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */; };
 		99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */; };
+		99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */; };
+		99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */; };
+		99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */; };
+		99191E872EA38A6100D2F71A /* ArtistAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E862EA38A6100D2F71A /* ArtistAPI.swift */; };
+		99191E892EA38A6800D2F71A /* ArtistAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E882EA38A6800D2F71A /* ArtistAPIService.swift */; };
+		99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */; };
+		99191E922EA3E55200D2F71A /* ArtistMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E912EA3E54C00D2F71A /* ArtistMapper.swift */; };
+		99191E972EA4679500D2F71A /* VenueAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E962EA4679100D2F71A /* VenueAPI.swift */; };
+		99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E982EA467B700D2F71A /* VenueAPIService.swift */; };
+		99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */; };
 		99191EA22EA4978C00D2F71A /* TagCategoryListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EA12EA4977F00D2F71A /* TagCategoryListResponseDto.swift */; };
 		99191EA42EA497A300D2F71A /* TagCategoryDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EA32EA497A100D2F71A /* TagCategoryDetailResponseDto.swift */; };
 		99191EA62EA497D300D2F71A /* TagCategoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EA52EA497CD00D2F71A /* TagCategoryAPI.swift */; };
@@ -55,16 +65,6 @@
 		99191EB02EA4A23100D2F71A /* TagCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EAF2EA4A22E00D2F71A /* TagCategory.swift */; };
 		99191EB72EA4ACDB00D2F71A /* TagDetailWithCategoryResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EB62EA4ACD000D2F71A /* TagDetailWithCategoryResponseDto.swift */; };
 		99191EBF2EA4E13400D2F71A /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */; };
-		99191E972EA4679500D2F71A /* VenueAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E962EA4679100D2F71A /* VenueAPI.swift */; };
-		99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E982EA467B700D2F71A /* VenueAPIService.swift */; };
-		99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */; };
-		99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */; };
-		99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */; };
-		99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */; };
-		99191E872EA38A6100D2F71A /* ArtistAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E862EA38A6100D2F71A /* ArtistAPI.swift */; };
-		99191E892EA38A6800D2F71A /* ArtistAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E882EA38A6800D2F71A /* ArtistAPIService.swift */; };
-		99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */; };
-		99191E922EA3E55200D2F71A /* ArtistMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E912EA3E54C00D2F71A /* ArtistMapper.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -192,6 +192,16 @@
 		99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCreateRequestDto.swift; sourceTree = "<group>"; };
 		99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorListResponseDto.swift; sourceTree = "<group>"; };
+		99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListResponseDto.swift; sourceTree = "<group>"; };
+		99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailResponseDto.swift; sourceTree = "<group>"; };
+		99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistCreateRequestDto.swift; sourceTree = "<group>"; };
+		99191E862EA38A6100D2F71A /* ArtistAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPI.swift; sourceTree = "<group>"; };
+		99191E882EA38A6800D2F71A /* ArtistAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPIService.swift; sourceTree = "<group>"; };
+		99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorMapper.swift; sourceTree = "<group>"; };
+		99191E912EA3E54C00D2F71A /* ArtistMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMapper.swift; sourceTree = "<group>"; };
+		99191E962EA4679100D2F71A /* VenueAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPI.swift; sourceTree = "<group>"; };
+		99191E982EA467B700D2F71A /* VenueAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPIService.swift; sourceTree = "<group>"; };
+		99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191EA12EA4977F00D2F71A /* TagCategoryListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCategoryListResponseDto.swift; sourceTree = "<group>"; };
 		99191EA32EA497A100D2F71A /* TagCategoryDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCategoryDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191EA52EA497CD00D2F71A /* TagCategoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCategoryAPI.swift; sourceTree = "<group>"; };
@@ -202,16 +212,6 @@
 		99191EAF2EA4A22E00D2F71A /* TagCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCategory.swift; sourceTree = "<group>"; };
 		99191EB62EA4ACD000D2F71A /* TagDetailWithCategoryResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailWithCategoryResponseDto.swift; sourceTree = "<group>"; };
 		99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
-		99191E962EA4679100D2F71A /* VenueAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPI.swift; sourceTree = "<group>"; };
-		99191E982EA467B700D2F71A /* VenueAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPIService.swift; sourceTree = "<group>"; };
-		99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailResponseDto.swift; sourceTree = "<group>"; };
-		99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistListResponseDto.swift; sourceTree = "<group>"; };
-		99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailResponseDto.swift; sourceTree = "<group>"; };
-		99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistCreateRequestDto.swift; sourceTree = "<group>"; };
-		99191E862EA38A6100D2F71A /* ArtistAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPI.swift; sourceTree = "<group>"; };
-		99191E882EA38A6800D2F71A /* ArtistAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAPIService.swift; sourceTree = "<group>"; };
-		99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorMapper.swift; sourceTree = "<group>"; };
-		99191E912EA3E54C00D2F71A /* ArtistMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMapper.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -447,6 +447,75 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		99191E712EA3655200D2F71A /* Artist */ = {
+			isa = PBXGroup;
+			children = (
+				99191E722EA3655A00D2F71A /* DTO */,
+				99191E862EA38A6100D2F71A /* ArtistAPI.swift */,
+				99191E882EA38A6800D2F71A /* ArtistAPIService.swift */,
+			);
+			path = Artist;
+			sourceTree = "<group>";
+		};
+		99191E722EA3655A00D2F71A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99191E742EA3656400D2F71A /* Response */,
+				99191E732EA3655E00D2F71A /* Request */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99191E732EA3655E00D2F71A /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		99191E742EA3656400D2F71A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */,
+				99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		99191E8E2EA3E50F00D2F71A /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				99191E912EA3E54C00D2F71A /* ArtistMapper.swift */,
+				99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */,
+			);
+			path = Mapper;
+			sourceTree = "<group>";
+		};
+		99191E932EA4677500D2F71A /* Venue */ = {
+			isa = PBXGroup;
+			children = (
+				99191E942EA4677F00D2F71A /* DTO */,
+			);
+			path = Venue;
+			sourceTree = "<group>";
+		};
+		99191E942EA4677F00D2F71A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99191E952EA4678700D2F71A /* Response */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99191E952EA4678700D2F71A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
 		99191E9E2EA4972800D2F71A /* TagCategory */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,65 +566,6 @@
 			children = (
 				99191EB62EA4ACD000D2F71A /* TagDetailWithCategoryResponseDto.swift */,
 				D8C7C2912EA0D10200FCB472 /* TagDetailResponseDto.swift */,
-			);
-			path = Response;
-		99191E932EA4677500D2F71A /* Venue */ = {
-			isa = PBXGroup;
-			children = (
-				99191E942EA4677F00D2F71A /* DTO */,
-			);
-			path = Venue;
-			sourceTree = "<group>";
-		};
-		99191E942EA4677F00D2F71A /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				99191E952EA4678700D2F71A /* Response */,
-		99191E712EA3655200D2F71A /* Artist */ = {
-			isa = PBXGroup;
-			children = (
-				99191E722EA3655A00D2F71A /* DTO */,
-				99191E862EA38A6100D2F71A /* ArtistAPI.swift */,
-				99191E882EA38A6800D2F71A /* ArtistAPIService.swift */,
-			);
-			path = Artist;
-			sourceTree = "<group>";
-		};
-		99191E722EA3655A00D2F71A /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				99191E742EA3656400D2F71A /* Response */,
-				99191E732EA3655E00D2F71A /* Request */,
-			);
-			path = DTO;
-			sourceTree = "<group>";
-		};
-		99191E952EA4678700D2F71A /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */,
-		99191E732EA3655E00D2F71A /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				99191E792EA365AC00D2F71A /* ArtistCreateRequestDto.swift */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		99191E742EA3656400D2F71A /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				99191E772EA3659700D2F71A /* ArtistDetailResponseDto.swift */,
-				99191E752EA3657500D2F71A /* ArtistListResponseDto.swift */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		99191E8E2EA3E50F00D2F71A /* Mapper */ = {
-			isa = PBXGroup;
-			children = (
-				99191E912EA3E54C00D2F71A /* ArtistMapper.swift */,
-				99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */,
 			);
 			path = Mapper;
 			sourceTree = "<group>";
