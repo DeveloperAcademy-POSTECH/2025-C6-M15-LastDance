@@ -42,10 +42,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                         SwiftDataManager.shared.insert(reaction)
                         Log.debug("로컬 저장 완료")
                     }
-
                     completion(.success(responseDto))
                 } catch {
-                    Log.debug("JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -53,16 +52,19 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
-                Log.debug("API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
     }
 
     /// 전체 반응 조회하기 함수
-    func getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?, completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void) {
+    func getReactions(artworkId: Int?,
+                      visitorId: Int?,
+                      visitId: Int?,
+                      completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void) {
         Log.debug("요청 파라미터 - artworkId: \(String(describing: artworkId)), visitorId: \(String(describing: visitorId)), visitId: \(String(describing: visitId))")
 
         provider.request(.getReactions(artworkId: artworkId, visitorId: visitorId, visitId: visitId)) { result in
@@ -75,7 +77,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let reactions = try JSONDecoder().decode([GetReactionResponseDto].self, from: response.data)
                     completion(.success(reactions))
                 } catch {
-                    Log.debug("JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -83,9 +85,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
-                Log.debug("API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
@@ -113,7 +115,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
 
                     completion(.success(responseDto))
                 } catch {
-                    Log.debug("JSON 디코딩 실패: \(error)")
+                    Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -121,16 +123,15 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 if let response = error.response,
                    let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
                     let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.debug("Validation Error: \(errorMessages)")
+                    Log.warning("Validation Error: \(errorMessages)")
                 }
-                Log.debug("API 요청 실패: \(error)")
+                Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }
     }
 
     // MARK: - Mapper
-
     /// ReactionDetail DTO를 Reaction Model로 변환
     private func mapDtoToModel(_ dto: ReactionDetailResponseDto) -> Reaction {
         // tags를 category 문자열 배열로 변환

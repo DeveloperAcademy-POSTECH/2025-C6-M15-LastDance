@@ -12,8 +12,8 @@ struct OnboardingView: View {
     @StateObject private var viewModel = OnboardingViewModel()
     
     var body: some View {
-        VStack {
-            Text("OnboardingView")
+        VStack(spacing: 20) {
+            Text("Onboarding View")
         }
     }
 }

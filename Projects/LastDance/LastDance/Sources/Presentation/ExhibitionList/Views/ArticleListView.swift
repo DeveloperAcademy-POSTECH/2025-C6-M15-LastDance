@@ -32,13 +32,25 @@ struct ArticleListSearchTextField: View {
 struct ArticleListContent: View {
     @ObservedObject var viewModel: ArticleListViewModel
 
+    private var backgroundShape: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(Color.white)
+    }
+
+    private var borderShape: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .inset(by: 0.5)
+            .stroke(Color.black.opacity(0.18), lineWidth: 1)
+    }
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.filteredArtists, id: \.id) { artist in
+                    let artistIdInt = artist.id.hashValue
                     ArticleArtistRow(
                         artist: artist,
-                        isSelected: viewModel.selectedArtistId == artist.id
+                        isSelected: viewModel.selectedArtistId == artistIdInt
                     ) {
                         viewModel.selectArtist(artist)
                     }
@@ -47,15 +59,8 @@ struct ArticleListContent: View {
             .padding(.vertical, 8)
         }
         .frame(height: 300)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .inset(by: 0.5)
-                .stroke(Color.black.opacity(0.18), lineWidth: 1)
-        )
+        .background(backgroundShape)
+        .overlay(borderShape)
     }
 }
 

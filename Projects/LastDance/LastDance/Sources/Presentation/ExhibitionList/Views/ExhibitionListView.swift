@@ -23,6 +23,7 @@ struct ExhibitionListTitleSection: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 16)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -43,6 +44,7 @@ struct ExhibitionListContent: View {
                     }
                 }
             }
+            .padding(.horizontal, 20)
         }
     }
 }
@@ -68,6 +70,8 @@ struct ExhibitionListView: View {
     @StateObject private var viewModel = ExhibitionListViewModel()
     @Query private var exhibitions: [Exhibition]
 
+    private let dataManager = SwiftDataManager.shared
+
     var body: some View {
         VStack(spacing: 0) {
             ExhibitionListTitleSection()
@@ -79,13 +83,14 @@ struct ExhibitionListView: View {
             ExhibitionListRegisterButton(viewModel: viewModel)
         }
         .padding(.top, 18)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {
                 router.popLast()
             }
+        }
+        .onAppear {
+            viewModel.getExhibitions()
         }
     }
 }
