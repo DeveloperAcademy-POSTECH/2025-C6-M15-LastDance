@@ -18,11 +18,11 @@ extension VisitorAPI: BaseTargetType {
     var path: String {
         switch self {
         case .getVisitors, .createVisitor:
-            return "\(APIVersion.v1API)/visitors"
+            return "\(APIVersion.version1)/visitors"
         case .getVisitor(let id):
-            return "\(APIVersion.v1API)/visitors/\(id)"
+            return "\(APIVersion.version1)/visitors/\(id)"
         case .getVisitorByUUID(let uuid):
-            return "\(APIVersion.v1API)/visitors/uuid/\(uuid)"
+            return "\(APIVersion.version1)/visitors/uuid/\(uuid)"
         }
     }
 

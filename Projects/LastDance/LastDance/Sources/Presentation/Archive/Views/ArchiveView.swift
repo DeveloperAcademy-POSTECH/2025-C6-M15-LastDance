@@ -12,7 +12,6 @@ struct ArchiveView: View {
     @StateObject private var viewModel = ArchiveViewModel()
     @EnvironmentObject private var router: NavigationRouter
     
-    
     // TODO: - 이전 화면에서 넘겨받은 exhivitionId. 이것을 이용해 fetchCurrentExhibition 수정 필요.
     let exhibitionId: String
     
@@ -27,23 +26,75 @@ struct ArchiveView: View {
             ArtworkCountView(count: viewModel.capturedArtworksCount)
             
             ScrollView {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(1.2)
-                        .frame(maxWidth: .infinity, minHeight: 400)
-                } else if viewModel.hasArtworks {
-                    ArtworkGridView(
-                        artworks: viewModel.capturedArtworks,
-                        getRotationAngle: viewModel.getRotationAngle
+                ZStack {
+                    // 반복되는 배경 패턴
+                    VStack(spacing: 0) {
+                        ForEach(0..<9, id: \.self) { _ in
+                            Image("bauhausArt08")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .clipped()
+                                .opacity(0.6)
+                        }
+                    }
+                    .overlay(
+                        LinearGradient(
+                            stops: [
+                                Gradient.Stop(color: .white.opacity(0), location: 0.00),
+                                Gradient.Stop(color: .white.opacity(0.7), location: 1.00),
+                            ],
+                            startPoint: UnitPoint(x: 0.456, y: 0.5),
+                            endPoint: UnitPoint(x: 0, y: 0.5)
+                        )
                     )
-                } else {
-                    ArchiveEmptyStateView()
+                    .mask(
+                        LinearGradient(
+                            colors: [
+                                Color.black,
+                                Color.black,
+                                Color.black,
+                                Color.black.opacity(0.8),
+                                Color.black.opacity(0.5),
+                                Color.black.opacity(0.2),
+                                Color.clear
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    
+                    // 콘텐츠
+                    VStack(spacing: 0) {
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .scaleEffect(1.2)
+                                .frame(maxWidth: .infinity, minHeight: 400)
+//                        }/* else if viewModel.hasArtworks*/ {
+//                            ArtworkGridView(
+//                                artworks: viewModel.capturedArtworks,
+//                                getRotationAngle: viewModel.getRotationAngle
+//                            )
+//                        } else {
+                            ArchiveEmptyStateView()
+                        }
+                        
+                        // 스크롤 공간 확보
+                        Color.clear
+                            .frame(height: 300)
+                    }
                 }
             }
         }
-        .background(Color.white)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [Color.white, Color.white]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
         .safeAreaInset(edge: .bottom) {
-            BottomButton(text: "촬영하기") {
+            CameraActionButtonView {
                 router.push(.camera)
             }
         }
@@ -65,12 +116,6 @@ struct ArchiveHeaderView: View {
                     .frame(width: 44, height: 44)
             }
             Spacer()
-            Text("관람중")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
-                .frame(width: 58, height: 24)
-                .background(Color.black)
-                .cornerRadius(99)
         }
         .padding(.horizontal, 13)
         .padding(.top, 20)
@@ -139,11 +184,55 @@ struct ArtworkGridView: View {
 
 struct ArchiveEmptyStateView: View {
     var body: some View {
-        Text("마음에 드는 작품을 찾아\n사진을 찍어보세요!")
-            .font(.system(size: 20, weight: .medium))
-            .foregroundColor(Color(red: 0.81, green: 0.81, blue: 0.81))
-            .multilineTextAlignment(.center)
-            .lineSpacing(8)
-            .frame(maxWidth: .infinity, minHeight: 400)
+        VStack(spacing: 20) {
+            // 점선 프레임
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.gray, style: StrokeStyle(lineWidth: 2, dash: [8]))
+                .frame(width: 280, height: 320)
+                .overlay(
+                    Image(systemName: "plus")
+                        .font(.system(size: 40, weight: .light))
+                        .foregroundColor(.gray)
+                )
+        }
+        .frame(maxWidth: .infinity, minHeight: 400)
     }
 }
+
+struct CameraActionButtonView: View {
+    let action: () -> Void
+    @State private var showTooltip = true
+    
+    var body: some View {
+        VStack(spacing: 22) {
+            // 툴팁 공간 (고정 높이)
+            ZStack {
+                if showTooltip {
+                    TooltipView(text: "마음에 드는 작품을 찾아\n사진을 찍어보세요!")
+                        .offset(x: 90, y: 0)
+                        .transition(.opacity)
+                }
+            }
+            .frame(height: 50)
+            // Aperture 버튼 (중앙 고정)
+            Button(action: action) {
+                Image("Aperture")
+                    .resizable()
+                    .frame(width: 38, height: 38)
+                    .foregroundColor(.white)
+            }
+            .frame(width: 80, height: 80)
+            .background(Color.black)
+            .clipShape(Circle())
+        }
+        .padding(.bottom, 40)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation(.easeOut(duration: 0.3)) {
+                    showTooltip = false
+                }
+            }
+        }
+    }
+}
+
