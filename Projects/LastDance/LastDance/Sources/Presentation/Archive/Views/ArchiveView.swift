@@ -52,7 +52,6 @@ struct ArchiveView: View {
                                 )
                             )
                         
-                        // 스크롤 콘텐츠
                         ScrollView {
                             VStack(spacing: 0) {
                                 if viewModel.isLoading {
@@ -199,7 +198,6 @@ struct ArchiveEmptyStateView: View {
             ],
             spacing: 24
         ) {
-           
             Button(action: onAddTap) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
