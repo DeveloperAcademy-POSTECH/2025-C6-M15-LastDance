@@ -17,6 +17,9 @@ enum UserDefaultsKey: String {
     /// 작가 UUID 정보 Key
     case artistUUID
     
+    /// 첫 리액션 등록 여부
+    case hasRegisteredFirstReaction
+    
     var key: String {
         return self.rawValue
     }

@@ -20,37 +20,20 @@ struct ArchiveView: View {
     }
     
     var body: some View {
-        VStack(spacing: -12) {
+        VStack(spacing: 0) {
             ArchiveHeaderView {
                 router.popLast()
             }
-            .padding(.bottom, 24)
+            .padding(.bottom, 12)
             
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
             
             ArtworkCountView(count: viewModel.capturedArtworksCount)
-                .padding(.bottom, 10)
+                .padding(.bottom, -2)
             
             GeometryReader { geometry in
                 ZStack(alignment: .top) {
-                    // 고정 배경
-                    Image("bauhausArt08")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: geometry.size.width, height: geometry.size.height * 2.5)
-                        .clipped()
-                        .offset(x: 0 ,y: -180)
-                        .opacity(0.6)
-                        .overlay(
-                            LinearGradient(
-                                stops: [
-                                    Gradient.Stop(color: .white.opacity(0), location: 0.00),
-                                    Gradient.Stop(color: .white.opacity(0.7), location: 1.00),
-                                ],
-                                startPoint: UnitPoint(x: 0.456, y: 0.5),
-                                endPoint: UnitPoint(x: 0, y: 0.5)
-                            )
-                        )
+                    BackGround(geometry: geometry)
                     
                     ScrollView {
                         VStack(spacing: 0) {
@@ -221,7 +204,13 @@ struct ArchiveEmptyStateView: View {
 
 struct CameraActionButtonView: View {
     let action: () -> Void
-    @State private var showTooltip = true
+    @State private var showTooltip: Bool
+    
+    init(action: @escaping () -> Void) {
+        self.action = action
+        // 첫 리액션 등록 전이면 툴팁 표시
+        _showTooltip = State(initialValue: !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction))
+    }
     
     var body: some View {
         VStack(spacing: 22) {
@@ -246,13 +235,5 @@ struct CameraActionButtonView: View {
             .clipShape(Circle())
         }
         .padding(.bottom, 40)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                withAnimation(.easeOut(duration: 0.3)) {
-                    showTooltip = false
-                }
-            }
-        }
     }
 }
-

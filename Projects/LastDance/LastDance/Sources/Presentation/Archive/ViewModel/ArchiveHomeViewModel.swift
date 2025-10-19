@@ -33,7 +33,8 @@ final class ArchiveHomeViewModel: ObservableObject {
         !exhibitions.isEmpty
     }
     
-    var exhibitionTitle: String {        return exhibitions.first?.title ?? "전시 정보 없음"
+    var exhibitionTitle: String {
+        return exhibitions.first?.title ?? "전시 정보 없음"
     }
     
     var visitDateString: String {
