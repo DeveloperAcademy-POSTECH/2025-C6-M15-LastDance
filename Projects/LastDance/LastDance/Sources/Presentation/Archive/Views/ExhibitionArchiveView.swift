@@ -5,16 +5,28 @@
 //  Created by 광로 on 10/14/25.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ExhibitionArchiveView: View {
     @StateObject private var viewModel: ExhibitionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
-    init(exhibition: Exhibition) {
-        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibition: exhibition))
+    @Query private var exhibitions: [Exhibition]
+
+    private var exhibition: Exhibition? {
+        exhibitions.first
     }
-    
+
+    init(exhibitionId: Int) {
+        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibitionId: exhibitionId))
+
+            // 해당 id에 맞는 Exhibition 정보만 가져옴
+        let exhibitionIdString = String(exhibitionId)
+        _exhibitions = Query(filter: #Predicate<Exhibition> { exhibition in
+            exhibition.id == exhibitionIdString
+        })
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -33,17 +45,17 @@ struct ExhibitionArchiveView: View {
             
             // 전시 제목
             HStack {
-                Text(viewModel.exhibitionTitle)
+                Text(exhibition?.title ?? "전시 정보 로딩 중...")
                     .font(.system(size: 22, weight: .bold))
                     .foregroundColor(.black)
                 Spacer()
             }
             .padding(.horizontal, 20)
             .padding(.top, 14)
-            
+
             // 날짜
             HStack {
-                Text(viewModel.exhibitionDateString)
+                Text(exhibition?.createdAt ?? "")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.gray)
                 Spacer()
@@ -58,7 +70,7 @@ struct ExhibitionArchiveView: View {
                     ProgressView()
                         .scaleEffect(1.2)
                         .frame(maxWidth: .infinity, minHeight: 400)
-                } else if viewModel.hasReactions {
+                } else if viewModel.hasReactedArtworks() {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
@@ -67,12 +79,14 @@ struct ExhibitionArchiveView: View {
                         ],
                         spacing: 24
                     ) {
-                        ForEach(viewModel.reactions, id: \.id) { reaction in
-                            ReactionCardView(
-                                reaction: reaction,
-                                artwork: viewModel.artwork(for: reaction),
-                                artist: viewModel.artist(for: viewModel.artwork(for: reaction) ?? Artwork(id: 0, exhibitionId: "", title: ""))
-                            )
+                        ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
+                            if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                                ReactionCardView(
+                                    reaction: reaction,
+                                    artwork: artwork,
+                                    artist: viewModel.artist(for: artwork)
+                                )
+                            }
                         }
                     }
                     .padding(.horizontal, 32)
@@ -89,10 +103,13 @@ struct ExhibitionArchiveView: View {
         }
         .background(Color.white)
         .onAppear {
+            viewModel.loadData()
+
             // TODO: 작품 상세뷰 만들어지면 해당 뷰에 연동 예정
             // 임시 테스트: 작품 상세 조회 API 호출
             viewModel.fetchArtworkDetail(artworkId: 1)
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -152,16 +169,4 @@ struct ReactionCardView: View {
             }
         }
     }
-}
-
-#Preview {
-    let exhibition = Exhibition(
-        id: "preview",
-        title: "빛의 향연",
-        startDate: Date(),
-        endDate: Date()
-    )
-    return ExhibitionArchiveView(exhibition: exhibition)
-        .environmentObject(NavigationRouter())
-        .modelContainer(SwiftDataManager.shared.container!)
 }

@@ -43,9 +43,9 @@ struct ArtworkDetailView: View {
                 text: "전송하기",
                 isEnabled: !viewModel.isSendButtonDisabled,
                 action: {
-                    Log.debug("- [ArtworkDetailView] artworkId: \(artworkId)")
-                    Log.debug("- [ArtworkDetailView] selectedCategories: \(Array(viewModel.selectedCategories))")
-                    Log.debug("- [ArtworkDetailView] message: \(viewModel.message)")
+                    Log.debug("artworkId: \(artworkId)")
+                    Log.debug("selectedCategories: \(Array(viewModel.selectedCategories))")
+                    Log.debug("message: \(viewModel.message)")
 
                     // TODO: 실제 값으로 교체 필요
                     let visitorId = 1  // 실제 visitor ID로 교체
@@ -62,10 +62,10 @@ struct ArtworkDetailView: View {
                         tagIds: tagIds
                     ) { success in
                         if success {
-                            Log.debug("[ArtworkDetailView] 저장 성공, 화면 이동")
+                            Log.debug("저장 성공, 화면 이동")
                             router.push(.completeReaction)
                         } else {
-                            Log.debug("[ArtworkDetailView] 저장 실패")
+                            Log.debug("저장 실패")
                         }
                     }
                 }
@@ -75,7 +75,7 @@ struct ArtworkDetailView: View {
             if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
                 viewModel.selectedCategories = Set(savedCategories)
             }
-            Log.debug("[ArtworkDetailView]: \(viewModel.selectedCategories)")
+            Log.debug("선택된 카테고리: \(viewModel.selectedCategories)")
         }
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
         .navigationBarTitle("반응 남기기", displayMode: .inline)

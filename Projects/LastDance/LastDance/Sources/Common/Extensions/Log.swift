@@ -57,8 +57,8 @@ struct Log {
     static private func log(
         _ message: Any,
         level: Level,
-        file: String = #fileID,
-        function: String = #function
+        file: String,
+        function: String
     ) {
         #if DEBUG
         let logger = Logger(
@@ -98,39 +98,59 @@ extension Log {
      # debug
      - Note : 개발 중 코드 디버깅 시 사용할 수 있는 유용한 정보
      */
-    static func debug(_ message: Any) {
-        log(message, level: .debug)
+    static func debug(
+        _ message: Any,
+        file: String = #fileID,
+        function: String = #function
+    ) {
+        log(message, level: .debug, file: file, function: function)
     }
 
     /**
      # info
      - Note : 문제 해결시 활용할 수 있는, 도움이 되지만 필수적이지 않은 정보
      */
-    static func info(_ message: Any) {
-        log(message, level: .info)
+    static func info(
+        _ message: Any,
+        file: String = #fileID,
+        function: String = #function
+    ) {
+        log(message, level: .info, file: file, function: function)
     }
 
     /**
      # warning
      - Note : 경고에 대한 정보, 잠재적으로 문제가 될 수 있는 상황
      */
-    static func warning(_ message: Any) {
-        log(message, level: .warning)
+    static func warning(
+        _ message: Any,
+        file: String = #fileID,
+        function: String = #function
+    ) {
+        log(message, level: .warning, file: file, function: function)
     }
 
     /**
      # fault
      - Note : 실행 중 발생하는 버그나 잘못된 동작
      */
-    static func fault(_ message: Any) {
-        log(message, level: .fault)
+    static func fault(
+        _ message: Any,
+        file: String = #fileID,
+        function: String = #function
+    ) {
+        log(message, level: .fault, file: file, function: function)
     }
 
     /**
      # error
      - Note : 코드 실행 중 나타난 에러
      */
-    static func error(_ message: Any) {
-        log(message, level: .error)
+    static func error(
+        _ message: Any,
+        file: String = #fileID,
+        function: String = #function
+    ) {
+        log(message, level: .error, file: file, function: function)
     }
 }

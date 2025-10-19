@@ -9,18 +9,21 @@ import Foundation
 import SwiftData
 
 @Model
-final class User {
-    var id: UUID
-    var role: String
+final class Visitor {
+    var id: Int
+    var uuid: String
+    var name: String?
     var visitedExhibitions: [Exhibition] = []
     var sentReactions: [Reaction] = []
 
-    init(id: UUID = UUID(),
-         role: String,
+    init(id: Int,
+         uuid: String,
+         name: String? = nil,
          visitedExhibitions: [Exhibition] = [],
          sentReactions: [Reaction] = []) {
         self.id = id
-        self.role = role
+        self.uuid = uuid
+        self.name = name
         self.visitedExhibitions = visitedExhibitions
         self.sentReactions = sentReactions
     }

@@ -17,9 +17,9 @@ extension ArtworkAPI: BaseTargetType {
     var path: String {
         switch self {
         case .getArtworks, .makeArtwork:
-            return "\(APIVersion.v1API)/artworks"
+            return "\(APIVersion.version1)/artworks"
         case .getArtworkDetail(let artworkId):
-            return "\(APIVersion.v1API)/artworks/\(artworkId)"
+            return "\(APIVersion.version1)/artworks/\(artworkId)"
         }
     }
     

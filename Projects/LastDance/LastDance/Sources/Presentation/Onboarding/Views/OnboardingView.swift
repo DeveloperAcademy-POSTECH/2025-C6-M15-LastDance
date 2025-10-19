@@ -12,25 +12,8 @@ struct OnboardingView: View {
     @StateObject private var viewModel = OnboardingViewModel()
 
     var body: some View {
-        VStack {
-            Text("OnboardingView - API 테스트")
-                .padding()
-
-            Button("InputArtworkInfoView 테스트") {
-                // 임시 이미지 생성
-                let tempImage = UIImage(systemName: "photo") ?? UIImage()
-
-                // exhibition_id를 1로 설정해서 테스트
-                router.push(.inputArtworkInfo(
-                    image: tempImage,
-                    exhibitionId: 1,
-                    artistId: nil
-                ))
-            }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+        VStack(spacing: 20) {
+            Text("Onboarding View")
         }
     }
 }

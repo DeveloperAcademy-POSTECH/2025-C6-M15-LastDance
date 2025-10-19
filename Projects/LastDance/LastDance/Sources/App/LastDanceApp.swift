@@ -5,8 +5,8 @@
 //  Created by 배현진 on 10/5/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct LastDanceApp: App {
@@ -19,7 +19,7 @@ struct LastDanceApp: App {
                 Exhibition.self,
                 Artwork.self,
                 Artist.self,
-                User.self,
+                Visitor.self,
                 Venue.self,
                 CapturedArtwork.self,
                 Reaction.self,
@@ -28,7 +28,7 @@ struct LastDanceApp: App {
             
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false
+                isStoredInMemoryOnly: false 
             )
 
             self.sharedModelContainer = try ModelContainer(
