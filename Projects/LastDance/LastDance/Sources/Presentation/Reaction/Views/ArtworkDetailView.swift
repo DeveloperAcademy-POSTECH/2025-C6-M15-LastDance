@@ -47,9 +47,28 @@ struct ArtworkDetailView: View {
                     Log.debug("selectedCategories: \(Array(viewModel.selectedCategories))")
                     Log.debug("message: \(viewModel.message)")
 
-                    // TODO: 실제 값으로 교체 필요
-                    let visitorId = 1  // 실제 visitor ID로 교체
-                    let visitId = 1    // 실제 visit ID로 교체
+                    // UserDefaults에서 저장된 visitorUUID 가져오기
+                    guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+                        Log.error("visitorUUID를 찾을 수 없습니다")
+                        return
+                    }
+
+                    // SwiftData에서 UUID로 Visitor 조회
+                    let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
+                    guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+                        Log.error("Visitor를 찾을 수 없습니다")
+                        return
+                    }
+
+                    // SwiftData에서 해당 Visitor의 VisitHistory 조회
+                    let visitHistories = SwiftDataManager.shared.fetchAll(VisitHistory.self)
+                    guard let visitHistory = visitHistories.first(where: { $0.visitorId == visitor.id }) else {
+                        Log.error("VisitHistory를 찾을 수 없습니다")
+                        return
+                    }
+
+                    let visitorId = visitor.id
+                    let visitId = visitHistory.id
                     let imageUrl: String? = nil  // 이미지 URL이 있으면 전달
                     // 테스트를 위해 임시 tagIds 설정 (실제로는 선택된 카테고리를 태그 ID로 변환 필요)
                     let tagIds: [Int] = [1, 2, 3]

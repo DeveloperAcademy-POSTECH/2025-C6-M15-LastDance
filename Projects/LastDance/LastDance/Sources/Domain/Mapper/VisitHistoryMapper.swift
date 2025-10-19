@@ -9,10 +9,11 @@ import Foundation
 
 enum VisitHistoryMapper {
     static func toModel(from dto: VisitorHistoriesResponseDto) -> VisitHistory? {
-        // ISO8601 날짜 문자열을 Date로 변환
         let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
         guard let visitedDate = dateFormatter.date(from: dto.visited_at) else {
-            Log.error("날짜 변환 실패: \(dto.visited_at)")
+            Log.fault("날짜 변환 실패: \(dto.visited_at)")
             return nil
         }
 
