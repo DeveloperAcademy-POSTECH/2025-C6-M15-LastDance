@@ -49,21 +49,21 @@ struct ArtworkDetailView: View {
 
                     // UserDefaults에서 저장된 visitorUUID 가져오기
                     guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
-                        Log.error("visitorUUID를 찾을 수 없습니다")
+                        Log.warning("visitorUUID를 찾을 수 없습니다")
                         return
                     }
 
                     // SwiftData에서 UUID로 Visitor 조회
                     let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
                     guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
-                        Log.error("Visitor를 찾을 수 없습니다")
+                        Log.warning("Visitor를 찾을 수 없습니다")
                         return
                     }
 
                     // SwiftData에서 해당 Visitor의 VisitHistory 조회
                     let visitHistories = SwiftDataManager.shared.fetchAll(VisitHistory.self)
                     guard let visitHistory = visitHistories.first(where: { $0.visitorId == visitor.id }) else {
-                        Log.error("VisitHistory를 찾을 수 없습니다")
+                        Log.warning("VisitHistory를 찾을 수 없습니다")
                         return
                     }
 
