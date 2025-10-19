@@ -52,8 +52,8 @@ struct RootView: View {
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
                         .navigationBarBackButtonHidden(true)
-                case .artworkDetail(let id):
-                    ArtworkDetailView(artworkId: id)
+                case .artworkDetail(let id, let capturedImage):
+                    ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -64,8 +64,8 @@ struct RootView: View {
                     CategoryView()
                 case .completeReaction:
                     CompleteReactionView()
-                case .inputArtworkInfo(let image):
-                    InputArtworkInfoView(image: image)
+                case .inputArtworkInfo(let image, let exhibitionId, let artistId):
+                    InputArtworkInfoView(image: image, exhibitionId: exhibitionId, artistId: artistId)
                 case .articleExhibitionList:
                     ArticleExhibitionListView()
                         .navigationBarBackButtonHidden(true)

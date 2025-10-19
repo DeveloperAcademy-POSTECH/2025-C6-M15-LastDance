@@ -34,7 +34,7 @@ final class ArchiveHomeViewModel: ObservableObject {
     }
     
     func dateString(for exhibition: Exhibition) -> String {
-        return exhibition.startDate.toShortDateString()
+        return Date.formatShortDate(from: exhibition.startDate)
     }
     
     private func fetchExhibitions() throws -> [Exhibition] {

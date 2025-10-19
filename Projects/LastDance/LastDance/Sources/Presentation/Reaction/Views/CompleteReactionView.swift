@@ -14,10 +14,9 @@ struct CompleteReactionView: View {
             
             Image("envelope")
                 .resizable()
-                .frame(width: 94, height: 94)
-                .padding()
+                .frame(width: 153, height: 138)
 
-            Spacer().frame(height: 14) // or 25
+            Spacer().frame(height: 14)
 
             Text("전송 완료!")
                 .font(.title2)

@@ -16,23 +16,28 @@ struct ArtworkDetailView: View {
     private let apiService = ReactionAPIService()
 
     let artworkId: Int
+    let capturedImage: UIImage?
 
-    init(artworkId: Int) {
+    init(artworkId: Int, capturedImage: UIImage? = nil) {
         self.artworkId = artworkId
+        self.capturedImage = capturedImage
+
+        // 카테고리 초기화
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.selectedCategories.rawValue)
     }
 
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    ArtworkInfoView(artworkId: artworkId)
+                    ArtworkInfoView(artworkId: artworkId, capturedImage: capturedImage)
                         .offset(y: -120)
                         .ignoresSafeArea(.container, edges: .top)
                         .padding(.bottom, -120)
 
-                    Spacer().frame(height: 26)
+                    Spacer().frame(height: 28)
 
-                    ReactionFormView(artworkId: artworkId, viewModel: viewModel)
+                    ReactionFormView(artworkId: artworkId)
 
                     Spacer()
                 }
@@ -72,9 +77,6 @@ struct ArtworkDetailView: View {
             )
         }
         .onAppear {
-            if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
-                viewModel.selectedCategories = Set(savedCategories)
-            }
             Log.debug("선택된 카테고리: \(viewModel.selectedCategories)")
         }
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
@@ -92,5 +94,6 @@ struct ArtworkDetailView: View {
             .easeOut(duration: 0.25),
             value: keyboardManager.keyboardHeight
         )
+        .environmentObject(viewModel)
     }
 }

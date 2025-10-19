@@ -18,6 +18,9 @@ struct InputArtworkInfoView: View {
     @Query private var artists: [Artist]
 
     let image: UIImage
+    let exhibitionId: Int?
+    let artistId: Int?
+
     private var isBottomSheetActive: Bool {
         activeBottomSheet != nil
     }
@@ -78,8 +81,7 @@ struct InputArtworkInfoView: View {
                                 artworkId: selectedArtwork.id
                             ) { success in
                                 if success {
-                                    //
-                                    router.push(.artworkDetail(id: <#T##Int#>))
+                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image))
                                 }
                             }
                         }
@@ -111,6 +113,9 @@ struct InputArtworkInfoView: View {
                             selectedItem: $viewModel.selectedArtworkTitle,
                             onDismiss: { activeBottomSheet = nil }
                         )
+                    }
+                    .onAppear {
+                        viewModel.fetchArtworks(artistId: artistId, exhibitionId: exhibitionId)
                     }
                 }
 
@@ -161,6 +166,7 @@ private struct InputFieldButton: View {
         }
         .padding(.horizontal, 14)
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .cornerRadius(12)
     }
 }
 

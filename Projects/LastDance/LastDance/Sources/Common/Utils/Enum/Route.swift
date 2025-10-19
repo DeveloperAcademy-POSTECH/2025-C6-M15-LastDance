@@ -16,9 +16,9 @@ enum Route: Hashable {
     case exhibitionList
     case exhibitionDetail(id: String)
     case exhibitionArchive(exhibitionId: Int)
-    case artworkDetail(id: Int)
+    case artworkDetail(id: Int, capturedImage: UIImage?)
     case camera
-    case inputArtworkInfo(image: UIImage)
+    case inputArtworkInfo(image: UIImage, exhibitionId: Int?, artistId: Int?)
     case archive(id: String)
     case category
     case completeReaction
