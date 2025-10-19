@@ -45,6 +45,10 @@
 		99191E642EA2F98000D2F71A /* VisitorDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */; };
 		99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */; };
 		99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */; };
+		99191E972EA4679500D2F71A /* VenueAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E962EA4679100D2F71A /* VenueAPI.swift */; };
+		99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E982EA467B700D2F71A /* VenueAPIService.swift */; };
+		99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */; };
+		99191E9D2EA4680600D2F71A /* VenueListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -165,6 +169,10 @@
 		99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191E652EA2F98A00D2F71A /* VisitorCreateRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCreateRequestDto.swift; sourceTree = "<group>"; };
 		99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorListResponseDto.swift; sourceTree = "<group>"; };
+		99191E962EA4679100D2F71A /* VenueAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPI.swift; sourceTree = "<group>"; };
+		99191E982EA467B700D2F71A /* VenueAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPIService.swift; sourceTree = "<group>"; };
+		99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailResponseDto.swift; sourceTree = "<group>"; };
+		99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListResponseDto.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -387,6 +395,31 @@
 			children = (
 				99191E672EA2F9B100D2F71A /* VisitorListResponseDto.swift */,
 				99191E632EA2F97700D2F71A /* VisitorDetailResponseDto.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		99191E932EA4677500D2F71A /* Venue */ = {
+			isa = PBXGroup;
+			children = (
+				99191E942EA4677F00D2F71A /* DTO */,
+			);
+			path = Venue;
+			sourceTree = "<group>";
+		};
+		99191E942EA4677F00D2F71A /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				99191E952EA4678700D2F71A /* Response */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		99191E952EA4678700D2F71A /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */,
+				99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -774,6 +807,9 @@
 				99E6F38C2E989CFB002ED9C2 /* Artwork */,
 				99E6F3912E989CFB002ED9C2 /* Base */,
 				99E6F3952E989CFB002ED9C2 /* Exhibition */,
+				99191E932EA4677500D2F71A /* Venue */,
+				99191E962EA4679100D2F71A /* VenueAPI.swift */,
+				99191E982EA467B700D2F71A /* VenueAPIService.swift */,
 				99E6F39A2E989CFB002ED9C2 /* Reaction */,
 			);
 			path = Network;
@@ -982,12 +1018,12 @@
 				D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */,
 				99DAB0B82E9C7B8000379F27 /* ZoomControlView.swift in Sources */,
 				99191E662EA2F99200D2F71A /* VisitorCreateRequestDto.swift in Sources */,
-				963573AE2E9A4F7600B2FA79 /* OutlinedButton.swift in Sources */,
 				D8C7C2A12EA1497100FCB472 /* CompleteArticleListViewModel.swift in Sources */,
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				D8C7C2AF2EA1E95000FCB472 /* ExhibitionArchiveView.swift in Sources */,
 				D8C7C2A82EA14AE300FCB472 /* View+CustomAlert.swift in Sources */,
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
+				99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
 				99E6F0C42E91F14A002ED9C2 /* ExhibitionListViewModel.swift in Sources */,
 				D8C7C2B32EA2145D00FCB472 /* ExhibitionDtoMapper.swift in Sources */,
@@ -1009,7 +1045,6 @@
 				99E6F0CE2E91F206002ED9C2 /* ReactionInputViewModel.swift in Sources */,
 				8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */,
 				D8C7C28C2EA0D0A200FCB472 /* ReactionDetailResponseDto.swift in Sources */,
-				963573B42E9ABD4800B2FA79 /* BottomButton.swift in Sources */,
 				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
@@ -1042,6 +1077,7 @@
 				D8C7C0A92E9F729A00FCB472 /* CustomBottomSheet.swift in Sources */,
 				8C0F9F562E9CE508005B8C12 /* ArchivingViewModel.swift in Sources */,
 				99E6F3A32E989CFB002ED9C2 /* BaseTargetType.swift in Sources */,
+				99191E972EA4679500D2F71A /* VenueAPI.swift in Sources */,
 				D8C7C2922EA0D10700FCB472 /* TagDetailResponseDto.swift in Sources */,
 				8C3B37B02E9EB7B3003FF185 /* OnboardingView.swift in Sources */,
 				99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */,
@@ -1066,6 +1102,7 @@
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,
+				99191E9D2EA4680600D2F71A /* VenueListResponseDto.swift in Sources */,
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
 				8C3B37B52E9EB7C0003FF185 /* IdentitySelectionView.swift in Sources */,
 				8C3B37B62E9EB7C0003FF185 /* ArticleArchivingView.swift in Sources */,
@@ -1087,6 +1124,7 @@
 				99E6F1052E97B0DA002ED9C2 /* Visitor.swift in Sources */,
 				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 				D8C7C2BB2EA27E6600FCB472 /* BottomButton.swift in Sources */,
+				99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */,
 				D8C7C2BC2EA27E6600FCB472 /* CircleSelectionButton.swift in Sources */,
 				D8C7C2BD2EA27E6600FCB472 /* OutlinedButton.swift in Sources */,
 				D8C7C2BE2EA27E6600FCB472 /* CircleAddButton.swift in Sources */,
