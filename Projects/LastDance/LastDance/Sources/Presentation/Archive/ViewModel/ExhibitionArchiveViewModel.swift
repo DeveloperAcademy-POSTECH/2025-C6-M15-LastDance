@@ -18,11 +18,14 @@ final class ExhibitionArchiveViewModel: ObservableObject {
 
     private let swiftDataManager = SwiftDataManager.shared
     private let apiService: ExhibitionAPIServiceProtocol
+    private let artworkAPIService = ArtworkAPIService()
+
     let exhibitionId: Int
 
     init(apiService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(), exhibitionId: Int) {
         self.apiService = apiService
         self.exhibitionId = exhibitionId
+        loadData()
     }
     
     /// 전시 상세 조회 api 호출
@@ -124,11 +127,29 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         guard let container = swiftDataManager.container else {
             throw NSError(domain: "ExhibitionArchiveViewModel", code: 1)
         }
-        
+
         let context = container.mainContext
         let descriptor = FetchDescriptor<Artist>()
-        
+
         return try context.fetch(descriptor)
+    }
+
+    /// 작품 상세 조회 API 함수
+    func fetchArtworkDetail(artworkId: Int) {
+        Log.debug("작품 상세 조회 API 호출 - artworkId: \(artworkId)")
+
+        artworkAPIService.getArtworkDetail(artworkId: artworkId) { result in
+            Task { @MainActor in
+                switch result {
+                case .success(let artwork):
+                    Log.debug("작품 상세 조회 성공! 작품명: \(artwork.title)")
+                    // 로컬 데이터 다시 로드
+                    self.loadData()
+                case .failure(let error):
+                    Log.error("작품 상세 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
