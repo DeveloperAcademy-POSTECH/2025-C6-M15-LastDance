@@ -48,7 +48,6 @@
 		99191E972EA4679500D2F71A /* VenueAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E962EA4679100D2F71A /* VenueAPI.swift */; };
 		99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E982EA467B700D2F71A /* VenueAPIService.swift */; };
 		99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */; };
-		99191E9D2EA4680600D2F71A /* VenueListResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -172,7 +171,6 @@
 		99191E962EA4679100D2F71A /* VenueAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPI.swift; sourceTree = "<group>"; };
 		99191E982EA467B700D2F71A /* VenueAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueAPIService.swift; sourceTree = "<group>"; };
 		99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailResponseDto.swift; sourceTree = "<group>"; };
-		99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueListResponseDto.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -418,7 +416,6 @@
 		99191E952EA4678700D2F71A /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				99191E9C2EA4680500D2F71A /* VenueListResponseDto.swift */,
 				99191E9A2EA467ED00D2F71A /* VenueDetailResponseDto.swift */,
 			);
 			path = Response;
@@ -1102,7 +1099,6 @@
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,
-				99191E9D2EA4680600D2F71A /* VenueListResponseDto.swift in Sources */,
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
 				8C3B37B52E9EB7C0003FF185 /* IdentitySelectionView.swift in Sources */,
 				8C3B37B62E9EB7C0003FF185 /* ArticleArchivingView.swift in Sources */,

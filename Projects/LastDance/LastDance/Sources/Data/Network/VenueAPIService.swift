@@ -10,7 +10,7 @@ import Moya
 
 protocol VenueAPIServiceProtocol {
     func getVenues(
-        completion: @escaping (Result<[VenueListResponseDto], Error>)
+        completion: @escaping (Result<[VenueDetailResponseDto], Error>)
         -> Void
     )
     func getVenue(
@@ -31,7 +31,7 @@ final class VenueAPIService: VenueAPIServiceProtocol {
     
     /// 전체 Venue 목록 가져오기 함수
     func getVenues(
-        completion: @escaping (Result<[VenueListResponseDto], Error>)
+        completion: @escaping (Result<[VenueDetailResponseDto], Error>)
         -> Void
     ) {
         provider.request(.getVenues) { result in
@@ -42,7 +42,7 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                         Log.debug("Get Venues 요청 성공. 응답: \(json)")
                     }
                     let items = try JSONDecoder().decode(
-                        [VenueListResponseDto].self,
+                        [VenueDetailResponseDto].self,
                         from: response.data
                     )
                     
@@ -108,7 +108,7 @@ final class VenueAPIService: VenueAPIServiceProtocol {
 
 // TODO: - develop 기능 머지 후 Mapper 폴더로 이동
 enum VenueMapper {
-    static func toModel(from dto: VenueListResponseDto) -> Venue {
+    static func toModel(from dto: VenueDetailResponseDto) -> Venue {
         Venue(
             id: dto.id,
             name: dto.name,
