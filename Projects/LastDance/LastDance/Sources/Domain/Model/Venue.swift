@@ -10,13 +10,13 @@ import SwiftData
 
 @Model
 final class Venue {
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: Int
     var name: String
     var address: String?
     var geoLat: Double?
     var geoLon: Double?
 
-    init(id: String,
+    init(id: Int,
          name: String,
          address: String? = nil,
          geoLat: Double? = nil,

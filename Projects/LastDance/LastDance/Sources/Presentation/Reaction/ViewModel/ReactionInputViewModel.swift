@@ -16,6 +16,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
     @Published var selectedArtistName: String = ""    // 선택한 작가 이름
     @Published var capturedImage: UIImage?  // 촬영한 이미지
+    @Published var categories: [TagCategory] = []
 
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
 
@@ -23,7 +24,8 @@ final class ReactionInputViewModel: ObservableObject {
     let limit = 500 // texteditor 최대 글자수 제한
     private let apiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
-
+    private let categoryService = TagCategoryAPIService()
+  
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
         return selectedCategories.isEmpty
@@ -131,6 +133,52 @@ final class ReactionInputViewModel: ObservableObject {
                     Log.debug("작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
                 case .failure(let error):
                     Log.error("작품 목록 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    /// 카테고리별 태그 전체 가져오기 함수
+    func loadTagsByCategory() {
+        categoryService.getTagCategories { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .failure(let error):
+                Log.error("요청 실패: \(error)")
+                return
+
+            case .success(let listDtos):
+                let group = DispatchGroup()
+                var temps: [TagCategory] = []
+                var firstError: Error?
+
+                for dto in listDtos {
+                    group.enter()
+                    self.categoryService.getTagCategory(id: dto.id) { [weak self] detailResult in
+                        guard let self else {
+                            group.leave()
+                            return
+                        }
+                        defer { group.leave() }
+
+                        switch detailResult {
+                        case .success(let detail):
+                            temps.append(TagCategoryMapper.toCategory(from: detail))
+                        case .failure(let err):
+                            firstError = firstError ?? err
+                            temps.append(TagCategoryMapper.toCategory(from: dto, tags: []))
+                        }
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    self.categories = temps.sorted { $0.id < $1.id }
+
+                    if let err = firstError {
+                        Log.warning("일부 실패: \(err.localizedDescription)")
+                    } else {
+                        Log.info("\(self.categories.count)개 로드 완료")
+                    }
                 }
             }
         }

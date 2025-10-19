@@ -60,7 +60,11 @@ struct CategoryView: View {
         }
         .navigationTitle("반응 남기기")
         .navigationBarTitleDisplayMode(.inline)
+        .environmentObject(viewModel)
         .onAppear {
+            // TODO: - 카테고리와 태그 서버 통신 확인용 (이후 제거 필요)
+            viewModel.loadTagsByCategory()
+            
             // UserDefaults에서 기존 선택된 카테고리 불러오기
             if let savedCategories = UserDefaults.standard.stringArray(forKey: UserDefaultsKey.selectedCategories.rawValue) {
                 viewModel.selectedCategories = Set(savedCategories)
