@@ -22,19 +22,16 @@ struct RootView: View {
     var body: some View {
         NavigationStack(path: $router.path) {
             Group {
-                // 테스트를 위해 CameraView를 첫 화면으로 설정
-                CameraView()
-
-//                if let userType = userType {
-//                    switch userType {
-//                    case .artist:
-//                        ArticleArchivingView()
-//                    case .viewer:
-//                        AudienceArchivingView()
-//                    }
-//                } else {
-//                    IdentitySelectionView()
-//                }
+                if let userType = userType {
+                    switch userType {
+                    case .artist:
+                        ArticleArchivingView()
+                    case .viewer:
+                        AudienceArchivingView()
+                    }
+                } else {
+                    IdentitySelectionView()
+                }
             }
             .navigationDestination(for: Route.self) { route in
                 switch route {
