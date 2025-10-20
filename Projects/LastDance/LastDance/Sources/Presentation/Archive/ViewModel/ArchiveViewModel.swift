@@ -21,8 +21,6 @@ final class ArchiveViewModel: ObservableObject {
     private let reactionApiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
     private let exhibitionService = ExhibitionAPIService()
-  
-    private let exhibitionId: String
     
     var reactedArtworksCount: Int {
         reactedArtworks.count
