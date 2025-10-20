@@ -81,8 +81,6 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
-                case .archiveHome:
-                    ArchiveHomeView()
                 }
             }
         }

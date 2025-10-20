@@ -28,7 +28,6 @@ struct ArticleArchivingAddButtonSection: View {
     var body: some View {
         VStack(spacing: 40) {
             CircleAddButton {
-                viewModel.tapAddButton()
                 router.push(.articleExhibitionList)
             }
 
