@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ExhibitionPreviewCard: View {
     let exhibition: Exhibition
@@ -21,23 +22,19 @@ struct ExhibitionPreviewCard: View {
             ExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: formatDateRange(exhibition.startDate, exhibition.endDate),
+                dateRange: Date.formatDateRange(start: exhibition.startDate, end: exhibition.endDate),
                 onSearchMore: onSearchMore,
                 onStartVisit: onStartVisit
             )
             .padding(.horizontal, 12)
-            
+
         }
         .frame(maxWidth: .infinity)
         .background(.white)
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 0)
     }
-    private func formatDateRange(_ startDate: String, _ endDate: String) -> String {
-        return Date.formatDateRange(start: startDate, end: endDate)
-    }
 }
-
 // MARK: - ExhibitionPreviewImage
 
 struct ExhibitionPreviewImage: View {
