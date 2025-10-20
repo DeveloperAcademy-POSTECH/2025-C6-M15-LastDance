@@ -41,6 +41,7 @@ struct ExhibitionDetailView: View {
         }
         .customAlert(
             isPresented: $viewModel.showErrorAlert,
+            image: "warning",
             title: "아쉬워요!",
             message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
             buttonText: "다시 찾기"

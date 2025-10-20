@@ -35,6 +35,7 @@ struct CompleteArticleListFindButtonView: View {
         }
         .customAlert(
             isPresented: $showNotFoundAlert,
+            image: "warning",
             title: "찾지 못했어요",
             message: "작가명/전시명을 다시 확인해 주세요.",
             buttonText: "확인"

@@ -16,11 +16,13 @@ final class ArchiveViewModel: ObservableObject {
     @Published var reactedArtworks: [Artwork] = []
     @Published var currentExhibition: Exhibition?
     @Published var isLoading = false
-    
+
     private let swiftDataManager = SwiftDataManager.shared
     private let reactionApiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
     private let exhibitionService = ExhibitionAPIService()
+  
+    private let exhibitionId: String
     
     var reactedArtworksCount: Int {
         reactedArtworks.count
@@ -36,7 +38,7 @@ final class ArchiveViewModel: ObservableObject {
         self.exhibitionId = exhibitionId
         loadData()
     }
-    
+
     func loadData() {
         isLoading = true
         
@@ -90,7 +92,7 @@ final class ArchiveViewModel: ObservableObject {
     
     /// 대각선 효과
     func getRotationAngle(for index: Int) -> Double {
-        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
+        let angles: [Double] = [-4, 3, 3, -4]  // 좌상, 우상, 좌하, 우하
         return angles[index % angles.count]
     }
     

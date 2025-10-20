@@ -15,6 +15,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedCategories: Set<String> = []
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
     @Published var selectedArtistName: String = ""    // 선택한 작가 이름
+    @Published var capturedImage: UIImage?  // 촬영한 이미지
     @Published var categories: [TagCategory] = []
 
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
@@ -82,6 +83,12 @@ final class ReactionInputViewModel: ObservableObject {
                     self.message = ""
                     self.selectedCategories.removeAll()
                     Log.debug("반응 저장 성공")
+                    
+                    // 첫 리액션 등록 플래그 저장
+                    if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
+                        UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
+                    }
+                    
                     completion(true)
                 case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")

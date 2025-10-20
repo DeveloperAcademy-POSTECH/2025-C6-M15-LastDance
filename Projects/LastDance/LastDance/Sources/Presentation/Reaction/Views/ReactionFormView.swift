@@ -5,13 +5,16 @@
 //  Created by 신얀 on 10/13/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ReactionFormView: View {
     let artworkId: Int
     @Environment(\.modelContext) private var context
-    @ObservedObject var viewModel: ReactionInputViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    @EnvironmentObject var viewModel: ReactionInputViewModel
+
+    @State private var showCategorySheet = false
 
     private let placeholder = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
 
@@ -20,6 +23,7 @@ struct ReactionFormView: View {
             Text("반응 남기기")
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundColor(.black)
 
             Spacer().frame(height: 14)
 
@@ -31,7 +35,9 @@ struct ReactionFormView: View {
         }
         .padding(.horizontal, 28)
         .onAppear {
-            if let savedCategories = UserDefaults.standard.stringArray(forKey: .selectedCategories) {
+            if let savedCategories = UserDefaults.standard.stringArray(
+                forKey: .selectedCategories
+            ) {
                 viewModel.selectedCategories = Set(savedCategories)
             }
             Log.debug("선택된 카테고리: \(viewModel.selectedCategories)")
@@ -41,23 +47,57 @@ struct ReactionFormView: View {
     @ViewBuilder
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("태그*")
+            Text("감정 태그")
                 .bold()
+                .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
 
-            HStack {
-                Text(
-                    Array(viewModel.selectedCategories).joined(
-                        separator: ", "
-                    )
+            if viewModel.selectedCategories.isEmpty {
+                Button(
+                    action: {
+                        router.push(.category)
+                    },
+                    label: {
+                        HStack {
+                            Text("지금 떠오르는 감정을 표현해보세요")
+                                .multilineTextAlignment(.leading)
+                                .foregroundColor(
+                                    Color(red: 0.47, green: 0.47, blue: 0.47)
+                                )
+                                .lineSpacing(5)
+
+                            Spacer()
+
+                            Image("chevron.right")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 15, height: 20)
+                                .padding(.vertical, 4)
+                        }
+                        .padding(12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(.white)
+                        .cornerRadius(12)
+                    }
                 )
-                .foregroundColor(.black)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        // TODO: 임시 태그 색으로 수정
+                        ForEach(Array(viewModel.selectedCategories), id: \.self) { tag in
+                            ReactionTag(
+                                text: tag,
+                                color: (tag.hashValue % 2 == 0) ? .orange : .teal
+                            )
+                        }
+                    }
+                }
             }
         }
     }
 
     @ViewBuilder
     private var MessageEditor: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("메시지")
 
             VStack(alignment: .trailing, spacing: 8) {
@@ -99,7 +139,9 @@ struct ReactionFormView: View {
                 HStack(spacing: 0) {
                     Text("\(viewModel.message.count)")
                         .font(.caption)
-                        .foregroundStyle(!viewModel.message.isEmpty ? .black : .gray)
+                        .foregroundStyle(
+                            !viewModel.message.isEmpty ? .black : .gray
+                        )
 
                     Text("/\(viewModel.limit)")
                         .font(.caption)
