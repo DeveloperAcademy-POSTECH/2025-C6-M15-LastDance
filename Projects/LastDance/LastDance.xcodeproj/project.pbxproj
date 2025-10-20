@@ -1280,7 +1280,6 @@
 				D8C7C29F2EA1491800FCB472 /* SelectionRow.swift in Sources */,
 				99191EAC2EA498DA00D2F71A /* TagAPIService.swift in Sources */,
 				99E6F3A12E989CFB002ED9C2 /* ArtworkAPI.swift in Sources */,
-				D8C7C2AD2EA1E11700FCB472 /* Date+Extensions.swift in Sources */,
 				D8DB5DC62EA561E300F4596B /* VisitHistory.swift in Sources */,
 				8C3B37AC2E9E7C95003FF185 /* CompleteArticleListView.swift in Sources */,
 				D8C7C2902EA0D0ED00FCB472 /* VisitorResponseDto.swift in Sources */,
@@ -1501,7 +1500,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = W5Z68U98HJ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
