@@ -74,6 +74,19 @@ final class SwiftDataManager {
             Log.error("SwiftData 저장 실패: \(error)")
         }
     }
+
+    // 사용자가 선택한 작품-작가 매칭이 데이터와 다를 때 사용
+    /// 작품의 artistId 업데이트
+    func updateArtworkArtist(artworkId: Int, artistId: Int) {
+        let artworks = fetchAll(Artwork.self)
+        if let artwork = artworks.first(where: { $0.id == artworkId }) {
+            artwork.artistId = artistId
+            saveContext()
+            Log.debug("작품 artistId 업데이트 완료 - artworkId: \(artworkId), artistId: \(artistId)")
+        } else {
+            Log.error("작품을 찾을 수 없음 - artworkId: \(artworkId)")
+        }
+    }
 }
 
 // MARK: - 중복 방지를 위해서 insert + update를 위한 기능

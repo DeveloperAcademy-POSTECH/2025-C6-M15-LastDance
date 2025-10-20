@@ -11,6 +11,7 @@ import SwiftUI
 struct ArtworkInfoView: View {
     let artworkId: Int
     let capturedImage: UIImage?
+
     @Query private var allArtworks: [Artwork]
     @Query private var allArtists: [Artist]
 
