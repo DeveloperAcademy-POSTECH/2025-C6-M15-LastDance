@@ -208,7 +208,7 @@ private struct SelectionSheet: View {
                             .padding(12)
                             .frame(height: 44)
                         }
-                        .background(selectedItem == item ? LDColor.fillGray : Color.clear)
+                        .background(selectedItem == item ? LDColor.gray3 : Color.clear)
                         .cornerRadius(12)
                         .padding(.vertical, 6)
                     }
