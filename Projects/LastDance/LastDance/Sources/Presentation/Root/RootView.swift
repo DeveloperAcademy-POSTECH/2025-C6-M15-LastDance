@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
+    @StateObject private var reactionInputViewModel = ReactionInputViewModel()
     @State private var userType: UserType?
 
     init() {
@@ -60,8 +61,8 @@ struct RootView: View {
                 case .category:
                     CategorySelectView()
                         .navigationBarBackButtonHidden(true)
-                case .reactionTags(let categories):
-                    TagSelectView(categories: categories)
+                case .reactionTags:
+                    TagSelectView()
                         .navigationBarBackButtonHidden(true)
                 case .completeReaction:
                     CompleteReactionView()
@@ -91,5 +92,6 @@ struct RootView: View {
             }
         }
         .environmentObject(router)
+        .environmentObject(reactionInputViewModel)
     }
 }

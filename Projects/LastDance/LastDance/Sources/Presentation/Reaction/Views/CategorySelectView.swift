@@ -10,8 +10,8 @@ import SwiftUI
 /// 반응 남기기 화면 중 카테고리 선택 뷰
 struct CategorySelectView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = CategorySelectViewModel()
-
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("작품을 보고 떠오르는 감정을 선택해주세요")
@@ -39,8 +39,7 @@ struct CategorySelectView: View {
                 text: "다음",
                 isEnabled: !viewModel.selectedCategoryIds.isEmpty
             ) {
-                let selected = viewModel.selectedCategories
-                router.push(.reactionTags(categories: selected))
+                router.push(.reactionTags)
             }
         }
         .background(Color(red: 0.95, green: 0.95, blue: 0.95))
@@ -60,7 +59,7 @@ struct CategorySelectView: View {
 
 /// 카테고리 선택지 목록을 위한 뷰
 private struct CategoryListView: View {
-    @ObservedObject var viewModel: CategorySelectViewModel
+    @ObservedObject var viewModel: ReactionInputViewModel
     
     var body: some View {
         VStack(spacing: 35) {

@@ -9,13 +9,7 @@ import SwiftUI
 
 struct TagSelectView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel: TagSelectViewModel
-
-    init(categories: [TagCategory]) {
-        _viewModel = StateObject(
-            wrappedValue: TagSelectViewModel(selectedCategories: categories)
-        )
-    }
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -57,6 +51,7 @@ struct TagSelectView: View {
                 isEnabled: !viewModel.selectedTagIds.isEmpty
             ) {
                 // TODO: - 반응 남기기 첫 뷰로 다시 이동. (선택 태그 전달)
+                router.popLast()
             }
             .padding(.bottom, 10)
         }

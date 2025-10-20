@@ -12,7 +12,7 @@ struct ArtworkDetailView: View {
     @Environment(\.keyboardManager) var keyboardManager
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ReactionInputViewModel()
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
 
     private let apiService = ReactionAPIService()
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReactionInputView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ReactionInputViewModel()
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
 
     var body: some View {
         Text("ReactionInputView")
