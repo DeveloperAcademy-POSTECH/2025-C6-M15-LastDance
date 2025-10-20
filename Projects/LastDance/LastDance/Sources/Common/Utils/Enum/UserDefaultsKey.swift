@@ -20,6 +20,9 @@ enum UserDefaultsKey: String {
     /// 업로드된 이미지 URL Key
     case uploadedImageUrl
     
+    /// 첫 리액션 등록 여부
+    case hasRegisteredFirstReaction
+    
     var key: String {
         return self.rawValue
     }

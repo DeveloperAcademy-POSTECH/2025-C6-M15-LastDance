@@ -10,7 +10,7 @@ import SwiftUI
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
     @State private var userType: UserType?
-    
+
     init() {
         var initialUserType: UserType?
         if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
@@ -18,7 +18,7 @@ struct RootView: View {
         }
         _userType = State(initialValue: initialUserType)
     }
-    
+
     var body: some View {
         NavigationStack(path: $router.path) {
             Group {
@@ -49,8 +49,8 @@ struct RootView: View {
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
                         .navigationBarBackButtonHidden(true)
-                case .artworkDetail(let id, _):
-                    ArtworkDetailView(artworkId: id)
+                case .artworkDetail(let id, let capturedImage):
+                    ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -81,6 +81,8 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
+                case .archiveHome:
+                    ArchiveHomeView()
                 }
             }
         }

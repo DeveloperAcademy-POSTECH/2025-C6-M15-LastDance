@@ -10,6 +10,7 @@ import SwiftUI
 extension View {
     func customAlert(
         isPresented: Binding<Bool>,
+        image: String,
         title: String,
         message: String,
         buttonText: String,
@@ -17,6 +18,7 @@ extension View {
     ) -> some View {
         modifier(CustomAlertModifier(
             isPresented: isPresented,
+            image: image,
             title: title,
             message: message,
             buttonText: buttonText,
