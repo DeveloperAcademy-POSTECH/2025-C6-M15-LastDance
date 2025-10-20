@@ -23,12 +23,15 @@ struct SelectionRow: View {
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.white)
+                        .fill(isSelected ? Color(red: 0.96, green: 0.96, blue: 0.96) : Color.white)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .inset(by: 1)
-                        .stroke(isSelected ? Color.black : Color.black.opacity(0.18), lineWidth: isSelected ? 2 : 1)
+                        .inset(by: 0.9)
+                        .stroke(
+                            isSelected ? Color(red: 0.14, green: 0.14, blue: 0.14) : Color.black.opacity(0.18),
+                            lineWidth: isSelected ? 1.8 : 1
+                        )
                 )
         }
         .padding(.bottom, 8)
