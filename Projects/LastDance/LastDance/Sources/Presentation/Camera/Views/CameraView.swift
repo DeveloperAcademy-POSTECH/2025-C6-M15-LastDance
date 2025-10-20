@@ -87,9 +87,10 @@ struct CameraView: View {
             if let image = viewModel.capturedImage {
                 CaptureConfirmView(
                     image: image,
-                    onUse: { _ in
-                        Log.debug("onuse")
+                    onUse: { uploadedUrl in
+                        Log.debug("onuse - uploadedUrl: \(uploadedUrl ?? "nil")")
                         showConfirm = false
+                        // uploadedUrl을 뷰모델이나 다른 곳에 저장 가능
                     },
                     onRetake: {
                         Log.debug("onRetake")

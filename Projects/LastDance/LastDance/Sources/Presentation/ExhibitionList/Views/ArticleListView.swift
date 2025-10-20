@@ -66,7 +66,7 @@ struct ArticleListContent: View {
 
 struct ArticleListNextButton: View {
     @EnvironmentObject private var router: NavigationRouter
-    let selectedExhibitionId: String
+    let selectedExhibitionId: Int
     @ObservedObject var viewModel: ArticleListViewModel
 
     var body: some View {
@@ -83,7 +83,7 @@ struct ArticleListView: View {
     @StateObject private var viewModel = ArticleListViewModel()
     @Environment(\.keyboardManager) private var keyboardManager
 
-    let selectedExhibitionId: String
+    let selectedExhibitionId: Int
 
     var body: some View {
         GeometryReader { geometry in
@@ -141,6 +141,6 @@ struct ArticleArtistRow: View {
 }
 
 #Preview {
-    ArticleListView(selectedExhibitionId: "exhibition_light")
+    ArticleListView(selectedExhibitionId: 1)
         .environmentObject(NavigationRouter())
 }

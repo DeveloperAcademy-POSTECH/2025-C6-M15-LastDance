@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 final class ExhibitionListViewModel: ObservableObject {
-    @Published var selectedExhibitionId: String? = nil
+    @Published var selectedExhibitionId: Int? = nil
     @Published var isLoading: Bool = false
     @Published var resultMessage: String = ""
     @Published var errorMessage: String = ""
