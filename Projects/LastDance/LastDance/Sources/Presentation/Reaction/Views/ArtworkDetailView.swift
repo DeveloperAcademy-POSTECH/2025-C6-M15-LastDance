@@ -50,7 +50,10 @@ struct ArtworkDetailView: View {
                     // TODO: 실제 값으로 교체 필요
                     let visitorId = 1  // 실제 visitor ID로 교체
                     let visitId = 1    // 실제 visit ID로 교체
-                    let imageUrl: String? = nil  // 이미지 URL이 있으면 전달
+                    
+                    // UserDefaults에서 업로드된 이미지 URL 가져오기
+                    let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+                    
                     // 테스트를 위해 임시 tagIds 설정 (실제로는 선택된 카테고리를 태그 ID로 변환 필요)
                     let tagIds: [Int] = [1, 2, 3]
 
@@ -63,6 +66,8 @@ struct ArtworkDetailView: View {
                     ) { success in
                         if success {
                             Log.debug("저장 성공, 화면 이동")
+                            // 사용한 이미지 URL 삭제
+                            UserDefaults.standard.removeObject(forKey: UserDefaultsKey.uploadedImageUrl.key)
                             router.push(.completeReaction)
                         } else {
                             Log.debug("저장 실패")

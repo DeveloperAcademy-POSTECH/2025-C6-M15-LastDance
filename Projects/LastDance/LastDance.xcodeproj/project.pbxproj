@@ -152,6 +152,10 @@
 		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
 		D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */; };
 		D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */; };
+		D8DB5DC92EA5BBA400F4596B /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */; };
+		D8DB5DCB2EA5BBAA00F4596B /* ImageAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */; };
+		D8DB5DCE2EA5BF7F00F4596B /* UploadImageResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */; };
+		D8DB5DD02EA5C67700F4596B /* CaptureConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -305,6 +309,10 @@
 		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
+		D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIService.swift; sourceTree = "<group>"; };
+		D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
+		D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -851,6 +859,7 @@
 		99E6F0E92E91F7E7002ED9C2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */,
 				99E6F0C92E91F1BF002ED9C2 /* CameraViewModel.swift */,
 			);
 			path = ViewModel;
@@ -958,6 +967,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D8DB5DC72EA5BB9800F4596B /* Image */,
 				99191EB32EA4AA5A00D2F71A /* Tag */,
 				99191E9E2EA4972800D2F71A /* TagCategory */,
 				99191E712EA3655200D2F71A /* Artist */,
@@ -1067,6 +1077,24 @@
 				D8C7C2B92EA27E6600FCB472 /* OutlinedButton.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		D8DB5DC72EA5BB9800F4596B /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DCC2EA5BF6F00F4596B /* DTO */,
+				D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */,
+				D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		D8DB5DCC2EA5BF6F00F4596B /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1181,6 +1209,7 @@
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				D8C7C2AF2EA1E95000FCB472 /* ExhibitionArchiveView.swift in Sources */,
 				D8C7C2A82EA14AE300FCB472 /* View+CustomAlert.swift in Sources */,
+				D8DB5DD02EA5C67700F4596B /* CaptureConfirmViewModel.swift in Sources */,
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
 				99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
@@ -1204,6 +1233,7 @@
 				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
+				D8DB5DCE2EA5BF7F00F4596B /* UploadImageResponseDto.swift in Sources */,
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */,
@@ -1213,6 +1243,7 @@
 				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */,
+				D8DB5DC92EA5BBA400F4596B /* ImageAPI.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
@@ -1292,6 +1323,7 @@
 				99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */,
 				99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */,
 				99191EA22EA4978C00D2F71A /* TagCategoryListResponseDto.swift in Sources */,
+				D8DB5DCB2EA5BBAA00F4596B /* ImageAPIService.swift in Sources */,
 				99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */,
 				99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
@@ -1444,7 +1476,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

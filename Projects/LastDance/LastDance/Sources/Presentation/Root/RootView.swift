@@ -49,7 +49,7 @@ struct RootView: View {
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
                         .navigationBarBackButtonHidden(true)
-                case .artworkDetail(let id):
+                case .artworkDetail(let id, _):
                     ArtworkDetailView(artworkId: id)
                 case .camera:
                     CameraView()
