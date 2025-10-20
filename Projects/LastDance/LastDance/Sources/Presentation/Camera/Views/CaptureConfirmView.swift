@@ -14,15 +14,15 @@ struct CaptureConfirmView: View {
 
     var body: some View {
         GeometryReader { geo in
-            let cardW = geo.size.width * CameraViewLayout.confirmCardWidthRatio
+            let cardW = geo.size.width
             let cardH = cardW / CameraViewLayout.aspect
-            
+
             ZStack {
                 Color(.systemBackground).ignoresSafeArea()
-                
+
                 VStack {
                     Spacer()
-                    
+
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
