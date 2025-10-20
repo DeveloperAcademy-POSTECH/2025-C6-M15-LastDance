@@ -15,14 +15,14 @@ final class Reaction {
     var visitorId: Int
     var category: [String]
     var comment: String?
-    var createdAt: Date
+    var createdAt: String?
 
     init(id: String,
          artworkId: Int,
          visitorId: Int,
          category: [String],
          comment: String? = nil,
-         createdAt: Date = .now) {
+         createdAt: String?) {
         self.id = id
         self.artworkId = artworkId
         self.visitorId = visitorId

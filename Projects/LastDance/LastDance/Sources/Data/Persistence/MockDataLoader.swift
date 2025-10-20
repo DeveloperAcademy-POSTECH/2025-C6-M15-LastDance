@@ -84,7 +84,7 @@ enum MockDataLoader {
             visitorId: visitor.id,
             category: ["좋아요"],
             comment: "빛이 멋져요",
-            createdAt: .now
+            createdAt: ""
         )
         context.insert(artwork1); context.insert(artwork2)
         context.insert(capture1)
@@ -204,7 +204,7 @@ enum MockDataLoader {
         let capture = CapturedArtwork(id: 200, artworkId: artworkId,
                                      localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
         let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
-                               category: ["좋아요"], comment: "빛이 멋져요", createdAt: .now)
+                               category: ["좋아요"], comment: "빛이 멋져요", createdAt: "")
         return (capture, reaction)
     }
 
