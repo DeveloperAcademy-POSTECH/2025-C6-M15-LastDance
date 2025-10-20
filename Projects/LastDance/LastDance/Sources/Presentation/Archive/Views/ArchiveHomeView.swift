@@ -66,7 +66,7 @@ struct ArchiveHomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼 (전시가 있을 때만)
             if viewModel.hasExhibitions {

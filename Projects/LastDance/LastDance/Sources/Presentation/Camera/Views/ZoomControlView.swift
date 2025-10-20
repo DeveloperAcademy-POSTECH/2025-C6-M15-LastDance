@@ -77,13 +77,13 @@ private struct ZoomCircleButton: View {
             .font(.system(size: 13, weight: .bold))
             .minimumScaleFactor(0.7)   // "1.8x" 같은 텍스트도 원 안에 안전하게
             .lineLimit(1)
-            .foregroundColor(isActive ? .yellow : .white)
+            .foregroundColor(isActive ? .yellow : LDColor.color6)
             .frame(width: diameter, height: diameter)
             .background(
-                Circle().fill(isActive ? Color.white.opacity(0.20) : .clear)
+                Circle().fill(isActive ? LDColor.color6.opacity(0.20) : .clear)
             )
             .overlay(
-                Circle().stroke(Color.white.opacity(isActive ? 0.25 : 0.15), lineWidth: 0.5)
+                Circle().stroke(LDColor.color6.opacity(isActive ? 0.25 : 0.15), lineWidth: 0.5)
             )
             .animation(.easeInOut(duration: 0.15), value: isActive)
             .contentShape(Circle())

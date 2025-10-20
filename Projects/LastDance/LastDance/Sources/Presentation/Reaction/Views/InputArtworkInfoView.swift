@@ -32,7 +32,7 @@ struct InputArtworkInfoView: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
+                            .fill(LDColor.color6)
                             .frame(width: 311, height: 411)
                             .shadow(color: .black.opacity(0.24), radius: 6, x: 0, y: 0)
                         
@@ -95,7 +95,7 @@ struct InputArtworkInfoView: View {
                     )
                     .padding(.bottom, 35)
                 }
-                .background(Color.white)
+                .background(LDColor.color6)
 
                 if isBottomSheetActive {
                     Color.black.opacity(0.8)
@@ -208,7 +208,7 @@ private struct SelectionSheet: View {
                             .padding(12)
                             .frame(height: 44)
                         }
-                        .background(selectedItem == item ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color.clear)
+                        .background(selectedItem == item ? LDColor.fillGray : Color.clear)
                         .cornerRadius(12)
                         .padding(.vertical, 6)
                     }

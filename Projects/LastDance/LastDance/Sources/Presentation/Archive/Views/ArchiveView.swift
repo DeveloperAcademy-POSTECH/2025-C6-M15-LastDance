@@ -80,7 +80,7 @@ struct ArchiveView: View {
         }
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [Color.white, Color.white]),
+                gradient: Gradient(colors: [LDColor.color6, LDColor.color6]),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -213,7 +213,7 @@ struct ArchiveEmptyStateView: View {
             Button(action: onAddTap) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
+                        .fill(LDColor.color6)
                     
                     Image(systemName: "plus")
                         .font(.system(size: 22, weight: .light))
@@ -258,7 +258,7 @@ struct CameraActionButtonView: View {
                 Image("Aperture")
                     .resizable()
                     .frame(width: 38, height: 38)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
             .frame(width: 80, height: 80)
             .background(Color.black)
