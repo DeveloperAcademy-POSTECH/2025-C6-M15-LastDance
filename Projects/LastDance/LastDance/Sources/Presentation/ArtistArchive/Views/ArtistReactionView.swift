@@ -65,12 +65,9 @@ struct ArtistReactionView: View {
             viewModel.loadExhibitionsFromDB()
         }
     }
-    
     // MARK: - Components
-    
     struct ExhibitionCardView: View {
         let exhibition: MockExhibitionData
-        
         var body: some View {
             VStack(alignment: .leading, spacing: 4) {
                 // 포스터 이미지
@@ -80,8 +77,6 @@ struct ArtistReactionView: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 155, height: 219)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                    
-                    // 반응 카운터
                     Circle()
                         .fill(Color.black)
                         .frame(width: 28, height: 28)
@@ -93,7 +88,6 @@ struct ArtistReactionView: View {
                         .padding(.leading, 12)
                         .padding(.bottom, 12)
                 }
-                
                 // 전시 제목 (고정 높이로 정렬 보장)
                 Text(exhibition.title)
                     .font(.system(size: 16, weight: .semibold))

@@ -17,7 +17,6 @@ struct ArtistReactionArchiveView: View {
         self.exhibitionId = exhibitionId
         _viewModel = StateObject(wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
     }
-    
     var body: some View {
         VStack(spacing: 0) {
             HStack {

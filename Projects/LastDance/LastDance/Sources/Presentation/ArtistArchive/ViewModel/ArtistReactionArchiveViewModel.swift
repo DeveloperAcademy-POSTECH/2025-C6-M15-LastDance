@@ -16,7 +16,6 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
     var exhibitionTitle: String {
         exhibition?.title ?? "전시 제목"
     }
-    
     private var exhibition: Exhibition?
     private let exhibitionId: String
     private let swiftDataManager = SwiftDataManager.shared
@@ -27,15 +26,12 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
     
     func loadReactionsFromDB() {
         isLoading = true
-        
         guard let container = swiftDataManager.container else {
             Log.error("Container not available")
             isLoading = false
             return
         }
-        
         let context = container.mainContext
-        
         do {
             //Exhibition 데이터 가져오기
             let exhibitionDescriptor = FetchDescriptor<Exhibition>()
@@ -63,7 +59,6 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
         } catch {
             Log.error("Failed to load reactions: \(error)")
         }
-        
         isLoading = false
     }
 }
