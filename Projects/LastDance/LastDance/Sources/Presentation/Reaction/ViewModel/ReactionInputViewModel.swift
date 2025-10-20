@@ -36,7 +36,7 @@ final class ReactionInputViewModel: ObservableObject {
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
-        return selectedCategories.isEmpty
+        return selectedTagIds.isEmpty
     }
     
     // 선택 개수 충족 검사
