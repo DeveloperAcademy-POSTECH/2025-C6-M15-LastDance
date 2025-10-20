@@ -14,6 +14,8 @@ enum UserDefaultsKey: String {
     /// 방문객 UUID 정보 Key
     case visitorUUID
 
+    case visitorId
+
     /// 작가 UUID 정보 Key
     case artistUUID
 

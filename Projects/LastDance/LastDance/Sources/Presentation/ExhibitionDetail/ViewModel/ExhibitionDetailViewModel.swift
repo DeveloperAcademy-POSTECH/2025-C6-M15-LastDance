@@ -16,7 +16,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
 
     /// 전시 정보 가져오기
-    func fetchExhibition(by id: String) {
+    func fetchExhibition(by id: Int ) {
         // TODO: SwiftDataManager.fetchById 사용 시 predicate 오류 발생
         // 임시로 fetchAll 후 필터링 사용
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
