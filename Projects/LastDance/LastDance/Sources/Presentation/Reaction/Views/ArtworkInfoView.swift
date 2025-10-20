@@ -5,12 +5,13 @@
 //  Created by 신얀 on 10/13/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArtworkInfoView: View {
     let artworkId: Int
     let capturedImage: UIImage?
+
     @Query private var allArtworks: [Artwork]
     @Query private var allArtists: [Artist]
 
@@ -25,7 +26,7 @@ struct ArtworkInfoView: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // 촬영한 이미지 표시
+            // 이미지 URL 표시
             if let capturedImage = capturedImage {
                 Image(uiImage: capturedImage)
                     .resizable()
@@ -43,7 +44,7 @@ struct ArtworkInfoView: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 0.97, green: 0.97, blue: 0.97).opacity(0),
-                    Color(red: 0.97, green: 0.97, blue: 0.97)
+                    Color(red: 0.97, green: 0.97, blue: 0.97),
                 ]),
                 startPoint: .center,
                 endPoint: .bottom

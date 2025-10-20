@@ -10,6 +10,11 @@ import SwiftUI
 struct CompleteReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
 
+    init() {
+        // 반응 전송이 완료되면 사용한 이미지 URL을 UserDefaults에서 삭제
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.uploadedImageUrl.key)
+    }
+
     var body: some View {
         VStack(alignment: .center) {
             Spacer()

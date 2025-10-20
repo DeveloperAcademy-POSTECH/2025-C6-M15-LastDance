@@ -161,6 +161,10 @@
 		D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */; };
 		D8DB5DC42EA561BE00F4596B /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */; };
 		D8DB5DC62EA561E300F4596B /* VisitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC52EA561E300F4596B /* VisitHistory.swift */; };
+		D8DB5DD82EA6591000F4596B /* ImageAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */; };
+		D8DB5DD92EA6591000F4596B /* UploadImageResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */; };
+		D8DB5DDA2EA6591000F4596B /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD52EA6591000F4596B /* ImageAPI.swift */; };
+		D8DB5DDD2EA659F300F4596B /* CaptureConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -293,7 +297,6 @@
 		D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2962EA0F90300FCB472 /* TotalExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalExhibitionResponseDto.swift; sourceTree = "<group>"; };
-		D8C7C2982EA111B500FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionStatus.swift; sourceTree = "<group>"; };
 		D8C7C29B2EA1219200FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C29E2EA1491800FCB472 /* SelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRow.swift; sourceTree = "<group>"; };
@@ -323,6 +326,11 @@
 		D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorHistoriesResponseDto.swift; sourceTree = "<group>"; };
 		D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		D8DB5DC52EA561E300F4596B /* VisitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistory.swift; sourceTree = "<group>"; };
+		D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
+		D8DB5DD52EA6591000F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
+		D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIService.swift; sourceTree = "<group>"; };
+		D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,7 +612,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
-				D8C7C2982EA111B500FCB472 /* Config.xcconfig */,
+				D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -875,6 +883,7 @@
 		99E6F0E92E91F7E7002ED9C2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */,
 				99E6F0C92E91F1BF002ED9C2 /* CameraViewModel.swift */,
 			);
 			path = ViewModel;
@@ -980,6 +989,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				D8DB5DD72EA6591000F4596B /* Image */,
 				D8DB5DB92EA558B900F4596B /* VisitHistories */,
 				99191EB32EA4AA5A00D2F71A /* Tag */,
 				99191E9E2EA4972800D2F71A /* TagCategory */,
@@ -1110,6 +1120,24 @@
 				D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		D8DB5DD42EA6591000F4596B /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		D8DB5DD72EA6591000F4596B /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DD42EA6591000F4596B /* DTO */,
+				D8DB5DD52EA6591000F4596B /* ImageAPI.swift */,
+				D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1299,6 +1327,9 @@
 				D8C7C0962E9F3E6100FCB472 /* CustomNavigationBar.swift in Sources */,
 				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
 				99191E252EA199BB00D2F71A /* CustomAlert.swift in Sources */,
+				D8DB5DD82EA6591000F4596B /* ImageAPIService.swift in Sources */,
+				D8DB5DD92EA6591000F4596B /* UploadImageResponseDto.swift in Sources */,
+				D8DB5DDA2EA6591000F4596B /* ImageAPI.swift in Sources */,
 				99191EBF2EA4E13400D2F71A /* Color+Extension.swift in Sources */,
 				99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */,
 				8C3B37AA2E9E7932003FF185 /* ArticleListViewModel.swift in Sources */,
@@ -1319,6 +1350,7 @@
 				D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */,
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
+				D8DB5DDD2EA659F300F4596B /* CaptureConfirmViewModel.swift in Sources */,
 				D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */,
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
@@ -1369,7 +1401,6 @@
 /* Begin XCBuildConfiguration section */
 		99E6F0752E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1434,7 +1465,6 @@
 		};
 		99E6F0762E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1492,10 +1522,10 @@
 		};
 		99E6F0782E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1527,10 +1557,10 @@
 		};
 		99E6F0792E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
