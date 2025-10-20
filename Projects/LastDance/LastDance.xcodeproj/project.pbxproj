@@ -155,16 +155,16 @@
 		D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */; };
 		D8DB5DB42EA5211E00F4596B /* ReactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */; };
 		D8DB5DB82EA535BD00F4596B /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB72EA535BB00F4596B /* AlertType.swift */; };
-		D8DB5DC92EA5BBA400F4596B /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */; };
-		D8DB5DCB2EA5BBAA00F4596B /* ImageAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */; };
-		D8DB5DCE2EA5BF7F00F4596B /* UploadImageResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */; };
-		D8DB5DD02EA5C67700F4596B /* CaptureConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */; };
 		D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */; };
 		D8DB5DBE2EA558E200F4596B /* VisitHistoriesAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */; };
 		D8DB5DC02EA5595300F4596B /* MakeVisitHistoriesRequestDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */; };
 		D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */; };
 		D8DB5DC42EA561BE00F4596B /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */; };
 		D8DB5DC62EA561E300F4596B /* VisitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DC52EA561E300F4596B /* VisitHistory.swift */; };
+		D8DB5DD82EA6591000F4596B /* ImageAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */; };
+		D8DB5DD92EA6591000F4596B /* UploadImageResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */; };
+		D8DB5DDA2EA6591000F4596B /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DD52EA6591000F4596B /* ImageAPI.swift */; };
+		D8DB5DDD2EA659F300F4596B /* CaptureConfirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -297,7 +297,6 @@
 		D8C7C28F2EA0D0E500FCB472 /* VisitorResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2942EA0F57000FCB472 /* ExhibitionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2962EA0F90300FCB472 /* TotalExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalExhibitionResponseDto.swift; sourceTree = "<group>"; };
-		D8C7C2982EA111B500FCB472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionStatus.swift; sourceTree = "<group>"; };
 		D8C7C29B2EA1219200FCB472 /* ExhibitionResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C29E2EA1491800FCB472 /* SelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRow.swift; sourceTree = "<group>"; };
@@ -321,16 +320,17 @@
 		D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTag.swift; sourceTree = "<group>"; };
 		D8DB5DB72EA535BB00F4596B /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
-		D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
-		D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIService.swift; sourceTree = "<group>"; };
-		D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
-		D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmViewModel.swift; sourceTree = "<group>"; };
 		D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPI.swift; sourceTree = "<group>"; };
 		D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPIService.swift; sourceTree = "<group>"; };
 		D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeVisitHistoriesRequestDto.swift; sourceTree = "<group>"; };
 		D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorHistoriesResponseDto.swift; sourceTree = "<group>"; };
 		D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		D8DB5DC52EA561E300F4596B /* VisitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistory.swift; sourceTree = "<group>"; };
+		D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
+		D8DB5DD52EA6591000F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
+		D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIService.swift; sourceTree = "<group>"; };
+		D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -612,7 +612,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
-				D8C7C2982EA111B500FCB472 /* Config.xcconfig */,
+				D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -883,7 +883,7 @@
 		99E6F0E92E91F7E7002ED9C2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				D8DB5DCF2EA5C67700F4596B /* CaptureConfirmViewModel.swift */,
+				D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */,
 				99E6F0C92E91F1BF002ED9C2 /* CameraViewModel.swift */,
 			);
 			path = ViewModel;
@@ -989,7 +989,7 @@
 		99E6F39B2E989CFB002ED9C2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				D8DB5DC72EA5BB9800F4596B /* Image */,
+				D8DB5DD72EA6591000F4596B /* Image */,
 				D8DB5DB92EA558B900F4596B /* VisitHistories */,
 				99191EB32EA4AA5A00D2F71A /* Tag */,
 				99191E9E2EA4972800D2F71A /* TagCategory */,
@@ -1103,20 +1103,6 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
-		D8DB5DC72EA5BB9800F4596B /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				D8DB5DCC2EA5BF6F00F4596B /* DTO */,
-				D8DB5DCA2EA5BBA700F4596B /* ImageAPIService.swift */,
-				D8DB5DC82EA5BBA100F4596B /* ImageAPI.swift */,
-			);
-			path = Image;
-			sourceTree = "<group>";
-		};
-		D8DB5DCC2EA5BF6F00F4596B /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				D8DB5DCD2EA5BF7400F4596B /* UploadImageResponseDto.swift */,
 		D8DB5DB92EA558B900F4596B /* VisitHistories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1134,6 +1120,24 @@
 				D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		D8DB5DD42EA6591000F4596B /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		D8DB5DD72EA6591000F4596B /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				D8DB5DD42EA6591000F4596B /* DTO */,
+				D8DB5DD52EA6591000F4596B /* ImageAPI.swift */,
+				D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1248,7 +1252,6 @@
 				99E6F0D22E91F248002ED9C2 /* ArchiveViewModel.swift in Sources */,
 				D8C7C2AF2EA1E95000FCB472 /* ExhibitionArchiveView.swift in Sources */,
 				D8C7C2A82EA14AE300FCB472 /* View+CustomAlert.swift in Sources */,
-				D8DB5DD02EA5C67700F4596B /* CaptureConfirmViewModel.swift in Sources */,
 				99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */,
 				99191E9B2EA467F700D2F71A /* VenueDetailResponseDto.swift in Sources */,
 				99E6F1092E97B0E7002ED9C2 /* CapturedArtwork.swift in Sources */,
@@ -1272,7 +1275,6 @@
 				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
-				D8DB5DCE2EA5BF7F00F4596B /* UploadImageResponseDto.swift in Sources */,
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
 				D8C7C2952EA0F57900FCB472 /* ExhibitionAPIService.swift in Sources */,
@@ -1282,7 +1284,6 @@
 				99191E682EA2F9BA00D2F71A /* VisitorListResponseDto.swift in Sources */,
 				99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */,
 				99191E782EA3659E00D2F71A /* ArtistDetailResponseDto.swift in Sources */,
-				D8DB5DC92EA5BBA400F4596B /* ImageAPI.swift in Sources */,
 				99191E4C2EA1C8CF00D2F71A /* ArtistReactionItem.swift in Sources */,
 				99E6F0D82E91F2A3002ED9C2 /* OnboardingViewModel.swift in Sources */,
 				99E6F0BD2E91EFC0002ED9C2 /* NavigationRouter.swift in Sources */,
@@ -1326,6 +1327,9 @@
 				D8C7C0962E9F3E6100FCB472 /* CustomNavigationBar.swift in Sources */,
 				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
 				99191E252EA199BB00D2F71A /* CustomAlert.swift in Sources */,
+				D8DB5DD82EA6591000F4596B /* ImageAPIService.swift in Sources */,
+				D8DB5DD92EA6591000F4596B /* UploadImageResponseDto.swift in Sources */,
+				D8DB5DDA2EA6591000F4596B /* ImageAPI.swift in Sources */,
 				99191EBF2EA4E13400D2F71A /* Color+Extension.swift in Sources */,
 				99E6F3A52E989CFB002ED9C2 /* NetworkLoggerPlugin.swift in Sources */,
 				8C3B37AA2E9E7932003FF185 /* ArticleListViewModel.swift in Sources */,
@@ -1346,6 +1350,7 @@
 				D8C7C2822EA0026E00FCB472 /* GetReactionResponseDto.swift in Sources */,
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
+				D8DB5DDD2EA659F300F4596B /* CaptureConfirmViewModel.swift in Sources */,
 				D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */,
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
@@ -1366,7 +1371,6 @@
 				99191E462EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift in Sources */,
 				99191E472EA1C43F00D2F71A /* ArtistReactionArchiveView.swift in Sources */,
 				99191EA22EA4978C00D2F71A /* TagCategoryListResponseDto.swift in Sources */,
-				D8DB5DCB2EA5BBAA00F4596B /* ImageAPIService.swift in Sources */,
 				99191E482EA1C43F00D2F71A /* ArtistReactionView.swift in Sources */,
 				99191E902EA3E53800D2F71A /* VisitorMapper.swift in Sources */,
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
@@ -1397,7 +1401,6 @@
 /* Begin XCBuildConfiguration section */
 		99E6F0752E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1462,7 +1465,6 @@
 		};
 		99E6F0762E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1520,10 +1522,10 @@
 		};
 		99E6F0782E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1555,10 +1557,10 @@
 		};
 		99E6F0792E91E4AA002ED9C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8C7C2982EA111B500FCB472 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
