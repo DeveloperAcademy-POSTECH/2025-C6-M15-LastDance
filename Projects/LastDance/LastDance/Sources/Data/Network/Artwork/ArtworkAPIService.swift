@@ -40,7 +40,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         artworks.forEach { dto in
-                            let artwork = self.mapDtoToModel(dto, exhibitionId: exhibitionId)
+                            let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
                             SwiftDataManager.shared.insert(artwork)
                         }
                         Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
@@ -78,7 +78,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
-                        let artworkModel = self.mapDtoToModel(artwork, exhibitionId: nil)
+                        let artworkModel = ArtworkMapper.mapDtoToModel(artwork, exhibitionId: nil)
                         SwiftDataManager.shared.insert(artworkModel)
                         Log.debug("작품 상세 로컬 저장 완료")
                     }
@@ -115,7 +115,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
-                        let artworkModel = self.mapDtoToModel(artwork, exhibitionId: nil)
+                        let artworkModel = ArtworkMapper.mapDtoToModel(artwork, exhibitionId: nil)
                         SwiftDataManager.shared.insert(artworkModel)
                         Log.debug("작품 생성 로컬 저장 완료")
                     }
@@ -135,17 +135,5 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                 completion(.failure(error))
             }
         }
-    }
-
-    // MARK: Mapper
-    /// ArtworkDetail DTO를 Artwork Model로 변환
-    private func mapDtoToModel(_ dto: ArtworkDetailResponseDto, exhibitionId: Int?) -> Artwork {
-        return Artwork(
-            id: dto.id,
-            exhibitionId: exhibitionId != nil ? exhibitionId! : 0,
-            title: dto.title,
-            artistId: dto.artist_id,
-            thumbnailURL: dto.thumbnail_url
-        )
     }
 }
