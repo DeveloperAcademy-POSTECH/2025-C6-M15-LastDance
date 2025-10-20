@@ -105,7 +105,8 @@ struct ExhibitionArchiveView: View {
         .background(Color.white)
         .onAppear {
             viewModel.loadData()
-
+            // 방문 기록 생성
+            viewModel.createVisitHistory()
             // TODO: 작품 상세뷰 만들어지면 해당 뷰에 연동 예정
             // 임시 테스트: 작품 상세 조회 API 호출
             viewModel.fetchArtworkDetail(artworkId: 1)
