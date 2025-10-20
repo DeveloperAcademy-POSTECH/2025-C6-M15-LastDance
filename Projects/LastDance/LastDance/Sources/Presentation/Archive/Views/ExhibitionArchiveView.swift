@@ -18,12 +18,13 @@ struct ExhibitionArchiveView: View {
     }
 
     init(exhibitionId: Int) {
-        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(exhibitionId: exhibitionId))
+        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(
+            exhibitionId: exhibitionId
+        ))
 
             // 해당 id에 맞는 Exhibition 정보만 가져옴
-        let exhibitionIdString = String(exhibitionId)
         _exhibitions = Query(filter: #Predicate<Exhibition> { exhibition in
-            exhibition.id == exhibitionIdString
+            exhibition.id == exhibitionId
         })
     }
 

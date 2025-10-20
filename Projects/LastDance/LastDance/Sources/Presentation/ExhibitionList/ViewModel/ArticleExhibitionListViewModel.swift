@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 final class ArticleExhibitionListViewModel: ObservableObject {
-    @Published var selectedExhibitionId: String? = nil
+    @Published var selectedExhibitionId: Int? = nil
 
     /// 전시 선택 (이미 선택된 경우 선택 취소)
     func selectExhibition(_ exhibition: Exhibition) {
@@ -21,7 +21,7 @@ final class ArticleExhibitionListViewModel: ObservableObject {
     }
 
     /// 다음 버튼 탭
-    func tapNextButton() -> String? {
+    func tapNextButton() -> Int? {
         guard let selectedId = selectedExhibitionId else {
             // TODO: 전시를 선택하지 않은 경우 예외 처리
             return nil
