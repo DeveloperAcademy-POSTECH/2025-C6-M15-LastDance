@@ -82,17 +82,39 @@ struct ReactionFormView: View {
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
-                        // TODO: 임시 태그 색으로 수정
-                        ForEach(Array(viewModel.selectedCategories), id: \.self) { tag in
+                        ForEach(Array(viewModel.selectedCategories), id: \.self) { categoryName in
+                            let category = viewModel.categories.first { $0.name == categoryName }
                             ReactionTag(
-                                text: tag,
-                                color: (tag.hashValue % 2 == 0) ? .orange : .teal
+                                text: categoryName,
+                                color: Color(hex: category?.colorHex ?? "#FFFFFF")
+                            )
+                        }
+                    }
+                }
+            }
+            
+            if !viewModel.selectedTagsName.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(Array(viewModel.selectedTagsName), id: \.self) { tagName in
+                            ReactionTag(
+                                text: tagName,
+                                color: findColorForTag(tagName: tagName)
                             )
                         }
                     }
                 }
             }
         }
+    }
+
+    private func findColorForTag(tagName: String) -> Color {
+        for category in viewModel.categories {
+            if category.tags.contains(where: { $0.name == tagName }) {
+                return Color(hex: category.colorHex)
+            }
+        }
+        return .gray
     }
 
     @ViewBuilder

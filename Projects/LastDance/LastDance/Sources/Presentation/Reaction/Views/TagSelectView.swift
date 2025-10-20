@@ -27,7 +27,9 @@ struct TagSelectView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    ForEach(viewModel.categories) { category in
+                    ForEach(viewModel.categories.filter {
+                        viewModel.selectedCategoryIds.contains($0.id)
+                    }) { category in
                         HStack(spacing: 8) {
                             CheckCircleCategoryView(isSelected: true, category: category)
                         }
@@ -50,8 +52,10 @@ struct TagSelectView: View {
                 text: "완료",
                 isEnabled: !viewModel.selectedTagIds.isEmpty
             ) {
-                // TODO: - 반응 남기기 첫 뷰로 다시 이동. (선택 태그 전달)
-                router.popLast()
+                router.popToLast { route in
+                    if case .artworkDetail = route { return true }
+                    return false
+                }
             }
             .padding(.bottom, 10)
         }
