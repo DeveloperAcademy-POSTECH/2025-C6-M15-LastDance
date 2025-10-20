@@ -49,4 +49,12 @@ final class ExhibitionDetailViewModel: ObservableObject {
     func formatDateRange(start: String, end: String) -> String {
         return Date.formatDateRange(start: start, end: end)
     }
+    /// 전시를 "나의 전시"로 저장
+    func selectExhibitionAsUserExhibition() {
+        guard let exhibition = exhibition else { return }
+        
+        exhibition.isUserSelected = true
+        dataManager.saveContext()
+        Log.debug("전시 '\(exhibition.title)'를 나의 전시로 저장했습니다.")
+    }
 }
