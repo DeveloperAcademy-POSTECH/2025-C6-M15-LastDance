@@ -28,6 +28,7 @@
 		8CCA42042EA5232700351E19 /* VisitorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA42012EA5232700351E19 /* VisitorMapper.swift */; };
 		8CCA42062EA5271200351E19 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA42052EA5271200351E19 /* ResponseView.swift */; };
 		8CCA420A2EA54F8E00351E19 /* ResponseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA42092EA54F8E00351E19 /* ResponseViewModel.swift */; };
+		8CCA42102EA56C0B00351E19 /* ReactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA420F2EA56C0B00351E19 /* ReactionData.swift */; };
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
 		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
@@ -178,6 +179,7 @@
 		8CCA42012EA5232700351E19 /* VisitorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorMapper.swift; sourceTree = "<group>"; };
 		8CCA42052EA5271200351E19 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
 		8CCA42092EA54F8E00351E19 /* ResponseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseViewModel.swift; sourceTree = "<group>"; };
+		8CCA420F2EA56C0B00351E19 /* ReactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionData.swift; sourceTree = "<group>"; };
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
 		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -775,6 +777,7 @@
 				99E6F0B32E91EF48002ED9C2 /* Item.swift */,
 				8C0F9F4B2E9CE192005B8C12 /* UserType.swift */,
 				99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */,
+				8CCA420F2EA56C0B00351E19 /* ReactionData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1209,6 +1212,7 @@
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
 				99191EA62EA497D300D2F71A /* TagCategoryAPI.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
+				8CCA42102EA56C0B00351E19 /* ReactionData.swift in Sources */,
 				99191E212EA199A100D2F71A /* TitleSection.swift in Sources */,
 				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,

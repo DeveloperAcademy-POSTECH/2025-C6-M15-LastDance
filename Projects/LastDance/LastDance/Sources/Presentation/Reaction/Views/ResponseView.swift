@@ -13,22 +13,20 @@ struct ResponseView: View {
     @Query private var allArtworks: [Artwork]
     let artworkId: Int
 
-
     private var artwork: Artwork? {
-        allArtworks.first { $0.id == artworkId }
+        viewModel.getArtwork(from: allArtworks, id: artworkId)
     }
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             ResponseContentView(
-                artworkId: artworkId,
+                artwork: artwork,
                 viewModel: viewModel
             )
             BlurEffectView()
         }
         .background(Color(red: 0.97, green: 0.97, blue: 0.97))
         .ignoresSafeArea(.container, edges: .bottom)
-        .navigationBarTitle("작품 반응", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(artwork?.title ?? "작품 반응")
@@ -37,24 +35,38 @@ struct ResponseView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
+        
     }
 }
 // MARK: - ResponseContentView
 
 struct ResponseContentView: View {
-    let artworkId: Int
+    let artwork: Artwork?
 
     @ObservedObject var viewModel: ResponseViewModel
+    @Environment(\.keyboardManager) var keyboardManager
 
     var body: some View {
-        VStack(alignment: .leading) {
-            ScrollView {
+        ScrollView {
+            ZStack(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 0) {
-                    ArtworkBackgroundView(artworkId: artworkId)
+                    ArtworkBackgroundView(artwork: artwork)
+                        .offset(y: -120)
+                        .ignoresSafeArea(.container, edges: .top)
+                        .padding(.bottom, -120)
+
                     ReactionListView(viewModel: viewModel)
+                        .padding(.top, 20)
+
                     Spacer()
                 }
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer().frame(height: 343 - 120 - 40)
+                    ReactionHeaderView(count: viewModel.reactions.count)
+                }
             }
+            .padding(.bottom, keyboardManager.keyboardHeight)
         }
     }
 }
@@ -62,12 +74,7 @@ struct ResponseContentView: View {
 // MARK: - ArtworkBackgroundView
 
 struct ArtworkBackgroundView: View {
-    @Query private var allArtworks: [Artwork]
-    let artworkId: Int
-    
-    private var artwork: Artwork? {
-        allArtworks.first { $0.id == artworkId }
-    }
+    let artwork: Artwork?
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -83,32 +90,33 @@ struct ArtworkBackgroundView: View {
                 } placeholder: {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(height: 343)
+                        .frame(height: 393)
                 }
-                .frame(maxHeight: 343)
+                .frame(maxHeight: 393)
                 .clipped()
+                
             } else if let imageName = artwork?.thumbnailURL {
                 // Mock 데이터
                 if UIImage(named: imageName) != nil {
                     Image(imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxHeight: 373)
+                        .frame(maxHeight: 393)
                         .clipped()
                 } else {
                     // Mock 이미지가 없는 경우
                     Image(systemName: "photo.artframe")
                         .foregroundColor(.gray)
-                        .frame(height: 343)
+                        .frame(height: 393)
                 }
             } else {
                 // thumbnailURL이 없는 경우
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
-                    .frame(height: 343)
+                    .frame(height: 400)
             }
 
-            // 그라데이션 오버레이
+             //그라데이션 오버레이
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color(red: 0.97, green: 0.97, blue: 0.97).opacity(0),
@@ -118,9 +126,8 @@ struct ArtworkBackgroundView: View {
                 endPoint: .bottom
             )
         }
-        .offset(y: -120)
+        .offset(y: -35)
         .ignoresSafeArea(.container, edges: .top)
-        .padding(.bottom, -120)
     }
 }
 
@@ -128,13 +135,9 @@ struct ArtworkBackgroundView: View {
 
 struct ReactionListView: View {
     @ObservedObject var viewModel: ResponseViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 50) {
-            ReactionHeaderView(count: viewModel.sampleReactions.count)
 
-            ReactionItemsView(viewModel: viewModel)
-        }
+    var body: some View {
+        ReactionItemsView(viewModel: viewModel)
     }
 }
 
@@ -142,7 +145,7 @@ struct ReactionListView: View {
 
 struct ReactionHeaderView: View {
     let count: Int
-    
+
     var body: some View {
         HStack {
             Text("반응")
@@ -157,7 +160,10 @@ struct ReactionHeaderView: View {
                 .background(Color.black)
                 .clipShape(Circle())
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 4)
+        
+        
     }
 }
 
@@ -168,20 +174,17 @@ struct ReactionItemsView: View {
     
     var body: some View {
         LazyVStack(spacing: 0) {
-            ForEach(viewModel.sampleReactions.indices, id: \.self) { index in
+            ForEach(viewModel.reactions.indices, id: \.self) { index in
                 ReactionItemView(
-                    reaction: viewModel.sampleReactions[index],
+                    reaction: viewModel.reactions[index],
                     viewModel: viewModel
                 )
                 .padding(.horizontal, 20)
-                .padding(.bottom, 16)
 
-                if index < viewModel.sampleReactions.count - 1 {
+                if index < viewModel.reactions.count - 1 {
                     Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 393.00003, height: 1.8)
-                        .background(Color(red: 0.94, green: 0.94, blue: 0.94))
-                        .padding(.horizontal, 28)
+                        .fill(Color(red: 0.94, green: 0.94, blue: 0.94))
+                        .frame(maxWidth: .infinity, maxHeight: 2)
                         .padding(.bottom, 16)
                 }
             }
@@ -240,59 +243,46 @@ struct ReactionItemView: View {
 
             // 태그들
             CategoryTagsView(
-                categories: reaction.categories,
-                showAllReactions: viewModel.showAllReactions[reaction.id] ?? false,
-                hiddenCount: viewModel.hiddenCount(for: reaction),
-                didTapShowAllToggle: {
-                    viewModel.toggleShowAllReactions(id: reaction.id)
-                }
+                reaction: reaction,
+                viewModel: viewModel
             )
         }
-        .padding(.vertical, 16)
+        
+        .padding(.vertical, 8)
+
     }
 }
 
 // MARK: - CategoryTagsView
 
 struct CategoryTagsView: View {
-    let categories: [String]
-    let showAllReactions: Bool
-    let hiddenCount: Int
-    let didTapShowAllToggle: () -> Void
-    
-    private var firstLineCategories: [String] {
-        if showAllReactions {
-            return Array(categories.prefix(2))
-        } else {
-            return Array(categories.prefix(1))
-        }
-    }
-    
-    private var hiddenCategories: [String] {
-        if showAllReactions && categories.count > 2 {
-            return Array(categories.dropFirst(2))
-        } else {
-            return []
-        }
-    }
-    
+    let reaction: ReactionData
+    @ObservedObject var viewModel: ResponseViewModel
+
     var body: some View {
+        let firstLine = viewModel.firstLineCategories(for: reaction.categories, reactionId: reaction.id)
+        let hidden = viewModel.hiddenCategories(for: reaction.categories, reactionId: reaction.id)
+        let showAll = viewModel.showAllReactions[reaction.id] ?? false
+
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                ForEach(firstLineCategories, id: \.self) { category in
+                ForEach(firstLine, id: \.self) { category in
                     CategoryTagView(text: category)
                 }
-                
-                if !showAllReactions && categories.count >= 2 {
-                    CategoryTagView(text: "+\(hiddenCount)", isButton: true, action: didTapShowAllToggle)
+
+                if !showAll && reaction.categories.count >= 2 {
+                    MoreCategoriesButton(
+                        count: viewModel.hiddenCount(for: reaction),
+                        action: { viewModel.toggleShowAllReactions(id: reaction.id) }
+                    )
                 }
-                
+
                 Spacer()
             }
-            
-            if showAllReactions && !hiddenCategories.isEmpty {
+
+            if showAll && !hidden.isEmpty {
                 HStack(spacing: 8) {
-                    ForEach(hiddenCategories, id: \.self) { category in
+                    ForEach(hidden, id: \.self) { category in
                         CategoryTagView(text: category)
                     }
                     Spacer()
@@ -306,38 +296,15 @@ struct CategoryTagsView: View {
 
 struct CategoryTagView: View {
     let text: String
-    let isButton: Bool
-    let action: (() -> Void)?
-    
-    init(text: String, isButton: Bool = false, action: (() -> Void)? = nil) {
-        self.text = text
-        self.isButton = isButton
-        self.action = action
-    }
-    
     var body: some View {
-        Group {
-            if isButton, let action = action {
-                Button(action: action) {
-                    tagContent
-                }
-            } else {
-                tagContent
-            }
-        }
-    }
-    
-    private var tagContent: some View {
         HStack(alignment: .center, spacing: 8) {
-            if !isButton {
-                Circle()
-                    .fill(Color.orange)
-                    .frame(width: 6, height: 6)
-            }
-            
+            Circle()
+                .fill(Color.orange)
+                .frame(width: 6, height: 6)
+
             Text(text)
                 .font(.caption)
-                .foregroundColor(isButton ? .gray : .primary)
+                .foregroundColor(.primary)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
@@ -347,8 +314,22 @@ struct CategoryTagView: View {
     }
 }
 
-#Preview {
-    NavigationView {
-        ResponseView(artworkId: 1)
+// MARK: - MoreCategoriesButton
+
+struct MoreCategoriesButton: View {
+    let count: Int
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text("+\(count)")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(.white)
+                .cornerRadius(42)
+                .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
+        }
     }
 }
