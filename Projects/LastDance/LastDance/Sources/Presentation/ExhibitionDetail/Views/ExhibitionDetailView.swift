@@ -11,7 +11,7 @@ struct ExhibitionDetailView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ExhibitionDetailViewModel()
 
-    let exhibitionId: String
+    let exhibitionId: Int
     
     var body: some View {
         VStack(spacing: 18) {
@@ -41,6 +41,7 @@ struct ExhibitionDetailView: View {
         }
         .customAlert(
             isPresented: $viewModel.showErrorAlert,
+            image: "warning",
             title: "아쉬워요!",
             message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
             buttonText: "다시 찾기"
@@ -125,6 +126,6 @@ struct ExhibitionInfoSection: View {
 }
 
 #Preview {
-    ExhibitionDetailView(exhibitionId: "exhibition_light")
+    ExhibitionDetailView(exhibitionId: 1)
         .environmentObject(NavigationRouter())
 }

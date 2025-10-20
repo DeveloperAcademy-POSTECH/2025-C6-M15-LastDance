@@ -59,7 +59,7 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
                             SwiftDataManager.shared.upsertArtist(model)
                         }
                         // TODO: - 전체 Artist 확인 용도 (이후에 제거 가능)
-                        SwiftDataManager.shared.printAllArtists()
+//                        SwiftDataManager.shared.printAllArtists()
                     }
                     
                     completion(.success(list))

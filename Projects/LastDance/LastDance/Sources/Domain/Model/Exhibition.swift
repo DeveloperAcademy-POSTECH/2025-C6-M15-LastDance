@@ -10,19 +10,19 @@ import SwiftData
 
 @Model
 final class Exhibition {
-    @Attribute(.unique) var id: String
+    @Attribute(.unique) var id: Int
     var title: String
     var descriptionText: String?
     var startDate: String
     var endDate: String
-    var artworks: [Artwork] = []
     var venueId: Int?
     var coverImageName: String?
     var createdAt: String?
     var updatedAt: String?
     var isUserSelected: Bool = false
+    var artworks: [Artwork] = []
 
-    init(id: String,
+    init(id: Int,
          title: String,
          descriptionText: String? = nil,
          startDate: String,

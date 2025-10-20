@@ -25,7 +25,7 @@ protocol ExhibitionDtoMappableProtocol {
 extension ExhibitionDtoMappableProtocol {
     func toEntity() -> Exhibition {
         return Exhibition(
-            id: String(id),
+            id: id,
             title: title,
             descriptionText: description_text,
             startDate: Date.formatAPIDate(from: start_date),

@@ -38,7 +38,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
-                        let reaction = self.mapDtoToModel(reactionDetail)
+                        let reaction = ReactionMapper.mapDtoToModel(reactionDetail)
                         SwiftDataManager.shared.insert(reaction)
                         Log.debug("로컬 저장 완료")
                     }
@@ -75,6 +75,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                         Log.debug("전체 조회 응답: \(jsonString)")
                     }
                     let reactions = try JSONDecoder().decode([GetReactionResponseDto].self, from: response.data)
+                    
                     completion(.success(reactions))
                 } catch {
                     Log.error("JSON 디코딩 실패: \(error)")
@@ -108,7 +109,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     let responseDto = ReactionResponseDto(code: response.statusCode, data: reactionDetail)
 
                     DispatchQueue.main.async {
-                        let reaction = self.mapDtoToModel(reactionDetail)
+                        let reaction = ReactionMapper.mapDtoToModel(reactionDetail)
                         SwiftDataManager.shared.insert(reaction)
                         Log.debug("로컬 저장 완료")
                     }
@@ -129,25 +130,5 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 completion(.failure(error))
             }
         }
-    }
-
-    // MARK: - Mapper
-    /// ReactionDetail DTO를 Reaction Model로 변환
-    private func mapDtoToModel(_ dto: ReactionDetailResponseDto) -> Reaction {
-        // tags를 category 문자열 배열로 변환
-        let categories = dto.tags.map { $0.name }
-
-        // created_at 문자열을 Date로 변환
-        let dateFormatter = ISO8601DateFormatter()
-        let createdAt = dateFormatter.date(from: dto.created_at) ?? Date()
-
-        return Reaction(
-            id: String(dto.id),
-            artworkId: dto.artwork_id,
-            visitorId: dto.visitor_id,
-            category: categories,
-            comment: dto.comment,
-            createdAt: createdAt
-        )
     }
 }
