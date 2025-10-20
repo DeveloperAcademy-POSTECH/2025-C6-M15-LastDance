@@ -11,7 +11,7 @@ struct ArticleArchivingTitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("나의 전시")
-                .font(.system(size: 21, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
