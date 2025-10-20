@@ -66,6 +66,8 @@
 		99191EBF2EA4E13400D2F71A /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */; };
 		99191EC32EA5264900D2F71A /* TagDetailResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EC02EA5264900D2F71A /* TagDetailResponseDto.swift */; };
 		99191EC42EA5264900D2F71A /* TagDetailWithCategoryResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EC12EA5264900D2F71A /* TagDetailWithCategoryResponseDto.swift */; };
+		99191EC62EA545DF00D2F71A /* ReactionMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EC52EA545D900D2F71A /* ReactionMapper.swift */; };
+		99191EC82EA5496B00D2F71A /* ArtworkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191EC72EA5496600D2F71A /* ArtworkMapper.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -213,6 +215,8 @@
 		99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		99191EC02EA5264900D2F71A /* TagDetailResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailResponseDto.swift; sourceTree = "<group>"; };
 		99191EC12EA5264900D2F71A /* TagDetailWithCategoryResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDetailWithCategoryResponseDto.swift; sourceTree = "<group>"; };
+		99191EC52EA545D900D2F71A /* ReactionMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionMapper.swift; sourceTree = "<group>"; };
+		99191EC72EA5496600D2F71A /* ArtworkMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkMapper.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -486,6 +490,8 @@
 		99191E8E2EA3E50F00D2F71A /* Mapper */ = {
 			isa = PBXGroup;
 			children = (
+				99191EC72EA5496600D2F71A /* ArtworkMapper.swift */,
+				99191EC52EA545D900D2F71A /* ReactionMapper.swift */,
 				99191E912EA3E54C00D2F71A /* ArtistMapper.swift */,
 				99191E8F2EA3E53300D2F71A /* VisitorMapper.swift */,
 			);
@@ -1228,6 +1234,7 @@
 				D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* MakeArtworkRequestDto.swift in Sources */,
 				8C3B37A22E9E69BC003FF185 /* ArticleExhibitionListView.swift in Sources */,
+				99191EC82EA5496B00D2F71A /* ArtworkMapper.swift in Sources */,
 				D8C7C2A52EA14A3500FCB472 /* CustomAlert.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
 				99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */,
@@ -1306,6 +1313,7 @@
 				D8C7C2BB2EA27E6600FCB472 /* BottomButton.swift in Sources */,
 				99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */,
 				D8C7C2BC2EA27E6600FCB472 /* CircleSelectionButton.swift in Sources */,
+				99191EC62EA545DF00D2F71A /* ReactionMapper.swift in Sources */,
 				D8C7C2BD2EA27E6600FCB472 /* OutlinedButton.swift in Sources */,
 				D8C7C2BE2EA27E6600FCB472 /* CircleAddButton.swift in Sources */,
 				D8C7C2C02EA27E6600FCB472 /* CategoryButton.swift in Sources */,
