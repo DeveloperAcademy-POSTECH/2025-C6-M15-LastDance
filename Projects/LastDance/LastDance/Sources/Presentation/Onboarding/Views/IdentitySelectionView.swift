@@ -7,6 +7,35 @@
 
 import SwiftUI
 
+// MARK: - Main View
+
+/// 사용자 정체성 선택 뷰 (작가/관람객)
+struct IdentitySelectionView: View {
+    @StateObject private var viewModel = IdentitySelectionViewModel()
+
+    var body: some View {
+        VStack(spacing: 0) {
+            IdentitySelectionTitleSection()
+
+            Spacer().frame(height: 40)
+
+            IdentitySelectionButtons(viewModel: viewModel)
+
+            Spacer()
+
+            IdentitySelectionNextButton(viewModel: viewModel)
+        }
+        .padding(.horizontal, 20)
+        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .onAppear {
+            // TODO: - 전시장소 데이터 가져오기 확인용 (이후 제거 필요)
+            viewModel.loadAllVenues()
+        }
+    }
+}
+
+// MARK: - Subviews
+
 struct IdentitySelectionTitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -113,30 +142,7 @@ struct IdentitySelectionNextButton: View {
     }
 }
 
-/// 사용자 정체성 선택 뷰 (작가/관람객)
-struct IdentitySelectionView: View {
-    @StateObject private var viewModel = IdentitySelectionViewModel()
-
-    var body: some View {
-        VStack(spacing: 0) {
-            IdentitySelectionTitleSection()
-
-            Spacer().frame(height: 40)
-
-            IdentitySelectionButtons(viewModel: viewModel)
-
-            Spacer()
-
-            IdentitySelectionNextButton(viewModel: viewModel)
-        }
-        .padding(.horizontal, 20)
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
-        .onAppear {
-            // TODO: - 전시장소 데이터 가져오기 확인용 (이후 제거 필요)
-            viewModel.loadAllVenues()
-        }
-    }
-}
+// MARK: - Preview
 
 #Preview {
     IdentitySelectionView()
