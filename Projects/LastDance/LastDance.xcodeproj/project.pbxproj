@@ -26,6 +26,7 @@
 		8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */; };
 		8F1D5E0B2EA5286D0064FE47 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E0A2EA5286D0064FE47 /* TooltipView.swift */; };
 		8F1D5E0D2EA56ECD0064FE47 /* BackGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E0C2EA56ECD0064FE47 /* BackGround.swift */; };
+		8CCA420C2EA567ED00351E19 /* ExhibitionPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA420B2EA567DB00351E19 /* ExhibitionPreviewCard.swift */; };
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
 		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
@@ -34,7 +35,6 @@
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
 		99191E1F2EA1994900D2F71A /* CompleteArticleListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E1E2EA1994900D2F71A /* CompleteArticleListViewModel.swift */; };
 		99191E212EA199A100D2F71A /* TitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E202EA199A100D2F71A /* TitleSection.swift */; };
-		99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E222EA199B300D2F71A /* SelectionRow.swift */; };
 		99191E252EA199BB00D2F71A /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E242EA199BB00D2F71A /* CustomAlert.swift */; };
 		99191E272EA199F300D2F71A /* View+CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E262EA199F300D2F71A /* View+CustomAlert.swift */; };
 		99191E452EA1C43F00D2F71A /* ArtistReactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191E3F2EA1C43F00D2F71A /* ArtistReactionViewModel.swift */; };
@@ -187,6 +187,7 @@
 		8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		8F1D5E0A2EA5286D0064FE47 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
 		8F1D5E0C2EA56ECD0064FE47 /* BackGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackGround.swift; sourceTree = "<group>"; };
+		8CCA420B2EA567DB00351E19 /* ExhibitionPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPreviewCard.swift; sourceTree = "<group>"; };
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
 		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -194,7 +195,6 @@
 		963573BE2E9B84D500B2FA79 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		99191E1E2EA1994900D2F71A /* CompleteArticleListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteArticleListViewModel.swift; sourceTree = "<group>"; };
 		99191E202EA199A100D2F71A /* TitleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSection.swift; sourceTree = "<group>"; };
-		99191E222EA199B300D2F71A /* SelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionRow.swift; sourceTree = "<group>"; };
 		99191E242EA199BB00D2F71A /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		99191E262EA199F300D2F71A /* View+CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CustomAlert.swift"; sourceTree = "<group>"; };
 		99191E3E2EA1C43F00D2F71A /* ArtistReactionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistReactionArchiveViewModel.swift; sourceTree = "<group>"; };
@@ -381,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */,
+				8CCA420B2EA567DB00351E19 /* ExhibitionPreviewCard.swift */,
 				D8C7C2A42EA14A3500FCB472 /* CustomAlert.swift */,
 				D8C7C2A22EA1499400FCB472 /* TitleSection.swift */,
 				8C3B37A52E9E7089003FF185 /* PageIndicator.swift */,
@@ -389,7 +390,6 @@
 				D8C7C0952E9F3E6100FCB472 /* CustomNavigationBar.swift */,
 				D8C7C2BA2EA27E6600FCB472 /* Button */,
 				99191E202EA199A100D2F71A /* TitleSection.swift */,
-				99191E222EA199B300D2F71A /* SelectionRow.swift */,
 				99191E242EA199BB00D2F71A /* CustomAlert.swift */,
 				8F1D5E0A2EA5286D0064FE47 /* TooltipView.swift */,
 				8F1D5E0C2EA56ECD0064FE47 /* BackGround.swift */,
@@ -404,7 +404,6 @@
 				D8C7C2B22EA2145D00FCB472 /* ExhibitionDtoMapper.swift */,
 				D8C7C2A72EA14AE300FCB472 /* View+CustomAlert.swift */,
 				D8C7C0932E9F3E0700FCB472 /* UIImage.swift */,
-				D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */,
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
 				D8C7C0912E9F3E0000FCB472 /* UserDefaults.swift */,
 				99191E262EA199F300D2F71A /* View+CustomAlert.swift */,
@@ -1272,7 +1271,6 @@
 				D8DB5DBE2EA558E200F4596B /* VisitHistoriesAPIService.swift in Sources */,
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				99191E212EA199A100D2F71A /* TitleSection.swift in Sources */,
-				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
@@ -1302,6 +1300,7 @@
 				8C3B37A22E9E69BC003FF185 /* ArticleExhibitionListView.swift in Sources */,
 				99191EC82EA5496B00D2F71A /* ArtworkMapper.swift in Sources */,
 				D8C7C2A52EA14A3500FCB472 /* CustomAlert.swift in Sources */,
+				8CCA420C2EA567ED00351E19 /* ExhibitionPreviewCard.swift in Sources */,
 				963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */,
 				99DAB0C32E9F33F000379F27 /* PreviewCornerMarks.swift in Sources */,
 				99DAB0B02E9C4BEB00379F27 /* CaptureConfirmView.swift in Sources */,
@@ -1376,7 +1375,6 @@
 				8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */,
 				99E6F10B2E97B0EC002ED9C2 /* Reaction.swift in Sources */,
 				99191EAA2EA498B400D2F71A /* TagAPI.swift in Sources */,
-				99191E232EA199B300D2F71A /* SelectionRow.swift in Sources */,
 				8C3B37A42E9E6A5C003FF185 /* ArticleExhibitionListViewModel.swift in Sources */,
 				8F1D5E0D2EA56ECD0064FE47 /* BackGround.swift in Sources */,
 				8C3B37A62E9E7089003FF185 /* PageIndicator.swift in Sources */,
@@ -1525,7 +1523,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "";
+				BASE_URL = "http://52.78.41.179:8000";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1560,7 +1558,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BASE_URL = "";
+				BASE_URL = "http://52.78.41.179:8000";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

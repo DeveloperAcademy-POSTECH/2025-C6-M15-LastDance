@@ -51,6 +51,7 @@ struct RootView: View {
                         .navigationBarBackButtonHidden(true)
                 case .artworkDetail(let id, let capturedImage):
                     ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
+                        .toolbar(.hidden, for: .navigationBar)
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
