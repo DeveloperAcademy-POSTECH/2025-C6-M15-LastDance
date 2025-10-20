@@ -76,7 +76,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("makeExhibition 서버 응답: \(jsonString)")
+                        Log.debug("서버 응답: \(jsonString)")
                     }
 
                     let exhibition = try JSONDecoder().decode(ExhibitionResponseDto.self, from: response.data)
@@ -102,7 +102,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("getDetailExhibition 서버 응답: \(jsonString)")
+                        Log.debug("서버 응답: \(jsonString)")
                     }
 
                     // 직접 디코딩
@@ -112,7 +112,8 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         let exhibition = exhibitionDto.toEntity()
-
+                        SwiftDataManager.shared.upsertExhibition(exhibition)
+                        
                         // Artworks 독립적으로 저장
                         if let artworkInfos = exhibitionDto.artworks {
                             for artworkInfo in artworkInfos {
@@ -121,14 +122,19 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                     exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
                                     artistId: artworkInfo.artist_id,
-                                    thumbnailURL: artworkInfo.thumbnail_url
+                                    thumbnailURL: artworkInfo.thumbnail_url,
+                                    exhibition: exhibition
                                 )
-                                SwiftDataManager.shared.insert(artwork)
-                            }
-                            Log.debug("전시 및 작품 로컬 저장 완료 (\(artworkInfos.count)개)")
-                        }
+                                SwiftDataManager.shared.upsertArtwork(artwork)
+                                SwiftDataManager.shared.printAllArtworks()
 
-                        SwiftDataManager.shared.insert(exhibition)
+                                if !exhibition.artworks.contains(where: { $0.id == artwork.id }) {
+                                    exhibition.artworks.append(artwork)
+                                }
+                            }
+                            Log.debug("저장 완료 (\(artworkInfos.count)개)")
+                        }
+                        SwiftDataManager.shared.saveContext()
                     }
 
                     completion(.success(exhibitionDto))

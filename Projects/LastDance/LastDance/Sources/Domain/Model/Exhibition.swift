@@ -15,11 +15,13 @@ final class Exhibition {
     var descriptionText: String?
     var startDate: String
     var endDate: String
-    var artworks: [Artwork] = []
     var venueId: Int?
     var coverImageName: String?
     var createdAt: String?
     var updatedAt: String?
+    
+//    @Relationship(inverse: \Artwork.exhibition)
+    var artworks: [Artwork] = []
 
     init(id: Int,
          title: String,

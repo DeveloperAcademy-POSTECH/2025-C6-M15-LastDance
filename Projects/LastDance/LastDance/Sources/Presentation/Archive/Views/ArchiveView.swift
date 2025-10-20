@@ -5,16 +5,21 @@
 //  Created by 광로 on 10/11/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArchiveView: View {
-    @StateObject private var viewModel = ArchiveViewModel()
+    let exhibitionId: Int
+    
+    @StateObject private var viewModel: ArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
     
-    
-    // TODO: - 이전 화면에서 넘겨받은 exhivitionId. 이것을 이용해 fetchCurrentExhibition 수정 필요.
-    let exhibitionId: Int
+    init(exhibitionId: Int) {
+        self.exhibitionId = exhibitionId
+        _viewModel = StateObject(
+            wrappedValue: ArchiveViewModel(exhibitionId: exhibitionId)
+        )
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -24,7 +29,7 @@ struct ArchiveView: View {
             
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
             
-            ArtworkCountView(count: viewModel.capturedArtworksCount)
+            ArtworkCountView(count: viewModel.reactedArtworksCount)
             
             ScrollView {
                 if viewModel.isLoading {
@@ -33,7 +38,7 @@ struct ArchiveView: View {
                         .frame(maxWidth: .infinity, minHeight: 400)
                 } else if viewModel.hasArtworks {
                     ArtworkGridView(
-                        artworks: viewModel.capturedArtworks,
+                        artworks: viewModel.reactedArtworks,
                         getRotationAngle: viewModel.getRotationAngle
                     )
                 } else {
@@ -46,9 +51,6 @@ struct ArchiveView: View {
             BottomButton(text: "촬영하기") {
                 router.push(.camera)
             }
-        }
-        .onAppear {
-            viewModel.loadCurrentExhibition()
         }
     }
 }
@@ -111,7 +113,7 @@ struct ArtworkCountView: View {
 }
 
 struct ArtworkGridView: View {
-    let artworks: [CapturedArtwork]
+    let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
     
     var body: some View {
@@ -123,14 +125,42 @@ struct ArtworkGridView: View {
             spacing: 24
         ) {
             ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                Image(artwork.localImagePath)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 157, height: 213)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .rotationEffect(.degrees(getRotationAngle(index)))
-                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+                if let urlString = artwork.thumbnailURL,
+                   let url = URL(string: urlString) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 157, height: 213)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 157, height: 213)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .rotationEffect(.degrees(getRotationAngle(index)))
+                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                        case .failure:
+                            // TODO: - 실패 시 대체 이미지 넣어주기
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 157, height: 213)
+                                .foregroundColor(.gray)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                } else {
+                    // TODO: - URL 없을 때 대체 이미지 넣어주기
+                    Image(systemName: "photo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 157, height: 213)
+                        .foregroundColor(.gray)
+                }
             }
+
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)
