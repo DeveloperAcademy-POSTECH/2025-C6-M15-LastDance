@@ -13,12 +13,12 @@ struct ArchiveView: View {
     @StateObject private var viewModel: ArchiveViewModel
     
     let exhibitionId: String
-    
+
     init(exhibitionId: String) {
         self.exhibitionId = exhibitionId
         _viewModel = StateObject(wrappedValue: ArchiveViewModel(exhibitionId: exhibitionId))
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ArchiveHeaderView {

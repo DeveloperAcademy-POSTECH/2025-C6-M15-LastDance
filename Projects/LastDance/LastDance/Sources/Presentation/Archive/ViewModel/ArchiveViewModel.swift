@@ -5,26 +5,26 @@
 //  Created by 광로 on 10/11/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @MainActor
 final class ArchiveViewModel: ObservableObject {
     @Published var capturedArtworks: [CapturedArtwork] = []
     @Published var currentExhibition: Exhibition?
     @Published var isLoading = false
-    
+
     private let swiftDataManager = SwiftDataManager.shared
     private let exhibitionId: String
     
     var capturedArtworksCount: Int {
         capturedArtworks.count
     }
-    
+
     var exhibitionTitle: String {
         currentExhibition?.title ?? "전시 정보 없음"
     }
-    
+
     var hasArtworks: Bool {
         !capturedArtworks.isEmpty
     }
@@ -33,7 +33,7 @@ final class ArchiveViewModel: ObservableObject {
         self.exhibitionId = exhibitionId
         loadData()
     }
-    
+
     func loadData() {
         isLoading = true
         Task {
@@ -49,15 +49,19 @@ final class ArchiveViewModel: ObservableObject {
     
     /// 대각선 효과
     func getRotationAngle(for index: Int) -> Double {
-        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
+        let angles: [Double] = [-4, 3, 3, -4]  // 좌상, 우상, 좌하, 우하
         return angles[index % angles.count]
     }
-    
+
     private func fetchCapturedArtworksForCurrentExhibition() async throws -> [CapturedArtwork] {
         guard let container = swiftDataManager.container else {
-            throw NSError(domain: "ArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
+            throw NSError(
+                domain: "ArchiveViewModel",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Container not available"]
+            )
         }
-        
+
         let context = container.mainContext
         let currentExhibitionId = self.exhibitionId
         
@@ -74,6 +78,7 @@ final class ArchiveViewModel: ObservableObject {
         let capturedDescriptor = FetchDescriptor<CapturedArtwork>(
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
+
         let allCaptured = try context.fetch(capturedDescriptor)
         
         return allCaptured.filter { captured in
@@ -83,13 +88,17 @@ final class ArchiveViewModel: ObservableObject {
             return false
         }
     }
-    
+
     private func fetchCurrentExhibition() async throws -> Exhibition? {
         guard let container = swiftDataManager.container else {
             Log.error("❌ Container not available")
-            throw NSError(domain: "ArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
+            throw NSError(
+                domain: "ArchiveViewModel",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Container not available"]
+            )
         }
-        
+
         let context = container.mainContext
         let currentExhibitionId = self.exhibitionId
         let exhibitionDescriptor = FetchDescriptor<Exhibition>(
@@ -99,11 +108,10 @@ final class ArchiveViewModel: ObservableObject {
         )
         
         let exhibition = try context.fetch(exhibitionDescriptor).first
-        
+
         if exhibition == nil {
-            Log.error("❌ Exhibition not found for id: \(self.exhibitionId)")
+            Log.fault("❌ Exhibition not found for id: \(self.exhibitionId)")
         }
-        
         return exhibition
     }
 }
