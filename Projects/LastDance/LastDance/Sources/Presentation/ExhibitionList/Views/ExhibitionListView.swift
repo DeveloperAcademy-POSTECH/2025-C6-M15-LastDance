@@ -5,13 +5,13 @@
 //  Created by 배현진 on 10/5/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ExhibitionListTitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("관람하려 온 전시를 알려주세요")
+            Text("관람하러 온 전시를 알려주세요")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)

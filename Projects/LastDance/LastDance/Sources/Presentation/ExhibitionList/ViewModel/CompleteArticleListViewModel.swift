@@ -15,7 +15,7 @@ final class CompleteArticleListViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
 
     /// 전시 및 작가 정보 가져오기
-    func fetchData(exhibitionId: String, artistId: Int) {
+    func fetchData(exhibitionId: Int, artistId: Int) {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 
@@ -28,7 +28,7 @@ final class CompleteArticleListViewModel: ObservableObject {
     }
     
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
-    func findExhibitionIdByCurrentFields() -> String? {
+    func findExhibitionIdByCurrentFields() -> Int? {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 

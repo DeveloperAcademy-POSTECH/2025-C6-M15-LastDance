@@ -47,7 +47,7 @@ struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = CompleteArticleListViewModel() //최상위 위치
 
-    let selectedExhibitionId: String
+    let selectedExhibitionId: Int
     let selectedArtistId: Int
 
     var body: some View {
