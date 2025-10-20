@@ -58,7 +58,11 @@ struct RootView: View {
                     ArchiveView(exhibitionId: id)
                         .toolbar(.hidden, for: .navigationBar)
                 case .category:
-                    CategoryView()
+                    CategorySelectView()
+                        .navigationBarBackButtonHidden(true)
+                case .reactionTags(let categories):
+                    TagSelectView(categories: categories)
+                        .navigationBarBackButtonHidden(true)
                 case .completeReaction:
                     CompleteReactionView()
                 case .inputArtworkInfo(let image, let exhibitionId, let artistId):
