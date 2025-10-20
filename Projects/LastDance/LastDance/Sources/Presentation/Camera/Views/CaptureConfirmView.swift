@@ -9,20 +9,22 @@ import SwiftUI
 
 struct CaptureConfirmView: View {
     let image: UIImage
-    var onUse: (UIImage) -> Void
+    var onUse: (String?) -> Void  // URL을 전달하도록 변경
     var onRetake: () -> Void
+
+    @StateObject private var viewModel = CaptureConfirmViewModel()
 
     var body: some View {
         GeometryReader { geo in
-            let cardW = geo.size.width * CameraViewLayout.confirmCardWidthRatio
+            let cardW = geo.size.width
             let cardH = cardW / CameraViewLayout.aspect
-            
+
             ZStack {
                 Color(.systemBackground).ignoresSafeArea()
-                
+
                 VStack {
                     Spacer()
-                    
+
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
@@ -31,7 +33,7 @@ struct CaptureConfirmView: View {
                     
                     ZStack {
                         Button {
-                            onUse(image)
+                            viewModel.uploadImage(image)
                         } label: {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 24, weight: .bold))
@@ -56,6 +58,20 @@ struct CaptureConfirmView: View {
                     .padding(.top, 24)
                 }
                 .padding(.vertical, CameraViewLayout.previewBottomInset)
+            }
+        }
+        .onChange(of: viewModel.uploadedImageUrl) { _, newUrl in
+            if newUrl != nil {
+                onUse(newUrl)
+            }
+        }
+        .alert("업로드 실패", isPresented: .constant(viewModel.errorMessage != nil)) {
+            Button("확인") {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            if let error = viewModel.errorMessage {
+                Text(error)
             }
         }
     }

@@ -41,6 +41,14 @@ extension Date {
         }
         return isoString
     }
+    
+    /// ISO8601 String을 표시용 날짜 형식으로 변환 (yyyy.M. d)
+    static func formatShortDate(from isoString: String) -> String {
+        if let date = isoFormatter.date(from: isoString) {
+            return shortDateFormatter.string(from: date)
+        }
+        return isoString
+    }
 
     /// ISO8601 String 두 개로 날짜 범위 포맷팅
     static func formatDateRange(start: String, end: String) -> String {
@@ -59,8 +67,12 @@ extension Date {
         // 파싱 실패 시, 정규표현식으로 날짜 부분만 추출
         let pattern = "^(\\d{4}-\\d{2}-\\d{2})"
         if let regex = try? NSRegularExpression(pattern: pattern),
-           let match = regex.firstMatch(in: isoString, range: NSRange(isoString.startIndex..., in: isoString)),
-           let range = Range(match.range, in: isoString) {
+            let match = regex.firstMatch(
+                in: isoString,
+                range: NSRange(isoString.startIndex..., in: isoString)
+            ),
+            let range = Range(match.range, in: isoString)
+        {
             return String(isoString[range])
         }
         return isoString

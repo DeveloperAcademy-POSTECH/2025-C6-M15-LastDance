@@ -40,7 +40,7 @@ struct ArchiveHomeView: View {
                             let exhibition = viewModel.exhibitions[index]
                             ExhibitionCardView(
                                 exhibition: exhibition,
-                                dateString: viewModel.dateString(for: exhibition)
+                                dateString: Date.formatShortDate(from: exhibition.startDate)
                             )
                             .offset(y: index % 2 == 0 ? 0 : 40)
                             .onTapGesture {

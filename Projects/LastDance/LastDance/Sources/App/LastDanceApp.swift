@@ -47,13 +47,14 @@ struct LastDanceApp: App {
         WindowGroup {
             RootView()
                 .environment(\.keyboardManager, keyboardManager)
-                .onAppear {
-                    #if DEBUG
-                    Task { @MainActor in
-                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
-                    }
-                    #endif
-                }
+            // TODO: - 개발 시점에 목데이터 사용 원할시 주석 해제
+//                .onAppear {
+//                    #if DEBUG
+//                    Task { @MainActor in
+//                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
+//                    }
+//                    #endif
+//                }
         }
         .modelContainer(sharedModelContainer)
     }

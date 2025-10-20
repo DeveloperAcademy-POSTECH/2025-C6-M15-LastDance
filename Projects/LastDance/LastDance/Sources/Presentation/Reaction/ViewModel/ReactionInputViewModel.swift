@@ -15,9 +15,11 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedCategories: Set<String> = []
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
     @Published var selectedArtistName: String = ""    // 선택한 작가 이름
+    @Published var capturedImage: UIImage?  // 촬영한 이미지
     @Published var categories: [TagCategory] = []
 
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
+    var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
     private let dataManager = SwiftDataManager.shared
     let limit = 500 // texteditor 최대 글자수 제한
@@ -49,11 +51,16 @@ final class ReactionInputViewModel: ObservableObject {
     }
 
     /// 인식된 작품의 작품명과 작가 정보를 저장하는 함수
-    func setArtworkInfo(artworkTitle: String, artistName: String, artworkId: Int, completion: @escaping (Bool) -> Void) {
+    func setArtworkInfo(artworkTitle: String, artistName: String, artworkId: Int, artistId: Int, completion: @escaping (Bool) -> Void) {
         self.selectedArtworkTitle = artworkTitle
         self.selectedArtistName = artistName
         self.selectedArtworkId = artworkId
-        Log.debug("작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), ID: \(artworkId)")
+        self.selectedArtistId = artistId
+
+        // SwiftData에서 작품의 artistId 업데이트
+        dataManager.updateArtworkArtist(artworkId: artworkId, artistId: artistId)
+
+        Log.debug("작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), 작품ID: \(artworkId), 작가ID: \(artistId)")
         completion(true)
     }
 
@@ -82,6 +89,12 @@ final class ReactionInputViewModel: ObservableObject {
                     self.message = ""
                     self.selectedCategories.removeAll()
                     Log.debug("반응 저장 성공")
+                    
+                    // 첫 리액션 등록 플래그 저장
+                    if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
+                        UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
+                    }
+                    
                     completion(true)
                 case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")

@@ -34,7 +34,6 @@ final class SwiftDataManager {
     /// 새 객체 추가
     func insert<T: PersistentModel>(_ object: T) {
         context.insert(object)
-        saveContext()
     }
 
     /// 특정 객체 삭제
@@ -47,6 +46,7 @@ final class SwiftDataManager {
     func fetchAll<T: PersistentModel>(_ type: T.Type) -> [T] {
         do {
             let descriptor = FetchDescriptor<T>()
+            
             return try context.fetch(descriptor)
         } catch {
             Log.error("Fetch 실패: \(error)")
@@ -74,6 +74,19 @@ final class SwiftDataManager {
             Log.error("SwiftData 저장 실패: \(error)")
         }
     }
+
+    // 사용자가 선택한 작품-작가 매칭이 데이터와 다를 때 사용
+    /// 작품의 artistId 업데이트
+    func updateArtworkArtist(artworkId: Int, artistId: Int) {
+        let artworks = fetchAll(Artwork.self)
+        if let artwork = artworks.first(where: { $0.id == artworkId }) {
+            artwork.artistId = artistId
+            saveContext()
+            Log.debug("작품 artistId 업데이트 완료 - artworkId: \(artworkId), artistId: \(artistId)")
+        } else {
+            Log.error("작품을 찾을 수 없음 - artworkId: \(artworkId)")
+        }
+    }
 }
 
 // MARK: - 중복 방지를 위해서 insert + update를 위한 기능
@@ -86,8 +99,6 @@ extension SwiftDataManager {
             existing.address = newValue.address
             existing.geoLat = newValue.geoLat
             existing.geoLon = newValue.geoLon
-            
-            saveContext()
         } else {
             insert(newValue)
         }
@@ -99,8 +110,6 @@ extension SwiftDataManager {
         if let existing = all.first(where: { $0.id == newValue.id }) {
             existing.uuid = newValue.uuid
             existing.name = newValue.name
-          
-            saveContext()
         } else {
             insert(newValue)
         }
@@ -111,10 +120,42 @@ extension SwiftDataManager {
         let all = fetchAll(Artist.self)
         if let existing = all.first(where: { $0.id == newValue.id }) {
             existing.name = newValue.name
-            saveContext()
         } else {
             insert(newValue)
         }
+    }
+    
+    /// Exhitibion 전체 목록 저장 - 중복 방지
+    func upsertExhibition(_ newValue: Exhibition) {
+        let all = fetchAll(Exhibition.self)
+        if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.title = newValue.title
+            existing.descriptionText = newValue.descriptionText
+            existing.startDate = newValue.startDate
+            existing.endDate = newValue.endDate
+            existing.venueId = newValue.venueId
+            existing.coverImageName = newValue.coverImageName
+            existing.createdAt = newValue.createdAt
+            existing.updatedAt = newValue.updatedAt
+        } else {
+            insert(newValue)
+        }
+    }
+    
+    /// Artwork 전체 목록 저장 - 중복 방지
+    func upsertArtwork(_ newValue: Artwork) {
+        let all = fetchAll(Artwork.self)
+        if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.exhibitionId = newValue.exhibitionId
+            existing.title = newValue.title
+            existing.artistId = newValue.artistId
+            existing.thumbnailURL = newValue.thumbnailURL
+            existing.exhibition = newValue.exhibition
+            
+        } else {
+            insert(newValue)
+        }
+        printAllArtworks()
     }
   
     /// 전체 Venue 확인용 출력문
@@ -138,11 +179,11 @@ extension SwiftDataManager {
     }
 
     /// 전체 Artist 확인용 출력문
-    func printAllArtists() {
-        let artists = SwiftDataManager.shared.fetchAll(Artist.self)
+    func printAllArtworks() {
+        let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
         Log.debug("------ Artist Local Data ------")
-        artists.forEach { artist in
-            Log.debug("id=\(artist.id), name=\(artist.name)")
+        artworks.forEach { artwork in
+            Log.debug("id=\(artwork.id), exhibitionId=\(artwork.exhibitionId)")
         }
         Log.debug("-------------------------------")
     }

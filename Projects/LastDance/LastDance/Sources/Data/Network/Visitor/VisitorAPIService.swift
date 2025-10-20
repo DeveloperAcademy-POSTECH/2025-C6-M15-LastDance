@@ -99,6 +99,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                         VisitorDetailResponseDto.self,
                         from: response.data
                     )
+                    
+                    UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.visitorId.rawValue)
+                    
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")

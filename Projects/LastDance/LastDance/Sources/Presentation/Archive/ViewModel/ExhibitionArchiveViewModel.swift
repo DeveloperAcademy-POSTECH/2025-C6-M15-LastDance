@@ -19,6 +19,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     private let swiftDataManager = SwiftDataManager.shared
     private let apiService: ExhibitionAPIServiceProtocol
     private let artworkAPIService = ArtworkAPIService()
+    private let visitHistoriesAPIService = VisitHistoriesAPIService()
 
     let exhibitionId: Int
 
@@ -88,10 +89,9 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         let context = container.mainContext
 
         // 해당 전시의 작품 ID 조회
-        let exhibitionIdString = String(exhibitionId)
         let artworkDescriptor = FetchDescriptor<Artwork>(
             predicate: #Predicate<Artwork> { artwork in
-                artwork.exhibitionId == exhibitionIdString
+                artwork.exhibitionId == exhibitionId
             }
         )
         let exhibitionArtworks = try context.fetch(artworkDescriptor)
@@ -113,10 +113,9 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         }
 
         let context = container.mainContext
-        let exhibitionIdString = String(exhibitionId)
         let descriptor = FetchDescriptor<Artwork>(
             predicate: #Predicate<Artwork> { artwork in
-                artwork.exhibitionId == exhibitionIdString
+                artwork.exhibitionId == exhibitionId
             }
         )
         return try context.fetch(descriptor)
@@ -151,5 +150,36 @@ final class ExhibitionArchiveViewModel: ObservableObject {
             }
         }
     }
-}
 
+    /// 방문 기록 생성 API 함수
+    func createVisitHistory() {
+        // UserDefaults에서 저장된 visitorUUID 가져오기
+        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+            Log.error("visitorUUID를 찾을 수 없습니다")
+            return
+        }
+
+        // SwiftData에서 UUID로 Visitor 조회
+        let visitors = swiftDataManager.fetchAll(Visitor.self)
+        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+            Log.error("Visitor를 찾을 수 없습니다")
+            return
+        }
+
+        let request = MakeVisitHistoriesRequestDto(
+            visitor_id: visitor.id,
+            exhibition_id: exhibitionId
+        )
+
+        visitHistoriesAPIService.makeVisitHistories(request: request) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let dto):
+                    Log.debug("방문 기록 생성 성공: visitId=\(dto.id)")
+                case .failure(let error):
+                    Log.error("방문 기록 생성 실패: \(error)")
+                }
+            }
+        }
+    }
+}

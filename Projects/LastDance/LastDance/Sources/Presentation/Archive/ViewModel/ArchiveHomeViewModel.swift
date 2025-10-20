@@ -33,8 +33,20 @@ final class ArchiveHomeViewModel: ObservableObject {
         !exhibitions.isEmpty
     }
     
+    var exhibitionTitle: String {
+        return exhibitions.first?.title ?? "전시 정보 없음"
+    }
+    
+    var visitDateString: String {
+        guard let firstExhibition = exhibitions.first else { 
+            return "관람 일자 없음" 
+        }
+        return Date.formatDisplayDate(from: firstExhibition.startDate)
+    }
+    
     func dateString(for exhibition: Exhibition) -> String {
-        return Date.formatShortDate(from: exhibition.startDate)
+
+        return Date.formatDisplayDate(from: exhibition.startDate)
     }
     
     private func fetchExhibitions() throws -> [Exhibition] {
