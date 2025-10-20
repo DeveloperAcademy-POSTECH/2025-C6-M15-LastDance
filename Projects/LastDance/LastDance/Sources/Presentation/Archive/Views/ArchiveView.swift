@@ -171,7 +171,7 @@ struct ArtworkGridView: View {
                                 .frame(width: 157, height: 213)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .rotationEffect(.degrees(getRotationAngle(index)))
-                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                .applyShadow(LDShadow.shadow4)
                         case .failure:
                             // TODO: - 실패 시 대체 이미지 넣어주기
                             Image(systemName: "photo")
