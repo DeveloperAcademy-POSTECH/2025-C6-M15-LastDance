@@ -37,7 +37,7 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
         let context = container.mainContext
         
         do {
-            // 특정 Exhibition 데이터 가져오기
+            //Exhibition 데이터 가져오기
             let exhibitionDescriptor = FetchDescriptor<Exhibition>()
             let exhibitions = try context.fetch(exhibitionDescriptor)
             exhibition = exhibitions.first(where: { String($0.id) == exhibitionId })
@@ -47,29 +47,19 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
                 isLoading = false
                 return
             }
-            
-            // 해당 전시의 Artwork만 가져오기
             let exhibitionArtworks = exhibition.artworks
-            
-            // Reaction 데이터 가져오기
             let reactionDescriptor = FetchDescriptor<Reaction>()
             let allReactions = try context.fetch(reactionDescriptor)
             
-            // Artwork별로 반응 그룹핑
             reactionItems = exhibitionArtworks.compactMap { artwork in
-                // 해당 작품의 반응들 찾기
                 let artworkReactions = allReactions.filter { $0.artworkId == artwork.id }
-                
                 guard !artworkReactions.isEmpty else { return nil }
-                
                 return ReactionItem(
                     imageName: artwork.thumbnailURL ?? "mock_artworkImage_01",
                     reactionCount: artworkReactions.count,
                     artworkTitle: artwork.title
                 )
             }
-            
-            Log.debug("Loaded \(reactionItems.count) reaction items for exhibition: \(exhibition.title)")
         } catch {
             Log.error("Failed to load reactions: \(error)")
         }

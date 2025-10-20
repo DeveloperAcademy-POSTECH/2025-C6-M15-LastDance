@@ -34,17 +34,15 @@ final class ArtistReactionViewModel: ObservableObject {
         let context = container.mainContext
         
         do {
-            // SwiftData에서 Exhibition과 Reaction 데이터 가져오기
+            // SwiftData에서 Exhibition과 Reaction 데이터
             let exhibitionDescriptor = FetchDescriptor<Exhibition>()
             let dbExhibitions = try context.fetch(exhibitionDescriptor)
-            
             let reactionDescriptor = FetchDescriptor<Reaction>()
             let allReactions = try context.fetch(reactionDescriptor)
             
             // Exhibition별 반응 수 계산
             exhibitions = dbExhibitions.map { exhibition in
                 let reactionCount = allReactions.filter { reaction in
-                    // Reaction의 artworkId로 해당 전시의 작품인지 확인
                     exhibition.artworks.contains(where: { $0.id == reaction.artworkId })
                 }.count
                 
