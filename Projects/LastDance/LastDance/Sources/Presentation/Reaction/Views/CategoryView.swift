@@ -10,7 +10,6 @@ import SwiftUI
 struct CategoryView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
-    @State private var selectedCategories: Set<String> = []
     
     // 임시 카테고리
     let categories = [
@@ -19,8 +18,8 @@ struct CategoryView: View {
         "카페", "산책", "요리", "공부",
         "친구", "가족", "데이트", "휴식",
         "업무", "취미", "건강", "문화",
-        "예술", "자연", "기술", "패션",
-        "뷰티", "반려동물", "드라이브", "사진",
+        "예술스러움", "자연적인것", "기술", "패션",
+        "뷰티", "반려동물", "드라이브 좋아요", "사진이 좋아요",
         "축제", "전시", "공연", "스포츠"
     ]
     
@@ -56,7 +55,7 @@ struct CategoryView: View {
                          isEnabled: !viewModel.selectedCategories.isEmpty,
                          action: {
                 UserDefaults.standard.set(Array(viewModel.selectedCategories), forKey: .selectedCategories)
-                router.push(.artworkDetail(id: 1))
+                router.popLast()
             })
         }
         .navigationTitle("반응 남기기")
@@ -65,6 +64,11 @@ struct CategoryView: View {
         .onAppear {
             // TODO: - 카테고리와 태그 서버 통신 확인용 (이후 제거 필요)
             viewModel.loadTagsByCategory()
+            
+            // UserDefaults에서 기존 선택된 카테고리 불러오기
+            if let savedCategories = UserDefaults.standard.stringArray(forKey: UserDefaultsKey.selectedCategories.rawValue) {
+                viewModel.selectedCategories = Set(savedCategories)
+            }
         }
     }
 }
