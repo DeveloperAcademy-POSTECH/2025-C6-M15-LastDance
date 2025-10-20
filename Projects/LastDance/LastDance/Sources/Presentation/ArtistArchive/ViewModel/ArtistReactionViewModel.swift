@@ -8,75 +8,57 @@
 import SwiftUI
 import SwiftData
 
+struct MockExhibitionData: Identifiable {
+    let id: String
+    let title: String
+    let coverImageName: String
+    let reactionCount: Int
+}
+
 @MainActor
 final class ArtistReactionViewModel: ObservableObject {
-    @Published var exhibition: Exhibition?
-    @Published var totalReactionCount: Int = 0
+    @Published var exhibitions: [MockExhibitionData] = []
     @Published var isLoading = false
     
     private let swiftDataManager = SwiftDataManager.shared
     
-    init() {
-        loadData()
-    }
-    
-    func loadData() {
+    func loadExhibitionsFromDB() {
         isLoading = true
-        Task {
-            do {
-                await loadExhibition()
-                await loadTotalReactionCount()
-            } catch {
-                Log.error("Failed to load artist reaction data: \(error)")
-            }
-            self.isLoading = false
+        
+        guard let container = swiftDataManager.container else {
+            Log.error("Container not available")
+            isLoading = false
+            return
         }
-    }
-    
-    var exhibitionTitle: String {
-        exhibition?.title ?? "전시 제목"
-    }
-    
-    var artworkImageName: String {
-        "mock_artworkImage_01"
-    }
-    
-    private func loadExhibition() async {
+        
+        let context = container.mainContext
+        
         do {
-            guard let container = swiftDataManager.container else {
-                throw NSError(domain: "ArtistReactionViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
-            }
+            // SwiftData에서 Exhibition과 Reaction 데이터 가져오기
+            let exhibitionDescriptor = FetchDescriptor<Exhibition>()
+            let dbExhibitions = try context.fetch(exhibitionDescriptor)
             
-            let context = container.mainContext
-            let descriptor = FetchDescriptor<Exhibition>()
-            let exhibitions = try context.fetch(descriptor)
+            let reactionDescriptor = FetchDescriptor<Reaction>()
+            let allReactions = try context.fetch(reactionDescriptor)
             
-            await MainActor.run {
-                self.exhibition = exhibitions.first
+            // Exhibition별 반응 수 계산
+            exhibitions = dbExhibitions.map { exhibition in
+                let reactionCount = allReactions.filter { reaction in
+                    // Reaction의 artworkId로 해당 전시의 작품인지 확인
+                    exhibition.artworks.contains(where: { $0.id == reaction.artworkId })
+                }.count
+                
+                return MockExhibitionData(
+                    id: String(exhibition.id),
+                    title: exhibition.title,
+                    coverImageName: exhibition.coverImageName ?? "mock_exhibitionCoverImage",
+                    reactionCount: reactionCount > 0 ? reactionCount : Int.random(in: 20...100)
+                )
             }
         } catch {
-            Log.error("Failed to load exhibition: \(error)")
+            Log.error("Failed to load exhibitions: \(error)")
         }
-    }
-    
-    private func loadTotalReactionCount() async {
-        do {
-            guard let container = swiftDataManager.container else {
-                throw NSError(domain: "ArtistReactionViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
-            }
-            
-            let context = container.mainContext
-            let descriptor = FetchDescriptor<Reaction>()
-            let reactions = try context.fetch(descriptor)
-            
-            await MainActor.run {
-                self.totalReactionCount = reactions.count
-            }
-        } catch {
-            Log.error("Failed to load reaction count: \(error)")
-            await MainActor.run {
-                self.totalReactionCount = 0
-            }
-        }
+        
+        isLoading = false
     }
 }
