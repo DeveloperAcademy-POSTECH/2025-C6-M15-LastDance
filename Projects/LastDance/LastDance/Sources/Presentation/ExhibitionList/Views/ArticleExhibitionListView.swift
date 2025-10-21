@@ -5,8 +5,8 @@
 //  Created by donghee on 10/14/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArticleExhibitionListContent: View {
     let exhibitions: [Exhibition]
@@ -41,6 +41,7 @@ struct ArticleExhibitionListNextButton: View {
     }
 }
 
+/// 작가 플로우에서 전시 선택 뷰
 struct ArticleExhibitionListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArticleExhibitionListViewModel()
@@ -67,6 +68,10 @@ struct ArticleExhibitionListView: View {
             CustomNavigationBar(title: "전시찾기") {
                 router.popLast()
             }
+        }
+        .onAppear {
+            viewModel.loadAllExhibitions()
+            viewModel.loadAllArtists()
         }
     }
 }

@@ -58,10 +58,7 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
                             let model = ArtistMapper.toModel(from: dto)
                             SwiftDataManager.shared.upsertArtist(model)
                         }
-                        // TODO: - 전체 Artist 확인 용도 (이후에 제거 가능)
-//                        SwiftDataManager.shared.printAllArtists()
                     }
-                    
                     completion(.success(list))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -125,6 +122,8 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
                     let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
+                    
+                    
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")

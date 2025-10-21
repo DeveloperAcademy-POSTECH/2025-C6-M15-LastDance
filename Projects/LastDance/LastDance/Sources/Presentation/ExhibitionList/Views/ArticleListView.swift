@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct ArticleListSearchTextField: View {
-    @Binding var searchText: String
+    @ObservedObject var viewModel: ArticleListViewModel
 
     var body: some View {
-        TextField("작가명을 선택해주세요", text: $searchText)
+        TextField(
+            "작가명을 선택해주세요",
+            text: Binding(
+                get: { viewModel.selectedArtistName.isEmpty ? viewModel.searchText : viewModel.selectedArtistName },
+                set: { viewModel.searchText = $0 }
+            )
+        )
             .font(Font.custom("SF Pro Text", size: 17))
             .foregroundStyle(.black)
             .padding(.horizontal, 16)
@@ -47,10 +53,9 @@ struct ArticleListContent: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.filteredArtists, id: \.id) { artist in
-                    let artistIdInt = artist.id.hashValue
                     ArticleArtistRow(
                         artist: artist,
-                        isSelected: viewModel.selectedArtistId == artistIdInt
+                        isSelected: viewModel.selectedArtistId == artist.id
                     ) {
                         viewModel.selectArtist(artist)
                     }
@@ -78,6 +83,7 @@ struct ArticleListNextButton: View {
     }
 }
 
+/// 작가 플로우에서 작가 선택 뷰
 struct ArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArticleListViewModel()
@@ -93,7 +99,7 @@ struct ArticleListView: View {
 
                 TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
 
-                ArticleListSearchTextField(searchText: $viewModel.searchText)
+                ArticleListSearchTextField(viewModel: viewModel)
 
                 ArticleListContent(viewModel: viewModel)
 
