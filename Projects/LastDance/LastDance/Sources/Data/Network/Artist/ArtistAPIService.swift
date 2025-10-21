@@ -52,14 +52,28 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
                     let list = try JSONDecoder().decode([ArtistListItemDto].self, from: response.data)
-                    
+
+                    // SwiftData 업데이트를 completion 전에 완료
                     DispatchQueue.main.async {
+                        // 기존 작가 데이터 모두 삭제
+                        let existingArtists = SwiftDataManager.shared.fetchAll(Artist.self)
+                        existingArtists.forEach { artist in
+                            SwiftDataManager.shared.delete(artist)
+                        }
+
+                        // API 응답으로 받은 작가들만 저장
                         list.forEach { dto in
                             let model = ArtistMapper.toModel(from: dto)
-                            SwiftDataManager.shared.upsertArtist(model)
+                            SwiftDataManager.shared.insert(model)
+
+//                            SwiftDataManager.shared.upsertArtist(model)
                         }
+
+                        Log.debug("작가 데이터 업데이트 완료: \(list.count)명")
+
+                        // SwiftData 업데이트 완료 후 completion 호출
+                        completion(.success(list))
                     }
-                    completion(.success(list))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))

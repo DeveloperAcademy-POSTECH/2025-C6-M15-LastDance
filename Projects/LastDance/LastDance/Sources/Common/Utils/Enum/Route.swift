@@ -22,7 +22,7 @@ enum Route: Hashable {
     case archive(id: Int)
     case category
     case reactionTags
-    case completeReaction
+    case completeReaction(exhibitionId: Int)
     case articleExhibitionList
     case articleList(selectedExhibitionId: Int)
     case completeArticleList(selectedExhibitionId: Int, selectedArtistId: Int)

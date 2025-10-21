@@ -23,100 +23,123 @@ enum MockDataLoader {
         let visitor = Visitor(id: 0, uuid: "aaaaa")
         let (capture, reaction) = createCaptureAndReaction(artworkId: artworks[0].id, visitorId: visitor.id)
 
-        // 샘플 Artworks
-        let artwork1 = Artwork(
-            id: 11,
-            exhibitionId: exhibitions[0].id,
-            title: "Light #1",
-            artistId: artists[0].id,
-            thumbnailURL: "mock_artworkImage_01"
-        )
-        let artwork2 = Artwork(
-            id: 12,
-            exhibitionId: exhibitions[0].id,
-            title: "Light #2",
-            artistId: artists[0].id,
-            thumbnailURL: "mock_artworkImage_02"
-        )
+        let (artwork1, artwork2) = createSampleArtworks(exhibitionId: exhibitions[0].id, artistId: artists[0].id)
         exhibitions[0].artworks = [artwork1, artwork2]
 
-        // 임시 캡처/반응 (6개의 캡처 생성)
-        let capture1 = CapturedArtwork(
-            id: 2,
-            artworkId: artwork1.id,
-            localImagePath: "file:///tmp/mock1.jpg",
-            createdAt: .now.addingTimeInterval(-300)
-        )
-        let capture2 = CapturedArtwork(
-            id: 3,
-            artworkId: artwork1.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now.addingTimeInterval(-200)
-        )
-        let capture3 = CapturedArtwork(
-            id: 4,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_02",
-            createdAt: .now.addingTimeInterval(-100)
-        )
-        let capture4 = CapturedArtwork(
-            id: 5,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture5 = CapturedArtwork(
-            id: 6,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture6 = CapturedArtwork(
-            id: 7,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_02",
-            createdAt: .now
-        )
+        let captures = createSampleCaptures(artwork1: artwork1, artwork2: artwork2)
+        let reactions = createSampleReactions(artwork1: artwork1, visitorId: visitor.id)
 
-        let reaction1  = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["좋아요"],
-            comment: "빛이 멋져요",
-            createdAt: ""
-        )
-        let reaction2 = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["강한 메시지가 느껴져요", "생각하게 만드는"],
-            comment: "마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다",
-            createdAt: ""
-        )
-        let reaction3 = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["감동적이에요"],
-            comment: "색감과 구도가 인상적입니다.",
-            createdAt: ""
-        )
-        context.insert(artwork1); context.insert(artwork2)
-        context.insert(capture1)
-        context.insert(capture2)
-        context.insert(capture3)
-        context.insert(capture4)
-        context.insert(capture5)
-        context.insert(capture6)
-        context.insert(reaction1)
-        context.insert(reaction2)
-        context.insert(reaction3)
-        
+        insertSampleData(context: context, artwork1: artwork1, artwork2: artwork2, captures: captures, reactions: reactions)
         setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
         insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,
                      artworks: artworks, visitor: visitor, capture: capture, reaction: reaction)
 
+        saveSeedData(context: context)
+        #endif
+    }
+
+    private static func createSampleArtworks(exhibitionId: Int, artistId: Int) -> (Artwork, Artwork) {
+        let artwork1 = Artwork(
+            id: 11,
+            exhibitionId: exhibitionId,
+            title: "Light #1",
+            artistId: artistId,
+            thumbnailURL: "mock_artworkImage_01"
+        )
+        let artwork2 = Artwork(
+            id: 12,
+            exhibitionId: exhibitionId,
+            title: "Light #2",
+            artistId: artistId,
+            thumbnailURL: "mock_artworkImage_02"
+        )
+        return (artwork1, artwork2)
+    }
+
+    private static func createSampleCaptures(artwork1: Artwork, artwork2: Artwork) -> [CapturedArtwork] {
+        return [
+            CapturedArtwork(
+                id: 2,
+                artworkId: artwork1.id,
+                localImagePath: "file:///tmp/mock1.jpg",
+                createdAt: .now.addingTimeInterval(-300)
+            ),
+            CapturedArtwork(
+                id: 3,
+                artworkId: artwork1.id,
+                localImagePath: "mock_artworkImage_01",
+                createdAt: .now.addingTimeInterval(-200)
+            ),
+            CapturedArtwork(
+                id: 4,
+                artworkId: artwork2.id,
+                localImagePath: "mock_artworkImage_02",
+                createdAt: .now.addingTimeInterval(-100)
+            ),
+            CapturedArtwork(
+                id: 5,
+                artworkId: artwork2.id,
+                localImagePath: "mock_artworkImage_01",
+                createdAt: .now
+            ),
+            CapturedArtwork(
+                id: 6,
+                artworkId: artwork2.id,
+                localImagePath: "mock_artworkImage_01",
+                createdAt: .now
+            ),
+            CapturedArtwork(
+                id: 7,
+                artworkId: artwork2.id,
+                localImagePath: "mock_artworkImage_02",
+                createdAt: .now
+            )
+        ]
+    }
+
+    private static func createSampleReactions(artwork1: Artwork, visitorId: Int) -> [Reaction] {
+        return [
+            Reaction(
+                id: UUID().uuidString,
+                artworkId: artwork1.id,
+                visitorId: visitorId,
+                category: ["좋아요"],
+                comment: "빛이 멋져요",
+                createdAt: ""
+            ),
+            Reaction(
+                id: UUID().uuidString,
+                artworkId: artwork1.id,
+                visitorId: visitorId,
+                category: ["강한 메시지가 느껴져요", "생각하게 만드는"],
+                comment: "마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다",
+                createdAt: ""
+            ),
+            Reaction(
+                id: UUID().uuidString,
+                artworkId: artwork1.id,
+                visitorId: visitorId,
+                category: ["감동적이에요"],
+                comment: "색감과 구도가 인상적입니다.",
+                createdAt: ""
+            )
+        ]
+    }
+
+    private static func insertSampleData(
+        context: ModelContext,
+        artwork1: Artwork,
+        artwork2: Artwork,
+        captures: [CapturedArtwork],
+        reactions: [Reaction]
+    ) {
+        context.insert(artwork1)
+        context.insert(artwork2)
+        captures.forEach { context.insert($0) }
+        reactions.forEach { context.insert($0) }
+    }
+
+    private static func saveSeedData(context: ModelContext) {
         do {
             try context.save()
             UserDefaults.standard.set(true, forKey: .seed)
@@ -124,7 +147,6 @@ enum MockDataLoader {
         } catch {
             Log.debug("DEV seed failed: \(error)")
         }
-        #endif
     }
 
     private static func createVenue() -> Venue {
@@ -241,14 +263,6 @@ enum MockDataLoader {
         context.insert(visitor)
         context.insert(capture)
         context.insert(reaction)
-        
-        do {
-            try context.save()
-            UserDefaults.standard.set(true, forKey: .seed)
-            Log.debug("DEV seed completed.")
-        } catch {
-            Log.debug("DEV seed failed: \(error)")
-        }
     }
 
     /// 초기화가 필요할 때 전체 삭제 (개발용)

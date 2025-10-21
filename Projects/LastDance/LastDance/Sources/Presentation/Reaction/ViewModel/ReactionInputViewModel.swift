@@ -20,7 +20,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedCategoryIds: Set<Int> = []
     @Published var selectedTagIds: Set<Int> = []
     @Published var selectedTagsName: Set<String> = []
-    
+
     let categoryLimit = 2
     let tagLimit = 6
     let limit = 500 // texteditor 최대 글자수 제한
@@ -31,6 +31,7 @@ final class ReactionInputViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
     private let apiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
+    private let artistAPIService = ArtistAPIService()
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
 
@@ -157,6 +158,22 @@ final class ReactionInputViewModel: ObservableObject {
                     Log.debug("작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
                 case .failure(let error):
                     Log.error("작품 목록 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    /// 작가 목록 조회 API 함수
+    func fetchArtists() {
+        Log.debug("작가 목록 조회 API 호출")
+
+        artistAPIService.getArtists { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let artists):
+                    Log.debug("작가 목록 조회 성공! 조회된 작가 수: \(artists.count)")
+                case .failure(let error):
+                    Log.error("작가 목록 조회 실패: \(error.localizedDescription)")
                 }
             }
         }

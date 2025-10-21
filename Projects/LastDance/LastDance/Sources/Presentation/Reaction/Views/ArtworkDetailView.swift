@@ -60,13 +60,18 @@ struct ArtworkDetailView: View {
         .background(LDColor.color5)
         .navigationBarHidden(false)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                BackButton {
+                    router.popLast()
+                }
+            }
+
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color6)
             }
         }
-        .toolbarBackground(.hidden, for: .navigationBar)
         .environmentObject(viewModel)
         .customAlert(
             isPresented: $showAlert,
@@ -93,6 +98,7 @@ struct ArtworkDetailView: View {
                     let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
                     guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
                         Log.warning("Visitor를 찾을 수 없습니다")
+                        alertType = .error
                         return
                     }
 
@@ -100,6 +106,11 @@ struct ArtworkDetailView: View {
                     let visitHistories = SwiftDataManager.shared.fetchAll(VisitHistory.self)
                     guard let visitHistory = visitHistories.first(where: { $0.visitorId == visitor.id }) else {
                         Log.warning("VisitHistory를 찾을 수 없습니다")
+                        showAlert = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            alertType = .error
+                            showAlert = true
+                        }
                         return
                     }
 
@@ -118,7 +129,7 @@ struct ArtworkDetailView: View {
                         if success {
                             Log.debug("저장 성공, 화면 이동")
                             showAlert = false
-                            router.push(.completeReaction)
+                            router.push(.completeReaction(exhibitionId: visitHistory.exhibitionId))
                         } else {
                             Log.debug("저장 실패")
                             alertType = .error

@@ -142,6 +142,9 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
+                    .onAppear {
+                        viewModel.fetchArtists()
+                    }
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
