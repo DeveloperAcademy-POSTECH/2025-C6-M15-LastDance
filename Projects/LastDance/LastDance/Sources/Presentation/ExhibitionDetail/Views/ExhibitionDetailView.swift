@@ -12,28 +12,51 @@ struct ExhibitionDetailView: View {
     @StateObject private var viewModel = ExhibitionDetailViewModel()
 
     let exhibitionId: Int
-    
+
+    private var isArtist: Bool {
+        var initialUserType: UserType?
+        if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
+            initialUserType = UserType(rawValue: userTypeValue)
+        }
+        return initialUserType?.displayName == "작가"
+    }
+
     var body: some View {
-        VStack(spacing: 18) {
+        GeometryReader { geometry in
             ScrollView {
                 if let exhibition = viewModel.exhibition {
-                    VStack(spacing: 0) {
-                        ExhibitionImageSection(coverImageName: exhibition.coverImageName)
+                    VStack {
+                        Spacer()
 
-                        ExhibitionInfoSection(
-                            exhibition: exhibition,
-                            artistNames: viewModel.artistNames,
-                            formatDateRange: viewModel.formatDateRange
-                        )
+                        if isArtist {
+                            ArtistExhibitionPreviewCard(
+                                exhibition: exhibition,
+                                artistNames: viewModel.artistNames,
+                                onConfirm: {
+                                    handleArtistConfirm()
+                                }
+                            )
+                            .padding(.horizontal)
+                        } else {
+                            ExhibitionPreviewCard(
+                                exhibition: exhibition,
+                                artistNames: viewModel.artistNames,
+                                onSearchMore: {
+                                    router.popLast()
+                                },
+                                onStartVisit: {
+                                    handleStartVisit()
+                                }
+                            )
+                            .padding(.horizontal)
+                        }
+
+                        Spacer()
                     }
+                    .frame(minHeight: geometry.size.height)
                 }
             }
-            
-            if viewModel.hasExhibition {
-                actionButton
-            }
         }
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시정보") {
                 router.popLast()
@@ -52,49 +75,17 @@ struct ExhibitionDetailView: View {
             viewModel.fetchExhibition(by: exhibitionId)
         }
     }
-    
-    /// 관람객/작가에 따라 텍스트와 라우팅 분기
-    private var actionButton: some View {
-        var initialUserType: UserType?
-        if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
-            initialUserType = UserType(rawValue: userTypeValue)
-        }
-        let isArtist = (initialUserType?.displayName == "작가")
-        let title = isArtist ? "내 전시가 맞아요" : "관람하기"
 
-        return BottomButton(text: title) {
-            if isArtist {
-                router.push(.artistReaction)
-            } else {
-                viewModel.selectExhibitionAsUserExhibition()
-                router.push(.archive(id: exhibitionId))
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 34)
+    /// 작가 - 내 전시가 맞아요 버튼 처리
+    private func handleArtistConfirm() {
+        viewModel.selectExhibitionAsUserExhibition()
+        router.push(.artistReaction)
     }
-}
 
-/// 전시 커버 이미지 섹션
-struct ExhibitionImageSection: View {
-    let coverImageName: String?
-    
-    var body: some View {
-        if let imageName = coverImageName {
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 345, height: 488)
-                .clipped()
-        } else {
-            Rectangle()
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 345, height: 488)
-                .overlay(
-                    Text("이미지 없음")
-                        .foregroundStyle(.gray)
-                )
-        }
+    /// 관람객 - 관람 시작하기 버튼 처리
+    private func handleStartVisit() {
+        viewModel.selectExhibitionAsUserExhibition()
+        router.push(.archive(id: exhibitionId))
     }
 }
 
@@ -123,9 +114,4 @@ struct ExhibitionInfoSection: View {
         .padding(.horizontal, 24)
         .padding(.top, 24)
     }
-}
-
-#Preview {
-    ExhibitionDetailView(exhibitionId: 1)
-        .environmentObject(NavigationRouter())
 }

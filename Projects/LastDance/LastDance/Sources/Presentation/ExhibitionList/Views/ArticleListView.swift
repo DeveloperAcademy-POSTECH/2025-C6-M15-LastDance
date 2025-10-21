@@ -26,6 +26,7 @@ struct ArticleListSearchTextField: View {
                     .stroke(Color.black, lineWidth: 2)
             )
             .padding(.bottom, 8)
+            .padding(.horizontal, 20)
     }
 }
 
@@ -61,6 +62,7 @@ struct ArticleListContent: View {
         .frame(height: 300)
         .background(backgroundShape)
         .overlay(borderShape)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -89,7 +91,6 @@ struct ArticleListView: View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 PageIndicator(totalPages: 2, currentPage: 1)
-                    .padding(.horizontal, -20)
 
                 TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
 
@@ -105,9 +106,7 @@ struct ArticleListView: View {
                 )
             }
             .padding(.top, 18)
-            .padding(.horizontal, 20)
             .padding(.bottom, 34)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CustomNavigationBar(title: "전시찾기") {
                     router.popLast()
@@ -138,9 +137,4 @@ struct ArticleArtistRow: View {
                 .padding(.horizontal, isSelected ? 8 : 0)
         }
     }
-}
-
-#Preview {
-    ArticleListView(selectedExhibitionId: 1)
-        .environmentObject(NavigationRouter())
 }
