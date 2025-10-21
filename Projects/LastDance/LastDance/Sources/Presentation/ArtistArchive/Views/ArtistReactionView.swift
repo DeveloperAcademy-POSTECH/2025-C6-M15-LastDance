@@ -68,14 +68,37 @@ struct ArtistExhibitionCard: View {
         VStack(alignment: .leading, spacing: 4) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
-                // Use displayItem.exhibition.coverImageName
-                if let coverImageName = displayItem.exhibition.coverImageName {
-                    Image(coverImageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 155, height: 219)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                if let coverImageURLString = displayItem.exhibition.coverImageName,
+                   let coverImageURL = URL(string: coverImageURLString) {
+                    AsyncImage(url: coverImageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            // Placeholder while loading
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: 155, height: 219)
+                                .overlay(ProgressView())
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 155, height: 219)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        case .failure:
+                            // Placeholder on failure
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: 155, height: 219)
+                                .overlay(
+                                    Image(systemName: "PlaceholderImage")
+                                        .foregroundColor(.gray)
+                                )
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
                 } else {
+                    // Fallback if coverImageName is nil or not a valid URL
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.gray.opacity(0.2))
                         .frame(width: 155, height: 219)
@@ -89,7 +112,7 @@ struct ArtistExhibitionCard: View {
                     .fill(Color.black)
                     .frame(width: 28, height: 28)
                     .overlay(
-                        Text("\(displayItem.reactionCount)") // Use reactionCount from displayItem
+                        Text("\(displayItem.reactionCount)")
                             .font(LDFont.heading07)
                             .foregroundColor(.white)
                     )
@@ -98,7 +121,7 @@ struct ArtistExhibitionCard: View {
             }
             
             // 전시 제목 (고정 높이로 정렬 보장)
-            Text(displayItem.exhibition.title) // Use title from displayItem.exhibition
+            Text(displayItem.exhibition.title)
                 .font(LDFont.medium04)
                 .foregroundColor(.black)
                 .lineLimit(2)
