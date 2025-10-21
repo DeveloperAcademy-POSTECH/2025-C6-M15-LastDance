@@ -58,7 +58,7 @@ struct ArtworkDetailView: View {
                 }
             )
         }
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .background(LDColor.color5)
         .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .principal) {

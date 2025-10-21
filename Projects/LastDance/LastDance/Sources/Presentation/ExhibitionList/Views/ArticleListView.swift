@@ -133,7 +133,7 @@ struct ArticleArtistRow: View {
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(isSelected ? Color(red: 0.93, green: 0.93, blue: 0.93) : Color.clear)
+                        .fill(isSelected ? LDColor.gray3 : Color.clear)
                 )
                 .padding(.horizontal, isSelected ? 8 : 0)
         }

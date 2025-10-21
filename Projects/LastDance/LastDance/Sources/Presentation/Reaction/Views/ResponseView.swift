@@ -25,7 +25,7 @@ struct ResponseView: View {
             )
             BlurEffectView()
         }
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .background(LDColor.color5)
         .ignoresSafeArea(.container, edges: .bottom)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -119,8 +119,8 @@ struct ArtworkBackgroundView: View {
              //그라데이션 오버레이
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 0.97, green: 0.97, blue: 0.97).opacity(0),
-                    Color(red: 0.97, green: 0.97, blue: 0.97)
+                    LDColor.color5.opacity(0),
+                    LDColor.color5
                 ]),
                 startPoint: .center,
                 endPoint: .bottom
@@ -181,7 +181,7 @@ struct ReactionItemsView: View {
 
                 if index < viewModel.reactions.count - 1 {
                     Rectangle()
-                        .fill(Color(red: 0.94, green: 0.94, blue: 0.94))
+                        .fill(LDColor.color5)
                         .frame(maxWidth: .infinity, maxHeight: 2)
                         .padding(.bottom, 16)
                 }
@@ -199,8 +199,8 @@ struct BlurEffectView: View {
                 Spacer()
                 LinearGradient(
                     gradient: Gradient(colors: [
-                        Color(red: 0.97, green: 0.97, blue: 0.97).opacity(0),
-                        Color(red: 0.97, green: 0.97, blue: 0.97)
+                        LDColor.color5.opacity(0),
+                        LDColor.color5
                     ]),
                     startPoint: .top,
                     endPoint: .bottom

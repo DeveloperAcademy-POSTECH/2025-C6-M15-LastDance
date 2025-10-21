@@ -48,7 +48,7 @@ struct ReactionFormView: View {
         VStack(alignment: .leading, spacing: 14) {
             Text("감정 태그")
                 .font(LDFont.heading04)
-                .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
+                .foregroundColor(LDColor.black1)
 
             if viewModel.selectedCategories.isEmpty {
                 Button(
@@ -61,7 +61,7 @@ struct ReactionFormView: View {
                                 .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
-                                    Color(red: 0.47, green: 0.47, blue: 0.47)
+                                    LDColor.black2
                                 )
                                 .lineSpacing(5)
 
@@ -112,7 +112,7 @@ struct ReactionFormView: View {
                     if viewModel.message.isEmpty {
                         Text(placeholder)
                             .foregroundColor(
-                                Color(red: 0.79, green: 0.79, blue: 0.79)
+                                LDColor.gray2
                             )
                             .padding(.top, 10)
                             .padding(.leading, 10)
@@ -122,7 +122,7 @@ struct ReactionFormView: View {
                     TextEditor(text: $viewModel.message)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .tint(Color(red: 0.35, green: 0.35, blue: 0.35))
+                        .tint(LDColor.gray5)
                         .padding(.top, 3)
                         .padding(.leading, 5)
                         .padding(.trailing, 5)

@@ -108,16 +108,16 @@ struct ExhibitionInfoSection: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(exhibition.title)
                 .font(.system(size: 18, weight: .bold))
-                .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
+                .foregroundColor(LDColor.black1)
             
             if !artistNames.isEmpty {
                 Text(artistNames.joined(separator: ", "))
                     .font(LDFont.regular02)
-                    .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                    .foregroundColor(LDColor.gray5)
             }
             Text(formatDateRange(exhibition.startDate, exhibition.endDate))
                 .font(LDFont.regular02)
-                .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                .foregroundColor(LDColor.gray5)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 24)

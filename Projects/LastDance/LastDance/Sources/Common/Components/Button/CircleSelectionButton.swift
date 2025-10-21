@@ -21,7 +21,7 @@ struct CircleSelectionButton: View {
                 .frame(width: 200, height: 200)
                 .background(
                     Circle()
-                        .fill(isSelected ? Color.black : Color(red: 0.93, green: 0.93, blue: 0.93))
+                        .fill(isSelected ? Color.black : Color.gray3)
                 )
         }
     }

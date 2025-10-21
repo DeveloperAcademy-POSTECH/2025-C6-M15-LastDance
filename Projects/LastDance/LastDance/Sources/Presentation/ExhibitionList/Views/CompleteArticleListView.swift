@@ -96,7 +96,7 @@ struct InfoRow: View {
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(red: 0.94, green: 0.94, blue: 0.94))
+                        .fill(LDColor.gray3)
                 )
         }
     }

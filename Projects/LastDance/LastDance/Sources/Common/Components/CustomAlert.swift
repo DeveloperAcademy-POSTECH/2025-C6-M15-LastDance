@@ -32,7 +32,7 @@ struct CustomAlert: View {
 
             Text(message)
                 .font(LDFont.regular03)
-                .foregroundColor(Color(red: 0.38, green: 0.38, blue: 0.38))
+                .foregroundColor(LDColor.gray1)
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)

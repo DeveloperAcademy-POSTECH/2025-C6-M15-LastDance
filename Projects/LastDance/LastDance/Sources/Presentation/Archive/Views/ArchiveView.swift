@@ -131,7 +131,7 @@ struct ArtworkCountView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("현재까지 촬영한 이미지")
                 .font(LDFont.regular02)
-                .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                .foregroundColor(LDColor.gray5)
             Text("\(count)개의 작품")
                 .font(LDFont.heading04)
                 .foregroundColor(.black)
@@ -215,12 +215,12 @@ struct ArchiveEmptyStateView: View {
                     
                     Image(systemName: "plus")
                         .font(.system(size: 22, weight: .light))
-                        .foregroundColor(Color(red: 0.88, green: 0.88, blue: 0.88))
+                        .foregroundColor(LDColor.gray8)
                 }
                 .frame(width: 157, height: 213)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color(red: 0.88, green: 0.88, blue: 0.88), style: StrokeStyle(lineWidth: 1.4, dash: [8]))
+                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
                 )
                 .rotationEffect(.degrees(-4))
             }

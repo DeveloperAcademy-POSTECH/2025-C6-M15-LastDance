@@ -43,8 +43,8 @@ struct ArtworkInfoView: View {
             // 그라데이션 오버레이
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(red: 0.97, green: 0.97, blue: 0.97).opacity(0),
-                    Color(red: 0.97, green: 0.97, blue: 0.97),
+                    LDColor.color5.opacity(0),
+                    LDColor.color5,
                 ]),
                 startPoint: .center,
                 endPoint: .bottom
@@ -54,11 +54,11 @@ struct ArtworkInfoView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(artwork?.title ?? "작품 제목")
                     .font(LDFont.heading01)
-                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                    .foregroundColor(LDColor.gray7)
 
                 Text(artist?.name ?? "알 수 없는 작가")
                     .font(LDFont.medium02)
-                    .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
+                    .foregroundColor(LDColor.gray7)
             }
             .padding(.horizontal, 28)
             .padding(.bottom, 30)

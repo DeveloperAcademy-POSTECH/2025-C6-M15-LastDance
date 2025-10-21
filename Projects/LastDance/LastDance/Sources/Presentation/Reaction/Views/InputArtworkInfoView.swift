@@ -159,20 +159,20 @@ private struct InputFieldButton: View {
         HStack {
             Button(action: action) {
                 Text(label)
-                    .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                    .foregroundColor(LDColor.gray5)
                 Spacer()
 
                 Text(value.isEmpty ? placeholder : value)
                     .foregroundColor(
                         value.isEmpty
-                            ? Color(red: 0.66, green: 0.66, blue: 0.66)
+                        ? LDColor.gray9
                             : .primary
                     )
             }
             .frame(minHeight: 60)
         }
         .padding(.horizontal, 14)
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .background(LDColor.color5)
         .cornerRadius(12)
     }
 }

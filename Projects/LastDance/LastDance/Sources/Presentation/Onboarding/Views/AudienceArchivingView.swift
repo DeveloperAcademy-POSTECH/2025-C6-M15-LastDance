@@ -118,7 +118,7 @@ struct ExhibitionCardView: View {
             // 날짜
             Text(dateString)
                 .font(LDFont.regular03)
-                .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                .foregroundColor(LDColor.gray5)
                 .frame(width: 155, alignment: .leading)
         }
     }

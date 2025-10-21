@@ -18,7 +18,7 @@ struct ReactionTag: View {
                 .frame(width: 6, height: 6)
 
             Text(text)
-                .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
+                .foregroundColor(LDColor.black1)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)

@@ -22,7 +22,7 @@ struct TitleSection: View {
             if let subtitle = subtitle {
                 Text(subtitle)
                     .font(LDFont.regular02)
-                    .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.52))
+                    .foregroundColor(LDColor.gray6)
                     .padding(.top, 24)
             }
         }

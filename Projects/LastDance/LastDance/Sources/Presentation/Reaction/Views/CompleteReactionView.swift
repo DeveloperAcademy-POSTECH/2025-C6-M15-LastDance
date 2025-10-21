@@ -32,7 +32,7 @@ struct CompleteReactionView: View {
             Spacer().frame(height: 8)
 
             Text("작가에게 반응을 보냈어요")
-                .foregroundColor(Color(red: 0.31, green: 0.31, blue: 0.31))
+                .foregroundColor(LDColor.gray4)
                 .font(LDFont.regular01)
 
             Spacer()
