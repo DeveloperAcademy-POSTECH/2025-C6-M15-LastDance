@@ -24,9 +24,6 @@
 		8C3B37BE2E9EB857003FF185 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B37BD2E9EB857003FF185 /* CameraView.swift */; };
 		8C3B37C62E9EB8DE003FF185 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */; };
 		8CA9E8662EA7307A00C92F5A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8652EA7307A00C92F5A /* Date+Extensions.swift */; };
-		8CA9E86A2EA730EA00C92F5A /* ReactionMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8682EA730EA00C92F5A /* ReactionMapper.swift */; };
-		8CA9E86B2EA730EA00C92F5A /* ArtworkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8672EA730EA00C92F5A /* ArtworkMapper.swift */; };
-		8CA9E86C2EA730EA00C92F5A /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8692EA730EA00C92F5A /* VisitHistoryMapper.swift */; };
 		8CA9E8702EA73CB000C92F5A /* ArticleButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E86F2EA73CB000C92F5A /* ArticleButtons.swift */; };
 		8CA9E8722EA740A700C92F5A /* IdentitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8712EA740A700C92F5A /* IdentitySelectionView.swift */; };
 		8CA9E8762EA74C9800C92F5A /* ArtistExhibitionPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA9E8752EA74C9800C92F5A /* ArtistExhibitionPreviewCard.swift */; };
@@ -136,6 +133,7 @@
 		99E6F3AA2E989CFB002ED9C2 /* ReactionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */; };
 		99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */; };
 		99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */; };
+		D8A4F99D2EA729730093728D /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */; };
 		D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */; };
 		D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */; };
 		D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */; };
@@ -205,9 +203,6 @@
 		8C3B37BD2E9EB857003FF185 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		8CA9E8652EA7307A00C92F5A /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		8CA9E8672EA730EA00C92F5A /* ArtworkMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkMapper.swift; sourceTree = "<group>"; };
-		8CA9E8682EA730EA00C92F5A /* ReactionMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionMapper.swift; sourceTree = "<group>"; };
-		8CA9E8692EA730EA00C92F5A /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		8CA9E86F2EA73CB000C92F5A /* ArticleButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleButtons.swift; sourceTree = "<group>"; };
 		8CA9E8712EA740A700C92F5A /* IdentitySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentitySelectionView.swift; sourceTree = "<group>"; };
 		8CA9E8752EA74C9800C92F5A /* ArtistExhibitionPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistExhibitionPreviewCard.swift; sourceTree = "<group>"; };
@@ -318,6 +313,7 @@
 		99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPI.swift; sourceTree = "<group>"; };
 		99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
 		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
+		D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionFormView.swift; sourceTree = "<group>"; };
 		D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -365,7 +361,6 @@
 		D8DB5DBD2EA558DC00F4596B /* VisitHistoriesAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPIService.swift; sourceTree = "<group>"; };
 		D8DB5DBF2EA5594800F4596B /* MakeVisitHistoriesRequestDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeVisitHistoriesRequestDto.swift; sourceTree = "<group>"; };
 		D8DB5DC12EA5598500F4596B /* VisitorHistoriesResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorHistoriesResponseDto.swift; sourceTree = "<group>"; };
-		D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		D8DB5DC52EA561E300F4596B /* VisitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistory.swift; sourceTree = "<group>"; };
 		D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
 		D8DB5DD52EA6591000F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
@@ -393,11 +388,9 @@
 			children = (
 				8CCA42002EA5232700351E19 /* ArtistMapper.swift */,
 				8CCA42012EA5232700351E19 /* VisitorMapper.swift */,
-
 				99191F102EA6EDC000D2F71A /* ArtworkMapper.swift */,
 				99191F112EA6EDC000D2F71A /* ReactionMapper.swift */,
 				99191F122EA6EDC000D2F71A /* VisitHistoryMapper.swift */,
-
 			);
 			path = Mapper;
 			sourceTree = "<group>";
@@ -457,6 +450,7 @@
 		963573C02E9B84ED00B2FA79 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */,
 				99191F1C2EA7377A00D2F71A /* Date+Extensions.swift */,
 				99191F0E2EA6EB2B00D2F71A /* View+Shadow.swift */,
 				99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */,
@@ -1115,9 +1109,6 @@
 			isa = PBXGroup;
 			children = (
 				963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */,
-				99191EC72EA5496600D2F71A /* ArtworkMapper.swift */,
-				99191EC52EA545D900D2F71A /* ReactionMapper.swift */,
-				D8DB5DC32EA561BE00F4596B /* VisitHistoryMapper.swift */,
 				D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */,
 			);
 			name = "Recovered References";
@@ -1329,9 +1320,6 @@
 				D8C7C29A2EA1208800FCB472 /* ExhibitionStatus.swift in Sources */,
 				99191EB02EA4A23100D2F71A /* TagCategory.swift in Sources */,
 				99E6F0B72E91EF48002ED9C2 /* LastDanceApp.swift in Sources */,
-				8CA9E86A2EA730EA00C92F5A /* ReactionMapper.swift in Sources */,
-				8CA9E86B2EA730EA00C92F5A /* ArtworkMapper.swift in Sources */,
-				8CA9E86C2EA730EA00C92F5A /* VisitHistoryMapper.swift in Sources */,
 				963573BF2E9B84D500B2FA79 /* Log.swift in Sources */,
 				99E6F10D2E97B0F9002ED9C2 /* IdentificatedArtwork.swift in Sources */,
 				99E6F0BB2E91EF7D002ED9C2 /* Route.swift in Sources */,
@@ -1423,6 +1411,7 @@
 				D8C7C0962E9F3E6100FCB472 /* CustomNavigationBar.swift in Sources */,
 				99E6F3A42E989CFB002ED9C2 /* NetworkError.swift in Sources */,
 				99191E252EA199BB00D2F71A /* CustomAlert.swift in Sources */,
+				D8A4F99D2EA729730093728D /* TapGestureRecognizer.swift in Sources */,
 				D8DB5DD82EA6591000F4596B /* ImageAPIService.swift in Sources */,
 				D8DB5DD92EA6591000F4596B /* UploadImageResponseDto.swift in Sources */,
 				D8DB5DDA2EA6591000F4596B /* ImageAPI.swift in Sources */,
@@ -1629,7 +1618,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LastDance/Preview Content\"";
-				DEVELOPMENT_TEAM = N9BWKB65C5;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

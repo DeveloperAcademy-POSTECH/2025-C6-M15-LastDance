@@ -63,6 +63,7 @@ struct ArticleListContent: View {
         .background(backgroundShape)
         .overlay(borderShape)
         .padding(.horizontal, 20)
+        .scrollToMinDistance(minDisntance: 32)
     }
 }
 
@@ -83,7 +84,6 @@ struct ArticleListNextButton: View {
 struct ArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArticleListViewModel()
-    @Environment(\.keyboardManager) private var keyboardManager
 
     let selectedExhibitionId: Int
 
