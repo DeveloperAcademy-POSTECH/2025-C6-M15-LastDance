@@ -27,7 +27,7 @@ struct CompleteArticleListFindButtonView: View {
 
     var body: some View {
         BottomButton(text: "전시 찾기") {
-            if let id = viewModel.findExhibitionIdByCurrentFields() {
+            if let id = viewModel.exhibition?.id {
                 // 전시 상세로 이동
                 router.push(.exhibitionDetail(id: id))
             } else {
