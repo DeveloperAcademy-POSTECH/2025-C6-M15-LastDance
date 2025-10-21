@@ -94,7 +94,3 @@ struct ExhibitionListView: View {
         }
     }
 }
-
-#Preview {
-    ExhibitionListView()
-}

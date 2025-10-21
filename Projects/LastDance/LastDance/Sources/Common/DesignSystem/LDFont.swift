@@ -20,6 +20,8 @@ enum LDFont {
     static let heading05: Font = .custom("Pretendard-SemiBold", size: 17)
     /// pretendard, size: 16 , weight: semibold
     static let heading06: Font = .custom("Pretendard-SemiBold", size: 16)
+    /// pretendard, size: 14, weight: bold
+    static let heading07: Font = .custom("Pretendard-Bold", size: 14)
     /// pretendard, size: 18 , weight: regular
     static let regular01: Font = .custom("Pretendard-Regular", size: 18)
     /// pretendard, size: 16 , weight: regular
