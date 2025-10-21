@@ -32,7 +32,7 @@ struct ArtistReactionArchiveView: View {
                 Spacer()
                 
                 Text(viewModel.exhibitionTitle)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -75,7 +75,7 @@ struct ArtistReactionArchiveView: View {
                                         .frame(width: 28, height: 28)
                                         .overlay(
                                             Text("\(reactionItem.reactionCount)")
-                                                .font(.system(size: 18, weight: .bold))
+                                                .font(LDFont.regular03)
                                                 .foregroundColor(LDColor.color6)
                                         )
                                         .padding(.leading, 12)
@@ -84,7 +84,7 @@ struct ArtistReactionArchiveView: View {
                                 
                                 // 작품 제목
                                 Text(reactionItem.artworkTitle)
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(LDFont.heading06)
                                     .foregroundColor(.black)
                                     .frame(width: 155, alignment: .leading)
                             }

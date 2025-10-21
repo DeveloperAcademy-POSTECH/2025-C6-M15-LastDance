@@ -57,12 +57,12 @@ struct ArtworkDetailView: View {
                 }
             )
         }
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .background(LDColor.color5)
         .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
-                    .font(.headline)
+                    .font(LDFont.heading04)
                     .foregroundColor(LDColor.color6)
             }
         }

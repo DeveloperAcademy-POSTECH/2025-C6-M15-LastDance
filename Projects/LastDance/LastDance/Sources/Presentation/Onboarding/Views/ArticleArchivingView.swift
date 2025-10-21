@@ -32,7 +32,7 @@ struct ArticleArchivingAddButtonSection: View {
             }
 
             Text("나의 작품에 어떤 반응을\n 남겼는지 확인해보세요")
-                .font(.system(size: 20, weight: .medium))
+                .font(LDFont.medium01)
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)

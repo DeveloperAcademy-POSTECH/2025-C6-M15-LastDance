@@ -21,8 +21,7 @@ struct ReactionFormView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("반응 남기기")
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(LDFont.heading02)
                 .foregroundColor(.black)
 
             Spacer().frame(height: 14)
@@ -48,8 +47,8 @@ struct ReactionFormView: View {
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("감정 태그")
-                .bold()
-                .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.black1)
 
             if viewModel.selectedCategories.isEmpty {
                 Button(
@@ -59,9 +58,10 @@ struct ReactionFormView: View {
                     label: {
                         HStack {
                             Text("지금 떠오르는 감정을 표현해보세요")
+                                .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
-                                    Color(red: 0.47, green: 0.47, blue: 0.47)
+                                    LDColor.black2
                                 )
                                 .lineSpacing(5)
 
@@ -99,6 +99,7 @@ struct ReactionFormView: View {
     private var MessageEditor: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("메시지")
+                .font(LDFont.heading04)
 
             VStack(alignment: .trailing, spacing: 8) {
                 ZStack(alignment: .topLeading) {
@@ -111,7 +112,7 @@ struct ReactionFormView: View {
                     if viewModel.message.isEmpty {
                         Text(placeholder)
                             .foregroundColor(
-                                Color(red: 0.79, green: 0.79, blue: 0.79)
+                                LDColor.gray2
                             )
                             .padding(.top, 10)
                             .padding(.leading, 10)
@@ -121,7 +122,7 @@ struct ReactionFormView: View {
                     TextEditor(text: $viewModel.message)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .tint(Color(red: 0.35, green: 0.35, blue: 0.35))
+                        .tint(LDColor.gray5)
                         .padding(.top, 3)
                         .padding(.leading, 5)
                         .padding(.trailing, 5)
@@ -138,13 +139,13 @@ struct ReactionFormView: View {
 
                 HStack(spacing: 0) {
                     Text("\(viewModel.message.count)")
-                        .font(.caption)
+                        .font(LDFont.regular02)
                         .foregroundStyle(
                             !viewModel.message.isEmpty ? .black : .gray
                         )
 
                     Text("/\(viewModel.limit)")
-                        .font(.caption)
+                        .font(LDFont.medium05)
                         .foregroundStyle(.gray)
                 }
             }

@@ -47,7 +47,7 @@ struct ExhibitionArchiveView: View {
             // 전시 제목
             HStack {
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
-                    .font(.system(size: 22, weight: .bold))
+                    .font(LDFont.heading06)
                     .foregroundColor(.black)
                 Spacer()
             }
@@ -57,7 +57,7 @@ struct ExhibitionArchiveView: View {
             // 날짜
             HStack {
                 Text(exhibition?.createdAt ?? "")
-                    .font(.system(size: 16, weight: .regular))
+                    .font(LDFont.regular03)
                     .foregroundColor(.gray)
                 Spacer()
             }
@@ -96,7 +96,7 @@ struct ExhibitionArchiveView: View {
                 } else {
                     // 빈 상태
                     Text("아직 남긴 반응이 없습니다")
-                        .font(.system(size: 18, weight: .medium))
+                        .font(LDFont.heading06)
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, minHeight: 400)
                 }
@@ -160,13 +160,13 @@ struct ReactionCardView: View {
             // 작품 이름
             if let artwork = artwork {
                 Text(artwork.title)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
             }
             // 작가 이름
             if let artist = artist {
                 Text(artist.name)
-                    .font(.system(size: 16, weight: .regular))
+                    .font(LDFont.regular02)
                     .foregroundColor(.black)
             }
         }

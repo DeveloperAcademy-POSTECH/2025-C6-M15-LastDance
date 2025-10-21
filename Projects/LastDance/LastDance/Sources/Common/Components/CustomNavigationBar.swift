@@ -19,7 +19,7 @@ struct CustomNavigationBar: ToolbarContent {
 
         ToolbarItem(placement: .principal) {
             Text(title)
-                .font(.system(size: 18, weight: .semibold))
+                .font(LDFont.heading04)
                 .foregroundColor(.black)
         }
     }

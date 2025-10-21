@@ -15,14 +15,14 @@ struct TitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
-                .font(.system(size: 21, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if let subtitle = subtitle {
                 Text(subtitle)
-                    .font(.system(size: 16, weight: .regular))
-                    .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.52))
+                    .font(LDFont.regular02)
+                    .foregroundColor(LDColor.gray6)
                     .padding(.top, 24)
             }
         }

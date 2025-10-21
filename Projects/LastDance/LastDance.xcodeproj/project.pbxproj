@@ -135,6 +135,8 @@
 		99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */; };
 		99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */; };
 		D8A4F99D2EA729730093728D /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */; };
+		D8A4F99F2EA7369C0093728D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A4F99E2EA7369C0093728D /* Date+Extensions.swift */; };
+		D8A4F9A32EA736D60093728D /* ArchiveHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A4F9A22EA736D60093728D /* ArchiveHomeViewModel.swift */; };
 		D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */; };
 		D8C7BEBB2E9CEB2400FCB472 /* ReactionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */; };
 		D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C08E2E9F38EF00FCB472 /* UserDefaultsKey.swift */; };
@@ -315,7 +317,10 @@
 		99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPI.swift; sourceTree = "<group>"; };
 		99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
 		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
+		D83661CC2EA77F5C00B52440 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		D8A4F99E2EA7369C0093728D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		D8A4F9A22EA736D60093728D /* ArchiveHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeViewModel.swift; sourceTree = "<group>"; };
 		D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionFormView.swift; sourceTree = "<group>"; };
 		D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -356,7 +361,6 @@
 		D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
-		D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTag.swift; sourceTree = "<group>"; };
 		D8DB5DB72EA535BB00F4596B /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPI.swift; sourceTree = "<group>"; };
@@ -367,7 +371,6 @@
 		D8DB5DD32EA6591000F4596B /* UploadImageResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageResponseDto.swift; sourceTree = "<group>"; };
 		D8DB5DD52EA6591000F4596B /* ImageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
 		D8DB5DD62EA6591000F4596B /* ImageAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIService.swift; sourceTree = "<group>"; };
-		D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8DB5DDC2EA659F300F4596B /* CaptureConfirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureConfirmViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -457,6 +460,7 @@
 				99191F0E2EA6EB2B00D2F71A /* View+Shadow.swift */,
 				99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */,
 				D8C7C2B22EA2145D00FCB472 /* ExhibitionDtoMapper.swift */,
+				D8A4F99E2EA7369C0093728D /* Date+Extensions.swift */,
 				D8C7C0932E9F3E0700FCB472 /* UIImage.swift */,
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
 				D8C7C0912E9F3E0000FCB472 /* UserDefaults.swift */,
@@ -680,7 +684,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
-				D8DB5DDB2EA6591F00F4596B /* Config.xcconfig */,
+				D83661CC2EA77F5C00B52440 /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -983,6 +987,7 @@
 			isa = PBXGroup;
 			children = (
 				99E6F0D12E91F246002ED9C2 /* ArchiveViewModel.swift */,
+				D8A4F9A22EA736D60093728D /* ArchiveHomeViewModel.swift */,
 				D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1112,7 +1117,6 @@
 			isa = PBXGroup;
 			children = (
 				963573AA2E9A4A9A00B2FA79 /* CompleteReactionView.swift */,
-				D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1444,6 +1448,7 @@
 				99E6F3AB2E989CFB002ED9C2 /* MockDataLoader.swift in Sources */,
 				99E6F3AC2E989CFB002ED9C2 /* SwiftDataManager.swift in Sources */,
 				D8DB5DDD2EA659F300F4596B /* CaptureConfirmViewModel.swift in Sources */,
+				D8A4F99F2EA7369C0093728D /* Date+Extensions.swift in Sources */,
 				D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */,
 				99191E622EA2F95900D2F71A /* VisitorAPIService.swift in Sources */,
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
@@ -1478,6 +1483,7 @@
 				D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */,
 				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 				D8C7C2BB2EA27E6600FCB472 /* BottomButton.swift in Sources */,
+				D8A4F9A32EA736D60093728D /* ArchiveHomeViewModel.swift in Sources */,
 				99191E992EA467BC00D2F71A /* VenueAPIService.swift in Sources */,
 				D8C7C2BC2EA27E6600FCB472 /* CircleSelectionButton.swift in Sources */,
 				99191EC62EA545DF00D2F71A /* (null) in Sources */,

@@ -19,9 +19,8 @@ struct ArtistReactionView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            
             Text("나의 전시")
-                .font(.system(size: 20, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundColor(.black)
                 .padding(.horizontal, 40)
                 .padding(.top, 20)
@@ -87,7 +86,7 @@ struct ArtistExhibitionCard: View {
                     .frame(width: 28, height: 28)
                     .overlay(
                         Text("\(exhibition.reactionCount)")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(LDFont.heading07)
                             .foregroundColor(.white)
                     )
                     .padding(.leading, 12)
@@ -96,7 +95,7 @@ struct ArtistExhibitionCard: View {
             
             // 전시 제목 (고정 높이로 정렬 보장)
             Text(exhibition.title)
-                .font(.system(size: 16, weight: .semibold))
+                .font(LDFont.medium04)
                 .foregroundColor(.black)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)

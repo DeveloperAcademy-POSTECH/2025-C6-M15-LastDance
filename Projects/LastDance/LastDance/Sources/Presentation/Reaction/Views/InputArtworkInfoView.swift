@@ -159,20 +159,20 @@ private struct InputFieldButton: View {
         HStack {
             Button(action: action) {
                 Text(label)
-                    .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                    .foregroundColor(LDColor.gray5)
                 Spacer()
 
                 Text(value.isEmpty ? placeholder : value)
                     .foregroundColor(
                         value.isEmpty
-                            ? Color(red: 0.66, green: 0.66, blue: 0.66)
+                        ? LDColor.gray9
                             : .primary
                     )
             }
             .frame(minHeight: 60)
         }
         .padding(.horizontal, 14)
-        .background(Color(red: 0.97, green: 0.97, blue: 0.97))
+        .background(LDColor.color5)
         .cornerRadius(12)
     }
 }
@@ -188,6 +188,7 @@ private struct SelectionSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
+                .font(LDFont.heading02)
                 .padding(.top, 10)
                 .padding(.horizontal, 24)
 
@@ -202,7 +203,7 @@ private struct SelectionSheet: View {
                             HStack {
                                 Text(item)
                                     .foregroundColor(.black)
-                                    .font(Font.custom("SF Pro Text", size: 17))
+                                    .font(LDFont.regular01)
                                 Spacer()
                             }
                             .padding(12)

@@ -12,7 +12,7 @@ struct ArticleListSearchTextField: View {
 
     var body: some View {
         TextField("작가명을 선택해주세요", text: $searchText)
-            .font(Font.custom("SF Pro Text", size: 17))
+            .font(LDFont.regular01)
             .foregroundStyle(.black)
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
@@ -125,14 +125,14 @@ struct ArticleArtistRow: View {
     var body: some View {
         Button(action: action) {
             Text(artist.name)
-                .font(.system(size: 16, weight: .regular))
+                .font(LDFont.heading04)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(isSelected ? Color(red: 0.93, green: 0.93, blue: 0.93) : Color.clear)
+                        .fill(isSelected ? LDColor.gray3 : Color.clear)
                 )
                 .padding(.horizontal, isSelected ? 8 : 0)
         }

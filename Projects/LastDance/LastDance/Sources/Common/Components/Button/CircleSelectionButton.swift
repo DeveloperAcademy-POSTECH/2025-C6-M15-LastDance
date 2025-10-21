@@ -16,12 +16,12 @@ struct CircleSelectionButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 20, weight: .medium))
+                .font(LDFont.medium01)
                 .foregroundStyle(isSelected ? .white : .gray)
                 .frame(width: 200, height: 200)
                 .background(
                     Circle()
-                        .fill(isSelected ? Color.black : Color(red: 0.93, green: 0.93, blue: 0.93))
+                        .fill(isSelected ? Color.black : Color.gray3)
                 )
         }
     }

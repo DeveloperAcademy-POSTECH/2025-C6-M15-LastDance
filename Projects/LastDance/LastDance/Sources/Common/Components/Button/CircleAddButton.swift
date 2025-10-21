@@ -14,13 +14,15 @@ struct CircleAddButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "plus")
-                .font(.system(size: 24, weight: .bold))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 23, height: 23)
                 .foregroundStyle(LDColor.color6)
-                .frame(width: 71, height: 71)
-                .background(
-                    Circle()
-                        .fill(LDColor.color1)
-                )
         }
+        .frame(width: 71, height: 71)
+        .background(
+            Circle()
+                .fill(LDColor.color1)
+        )
     }
 }
