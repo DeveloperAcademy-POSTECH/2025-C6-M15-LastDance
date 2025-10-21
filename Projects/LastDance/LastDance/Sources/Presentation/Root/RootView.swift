@@ -56,6 +56,9 @@ struct RootView: View {
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
+                case .captureConfirm(let imageData):
+                    CaptureConfirmView(imageData: imageData)
+                        .navigationBarBackButtonHidden(true)
                 case .archive(let id):
                     ArchiveView(exhibitionId: id)
                         .toolbar(.hidden, for: .navigationBar)

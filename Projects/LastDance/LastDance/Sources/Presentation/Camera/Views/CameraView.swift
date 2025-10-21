@@ -12,7 +12,6 @@ struct CameraView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = CameraViewModel()
     
-    @State private var showConfirm = false
     @State private var noticeVisible = false
 
     var body: some View {
@@ -69,8 +68,11 @@ struct CameraView: View {
             }
         }
         .task { await viewModel.setupCameraSession() }
-        .onChange(of: viewModel.capturedImage) { _, new in
-            showConfirm = (new != nil)
+        .onChange(of: viewModel.capturedImage) { _, newImage in
+            if let image = newImage, let imageData = image.jpegData(compressionQuality: 1.0) {
+                router.push(.captureConfirm(imageData: imageData))
+                viewModel.capturedImage = nil
+            }
         }
         .onChange(of: viewModel.showSilentNotice) { _, newValue in
             withAnimation(.easeInOut(duration: newValue ? 0.3 : 0.5)) {
@@ -80,33 +82,6 @@ struct CameraView: View {
         .onAppear {
             // 초기 동기화 (필요 시)
             noticeVisible = viewModel.showSilentNotice
-        }
-        // TODO: - 촬영 확인 화면 띄우는 방식에 따라 수정
-        .fullScreenCover(isPresented: $showConfirm, onDismiss: {
-            // fullScreenCover가 닫힌 후 capturedImage가 있으면 다음 화면으로 이동
-            if let image = viewModel.capturedImage {
-                router.push(.inputArtworkInfo(image: image, exhibitionId: nil, artistId: nil))
-                viewModel.capturedImage = nil // 이미지 사용 후 초기화
-            }
-        }) {
-            if let image = viewModel.capturedImage {
-                CaptureConfirmView(
-                    image: image,
-                    onUse: { uploadedUrl in
-                        Log.debug("onuse - uploadedUrl: \(uploadedUrl ?? "nil")")
-                        showConfirm = false
-                        // uploadedUrl을 뷰모델이나 다른 곳에 저장 가능
-                    },
-                    onRetake: {
-                        Log.debug("onRetake")
-                        viewModel.capturedImage = nil // 재촬영 시 이미지 초기화
-                        showConfirm = false
-                    }
-                )
-            } else {
-                // 예외적으로 nil이면 그냥 닫기
-                Color.black.ignoresSafeArea().onAppear { showConfirm = false }
-            }
         }
         .onDisappear { viewModel.stopSession() }
     }
