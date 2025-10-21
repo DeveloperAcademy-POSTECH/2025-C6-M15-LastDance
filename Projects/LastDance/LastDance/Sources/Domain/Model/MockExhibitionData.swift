@@ -8,7 +8,7 @@
 import Foundation
 
 struct MockExhibitionData: Identifiable {
-    let id: String
+    let id: Int
     let title: String
     let coverImageName: String
     let reactionCount: Int

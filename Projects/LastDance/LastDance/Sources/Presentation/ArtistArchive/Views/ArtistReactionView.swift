@@ -2,12 +2,12 @@ import SwiftUI
 import SwiftData
 
 struct ArtistReactionView: View {
-    @StateObject private var viewModel = ArtistReactionViewModel() // ViewModel now fetches artist ID internally
+    @StateObject private var viewModel = ArtistReactionViewModel()
     @EnvironmentObject private var router: NavigationRouter
     
     private let gridColumns: [GridItem] = [
-        GridItem(.fixed(155), spacing: 16),
-        GridItem(.fixed(155), spacing: 16)
+        GridItem(.fixed(155), spacing: 31),
+        GridItem(.fixed(155), spacing: 31)
     ]
     
     var body: some View {
@@ -23,25 +23,7 @@ struct ArtistReactionView: View {
                     .scaleEffect(1.2)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                // 그리드
-                ScrollView {
-                    LazyVGrid(
-                        columns: gridColumns,
-                        spacing: 24
-                    ) {
-                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, displayItem in
-                            ArtistExhibitionCard(
-                                displayItem: displayItem // Pass the new display item
-                            )
-                            .onTapGesture {
-                                router.push(.artistReactionArchiveView(exhibitionId: String(displayItem.exhibition.id)))
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 32)
-                    .padding(.top, 30)
-                    .padding(.bottom, 100)
-                }
+                ArtistExhibitionGridView(viewModel: viewModel)
             }
         }
         .background(LDColor.color6)
@@ -54,18 +36,47 @@ struct ArtistReactionView: View {
             .padding(.bottom, 40)
         }
         .onAppear {
-            viewModel.loadArtistExhibitions() // Call the new loading function
+            viewModel.loadArtistExhibitions()
         }
     }
 }
 
-// MARK: - Components
+// MARK: - Extracted Subview for the Grid
+private struct ArtistExhibitionGridView: View {
+    @ObservedObject var viewModel: ArtistReactionViewModel
+    @EnvironmentObject private var router: NavigationRouter
 
+    var body: some View {
+        ScrollView {
+            LazyVGrid(
+                columns: [
+                    GridItem(.fixed(155), spacing: 31), // Use the same spacing as gridColumns
+                    GridItem(.fixed(155), spacing: 31)
+                ],
+                spacing: 28
+            ) {
+                ForEach(viewModel.exhibitions) { displayItem in // Removed .enumerated() as displayItem is Identifiable
+                    ArtistExhibitionCard(
+                        displayItem: displayItem
+                    )
+                    .onTapGesture {
+                        router.push(.artistReactionArchiveView(exhibitionId: displayItem.exhibition.id))
+                    }
+                }
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 30)
+            .padding(.bottom, 100)
+        }
+    }
+}
+
+// MARK: - Components (ArtistExhibitionCard remains the same)
 struct ArtistExhibitionCard: View {
-    let displayItem: ArtistExhibitionDisplayItem // Changed type
+    let displayItem: ArtistExhibitionDisplayItem
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 12) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
                 if let coverImageURLString = displayItem.exhibition.coverImageName,
@@ -90,7 +101,7 @@ struct ArtistExhibitionCard: View {
                                 .fill(Color.gray.opacity(0.2))
                                 .frame(width: 155, height: 219)
                                 .overlay(
-                                    Image(systemName: "PlaceholderImage")
+                                    Image(systemName: "photo") // Changed from "PlaceholderImage"
                                         .foregroundColor(.gray)
                                 )
                         @unknown default:
@@ -98,7 +109,6 @@ struct ArtistExhibitionCard: View {
                         }
                     }
                 } else {
-                    // Fallback if coverImageName is nil or not a valid URL
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.gray.opacity(0.2))
                         .frame(width: 155, height: 219)

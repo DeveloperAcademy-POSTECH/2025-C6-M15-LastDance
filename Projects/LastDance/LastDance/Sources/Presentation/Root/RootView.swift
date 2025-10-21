@@ -22,7 +22,7 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            Group {
+            Group{
                 if let userType = userType {
                     switch userType {
                     case .artist:
@@ -87,8 +87,10 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
-                case .response(let artworkId): // Added new case for ResponseView
+                case .response(let artworkId):
                     ResponseView(artworkId: artworkId)
+                case .artReaction(let artwork, let artist):
+                    ArtReactionView(artwork: artwork, artist: artist)
                         .toolbar(.hidden, for: .navigationBar)
                 }
             }

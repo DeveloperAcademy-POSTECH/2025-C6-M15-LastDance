@@ -9,14 +9,16 @@ import SwiftData
 import SwiftUI
 
 struct ArtistReactionArchiveView: View {
-    let exhibitionId: String
+
+    let exhibitionId: Int
     @StateObject private var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
     
-    init(exhibitionId: String) {
+    init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
         _viewModel = StateObject(wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
     }
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {

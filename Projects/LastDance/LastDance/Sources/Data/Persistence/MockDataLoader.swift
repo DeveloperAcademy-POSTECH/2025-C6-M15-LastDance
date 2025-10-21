@@ -59,24 +59,6 @@ enum MockDataLoader {
             localImagePath: "mock_artworkImage_02",
             createdAt: .now.addingTimeInterval(-100)
         )
-        let capture4 = CapturedArtwork(
-            id: 5,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture5 = CapturedArtwork(
-            id: 6,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture6 = CapturedArtwork(
-            id: 7,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_02",
-            createdAt: .now
-        )
 
         let reaction1  = Reaction(
             id: UUID().uuidString,
@@ -86,14 +68,29 @@ enum MockDataLoader {
             comment: "빛이 멋져요",
             createdAt: ""
         )
+        let reaction2 = Reaction(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            visitorId: visitor.id,
+            category: ["강한 메시지가 느껴져요", "생각하게 만드는"],
+            comment: "마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다",
+            createdAt: ""
+        )
+        let reaction3 = Reaction(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            visitorId: visitor.id,
+            category: ["감동적이에요"],
+            comment: "색감과 구도가 인상적입니다.",
+            createdAt: ""
+        )
         context.insert(artwork1); context.insert(artwork2)
         context.insert(capture1)
         context.insert(capture2)
         context.insert(capture3)
-        context.insert(capture4)
-        context.insert(capture5)
-        context.insert(capture6)
         context.insert(reaction1)
+        context.insert(reaction2)
+        context.insert(reaction3)
         
         setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
         insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,

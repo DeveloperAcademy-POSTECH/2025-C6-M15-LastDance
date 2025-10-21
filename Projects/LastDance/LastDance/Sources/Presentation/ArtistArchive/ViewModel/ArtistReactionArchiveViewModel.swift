@@ -12,18 +12,20 @@ import SwiftUI
 final class ArtistReactionArchiveViewModel: ObservableObject {
     @Published var artworks: [ArtworkDisplayItem] = [] // Changed type
     @Published var isLoading = false
-    
+
+    private let exhibitionId: Int
+    private let swiftDataManager = SwiftDataManager.shared
+
     var exhibitionTitle: String {
         exhibition?.title ?? "전시 제목"
     }
+
     private var exhibition: Exhibition?
-    private let exhibitionId: String
-    private let swiftDataManager = SwiftDataManager.shared
     private let reactionAPIService: ReactionAPIServiceProtocol
     private let artworkAPIService: ArtworkAPIServiceProtocol // Added dependency
 
     init(
-        exhibitionId: String,
+        exhibitionId: Int,
         reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService(),
         artworkAPIService: ArtworkAPIServiceProtocol = ArtworkAPIService()
     ) {
@@ -36,14 +38,8 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
         isLoading = true
         artworks = []
         
-        guard let intExhibitionId = Int(exhibitionId) else {
-            Log.error("Invalid exhibition ID: \(exhibitionId)")
-            isLoading = false
-            return
-        }
-        
         let exhibitionDescriptor = FetchDescriptor<Exhibition>(
-            predicate: #Predicate { $0.id == intExhibitionId }
+            predicate: #Predicate { $0.id == exhibitionId }
         )
         do {
             exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor).first
@@ -57,14 +53,14 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
             return
         }
         
-        artworkAPIService.getArtworks(artistId: nil, exhibitionId: intExhibitionId) { [weak self] result in
+        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let artworkDtos):
-                Log.debug("Fetched \(artworkDtos.count) artworks for exhibition \(intExhibitionId).")
+                Log.debug("Fetched \(artworkDtos.count) artworks for exhibition \(exhibitionId).")
 
                 if artworkDtos.isEmpty {
-                    Log.warning("No artworks \(intExhibitionId).")
+                    Log.warning("No artworks \(exhibitionId).")
                     self.isLoading = false
                     return
                 }
@@ -75,7 +71,7 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
 
                 for artworkDto in artworkDtos {
                     group.enter()
-                    let artworkModel = ArtworkMapper.mapDtoToModel(artworkDto, exhibitionId: intExhibitionId)
+                    let artworkModel = ArtworkMapper.mapDtoToModel(artworkDto, exhibitionId: exhibitionId)
                     self.swiftDataManager.upsertArtwork(artworkModel)
                     self.reactionAPIService.getReactions(artworkId: artworkDto.id, visitorId: nil, visitId: nil) { reactionResult in
                         var reactionCount = 0
@@ -103,7 +99,7 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
                 }
 
             case .failure(let error):
-                Log.error("Failed to fetch artworks for exhibition \(intExhibitionId): \(error.localizedDescription)")
+                Log.error("Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)")
                 self.isLoading = false
             }
         }
