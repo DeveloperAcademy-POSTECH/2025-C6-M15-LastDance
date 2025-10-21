@@ -12,17 +12,17 @@ import SwiftUI
 /// 사용자 정체성 선택 뷰 (작가/관람객)
 struct IdentitySelectionView: View {
     @StateObject private var viewModel = IdentitySelectionViewModel()
-
+    
     var body: some View {
         VStack(spacing: 0) {
             IdentitySelectionTitleSection()
-
+            
             Spacer().frame(height: 40)
-
+            
             IdentitySelectionButtons(viewModel: viewModel)
-
+            
             Spacer()
-
+            
             IdentitySelectionNextButton(viewModel: viewModel)
         }
         .padding(.horizontal, 20)
@@ -46,12 +46,13 @@ struct IdentitySelectionTitleSection: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.top, 80)
+        .padding(.horizontal, 20)
     }
 }
 
 struct IdentitySelectionButtons: View {
     @ObservedObject var viewModel: IdentitySelectionViewModel
-
+    
     var body: some View {
         VStack(spacing: 16) {
             IdentityCardButton(
@@ -62,7 +63,7 @@ struct IdentitySelectionButtons: View {
             ) {
                 viewModel.selectUserType(.artist)
             }
-
+            
             IdentityCardButton(
                 icon: "audience",
                 title: "관람객",
@@ -72,6 +73,7 @@ struct IdentitySelectionButtons: View {
                 viewModel.selectUserType(.viewer)
             }
         }
+        .padding(.horizontal, 20)
     }
 }
 
@@ -81,24 +83,24 @@ struct IdentityCardButton: View {
     let subtitle: String
     let isSelected: Bool
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             HStack(spacing: 16) {
                 Image(icon)
                     .resizable()
                     .frame(width: 48, height: 48)
-
+                
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(LDFont.heading04)
                         .foregroundColor(.black)
-
+                    
                     Text(subtitle)
                         .font(LDFont.regular03)
                         .foregroundColor(.gray)
                 }
-
+                
                 Spacer()
             }
             .padding(20)
@@ -123,14 +125,14 @@ struct IdentityCardButton: View {
 struct IdentitySelectionNextButton: View {
     @EnvironmentObject private var router: NavigationRouter
     @ObservedObject var viewModel: IdentitySelectionViewModel
-
+    
     var body: some View {
         BottomButton(
             text: "다음",
             isEnabled: viewModel.selectedType != nil
         ) {
             viewModel.confirmSelection()
-
+            
             guard let selectedType = viewModel.selectedType else { return }
             switch selectedType {
             case .artist:
@@ -140,10 +142,4 @@ struct IdentitySelectionNextButton: View {
             }
         }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    IdentitySelectionView()
 }

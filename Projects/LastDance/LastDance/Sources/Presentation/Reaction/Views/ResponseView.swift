@@ -44,7 +44,6 @@ struct ResponseContentView: View {
     let artwork: Artwork?
 
     @ObservedObject var viewModel: ResponseViewModel
-    @Environment(\.keyboardManager) var keyboardManager
 
     var body: some View {
         ScrollView {
@@ -66,8 +65,8 @@ struct ResponseContentView: View {
                     ReactionHeaderView(count: viewModel.reactions.count)
                 }
             }
-            .padding(.bottom, keyboardManager.keyboardHeight)
         }
+        .scrollToMinDistance(minDisntance: 32)
     }
 }
 

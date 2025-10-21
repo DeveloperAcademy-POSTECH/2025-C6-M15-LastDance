@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct LastDanceApp: App {
     let sharedModelContainer: ModelContainer
-    @StateObject private var keyboardManager = KeyboardManager()
     
     init() {
         do {
@@ -46,7 +45,7 @@ struct LastDanceApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.keyboardManager, keyboardManager)
+                .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
             // TODO: - 개발 시점에 목데이터 사용 원할시 주석 해제
 //                .onAppear {
 //                    #if DEBUG
