@@ -100,7 +100,7 @@ struct ArtistReactionArchiveView: View {
         }
         .background(LDColor.color6)
         .onAppear {
-            viewModel.loadReactionsFromDB()
+            viewModel.loadData()
         }
     }
 }

@@ -13,8 +13,8 @@ struct ArtistReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
     
     private let gridColumns: [GridItem] = [
-        GridItem(.fixed(155), spacing: 16),
-        GridItem(.fixed(155), spacing: 16)
+        GridItem(.fixed(155), spacing: 31),
+        GridItem(.fixed(155), spacing: 31)
     ]
     
     var body: some View {
@@ -35,7 +35,7 @@ struct ArtistReactionView: View {
                 ScrollView {
                     LazyVGrid(
                         columns: gridColumns,
-                        spacing: 24
+                        spacing: 28
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
                             ArtistExhibitionCard(
@@ -45,17 +45,6 @@ struct ArtistReactionView: View {
                                 router.push(.artistReactionArchiveView(exhibitionId: exhibition.id))
                             }
                         }
-                        .frame(width: 155, height: 219)
-                        .onTapGesture {
-                            if let exhibitionId = viewModel.exhibition?.id {
-                                router.push(.artistReactionArchiveView(exhibitionId: exhibitionId))
-                            }
-                        }
-                        // 전시 제목
-                        Text(viewModel.exhibitionTitle)
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.black)
-                            .frame(width: 155, alignment: .leading)
                     }
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
@@ -84,7 +73,7 @@ struct ArtistExhibitionCard: View {
     let exhibition: MockExhibitionData
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 12) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
                 Image(exhibition.coverImageName)
