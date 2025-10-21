@@ -36,7 +36,7 @@ final class IdentitySelectionViewModel: ObservableObject {
             createVisitorAPI()
         case .artist:
             // TODO: - 이후에 실제 이름으로 연결 필요
-            createArtistAPI(name: "린 카이")
+            createArtistAPI(name: "Che")
         }
     }
 

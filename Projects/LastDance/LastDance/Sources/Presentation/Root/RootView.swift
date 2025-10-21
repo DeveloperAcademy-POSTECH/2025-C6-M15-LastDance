@@ -87,6 +87,9 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
+                case .response(let artworkId): // Added new case for ResponseView
+                    ResponseView(artworkId: artworkId)
+                        .toolbar(.hidden, for: .navigationBar)
                 }
             }
         }
