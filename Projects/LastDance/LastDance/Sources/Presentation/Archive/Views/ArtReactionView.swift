@@ -23,7 +23,6 @@ struct ArtReactionView: View {
         _viewModel = StateObject(wrappedValue: ArtReactionViewModel(artworkId: artwork.id))
     }
     
-    // 스크롤에 따른 이미지 크기 계산
     private var imageWidth: CGFloat {
         let minWidth: CGFloat = 300
         let maxWidth: CGFloat = 345
@@ -46,16 +45,15 @@ struct ArtReactionView: View {
         return minHeight
     }
     
-    // 탭 바가 고정되어야 하는지 여부 (이미지가 완전히 사라진 후)
     private var isTabBarFixed: Bool {
-        // 최대 이미지 높이(468) + 이미지와 탭 바 사이 간격(24) = 492pt
+        
         let imageDisappearThreshold: CGFloat = 468 + 24
         return scrollOffset > imageDisappearThreshold
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            // 뒤로가기 버튼 (항상 최상단 고정)
+            // 뒤로가기 버튼
             HStack {
                 Button(action: {
                     router.popLast()
@@ -73,7 +71,7 @@ struct ArtReactionView: View {
             .padding(.bottom, 0)
             .background(Color.white)
             
-            // 고정된 탭 바 (스크롤 후에만 표시)
+            // 고정된 탭 바
             if isTabBarFixed {
                 TabBarView(selectedTab: $selectedTab)
                     .background(Color.white)
@@ -83,7 +81,7 @@ struct ArtReactionView: View {
             // 스크롤 가능한 콘텐츠
             ScrollViewObserver(scrollOffset: $scrollOffset) {
                 VStack(spacing: 0) {
-                    // 작품 이미지 (크기 동적 변경)
+                    // 작품 이미지
                     Image(artwork.thumbnailURL ?? "mock_artworkImage_01")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -92,7 +90,7 @@ struct ArtReactionView: View {
                         .cornerRadius(24)
                         .animation(.easeInOut(duration: 0.2), value: scrollOffset)
                     
-                    // 탭 바 (스크롤 전에만 표시)
+                    // 탭 바
                     if !isTabBarFixed {
                         TabBarView(selectedTab: $selectedTab)
                             .padding(.top, 24)
