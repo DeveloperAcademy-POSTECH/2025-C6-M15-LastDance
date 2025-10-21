@@ -13,24 +13,44 @@ struct ExhibitionDetailView: View {
 
     let exhibitionId: Int
 
+    private var isArtist: Bool {
+        var initialUserType: UserType?
+        if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
+            initialUserType = UserType(rawValue: userTypeValue)
+        }
+        return initialUserType?.displayName == "작가"
+    }
+
     var body: some View {
         GeometryReader { geometry in
-            ScrollView { // 이 부분 사용할 때 LazyVStack 써야하는지
+            ScrollView {
                 if let exhibition = viewModel.exhibition {
                     VStack {
                         Spacer()
-                        
-                        ExhibitionPreviewCard(
-                            exhibition: exhibition,
-                            artistNames: viewModel.artistNames,
-                            onSearchMore: {
-                                router.popLast()
-                            },
-                            onStartVisit: {
-                                handleStartVisit()
-                            }
-                        )
-                        .padding(.horizontal)
+
+                        if isArtist {
+                            ArtistExhibitionPreviewCard(
+                                exhibition: exhibition,
+                                artistNames: viewModel.artistNames,
+                                onConfirm: {
+                                    handleArtistConfirm()
+                                }
+                            )
+                            .padding(.horizontal)
+                        } else {
+                            ExhibitionPreviewCard(
+                                exhibition: exhibition,
+                                artistNames: viewModel.artistNames,
+                                onSearchMore: {
+                                    router.popLast()
+                                },
+                                onStartVisit: {
+                                    handleStartVisit()
+                                }
+                            )
+                            .padding(.horizontal)
+                        }
+
                         Spacer()
                     }
                     .frame(minHeight: geometry.size.height)
@@ -55,19 +75,17 @@ struct ExhibitionDetailView: View {
             viewModel.fetchExhibition(by: exhibitionId)
         }
     }
-    /// 사용자 타입에 따라 "관람 시작하기" 또는 "내 전시가 맞아요" 버튼 동작 처리
+
+    /// 작가 - 내 전시가 맞아요 버튼 처리
+    private func handleArtistConfirm() {
+        viewModel.selectExhibitionAsUserExhibition()
+        router.push(.artistReaction)
+    }
+
+    /// 관람객 - 관람 시작하기 버튼 처리
     private func handleStartVisit() {
-        var initialUserType: UserType?
-        if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key) {
-            initialUserType = UserType(rawValue: userTypeValue)
-        }
-        let isArtist = (initialUserType?.displayName == "작가")
-        
-        if isArtist {
-            router.push(.artistReaction)
-        } else {
-            router.push(.archive(id: exhibitionId))
-        }
+        viewModel.selectExhibitionAsUserExhibition()
+        router.push(.archive(id: exhibitionId))
     }
 }
 

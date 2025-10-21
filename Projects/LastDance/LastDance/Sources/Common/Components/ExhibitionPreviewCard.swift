@@ -22,12 +22,12 @@ struct ExhibitionPreviewCard: View {
             ExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: Date.formatDateRange(start: exhibition.startDate, end: exhibition.endDate),
+                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
                 onSearchMore: onSearchMore,
                 onStartVisit: onStartVisit
             )
             .padding(.horizontal, 12)
-
+            
         }
         .frame(maxWidth: .infinity)
         .background(.white)
@@ -35,8 +35,8 @@ struct ExhibitionPreviewCard: View {
         .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 0)
     }
 }
-// MARK: - ExhibitionPreviewImage
 
+// MARK: - ExhibitionPreviewImage
 struct ExhibitionPreviewImage: View {
     let imageName: String?
     
@@ -119,43 +119,10 @@ struct ExhibitionPreviewInfo: View {
             .padding(.top, 14)
             
             // 액션 버튼들
-            HStack(spacing: 8) {
-                // 다른 전시 찾기 버튼
-                Button(action: onSearchMore) {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image(systemName: "magnifyingglass")
-                            .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                            .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
-                        
-                        Text("다른 전시 찾기")
-                            .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                            .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .frame(maxWidth: .infinity)
-                    .background(Color(red: 0.94, green: 0.94, blue: 0.94))
-                    .cornerRadius(12)
-                }
-                
-                // 관람 시작하기 버튼
-                Button(action: onStartVisit) {
-                    HStack(alignment: .center, spacing: 8) {
-                        Text("관람 시작하기")
-                            .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                            .foregroundColor(.white)
-                        
-                        Image(systemName: "arrow.right")
-                            .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                            .foregroundColor(.white)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .frame(maxWidth: .infinity)
-                    .background(Color(red: 0.14, green: 0.14, blue: 0.14))
-                    .cornerRadius(12)
-                }
-            }
+            ArticleButtons(
+                onSearchMore: onSearchMore,
+                onStartVisit: onStartVisit
+            )
             .padding(.bottom, 14)
         }
     }
