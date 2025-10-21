@@ -38,7 +38,7 @@ struct ArtistReactionView: View {
                         spacing: 24
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
-                            ExhibitionCardView(
+                            ArtistExhibitionCard(
                                 exhibition: exhibition
                             )
                             .onTapGesture {
@@ -65,37 +65,42 @@ struct ArtistReactionView: View {
             viewModel.loadExhibitionsFromDB()
         }
     }
-    // MARK: - Components
-    struct ExhibitionCardView: View {
-        let exhibition: MockExhibitionData
-        var body: some View {
-            VStack(alignment: .leading, spacing: 4) {
-                // 포스터 이미지
-                ZStack(alignment: .bottomLeading) {
-                    Image(exhibition.coverImageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 155, height: 219)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                    Circle()
-                        .fill(Color.black)
-                        .frame(width: 28, height: 28)
-                        .overlay(
-                            Text("\(exhibition.reactionCount)")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.white)
-                        )
-                        .padding(.leading, 12)
-                        .padding(.bottom, 12)
-                }
-                // 전시 제목 (고정 높이로 정렬 보장)
-                Text(exhibition.title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.black)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-                    .frame(width: 155, height: 44, alignment: .topLeading)
+}
+
+// MARK: - Components
+
+struct ArtistExhibitionCard: View {
+    let exhibition: MockExhibitionData
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // 포스터 이미지 + 반응 카운터
+            ZStack(alignment: .bottomLeading) {
+                Image(exhibition.coverImageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 155, height: 219)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+                Circle()
+                    .fill(Color.black)
+                    .frame(width: 28, height: 28)
+                    .overlay(
+                        Text("\(exhibition.reactionCount)")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                    )
+                    .padding(.leading, 12)
+                    .padding(.bottom, 12)
             }
+            
+            // 전시 제목 (고정 높이로 정렬 보장)
+            Text(exhibition.title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.black)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .frame(width: 155, height: 44, alignment: .topLeading)
         }
     }
 }

@@ -27,7 +27,6 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
     func loadReactionsFromDB() {
         isLoading = true
         guard let container = swiftDataManager.container else {
-            Log.error("Container not available")
             isLoading = false
             return
         }

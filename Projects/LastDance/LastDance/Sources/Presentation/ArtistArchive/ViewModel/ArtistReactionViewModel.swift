@@ -8,13 +8,6 @@
 import SwiftUI
 import SwiftData
 
-struct MockExhibitionData: Identifiable {
-    let id: String
-    let title: String
-    let coverImageName: String
-    let reactionCount: Int
-}
-
 @MainActor
 final class ArtistReactionViewModel: ObservableObject {
     @Published var exhibitions: [MockExhibitionData] = []
@@ -26,7 +19,6 @@ final class ArtistReactionViewModel: ObservableObject {
         isLoading = true
         
         guard let container = swiftDataManager.container else {
-            Log.error("Container not available")
             isLoading = false
             return
         }
