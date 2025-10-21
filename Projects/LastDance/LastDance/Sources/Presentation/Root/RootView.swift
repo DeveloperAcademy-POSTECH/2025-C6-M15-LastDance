@@ -89,9 +89,10 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .response(let artworkId):
                     ResponseView(artworkId: artworkId)
+                        .navigationBarBackButtonHidden(true)
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 }
             }
         }

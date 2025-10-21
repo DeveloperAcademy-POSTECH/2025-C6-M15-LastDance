@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct ResponseView: View {
+    @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel: ResponseViewModel // Initialize with artworkId
     @Query private var allArtworks: [Artwork] // Keep for fetching artwork details
     let artworkId: Int
@@ -41,11 +42,10 @@ struct ResponseView: View {
         }
         .background(LDColor.color5)
         .ignoresSafeArea(.container, edges: .bottom)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(artwork?.title ?? "작품 반응")
-                    .font(LDFont.heading04)
-                    .foregroundColor(LDColor.color6)
+            CustomNavigationBar(title: artwork?.title ?? "작품 반응" ) {
+                router.popLast()
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)

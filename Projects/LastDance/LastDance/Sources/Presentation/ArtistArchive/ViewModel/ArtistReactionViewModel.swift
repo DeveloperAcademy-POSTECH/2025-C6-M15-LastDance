@@ -18,8 +18,6 @@ final class ArtistReactionViewModel: ObservableObject {
     private let reactionAPIService: ReactionAPIServiceProtocol
     private let artistAPIService: ArtistAPIServiceProtocol
 
-    private var currentArtistId: Int?
-
     init(
         exhibitionAPIService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(),
         reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService(),
@@ -34,104 +32,20 @@ final class ArtistReactionViewModel: ObservableObject {
         isLoading = true
         exhibitions = []
 
-        fetchCurrentArtistId { [weak self] artistId in
-            guard let self = self else { return }
-            if let artistId = artistId {
-                self.currentArtistId = artistId
-                Log.debug("Current artist ID: \(artistId)")
-                self._loadArtistExhibitions(for: artistId)
-            } else {
-                Log.error("ID is not available, cannot load exhibitions.")
-                self.isLoading = false
-            }
-        }
-    }
+        let allLocalExhibitions = swiftDataManager.fetchAll(Exhibition.self)
+        let filteredExhibitions = allLocalExhibitions.filter { $0.isUserSelected == true }
 
-    private func fetchCurrentArtistId(completion: @escaping (Int?) -> Void) {
-        guard let artistUUID = UserDefaults.standard.string(
-            forKey: UserDefaultsKey.artistUUID.rawValue
-        ) else {
-            Log.error("Artist UUID not found in UserDefaults.")
-            completion(nil)
+        if filteredExhibitions.isEmpty {
+            Log.debug("No selected exhibitions to display")
+            self.isLoading = false
             return
         }
-        Log.debug("Found Artist UUID: \(artistUUID)")
 
-        artistAPIService.getArtistByUUID(artistUUID) { result in
-            switch result {
-            case .success(let artistDto):
-                Log.debug("ID: \(artistDto.id)")
-                completion(artistDto.id)
-            case .failure(let error):
-                Log.error("Failed to fetch artist by UUID: \(error.localizedDescription)")
-                completion(nil)
-            }
-        }
-    }
-
-    private func _loadArtistExhibitions(for artistId: Int) {
-        exhibitionAPIService.getExhibitions(status: nil, venueId: nil) { [weak self] result in
+        calculateReactionCounts(for: filteredExhibitions) { [weak self] updatedExhibitions in
             guard let self = self else { return }
-
-            switch result {
-            case .success(let allExhibitionDtos):
-                Log.debug("Fetched \(allExhibitionDtos.count) exhibitions from server.")
-
-                let group = DispatchGroup()
-                var artistParticipatingExhibitionIds: Set<Int> = []
-
-                if allExhibitionDtos.isEmpty {
-                    Log.debug("No exhibitions found from server")
-                    self.isLoading = false
-                    return
-                }
-
-                for exhibitionDto in allExhibitionDtos {
-                    group.enter()
-                    self.exhibitionAPIService.getDetailExhibition(exhibitionId: exhibitionDto.id) { detailResult in
-                        switch detailResult {
-                        case .success(let detailedExhibitionDto):
-                            let artworksForThisExhibition =
-                            self.swiftDataManager.fetchAll(Artwork.self).filter {
-                                $0.exhibitionId == detailedExhibitionDto.id
-                            }
-                            if artworksForThisExhibition.contains(where: {
-                                $0.artistId == artistId
-                            }) {
-                                artistParticipatingExhibitionIds.insert(detailedExhibitionDto.id)
-                                Log.debug("Artist \(artistId) participates in exhibition \(detailedExhibitionDto.id).")
-                            }
-                        case .failure(let error):
-                            Log.error("Failed. exhibition ID \(exhibitionDto.id): \(error.localizedDescription)")
-                        }
-                        group.leave()
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    let allLocalExhibitions = self.swiftDataManager.fetchAll(Exhibition.self)
-                    let filteredExhibitions = allLocalExhibitions.filter {
-                        artistParticipatingExhibitionIds.contains($0.id) && $0.isUserSelected == true
-                    }
-                    Log.debug("Filtered exhibitions count: \(filteredExhibitions.count)")
-
-                    if filteredExhibitions.isEmpty {
-                        Log.debug("No filtered exhibitions to display")
-                        self.isLoading = false
-                        return
-                    }
-
-                    self.calculateReactionCounts(for: filteredExhibitions) { updatedExhibitions in
-                        self.exhibitions = updatedExhibitions.sorted { $0.exhibition.startDate > $1.exhibition.startDate }
-                        Log.debug("Final exhibitions count: \(self.exhibitions.count)")
-                        self.isLoading = false
-                    }
-                }
-
-            case .failure(let error):
-                Log.error("Failed to fetch all exhibitions: \(error.localizedDescription)")
-                self.isLoading = false
-            }
+            self.exhibitions = updatedExhibitions.sorted { $0.exhibition.startDate > $1.exhibition.startDate }
+            Log.debug("Final exhibitions count: \(self.exhibitions.count)")
+            self.isLoading = false
         }
     }
 
