@@ -14,9 +14,11 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
     @Published var reactionItems: [ReactionItem] = []
     @Published var isLoading = false
     
+    private let exhibitionId: Int
     private let swiftDataManager = SwiftDataManager.shared
     
-    init() {
+    init(exhibitionId: Int) {
+        self.exhibitionId = exhibitionId
         loadData()
     }
     
@@ -48,7 +50,11 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
             }
             
             let context = container.mainContext
-            let descriptor = FetchDescriptor<Exhibition>()
+            let targetId = self.exhibitionId
+            let predicate = #Predicate<Exhibition> { exhibition in
+                exhibition.id == targetId
+            }
+            let descriptor = FetchDescriptor<Exhibition>(predicate: predicate)
             let exhibitions = try context.fetch(descriptor)
             
             await MainActor.run {

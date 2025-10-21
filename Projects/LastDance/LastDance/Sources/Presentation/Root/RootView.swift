@@ -21,18 +21,21 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            Group {
-                if let userType = userType {
-                    switch userType {
-                    case .artist:
-                        ArticleArchivingView()
-                    case .viewer:
-                        AudienceArchivingView()
-                    }
-                } else {
-                    IdentitySelectionView()
-                }
-            }
+            ArtReactionView(
+                artwork: Artwork(
+                    id: 11,
+                    exhibitionId: 1,
+                    title: "Light #1",
+                    artistId: 1,
+                    thumbnailURL: "mock_artworkImage_01"
+                ),
+                artist: Artist(
+                    id: 1,
+                    name: "김민준",
+                    exhibitions: [3],
+                    receivedReactions: []
+                )
+            )
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .identitySelection:
@@ -75,11 +78,14 @@ struct RootView: View {
                 case .artistReaction:
                     ArtistReactionView()
                         .toolbar(.hidden, for: .navigationBar)
-                case .artistReactionArchiveView:
-                    ArtistReactionArchiveView()
+                case .artistReactionArchiveView(let exhibitionId):
+                    ArtistReactionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
+                        .toolbar(.hidden, for: .navigationBar)
+                case .artReaction(let artwork, let artist):
+                    ArtReactionView(artwork: artwork, artist: artist)
                         .toolbar(.hidden, for: .navigationBar)
                 }
             }
