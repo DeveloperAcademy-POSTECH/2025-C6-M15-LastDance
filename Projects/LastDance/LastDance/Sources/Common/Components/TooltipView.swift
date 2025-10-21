@@ -14,7 +14,7 @@ struct TooltipView: View {
         // 캡슐 모양 툴팁
         Text(text)
             .font(.system(size: 14, weight: .regular))
-            .foregroundColor(.white)
+            .foregroundColor(LDColor.color6)
             .multilineTextAlignment(.center)
             .lineSpacing(2)
             .fixedSize(horizontal: false, vertical: true)

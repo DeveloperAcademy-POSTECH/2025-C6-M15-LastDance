@@ -19,8 +19,7 @@ final class Exhibition {
     var coverImageName: String?
     var createdAt: String?
     var updatedAt: String?
-    
-//    @Relationship(inverse: \Artwork.exhibition)
+    var isUserSelected: Bool = false
     var artworks: [Artwork] = []
 
     init(id: Int,
@@ -31,7 +30,8 @@ final class Exhibition {
          venueId: Int? = nil,
          coverImageName: String? = nil,
          createdAt: String? = nil,
-         updatedAt: String? = nil) {
+         updatedAt: String? = nil,
+         isUserSelected: Bool = false) {
         self.id = id
         self.title = title
         self.descriptionText = descriptionText
@@ -41,5 +41,6 @@ final class Exhibition {
         self.coverImageName = coverImageName
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.isUserSelected = isUserSelected
     }
 }

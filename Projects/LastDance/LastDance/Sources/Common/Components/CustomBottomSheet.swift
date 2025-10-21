@@ -25,7 +25,7 @@ public struct CustomBottomSheet<Content>: View where Content: View {
     public var body: some View {
         VStack(spacing: .zero) {
             RoundedRectangle(cornerRadius: 20)
-                .fill(.white)
+                .fill(LDColor.color6)
                 .frame(height: 30)
                 .overlay(
                     RoundedRectangle(cornerRadius: 100)
@@ -39,7 +39,7 @@ public struct CustomBottomSheet<Content>: View where Content: View {
         .frame(height: self.height+30)
         .background(
             Rectangle()
-                .fill(.white)
+                .fill(LDColor.color6)
                 .cornerRadius(20, corners: .topLeft)
                 .cornerRadius(20, corners: .topRight)
                 .edgesIgnoringSafeArea([.bottom, .horizontal])

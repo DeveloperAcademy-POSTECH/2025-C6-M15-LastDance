@@ -66,6 +66,7 @@ struct ExhibitionDetailView: View {
             if isArtist {
                 router.push(.artistReaction)
             } else {
+                viewModel.selectExhibitionAsUserExhibition()
                 router.push(.archive(id: exhibitionId))
             }
         }
