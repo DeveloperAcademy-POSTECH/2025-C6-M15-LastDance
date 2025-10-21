@@ -31,7 +31,7 @@ struct ResponseView: View {
             ToolbarItem(placement: .principal) {
                 Text(artwork?.title ?? "작품 반응")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -154,7 +154,7 @@ struct ReactionHeaderView: View {
             Text("\(count)")
                 .font(Font.custom("Pretendard", size: 14))
                 .fontWeight(.medium)
-                .foregroundColor(.white)
+                .foregroundColor(LDColor.color6)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(Color.black)
@@ -308,7 +308,7 @@ struct CategoryTagView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
-        .background(.white)
+        .background(LDColor.color6)
         .cornerRadius(42)
         .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
     }
@@ -327,7 +327,7 @@ struct MoreCategoriesButton: View {
                 .foregroundColor(.gray)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
-                .background(.white)
+                .background(LDColor.color6)
                 .cornerRadius(42)
                 .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
         }

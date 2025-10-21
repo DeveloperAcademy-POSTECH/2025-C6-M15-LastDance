@@ -64,7 +64,7 @@ struct ArtworkDetailView: View {
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
