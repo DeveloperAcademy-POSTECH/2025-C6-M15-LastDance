@@ -168,8 +168,8 @@
 		D8C7C2C82EA29A1100FCB472 /* ArtworkAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */; };
 		D8C7C2CA2EA2A16300FCB472 /* ArtworkResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */; };
 		D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */; };
-		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
 		D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */; };
+		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
 		D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */; };
 		D8DB5DB42EA5211E00F4596B /* ReactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */; };
 		D8DB5DB82EA535BD00F4596B /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB72EA535BB00F4596B /* AlertType.swift */; };
@@ -349,8 +349,8 @@
 		D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeView.swift; sourceTree = "<group>"; };
-		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D32EA2A70F00FCB472 /* ArchiveHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHomeViewModel.swift; sourceTree = "<group>"; };
+		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
 		D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTag.swift; sourceTree = "<group>"; };
 		D8DB5DB72EA535BB00F4596B /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -452,7 +452,6 @@
 				D8C7C2B22EA2145D00FCB472 /* ExhibitionDtoMapper.swift */,
 				D8C7C2A72EA14AE300FCB472 /* View+CustomAlert.swift */,
 				D8C7C0932E9F3E0700FCB472 /* UIImage.swift */,
-				D8C7C2D52EA2AB9300FCB472 /* Date+Extensions.swift */,
 				963573BE2E9B84D500B2FA79 /* Log.swift */,
 				D8C7C0912E9F3E0000FCB472 /* UserDefaults.swift */,
 				99191E262EA199F300D2F71A /* View+CustomAlert.swift */,
@@ -968,7 +967,6 @@
 			children = (
 				D8C7C2AE2EA1E95000FCB472 /* ExhibitionArchiveView.swift */,
 				8C3B37C52E9EB8DE003FF185 /* ArchiveView.swift */,
-				D8C7C2CD2EA2A6F500FCB472 /* ArchiveHomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1344,7 +1342,6 @@
 				8C3B37A82E9E716C003FF185 /* ArticleListView.swift in Sources */,
 				99191E7A2EA365B200D2F71A /* ArtistCreateRequestDto.swift in Sources */,
 				D8C7C0A52E9F4A9300FCB472 /* InputArtworkInfoView.swift in Sources */,
-				D8C7C2D42EA2A70F00FCB472 /* ArchiveHomeViewModel.swift in Sources */,
 				9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */,
 				D8C7C29C2EA121AA00FCB472 /* ExhibitionResponseDto.swift in Sources */,
 				99E6F0BF2E91F00A002ED9C2 /* RootView.swift in Sources */,
@@ -1353,8 +1350,8 @@
 				8C3B37BA2E9EB82B003FF185 /* ExhibitionListView.swift in Sources */,
 				8CCA42102EA56C0B00351E19 /* ReactionData.swift in Sources */,
 				99191E212EA199A100D2F71A /* TitleSection.swift in Sources */,
-				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				D8C7C2CE2EA2A6F500FCB472 /* ArchiveHomeView.swift in Sources */,
+				D8C7C2D62EA2AB9300FCB472 /* Date+Extensions.swift in Sources */,
 				99E6F0CA2E91F1C5002ED9C2 /* CameraViewModel.swift in Sources */,
 				D8C7C0AF2E9FBE7300FCB472 /* Config.swift in Sources */,
 				99E6F1012E97B0D1002ED9C2 /* Artwork.swift in Sources */,
