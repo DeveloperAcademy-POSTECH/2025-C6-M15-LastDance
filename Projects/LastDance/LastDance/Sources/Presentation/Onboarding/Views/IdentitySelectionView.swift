@@ -25,7 +25,6 @@ struct IdentitySelectionView: View {
             
             IdentitySelectionNextButton(viewModel: viewModel)
         }
-        .padding(.horizontal, 20)
         .background(LDColor.color5)
         .onAppear {
             // TODO: - 전시장소 데이터 가져오기 확인용 (이후 제거 필요)
@@ -89,18 +88,20 @@ struct IdentityCardButton: View {
             HStack(spacing: 16) {
                 Image(icon)
                     .resizable()
-                    .frame(width: 48, height: 48)
+                    .frame(width: 44, height: 44)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(LDFont.heading04)
                         .foregroundColor(.black)
+                        .padding(.horizontal, 20)
+
                     
                     Text(subtitle)
                         .font(LDFont.regular03)
                         .foregroundColor(.gray)
+                        .padding(.horizontal, 20)
                 }
-                
                 Spacer()
             }
             .padding(20)
