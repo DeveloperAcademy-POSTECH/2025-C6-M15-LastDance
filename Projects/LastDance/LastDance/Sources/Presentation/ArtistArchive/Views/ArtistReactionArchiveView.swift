@@ -27,7 +27,7 @@ struct ArtistReactionArchiveView: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(.black)
+                        .foregroundColor(LDColor.color1)
                         .frame(width: 44, height: 44)
                 }
                 
@@ -35,7 +35,7 @@ struct ArtistReactionArchiveView: View {
                 
                 Text(viewModel.exhibitionTitle)
                     .font(LDFont.heading04)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color1)
                     .lineLimit(1)
                     .truncationMode(.tail)
                 
@@ -73,7 +73,7 @@ struct ArtistReactionArchiveView: View {
                                     
                                     // 반응 카운터 배지
                                     Circle()
-                                        .fill(Color.black)
+                                        .fill(LDColor.color1)
                                         .frame(width: 28, height: 28)
                                         .overlay(
                                             Text("\(reactionItem.reactionCount)")
@@ -86,7 +86,7 @@ struct ArtistReactionArchiveView: View {
                                 // 작품 제목
                                 Text(reactionItem.artworkTitle)
                                     .font(LDFont.heading06)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(LDColor.color1)
                                     .frame(width: 155, alignment: .leading)
                             }
                         }

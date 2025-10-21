@@ -21,7 +21,7 @@ struct ArtistReactionView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("나의 전시")
                 .font(LDFont.heading02)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
                 .padding(.horizontal, 40)
                 .padding(.top, 20)
             
@@ -82,12 +82,12 @@ struct ArtistExhibitionCard: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 
                 Circle()
-                    .fill(Color.black)
+                    .fill(LDColor.color1)
                     .frame(width: 28, height: 28)
                     .overlay(
                         Text("\(exhibition.reactionCount)")
                             .font(LDFont.heading07)
-                            .foregroundColor(.white)
+                            .foregroundColor(LDColor.color6)
                     )
                     .padding(.leading, 12)
                     .padding(.bottom, 12)
@@ -96,7 +96,7 @@ struct ArtistExhibitionCard: View {
             // 전시 제목 (고정 높이로 정렬 보장)
             Text(exhibition.title)
                 .font(LDFont.medium04)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .frame(width: 155, height: 44, alignment: .topLeading)

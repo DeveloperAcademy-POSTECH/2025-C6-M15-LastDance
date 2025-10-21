@@ -36,7 +36,7 @@ struct ExhibitionArchiveView: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(.black)
+                        .foregroundColor(LDColor.color1)
                         .frame(width: 44, height: 44)
                 }
                 Spacer()
@@ -48,7 +48,7 @@ struct ExhibitionArchiveView: View {
             HStack {
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
                     .font(LDFont.heading06)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color1)
                 Spacer()
             }
             .padding(.horizontal, 20)
@@ -58,7 +58,7 @@ struct ExhibitionArchiveView: View {
             HStack {
                 Text(exhibition?.createdAt ?? "")
                     .font(LDFont.regular03)
-                    .foregroundColor(.gray)
+                    .foregroundColor(LDColor.color2)
                 Spacer()
             }
             .padding(.horizontal, 20)
@@ -97,7 +97,7 @@ struct ExhibitionArchiveView: View {
                     // 빈 상태
                     Text("아직 남긴 반응이 없습니다")
                         .font(LDFont.heading06)
-                        .foregroundColor(.gray)
+                        .foregroundColor(LDColor.color2)
                         .frame(maxWidth: .infinity, minHeight: 400)
                 }
             }
@@ -161,13 +161,13 @@ struct ReactionCardView: View {
             if let artwork = artwork {
                 Text(artwork.title)
                     .font(LDFont.heading04)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color1)
             }
             // 작가 이름
             if let artist = artist {
                 Text(artist.name)
                     .font(LDFont.regular02)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color1)
             }
         }
     }

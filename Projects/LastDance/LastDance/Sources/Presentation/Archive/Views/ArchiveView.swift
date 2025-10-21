@@ -101,7 +101,7 @@ struct ArchiveHeaderView: View {
             Button(action: onClose) {
                 Image(systemName: "xmark")
                     .font(.system(size: 24, weight: .medium))
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color1)
                     .frame(width: 44, height: 44)
             }
             Spacer()
@@ -117,7 +117,7 @@ struct ExhibitionTitleView: View {
     var body: some View {
         Text(title)
             .font(LDFont.heading02)
-            .foregroundColor(.black)
+            .foregroundColor(LDColor.color1)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
             .padding(.top, 12)
@@ -134,7 +134,7 @@ struct ArtworkCountView: View {
                 .foregroundColor(LDColor.gray5)
             Text("\(count)개의 작품")
                 .font(LDFont.heading04)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
@@ -176,7 +176,7 @@ struct ArtworkGridView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 157, height: 213)
-                                .foregroundColor(.gray)
+                                .foregroundColor(LDColor.color2)
                         @unknown default:
                             EmptyView()
                         }
@@ -187,7 +187,7 @@ struct ArtworkGridView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 157, height: 213)
-                        .foregroundColor(.gray)
+                        .foregroundColor(LDColor.color2)
                 }
             }
 
@@ -259,7 +259,7 @@ struct CameraActionButtonView: View {
                     .foregroundColor(LDColor.color6)
             }
             .frame(width: 80, height: 80)
-            .background(Color.black)
+            .background(LDColor.color1)
             .clipShape(Circle())
         }
         .padding(.bottom, 40)

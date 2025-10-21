@@ -21,7 +21,7 @@ struct AudienceArchivingView: View {
             
             Text("나의 전시")
                 .font(LDFont.heading02)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
                 .padding(.horizontal, 40)
                 .padding(.top, 20)
             
@@ -59,14 +59,14 @@ struct AudienceArchivingView: View {
                     }
                     Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
                         .font(LDFont.medium03)
-                        .foregroundColor(.black)
+                        .foregroundColor(LDColor.color1)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼 (전시가 있을 때만)
             if viewModel.hasExhibitions {
@@ -110,7 +110,7 @@ struct ExhibitionCardView: View {
             // 전시 제목
             Text(exhibition.title)
                 .font(LDFont.heading06)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .frame(width: 155, alignment: .leading)
