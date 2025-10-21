@@ -1,15 +1,8 @@
-//
-//  ArtistReactionView.swift
-//  LastDance
-//
-//  Created by 광로 on 10/14/25.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ArtistReactionView: View {
-    @StateObject private var viewModel = ArtistReactionViewModel()
+    @StateObject private var viewModel = ArtistReactionViewModel() // ViewModel now fetches artist ID internally
     @EnvironmentObject private var router: NavigationRouter
     
     private let gridColumns: [GridItem] = [
@@ -36,12 +29,12 @@ struct ArtistReactionView: View {
                         columns: gridColumns,
                         spacing: 24
                     ) {
-                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
+                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, displayItem in
                             ArtistExhibitionCard(
-                                exhibition: exhibition
+                                displayItem: displayItem // Pass the new display item
                             )
                             .onTapGesture {
-                                router.push(.artistReactionArchiveView(exhibitionId: exhibition.id))
+                                router.push(.artistReactionArchiveView(exhibitionId: String(displayItem.exhibition.id)))
                             }
                         }
                     }
@@ -61,7 +54,7 @@ struct ArtistReactionView: View {
             .padding(.bottom, 40)
         }
         .onAppear {
-            viewModel.loadExhibitionsFromDB()
+            viewModel.loadArtistExhibitions() // Call the new loading function
         }
     }
 }
@@ -69,23 +62,34 @@ struct ArtistReactionView: View {
 // MARK: - Components
 
 struct ArtistExhibitionCard: View {
-    let exhibition: MockExhibitionData
+    let displayItem: ArtistExhibitionDisplayItem // Changed type
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
-                Image(exhibition.coverImageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 155, height: 219)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                // Use displayItem.exhibition.coverImageName
+                if let coverImageName = displayItem.exhibition.coverImageName {
+                    Image(coverImageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 155, height: 219)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: 155, height: 219)
+                        .overlay(
+                            Text("이미지 없음")
+                                .foregroundColor(.gray)
+                        )
+                }
                 
                 Circle()
                     .fill(Color.black)
                     .frame(width: 28, height: 28)
                     .overlay(
-                        Text("\(exhibition.reactionCount)")
+                        Text("\(displayItem.reactionCount)") // Use reactionCount from displayItem
                             .font(LDFont.heading07)
                             .foregroundColor(.white)
                     )
@@ -94,7 +98,7 @@ struct ArtistExhibitionCard: View {
             }
             
             // 전시 제목 (고정 높이로 정렬 보장)
-            Text(exhibition.title)
+            Text(displayItem.exhibition.title) // Use title from displayItem.exhibition
                 .font(LDFont.medium04)
                 .foregroundColor(.black)
                 .lineLimit(2)
