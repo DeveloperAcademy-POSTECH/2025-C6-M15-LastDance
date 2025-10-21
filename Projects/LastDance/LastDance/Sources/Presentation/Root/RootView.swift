@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
+    @StateObject private var reactionInputViewModel = ReactionInputViewModel()
     @State private var userType: UserType?
 
     init() {
@@ -59,7 +60,11 @@ struct RootView: View {
                     ArchiveView(exhibitionId: id)
                         .toolbar(.hidden, for: .navigationBar)
                 case .category:
-                    CategoryView()
+                    CategorySelectView()
+                        .navigationBarBackButtonHidden(true)
+                case .reactionTags:
+                    TagSelectView()
+                        .navigationBarBackButtonHidden(true)
                 case .completeReaction:
                     CompleteReactionView()
                 case .inputArtworkInfo(let image, let exhibitionId, let artistId):
@@ -86,5 +91,6 @@ struct RootView: View {
             }
         }
         .environmentObject(router)
+        .environmentObject(reactionInputViewModel)
     }
 }

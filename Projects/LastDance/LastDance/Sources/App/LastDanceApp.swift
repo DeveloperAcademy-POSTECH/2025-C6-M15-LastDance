@@ -45,15 +45,15 @@ struct LastDanceApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
-            // TODO: - 개발 시점에 목데이터 사용 원할시 주석 해제
-//                .onAppear {
-//                    #if DEBUG
-//                    Task { @MainActor in
-//                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
-//                    }
-//                    #endif
-//                }
+                .environment(\.keyboardManager, keyboardManager)
+            // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
+                .onAppear {
+                    #if DEBUG
+                    Task { @MainActor in
+                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
+                    }
+                    #endif
+                }
         }
         .modelContainer(sharedModelContainer)
     }

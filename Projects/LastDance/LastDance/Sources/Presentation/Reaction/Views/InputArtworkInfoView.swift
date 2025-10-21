@@ -10,7 +10,7 @@ import SwiftData
 
 struct InputArtworkInfoView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ReactionInputViewModel()
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
 
     @State private var activeBottomSheet: BottomSheetType? = nil
 

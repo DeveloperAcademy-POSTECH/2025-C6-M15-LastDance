@@ -11,7 +11,7 @@ import SwiftUI
 struct ArtworkDetailView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = ReactionInputViewModel()
+    @EnvironmentObject private var viewModel: ReactionInputViewModel
 
     private let apiService = ReactionAPIService()
 
