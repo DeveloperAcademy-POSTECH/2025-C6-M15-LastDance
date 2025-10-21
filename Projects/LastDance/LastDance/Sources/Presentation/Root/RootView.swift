@@ -49,7 +49,7 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 case .artworkDetail(let id, let capturedImage):
                     ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
                         .toolbar(.hidden, for: .navigationBar)

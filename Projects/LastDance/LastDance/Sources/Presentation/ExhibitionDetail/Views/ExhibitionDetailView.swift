@@ -57,6 +57,7 @@ struct ExhibitionDetailView: View {
                 }
             }
         }
+//        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시정보") {
                 router.popLast()
