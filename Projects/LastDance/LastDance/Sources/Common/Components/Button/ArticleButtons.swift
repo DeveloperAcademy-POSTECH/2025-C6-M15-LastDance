@@ -18,17 +18,17 @@ struct ArticleButtons: View {
             Button(action: onSearchMore) {
                 HStack(alignment: .center, spacing: 8) {
                     Image(systemName: "magnifyingglass")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.gray5)
 
                     Text("다른 전시 찾기")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.gray5)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity)
-                .background(Color(red: 0.94, green: 0.94, blue: 0.94))
+                .background(LDColor.color5)
                 .cornerRadius(12)
             }
 
@@ -36,17 +36,17 @@ struct ArticleButtons: View {
             Button(action: onStartVisit) {
                 HStack(alignment: .center, spacing: 8) {
                     Text("관람 시작하기")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(.white)
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.color6)
 
                     Image(systemName: "arrow.right")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(.white)
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.color6)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity)
-                .background(Color(red: 0.14, green: 0.14, blue: 0.14))
+                .background(LDColor.black1)
                 .cornerRadius(12)
             }
         }
@@ -64,12 +64,12 @@ struct ArtistConfirmationButtons: View {
             // 전시중 표시
             HStack{
                 Image(systemName: "staroflife.fill")
-                    .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                    .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.56))
-                
+                    .font(LDFont.regular02)
+                    .foregroundColor(LDColor.gray5)
+
                 Text("전시중")
-                    .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                    .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.56))
+                    .font(LDFont.regular02)
+                    .foregroundColor(LDColor.gray5)
             }
             .padding(.bottom, 16)
         Spacer()
@@ -77,17 +77,17 @@ struct ArtistConfirmationButtons: View {
             Button(action: onConfirm) {
                 HStack(alignment: .center, spacing: 8) {
                     Text("내 전시가 맞아요")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(.white)
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.color6)
 
                     Image(systemName: "arrow.right")
-                        .font(Font.custom("Pretendard", size: 17).weight(.semibold))
-                        .foregroundColor(.white)
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.color6)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
                 .frame(maxWidth: 160)
-                .background(Color(red: 0.14, green: 0.14, blue: 0.14))
+                .background(LDColor.color1)
                 .cornerRadius(12)
             }
         }
