@@ -11,5 +11,5 @@ struct ReactionItem: Identifiable {
     let id = UUID()
     let imageName: String
     let reactionCount: Int
-    let category: String
+    let artworkTitle: String
 }
