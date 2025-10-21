@@ -85,11 +85,11 @@ struct InfoRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
-                .font(Font.custom("Pretendard", size: 16))
+                .font(LDFont.regular02)
                 .foregroundStyle(.black)
 
             Text(value)
-                .font(Font.custom("SF Pro Text", size: 17))
+                .font(LDFont.regular01)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)

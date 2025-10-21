@@ -20,7 +20,7 @@ struct AudienceArchivingView: View {
         VStack(alignment: .leading, spacing: 0) {
             
             Text("나의 전시")
-                .font(.system(size: 20, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundColor(.black)
                 .padding(.horizontal, 40)
                 .padding(.top, 20)
@@ -43,9 +43,7 @@ struct AudienceArchivingView: View {
                             )
                             .offset(y: index % 2 == 0 ? 0 : 40)
                             .onTapGesture {
-                                if let exhibitionIdInt = Int(exhibition.id) {
-                                    router.push(.exhibitionArchive(exhibitionId: exhibitionIdInt))
-                                }
+                                router.push(.exhibitionArchive(exhibitionId: exhibition.id))
                             }
                         }
                     }
@@ -60,7 +58,7 @@ struct AudienceArchivingView: View {
                         router.push(.exhibitionList)
                     }
                     Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
-                        .font(.system(size: 18, weight: .medium))
+                        .font(LDFont.medium03)
                         .foregroundColor(.black)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
@@ -106,13 +104,12 @@ struct ExhibitionCardView: View {
                     .frame(width: 155, height: 219)
                     .overlay(
                         Text("이미지 없음")
-                            .font(.caption)
                             .foregroundColor(.gray)
                     )
             }
             // 전시 제목
             Text(exhibition.title)
-                .font(.system(size: 16, weight: .semibold))
+                .font(LDFont.heading06)
                 .foregroundColor(.black)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
@@ -120,7 +117,7 @@ struct ExhibitionCardView: View {
             
             // 날짜
             Text(dateString)
-                .font(.system(size: 14, weight: .regular))
+                .font(LDFont.regular03)
                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
                 .frame(width: 155, alignment: .leading)
         }

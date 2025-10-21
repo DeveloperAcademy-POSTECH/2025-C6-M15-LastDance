@@ -112,11 +112,11 @@ struct ExhibitionInfoSection: View {
             
             if !artistNames.isEmpty {
                 Text(artistNames.joined(separator: ", "))
-                    .font(Font.custom("Pretendard", size: 16))
+                    .font(LDFont.regular02)
                     .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
             }
             Text(formatDateRange(exhibition.startDate, exhibition.endDate))
-                .font(Font.custom("Pretendard", size: 16))
+                .font(LDFont.regular02)
                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -30,7 +30,7 @@ struct ResponseView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(artwork?.title ?? "작품 반응")
-                    .font(.headline)
+                    .font(LDFont.heading04)
                     .foregroundColor(LDColor.color6)
             }
         }
@@ -149,11 +149,9 @@ struct ReactionHeaderView: View {
     var body: some View {
         HStack {
             Text("반응")
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(LDFont.heading03)
             Text("\(count)")
-                .font(Font.custom("Pretendard", size: 14))
-                .fontWeight(.medium)
+                .font(LDFont.regular03)
                 .foregroundColor(LDColor.color6)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
@@ -225,7 +223,7 @@ struct ReactionItemView: View {
         VStack(alignment: .leading, spacing: 8) {
             // 댓글 텍스트
             Text(viewModel.displayText(for: reaction))
-                .font(.body)
+                .font(LDFont.medium03)
                 .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
                 .lineSpacing(10)
                 .animation(.easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id))
@@ -236,7 +234,7 @@ struct ReactionItemView: View {
                     viewModel.handleExpandToggle(for: reaction)
                 }) {
                     Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                        .font(.caption)
+                        .font(LDFont.medium05)
                         .foregroundColor(.gray)
                 }
             }
@@ -303,7 +301,7 @@ struct CategoryTagView: View {
                 .frame(width: 6, height: 6)
 
             Text(text)
-                .font(.caption)
+                .font(LDFont.medium06)
                 .foregroundColor(.primary)
         }
         .padding(.horizontal, 14)
@@ -323,7 +321,7 @@ struct MoreCategoriesButton: View {
     var body: some View {
         Button(action: action) {
             Text("+\(count)")
-                .font(.caption)
+                .font(LDFont.medium06)
                 .foregroundColor(.gray)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)

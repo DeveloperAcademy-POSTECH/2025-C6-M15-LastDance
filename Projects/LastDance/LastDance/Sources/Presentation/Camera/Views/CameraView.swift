@@ -39,7 +39,7 @@ struct CameraView: View {
                             Image(systemName: "speaker.slash.fill")
                                 .foregroundStyle(.black)
                             Text("카메라 소리가 나지 않으니 안심하세요!")
-                                .font(.subheadline)
+                                .font(LDFont.medium04)
                                 .foregroundStyle(.black)
                         }
                         .padding(.horizontal, 14)

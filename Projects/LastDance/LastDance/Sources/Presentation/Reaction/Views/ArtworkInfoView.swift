@@ -53,12 +53,11 @@ struct ArtworkInfoView: View {
             // 작품 정보 영역
             VStack(alignment: .leading, spacing: 8) {
                 Text(artwork?.title ?? "작품 제목")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(LDFont.heading01)
                     .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
 
                 Text(artist?.name ?? "알 수 없는 작가")
-                    .font(.subheadline)
+                    .font(LDFont.medium02)
                     .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.2))
             }
             .padding(.horizontal, 28)

@@ -40,7 +40,7 @@ struct IdentitySelectionTitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("어떤 방식으로 전시에 참여하고 싶나요?")
-                .font(.system(size: 21, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundStyle(.black)
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,11 +91,11 @@ struct IdentityCardButton: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(LDFont.heading04)
                         .foregroundColor(.black)
 
                     Text(subtitle)
-                        .font(.system(size: 14))
+                        .font(LDFont.regular03)
                         .foregroundColor(.gray)
                 }
 

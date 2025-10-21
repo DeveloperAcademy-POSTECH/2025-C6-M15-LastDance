@@ -116,7 +116,7 @@ struct ExhibitionTitleView: View {
     
     var body: some View {
         Text(title)
-            .font(.system(size: 22, weight: .semibold))
+            .font(LDFont.heading02)
             .foregroundColor(.black)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
@@ -130,12 +130,10 @@ struct ArtworkCountView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("현재까지 촬영한 이미지")
-                .font(.custom("Pretendard", size: 18))
-                .fontWeight(.medium)
+                .font(LDFont.regular02)
                 .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
             Text("\(count)개의 작품")
-                .font(.custom("Pretendard", size: 18))
-                .fontWeight(.medium)
+                .font(LDFont.heading04)
                 .foregroundColor(.black)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

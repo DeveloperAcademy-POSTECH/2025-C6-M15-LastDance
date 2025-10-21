@@ -21,8 +21,7 @@ struct ReactionFormView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("반응 남기기")
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(LDFont.heading02)
                 .foregroundColor(.black)
 
             Spacer().frame(height: 14)
@@ -48,7 +47,7 @@ struct ReactionFormView: View {
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("감정 태그")
-                .bold()
+                .font(LDFont.heading04)
                 .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
 
             if viewModel.selectedCategories.isEmpty {
@@ -59,6 +58,7 @@ struct ReactionFormView: View {
                     label: {
                         HStack {
                             Text("지금 떠오르는 감정을 표현해보세요")
+                                .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
                                     Color(red: 0.47, green: 0.47, blue: 0.47)
@@ -99,6 +99,7 @@ struct ReactionFormView: View {
     private var MessageEditor: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("메시지")
+                .font(LDFont.heading04)
 
             VStack(alignment: .trailing, spacing: 8) {
                 ZStack(alignment: .topLeading) {
@@ -138,13 +139,13 @@ struct ReactionFormView: View {
 
                 HStack(spacing: 0) {
                     Text("\(viewModel.message.count)")
-                        .font(.caption)
+                        .font(LDFont.regular02)
                         .foregroundStyle(
                             !viewModel.message.isEmpty ? .black : .gray
                         )
 
                     Text("/\(viewModel.limit)")
-                        .font(.caption)
+                        .font(LDFont.medium05)
                         .foregroundStyle(.gray)
                 }
             }

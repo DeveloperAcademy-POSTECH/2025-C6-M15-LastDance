@@ -27,7 +27,7 @@ struct ArtistReactionArchiveView: View {
                 Spacer()
                 
                 Text(viewModel.exhibitionTitle)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -70,7 +70,7 @@ struct ArtistReactionArchiveView: View {
                                         .frame(width: 50, height: 50)
                                         .overlay(
                                             Text("\(reactionItem.reactionCount)")
-                                                .font(.system(size: 18, weight: .bold))
+                                                .font(LDFont.regular03)
                                                 .foregroundColor(LDColor.color6)
                                         )
                                         .padding(.leading, 12)
@@ -79,7 +79,7 @@ struct ArtistReactionArchiveView: View {
                                 
                                 // 반응 카테고리
                                 Text(reactionItem.category)
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(LDFont.heading06)
                                     .foregroundColor(.black)
                                     .frame(width: 155, alignment: .leading)
                             }
@@ -91,7 +91,7 @@ struct ArtistReactionArchiveView: View {
                 } else {
                     // 빈 상태
                     Text("아직 남긴 반응이 없습니다")
-                        .font(.system(size: 18, weight: .medium))
+                        .font(LDFont.heading06)
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, minHeight: 400)
                 }

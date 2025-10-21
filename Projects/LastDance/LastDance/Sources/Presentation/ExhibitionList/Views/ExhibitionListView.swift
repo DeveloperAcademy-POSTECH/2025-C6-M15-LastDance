@@ -12,12 +12,12 @@ struct ExhibitionListTitleSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("관람하러 온 전시를 알려주세요")
-                .font(.system(size: 24, weight: .bold))
+                .font(LDFont.heading02)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("전시명")
-                .font(.system(size: 14, weight: .regular))
+                .font(LDFont.regular03)
                 .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.52))
                 .padding(.top, 24)
         }

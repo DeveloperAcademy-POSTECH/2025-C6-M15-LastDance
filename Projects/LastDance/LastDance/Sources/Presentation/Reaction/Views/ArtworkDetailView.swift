@@ -63,7 +63,7 @@ struct ArtworkDetailView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
-                    .font(.headline)
+                    .font(LDFont.heading04)
                     .foregroundColor(LDColor.color6)
             }
         }

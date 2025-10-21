@@ -188,6 +188,7 @@ private struct SelectionSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
+                .font(LDFont.heading02)
                 .padding(.top, 10)
                 .padding(.horizontal, 24)
 
@@ -202,7 +203,7 @@ private struct SelectionSheet: View {
                             HStack {
                                 Text(item)
                                     .foregroundColor(.black)
-                                    .font(Font.custom("SF Pro Text", size: 17))
+                                    .font(LDFont.regular01)
                                 Spacer()
                             }
                             .padding(12)

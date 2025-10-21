@@ -21,12 +21,24 @@ enum LDFont {
     /// pretendard, size: 16 , weight: semibold
     static let heading06: Font = .custom("Pretendard-SemiBold", size: 16)
     /// pretendard, size: 18 , weight: regular
-    static let body01: Font = .custom("Pretendard-Regular", size: 18)
+    static let regular01: Font = .custom("Pretendard-Regular", size: 18)
     /// pretendard, size: 16 , weight: regular
-    static let body02: Font = .custom("Pretendard-Regular", size: 16)
+    static let regular02: Font = .custom("Pretendard-Regular", size: 16)
     /// pretendard, size: 14 , weight: regular
-    static let body03: Font = .custom("Pretendard-Regular", size: 14)
-    
+    static let regular03: Font = .custom("Pretendard-Regular", size: 14)
+    /// pretendard, size: 20,  weight: medium
+    static let medium01: Font = .custom("Pretendard-Medium", size: 20)
+    /// pretendard, size: 19,  weight: medium
+    static let medium02: Font = .custom("Pretendard-Medium", size: 19)
+    /// pretendard, size: 18,  weight: medium
+    static let medium03: Font = .custom("Pretendard-Medium", size: 18)
+    /// pretendard, size: 16,  weight: medium
+    static let medium04: Font = .custom("Pretendard-Medium", size: 16)
+    /// pretendard, size: 14,  weight: medium
+    static let medium05: Font = .custom("Pretendard-Medium", size: 14)
+    /// pretendard, size: 12,  weight: medium
+    static let medium06: Font = .custom("Pretendard-Medium", size: 12)
+
     /// system, size: 18, weight: semibold
     static let barButton: Font = .system(size: 18, weight: .semibold)
 }

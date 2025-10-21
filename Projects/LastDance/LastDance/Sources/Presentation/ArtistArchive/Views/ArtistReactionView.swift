@@ -17,7 +17,7 @@ struct ArtistReactionView: View {
             // 상단 타이틀
             HStack {
                 Text("나의 전시")
-                    .font(.system(size: 21, weight: .bold))
+                    .font(LDFont.heading02)
                     .foregroundColor(.black)
                 Spacer()
             }
@@ -46,7 +46,7 @@ struct ArtistReactionView: View {
                                 .frame(width: 50, height: 50)
                                 .overlay(
                                     Text("\(viewModel.totalReactionCount)")
-                                        .font(.system(size: 18, weight: .bold))
+                                        .font(LDFont.heading04)
                                         .foregroundColor(LDColor.color6)
                                 )
                                 .padding(.leading, 12)
@@ -58,7 +58,7 @@ struct ArtistReactionView: View {
                         }
                         // 전시 제목
                         Text(viewModel.exhibitionTitle)
-                            .font(.system(size: 16, weight: .medium))
+                            .font(LDFont.medium04)
                             .foregroundColor(.black)
                             .frame(width: 155, alignment: .leading)
                     }
