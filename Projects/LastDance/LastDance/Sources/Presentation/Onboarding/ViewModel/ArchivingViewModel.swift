@@ -2,21 +2,43 @@
 //  ArchivingViewModel.swift
 //  LastDance
 //
-//  Created by donghee on 10/13/25.
+//  Created by donghee, 광로 on 10/19/25.
 //
 
 import Moya
 import SwiftUI
+import SwiftData
 
 @MainActor
 final class ArchivingViewModel: ObservableObject {
     
+    @Published private(set) var exhibitions: [Exhibition] = []
+    @Published var isLoading = false
+    
+    private let swiftDataManager = SwiftDataManager.shared
     private let visitorService = VisitorAPIService()
     private let artistService = ArtistAPIService()
-
-    /// 추가 버튼 탭
-    func tapAddButton() {
-        // TODO: 전시 추가 또는 다음 화면으로 네비게이션
+    
+    // MARK: - Computed Properties
+    
+    var hasExhibitions: Bool {
+        !exhibitions.isEmpty
+    }
+    
+    // MARK: - Public Methods
+    
+    func loadExhibitions() {
+        isLoading = true
+        do {
+            self.exhibitions = try fetchExhibitions()
+        } catch {
+            Log.error("Failed to load exhibitions: \(error)")
+        }
+        self.isLoading = false
+    }
+    
+    func dateString(for exhibition: Exhibition) -> String {
+        return Date.formatShortDate(from: exhibition.startDate)
     }
     
     /// 서버에 있는 모든 작가 정보 로드 (확인용)
@@ -51,5 +73,24 @@ final class ArchivingViewModel: ObservableObject {
                 Log.debug("목록 실패: \(err)")
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func fetchExhibitions() throws -> [Exhibition] {
+        guard let container = swiftDataManager.container else {
+            throw NSError(domain: "ArchivingViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
+        }
+        
+        let context = container.mainContext
+        let predicate = #Predicate<Exhibition> { exhibition in
+            exhibition.isUserSelected == true
+        }
+        let descriptor = FetchDescriptor<Exhibition>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.startDate, order: .reverse)]
+        )
+        
+        return try context.fetch(descriptor)
     }
 }

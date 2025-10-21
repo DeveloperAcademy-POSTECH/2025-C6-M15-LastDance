@@ -1,67 +1,133 @@
 //
-//  ArchivingView.swift
+//  AudienceArchivingView.swift
 //  LastDance
 //
-//  Created by donghee on 10/13/25.
+//  Created by donghee, 광로 on 10/19/25.
 //
 
 import SwiftUI
 
-struct AudienceArchivingTitleSection: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("나의 전시")
-                .font(.system(size: 21, weight: .bold))
-                .foregroundStyle(.black)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.top, 20)
-        .padding(.leading, 20)
-    }
-}
-
-struct AudienceArchivingAddButtonSection: View {
-    @EnvironmentObject private var router: NavigationRouter
-    @ObservedObject var viewModel: ArchivingViewModel
-
-    var body: some View {
-        VStack(spacing: 40) {
-            CircleAddButton {
-                viewModel.tapAddButton()
-                router.push(.exhibitionList)
-            }
-
-            Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
-                .font(.system(size: 20, weight: .medium))
-                .foregroundStyle(.black)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-        }
-    }
-}
-
-/// 아카이빙 시작 뷰
 struct AudienceArchivingView: View {
     @StateObject private var viewModel = ArchivingViewModel()
-
+    @EnvironmentObject private var router: NavigationRouter
+    
+    private let gridColumns: [GridItem] = [
+        GridItem(.fixed(155), spacing: 16),
+        GridItem(.fixed(155), spacing: 16)
+    ]
+    
     var body: some View {
-        VStack(spacing: 0) {
-            AudienceArchivingTitleSection()
-            Spacer()
-
-            AudienceArchivingAddButtonSection(viewModel: viewModel)
-
-            Spacer()
+        VStack(alignment: .leading, spacing: 0) {
+            
+            Text("나의 전시")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.black)
+                .padding(.horizontal, 40)
+                .padding(.top, 20)
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.hasExhibitions {
+                // 전시 그리드
+                ScrollView {
+                    LazyVGrid(
+                        columns: gridColumns,
+                        spacing: 24
+                    ) {
+                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
+                            ExhibitionCardView(
+                                exhibition: exhibition,
+                                dateString: viewModel.dateString(for: exhibition)
+                            )
+                            .offset(y: index % 2 == 0 ? 0 : 40)
+                            .onTapGesture {
+                                if let exhibitionIdInt = Int(exhibition.id) {
+                                    router.push(.exhibitionArchive(exhibitionId: exhibitionIdInt))
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 32)
+                    .padding(.top, 30)
+                    .padding(.bottom, 100)
+                }
+            } else {
+                // 빈 상태
+                VStack(spacing: 38) {
+                    CircleAddButton {
+                        router.push(.exhibitionList)
+                    }
+                    Text("전시 관람을 시작해 나만의\n전시 보관소를 만들어보세요")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(4)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
-        .padding(.horizontal, 20)
-        .navigationBarBackButtonHidden(false)
+        .background(Color.white)
+        .overlay(alignment: .bottomTrailing) {
+            // 플로팅 버튼 (전시가 있을 때만)
+            if viewModel.hasExhibitions {
+                CircleAddButton {
+                    router.push(.exhibitionList)
+                }
+                .padding(.trailing, 24)
+                .padding(.bottom, 40)
+            }
+        }
         .onAppear {
-            // TODO: - Visitor 전체 목록 가져오기 확인용 (나중에 제거)
-            viewModel.loadVisitorAPI()
+            viewModel.loadExhibitions()
+        }
+    }
+}
+
+// MARK: - Components
+
+struct ExhibitionCardView: View {
+    let exhibition: Exhibition
+    let dateString: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // 전시 포스터 이미지
+            if let coverImageName = exhibition.coverImageName {
+                Image(coverImageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 155, height: 219)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            } else {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(width: 155, height: 219)
+                    .overlay(
+                        Text("이미지 없음")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    )
+            }
+            // 전시 제목
+            Text(exhibition.title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.black)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .frame(width: 155, alignment: .leading)
+            
+            // 날짜
+            Text(dateString)
+                .font(.system(size: 14, weight: .regular))
+                .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.35))
+                .frame(width: 155, alignment: .leading)
         }
     }
 }
 
 #Preview {
     AudienceArchivingView()
+        .environmentObject(NavigationRouter())
 }
