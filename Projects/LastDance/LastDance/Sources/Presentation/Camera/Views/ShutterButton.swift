@@ -15,10 +15,10 @@ struct ShutterButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(.white)
+                    .fill(LDColor.color6)
                     .frame(width: 60, height: 60)
                 Circle()
-                    .stroke(.white.opacity(0.6), lineWidth: 2)
+                    .stroke(LDColor.color6.opacity(0.6), lineWidth: 2)
                     .frame(width: 72, height: 72)
             }
         }

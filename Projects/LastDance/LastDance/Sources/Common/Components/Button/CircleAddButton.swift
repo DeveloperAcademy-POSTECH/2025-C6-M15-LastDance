@@ -15,11 +15,11 @@ struct CircleAddButton: View {
         Button(action: action) {
             Image(systemName: "plus")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(.white)
+                .foregroundStyle(LDColor.color6)
                 .frame(width: 71, height: 71)
                 .background(
                     Circle()
-                        .fill(Color.black)
+                        .fill(LDColor.color1)
                 )
         }
     }

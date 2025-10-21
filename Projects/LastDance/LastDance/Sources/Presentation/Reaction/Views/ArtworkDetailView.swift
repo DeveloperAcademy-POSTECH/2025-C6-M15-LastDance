@@ -63,7 +63,7 @@ struct ArtworkDetailView: View {
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -80,6 +80,9 @@ struct ArtworkDetailView: View {
                     Log.debug("selectedCategories: \(Array(viewModel.selectedCategories))")
                     Log.debug("message: \(viewModel.message)")
 
+                    // UserDefaults에서 업로드된 이미지 URL 가져오기
+                    let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+                    
                     // UserDefaults에서 저장된 visitorUUID 가져오기
                     guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
                         Log.warning("visitorUUID를 찾을 수 없습니다")
@@ -102,7 +105,6 @@ struct ArtworkDetailView: View {
 
                     let visitorId = visitor.id
                     let visitId = visitHistory.id
-                    let imageUrl: String? = nil  // 이미지 URL이 있으면 전달
                     // 테스트를 위해 임시 tagIds 설정 (실제로는 선택된 카테고리를 태그 ID로 변환 필요)
                     let tagIds: [Int] = [1, 2, 3]
 

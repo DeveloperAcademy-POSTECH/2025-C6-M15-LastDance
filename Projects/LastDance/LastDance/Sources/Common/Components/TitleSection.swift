@@ -28,5 +28,6 @@ struct TitleSection: View {
         }
         .padding(.top, 20)
         .padding(.bottom, 16)
+        .padding(.horizontal, 20)
     }
 }

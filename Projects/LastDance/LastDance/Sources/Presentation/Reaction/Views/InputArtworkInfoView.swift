@@ -32,7 +32,7 @@ struct InputArtworkInfoView: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
+                            .fill(LDColor.color6)
                             .frame(width: 311, height: 411)
                             .shadow(color: .black.opacity(0.24), radius: 6, x: 0, y: 0)
                         
@@ -75,10 +75,17 @@ struct InputArtworkInfoView: View {
                                 return
                             }
 
+                            // 선택한 작가 찾기
+                            guard let selectedArtist = artists.first(where: { $0.name == viewModel.selectedArtistName }) else {
+                                Log.debug("선택한 작가를 찾을 수 없습니다: \(viewModel.selectedArtistName)")
+                                return
+                            }
+
                             viewModel.setArtworkInfo(
                                 artworkTitle: viewModel.selectedArtworkTitle,
                                 artistName: viewModel.selectedArtistName,
-                                artworkId: selectedArtwork.id
+                                artworkId: selectedArtwork.id,
+                                artistId: selectedArtist.id
                             ) { success in
                                 if success {
                                     router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image))
@@ -88,7 +95,7 @@ struct InputArtworkInfoView: View {
                     )
                     .padding(.bottom, 35)
                 }
-                .background(Color.white)
+                .background(LDColor.color6)
 
                 if isBottomSheetActive {
                     Color.black.opacity(0.8)
@@ -201,7 +208,7 @@ private struct SelectionSheet: View {
                             .padding(12)
                             .frame(height: 44)
                         }
-                        .background(selectedItem == item ? Color(red: 0.95, green: 0.95, blue: 0.95) : Color.clear)
+                        .background(selectedItem == item ? LDColor.gray3 : Color.clear)
                         .cornerRadius(12)
                         .padding(.vertical, 6)
                     }
