@@ -86,6 +86,22 @@ enum MockDataLoader {
             comment: "빛이 멋져요",
             createdAt: ""
         )
+        let reaction2 = Reaction(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            visitorId: visitor.id,
+            category: ["강한 메시지가 느껴져요", "생각하게 만드는"],
+            comment: "마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다",
+            createdAt: ""
+        )
+        let reaction3 = Reaction(
+            id: UUID().uuidString,
+            artworkId: artwork1.id,
+            visitorId: visitor.id,
+            category: ["감동적이에요"],
+            comment: "색감과 구도가 인상적입니다.",
+            createdAt: ""
+        )
         context.insert(artwork1); context.insert(artwork2)
         context.insert(capture1)
         context.insert(capture2)
@@ -94,6 +110,8 @@ enum MockDataLoader {
         context.insert(capture5)
         context.insert(capture6)
         context.insert(reaction1)
+        context.insert(reaction2)
+        context.insert(reaction3)
         
         setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
         insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,

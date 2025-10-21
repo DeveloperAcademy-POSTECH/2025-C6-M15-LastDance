@@ -29,6 +29,7 @@ final class ArtistReactionViewModel: ObservableObject {
             // SwiftData에서 Exhibition과 Reaction 데이터
             let exhibitionDescriptor = FetchDescriptor<Exhibition>()
             let dbExhibitions = try context.fetch(exhibitionDescriptor)
+            
             let reactionDescriptor = FetchDescriptor<Reaction>()
             let allReactions = try context.fetch(reactionDescriptor)
             
@@ -39,7 +40,7 @@ final class ArtistReactionViewModel: ObservableObject {
                 }.count
                 
                 return MockExhibitionData(
-                    id: String(exhibition.id),
+                    id: exhibition.id,
                     title: exhibition.title,
                     coverImageName: exhibition.coverImageName ?? "mock_exhibitionCoverImage",
                     reactionCount: reactionCount > 0 ? reactionCount : Int.random(in: 20...100)

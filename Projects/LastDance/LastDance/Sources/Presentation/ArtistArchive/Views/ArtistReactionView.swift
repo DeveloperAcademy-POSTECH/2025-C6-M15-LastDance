@@ -13,8 +13,8 @@ struct ArtistReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
     
     private let gridColumns: [GridItem] = [
-        GridItem(.fixed(155), spacing: 16),
-        GridItem(.fixed(155), spacing: 16)
+        GridItem(.fixed(155), spacing: 31),
+        GridItem(.fixed(155), spacing: 31)
     ]
     
     var body: some View {
@@ -34,7 +34,7 @@ struct ArtistReactionView: View {
                 ScrollView {
                     LazyVGrid(
                         columns: gridColumns,
-                        spacing: 24
+                        spacing: 28
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
                             ArtistExhibitionCard(
@@ -72,7 +72,7 @@ struct ArtistExhibitionCard: View {
     let exhibition: MockExhibitionData
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 12) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
                 Image(exhibition.coverImageName)
