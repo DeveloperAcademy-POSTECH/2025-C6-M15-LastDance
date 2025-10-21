@@ -90,35 +90,31 @@ final class ExhibitionDetailViewModel: ObservableObject {
             Log.error("ExhibitionDetailViewModel: No exhibition to save.")
             return
         }
-        guard let artistId = currentArtistId else {
-            Log.error("ExhibitionDetailViewModel: Current artist ID is not available to link exhibition.")
-            return
-        }
 
-        // 1. Set isUserSelected flag
         exhibition.isUserSelected = true
 
-        // 2. Link exhibition to the current artist in SwiftData
-        let allArtists = dataManager.fetchAll(Artist.self)
-        if let currentArtist = allArtists.first(where: { $0.id == artistId }) {
-            if !currentArtist.exhibitions.contains(exhibition.id) {
-                currentArtist.exhibitions.append(exhibition.id)
-                Log.debug("ExhibitionDetailViewModel: Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
+        if let artistId = currentArtistId {
+            Log.debug("Running artist-specific logic for selecting exhibition.")
+            let allArtists = dataManager.fetchAll(Artist.self)
+            if let currentArtist = allArtists.first(where: { $0.id == artistId }) {
+                if !currentArtist.exhibitions.contains(exhibition.id) {
+                    currentArtist.exhibitions.append(exhibition.id)
+                    Log.debug("Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
+                }
+            } else {
+                Log.warning("Current artist (ID: \(artistId)) not found in SwiftData.")
             }
-        } else {
-            Log.warning("ExhibitionDetailViewModel: Current artist (ID: \(artistId)) not found in SwiftData.")
-        }
 
-        // 3. Update artworks within this exhibition to be associated with the current artist
-        for artwork in exhibition.artworks {
-            if artwork.artistId != artistId { // Only update if different
-                artwork.artistId = artistId
-                Log.debug("ExhibitionDetailViewModel: Updated artwork \(artwork.id) artistId to \(artistId).")
+            for artwork in exhibition.artworks {
+                if artwork.artistId != artistId {
+                    artwork.artistId = artistId
+                    Log.debug("Updated artwork \(artwork.id) artistId to \(artistId).")
+                }
             }
         }
 
         dataManager.saveContext()
-        Log.debug("ExhibitionDetailViewModel: Exhibition '\(exhibition.title)' saved as user's exhibition and linked to artist \(artistId).")
+        Log.debug("ExhibitionDetailViewModel: Context saved after selecting exhibition.")
     }
     
     /// 방문 기록 생성 API 함수
