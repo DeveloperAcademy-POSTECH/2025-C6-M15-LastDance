@@ -18,7 +18,7 @@ struct ArticleListSearchTextField: View {
             .padding(.vertical, 16)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white)
+                    .fill(LDColor.color6)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
@@ -35,7 +35,7 @@ struct ArticleListContent: View {
 
     private var backgroundShape: some View {
         RoundedRectangle(cornerRadius: 8)
-            .fill(Color.white)
+            .fill(LDColor.color6)
     }
 
     private var borderShape: some View {

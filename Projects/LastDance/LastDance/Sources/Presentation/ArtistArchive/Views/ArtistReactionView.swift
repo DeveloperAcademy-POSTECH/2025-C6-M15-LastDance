@@ -47,7 +47,7 @@ struct ArtistReactionView: View {
                                 .overlay(
                                     Text("\(viewModel.totalReactionCount)")
                                         .font(.system(size: 18, weight: .bold))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(LDColor.color6)
                                 )
                                 .padding(.leading, 12)
                                 .padding(.bottom, 12)
@@ -68,7 +68,7 @@ struct ArtistReactionView: View {
                 .padding(.bottom, 100)
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼
             Button(action: {
@@ -80,7 +80,7 @@ struct ArtistReactionView: View {
                     .overlay(
                         Image(systemName: "plus")
                             .font(.system(size: 24, weight: .medium))
-                            .foregroundColor(.white)
+                            .foregroundColor(LDColor.color6)
                     )
                     .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
             }
