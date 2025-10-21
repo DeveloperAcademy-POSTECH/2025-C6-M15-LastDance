@@ -43,9 +43,7 @@ struct AudienceArchivingView: View {
                             )
                             .offset(y: index % 2 == 0 ? 0 : 40)
                             .onTapGesture {
-                                if let exhibitionIdInt = Int(exhibition.id) {
-                                    router.push(.exhibitionArchive(exhibitionId: exhibitionIdInt))
-                                }
+                                router.push(.exhibitionArchive(exhibitionId: exhibition.id))
                             }
                         }
                     }
