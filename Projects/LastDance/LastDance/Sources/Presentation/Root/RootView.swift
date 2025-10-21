@@ -71,7 +71,12 @@ struct RootView: View {
                 case .completeReaction:
                     CompleteReactionView()
                 case .inputArtworkInfo(let image, let exhibitionId, let artistId):
-                    InputArtworkInfoView(image: image, exhibitionId: exhibitionId, artistId: artistId)
+                    InputArtworkInfoView(
+                        image: image,
+                        exhibitionId: exhibitionId,
+                        artistId: artistId
+                    )
+                        .navigationBarBackButtonHidden(true)
                 case .articleExhibitionList:
                     ArticleExhibitionListView()
                         .navigationBarBackButtonHidden(true)

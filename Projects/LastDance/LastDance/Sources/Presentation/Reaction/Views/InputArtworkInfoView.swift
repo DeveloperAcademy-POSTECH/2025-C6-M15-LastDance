@@ -142,9 +142,17 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
+                    .onAppear {
+                        viewModel.fetchAllArtists()
+                    }
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
+            .toolbar {
+                CustomNavigationBar(title: "") {
+                    router.popLast()
+                }
+            }
     }
 }
 

@@ -28,9 +28,11 @@ final class ReactionInputViewModel: ObservableObject {
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
+    // TODO: - 프로토콜 사용 적용하기
     private let dataManager = SwiftDataManager.shared
     private let apiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
+    private let artistAPIService = ArtistAPIService()
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
 
@@ -169,6 +171,20 @@ final class ReactionInputViewModel: ObservableObject {
             }
         }
         return .gray
+    }
+    
+    func fetchAllArtists() {
+        Log.debug("작가 목록 조회 API 호출")
+        artistAPIService.getArtists { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let artists):
+                    Log.debug("작가 목록 조회 성공! 조회된 작가 수: \(artists.count)")
+                case .failure(let error):
+                    Log.error("작가 목록 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
