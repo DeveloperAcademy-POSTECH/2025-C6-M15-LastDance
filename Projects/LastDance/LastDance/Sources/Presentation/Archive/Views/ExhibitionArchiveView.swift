@@ -102,7 +102,7 @@ struct ExhibitionArchiveView: View {
                 }
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .onAppear {
             viewModel.loadData()
             // 방문 기록 생성

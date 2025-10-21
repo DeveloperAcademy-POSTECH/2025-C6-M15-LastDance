@@ -20,8 +20,8 @@ struct BackGround: View {
             .overlay(
                 LinearGradient(
                     stops: [
-                        Gradient.Stop(color: .white.opacity(0), location: 0.00),
-                        Gradient.Stop(color: .white.opacity(0.7), location: 1.00),
+                        Gradient.Stop(color: LDColor.color6.opacity(0), location: 0.00),
+                        Gradient.Stop(color: LDColor.color6.opacity(0.7), location: 1.00),
                     ],
                     startPoint: UnitPoint(x: 0.456, y: 0.5),
                     endPoint: UnitPoint(x: 0, y: 0.5)

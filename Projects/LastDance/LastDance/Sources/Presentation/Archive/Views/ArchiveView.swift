@@ -80,7 +80,7 @@ struct ArchiveView: View {
         }
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [Color.white, Color.white]),
+                gradient: Gradient(colors: [LDColor.color6, LDColor.color6]),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -171,7 +171,7 @@ struct ArtworkGridView: View {
                                 .frame(width: 157, height: 213)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .rotationEffect(.degrees(getRotationAngle(index)))
-                                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+                                .applyShadow(LDShadow.shadow4)
                         case .failure:
                             // TODO: - 실패 시 대체 이미지 넣어주기
                             Image(systemName: "photo")
@@ -213,7 +213,7 @@ struct ArchiveEmptyStateView: View {
             Button(action: onAddTap) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
+                        .fill(LDColor.color6)
                     
                     Image(systemName: "plus")
                         .font(.system(size: 22, weight: .light))
@@ -258,7 +258,7 @@ struct CameraActionButtonView: View {
                 Image("Aperture")
                     .resizable()
                     .frame(width: 38, height: 38)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
             .frame(width: 80, height: 80)
             .background(Color.black)

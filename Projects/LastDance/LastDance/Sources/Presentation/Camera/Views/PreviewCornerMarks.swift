@@ -11,7 +11,7 @@ import SwiftUI
 private struct PreviewCornerMarks: View {
     var length: CGFloat = 22        // 각 코너의 선 길이
     var lineWidth: CGFloat = 3      // 선 두께
-    var color: Color = .white       // 선 색
+    var color: Color = LDColor.color6      // 선 색
     var inset: CGFloat = 6          // 프리뷰 테두리로부터 안쪽 여백
 
     var body: some View {
@@ -56,7 +56,7 @@ extension View {
     /// 뷰파인더 코너 마크 오버레이
     func viewfinderCorners(length: CGFloat = 22,
                            lineWidth: CGFloat = 3,
-                           color: Color = .white,
+                           color: Color = LDColor.color6,
                            inset: CGFloat = 6) -> some View {
         overlay(
             PreviewCornerMarks(length: length,

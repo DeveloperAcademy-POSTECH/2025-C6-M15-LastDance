@@ -24,14 +24,14 @@ struct BottomButton: View {
             label: {
                 HStack {
                     Text(text)
-                        .foregroundStyle(isEnabled ? .white : .black)
+                        .foregroundStyle(isEnabled ? LDColor.color6 : LDColor.color1)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 54, alignment: .center)
-                .background(isEnabled ? Color.black : Color.white)
+                .background(isEnabled ? LDColor.color1 : LDColor.color6)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(isEnabled ? Color.clear : Color.black, lineWidth: 1)
+                        .stroke(isEnabled ? Color.clear : LDColor.gray2, lineWidth: 1)
                 )
             }
         )

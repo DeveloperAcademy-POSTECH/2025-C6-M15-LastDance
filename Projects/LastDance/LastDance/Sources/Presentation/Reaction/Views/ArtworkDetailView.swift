@@ -9,7 +9,6 @@ import SwiftData
 import SwiftUI
 
 struct ArtworkDetailView: View {
-    @Environment(\.keyboardManager) var keyboardManager
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ReactionInputViewModel()
@@ -46,8 +45,8 @@ struct ArtworkDetailView: View {
 
                     Spacer()
                 }
-                .padding(.bottom, keyboardManager.keyboardHeight)
             }
+            .scrollToMinDistance(minDisntance: 32)
 
             BottomButton(
                 text: "전송하기",
@@ -64,14 +63,10 @@ struct ArtworkDetailView: View {
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
-        .animation(
-            .easeOut(duration: 0.25),
-            value: keyboardManager.keyboardHeight
-        )
         .environmentObject(viewModel)
         .customAlert(
             isPresented: $showAlert,

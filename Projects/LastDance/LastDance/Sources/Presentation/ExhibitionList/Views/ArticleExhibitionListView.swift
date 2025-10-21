@@ -25,6 +25,7 @@ struct ArticleExhibitionListContent: View {
                 }
             }
         }
+        .padding(.horizontal, 20)
     }
 }
 
@@ -33,7 +34,10 @@ struct ArticleExhibitionListNextButton: View {
     @ObservedObject var viewModel: ArticleExhibitionListViewModel
 
     var body: some View {
-        BottomButton(text: "다음") {
+        BottomButton(
+            text: "다음",
+            isEnabled: viewModel.selectedExhibitionId != nil
+        ) {
             if let exhibitionId = viewModel.tapNextButton() {
                 router.push(.articleList(selectedExhibitionId: exhibitionId))
             }
@@ -60,7 +64,6 @@ struct ArticleExhibitionListView: View {
             ArticleExhibitionListNextButton(viewModel: viewModel)
         }
         .padding(.top, 18)
-        .padding(.horizontal, 20)
         .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

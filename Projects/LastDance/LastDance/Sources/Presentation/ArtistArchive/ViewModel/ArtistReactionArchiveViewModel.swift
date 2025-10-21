@@ -10,7 +10,6 @@ import SwiftData
 
 @MainActor
 final class ArtistReactionArchiveViewModel: ObservableObject {
-    @Published var exhibition: Exhibition?
     @Published var reactionItems: [ReactionItem] = []
     @Published var isLoading = false
     
@@ -34,13 +33,16 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
             self.isLoading = false
         }
     }
-    
+
     var exhibitionTitle: String {
         exhibition?.title ?? "전시 제목"
     }
+    private var exhibition: Exhibition?
+    private let exhibitionId: String
+    private let swiftDataManager = SwiftDataManager.shared
     
-    var hasReactionItems: Bool {
-        !reactionItems.isEmpty
+    init(exhibitionId: String) {
+        self.exhibitionId = exhibitionId
     }
     
     private func loadExhibition() async {
@@ -63,52 +65,34 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
         } catch {
             Log.error("Failed to load exhibition: \(error)")
         }
-    }
-    
-    private func loadReactionItems() async {
+        let context = container.mainContext
         do {
-            guard let container = swiftDataManager.container else {
-                throw NSError(domain: "ArtistReactionArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
-            }
+            //Exhibition 데이터 가져오기
+            let exhibitionDescriptor = FetchDescriptor<Exhibition>()
+            let exhibitions = try context.fetch(exhibitionDescriptor)
+            exhibition = exhibitions.first(where: { String($0.id) == exhibitionId })
             
-            let context = container.mainContext
+            guard let exhibition = exhibition else {
+                Log.warning("Exhibition not found for id: \(exhibitionId)")
+                isLoading = false
+                return
+            }
+            let exhibitionArtworks = exhibition.artworks
             let reactionDescriptor = FetchDescriptor<Reaction>()
-            let reactions = try context.fetch(reactionDescriptor)
-            await MainActor.run {
-                if reactions.isEmpty {
-                    self.reactionItems = self.generateMockReactionItems()
-                } else {
-                    self.reactionItems = self.convertReactionsToItems(reactions)
-                }
+            let allReactions = try context.fetch(reactionDescriptor)
+            
+            reactionItems = exhibitionArtworks.compactMap { artwork in
+                let artworkReactions = allReactions.filter { $0.artworkId == artwork.id }
+                guard !artworkReactions.isEmpty else { return nil }
+                return ReactionItem(
+                    imageName: artwork.thumbnailURL ?? "mock_artworkImage_01",
+                    reactionCount: artworkReactions.count,
+                    artworkTitle: artwork.title
+                )
             }
         } catch {
-            Log.error("Failed to load reaction items: \(error)")
-            await MainActor.run {
-                self.reactionItems = self.generateMockReactionItems()
-            }
+            Log.error("Failed to load reactions: \(error)")
         }
-    }
-    
-    private func generateMockReactionItems() -> [ReactionItem] {
-        let categories = ["숨", "빛", "색감", "형태", "감정", "공간"]
-        let reactionCounts = [3, 5, 2, 7, 1, 4]
-        
-        return (0..<6).map { index in
-            ReactionItem(
-                imageName: "mock_artworkImage_01",
-                reactionCount: reactionCounts[index],
-                category: categories[index]
-            )
-        }
-    }
-    
-    private func convertReactionsToItems(_ reactions: [Reaction]) -> [ReactionItem] {
-        return reactions.prefix(6).map { reaction in
-            ReactionItem(
-                imageName: "mock_artworkImage_01", // 추후 실제 이미지 경로로 변경
-                reactionCount: 1, // 추후 실제 카운트 로직으로 변경
-                category: reaction.category.first ?? "반응"
-            )
-        }
+        isLoading = false
     }
 }
