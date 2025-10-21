@@ -81,7 +81,6 @@ struct ArtistReactionArchiveView: View {
                                         .padding(.leading, 12)
                                         .padding(.bottom, 12)
                                 }
-                                
                                 // 작품 제목
                                 Text(reactionItem.artworkTitle)
                                     .font(LDFont.heading06)
