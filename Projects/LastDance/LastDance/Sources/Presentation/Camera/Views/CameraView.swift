@@ -44,7 +44,7 @@ struct CameraView: View {
                         }
                         .padding(.horizontal, 14)
                         .padding(.vertical, 8)
-                        .background(.white)
+                        .background(LDColor.color6)
                         .clipShape(Capsule())
                         .transition(.move(edge: .top).combined(with: .opacity))
                         .padding(.top, 8)
@@ -129,12 +129,12 @@ private struct Preview: View {
                             viewModel.endZoomInteraction()
                         }
                     )
-                    .viewfinderCorners(length: 21, lineWidth: 3, color: .white, inset: 2)
+                    .viewfinderCorners(length: 21, lineWidth: 3, color: LDColor.color6, inset: 2)
                 } else {
                     Color.black
                         .overlay(
                             Text("카메라 권한 필요")
-                                .foregroundStyle(.white.opacity(0.6))
+                                .foregroundStyle(LDColor.color6.opacity(0.6))
                                 .font(.callout)
                         )
                 }
@@ -144,7 +144,7 @@ private struct Preview: View {
             .clipped()
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.white.opacity(0.06), lineWidth: 1)
+                    .stroke(LDColor.color6.opacity(0.06), lineWidth: 1)
             )
 
             Spacer(minLength: CameraViewLayout.previewBottomInset)
@@ -159,7 +159,7 @@ private struct CloseButton: View {
         Button(action: action) {
             Image(systemName: "xmark")
                 .font(.system(size: 13, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(LDColor.color6)
                 .frame(width: 28, height: 28)
                 .padding(8)
         }

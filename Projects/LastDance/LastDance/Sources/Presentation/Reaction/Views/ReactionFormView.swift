@@ -90,7 +90,7 @@ struct ReactionFormView: View {
                         }
                         .padding(12)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.white)
+                        .background(LDColor.color6)
                         .cornerRadius(12)
                     }
                 )
@@ -137,7 +137,7 @@ struct ReactionFormView: View {
                 ZStack(alignment: .topLeading) {
 
                     Rectangle()
-                        .fill(Color.white)
+                        .fill(LDColor.color6)
                         .frame(minHeight: 100, maxHeight: 152)
                         .cornerRadius(4)
 
@@ -166,7 +166,7 @@ struct ReactionFormView: View {
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
-                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                        .stroke(LDColor.color6.opacity(0.3), lineWidth: 1)
                 )
 
                 HStack(spacing: 0) {

@@ -42,17 +42,17 @@ struct CustomAlert: View {
             Button(action: action) {
                 Text(buttonText)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(LDColor.color6)
                     .frame(maxWidth: .infinity)
                     .frame(height: 42)
-                    .background(Color.black)
+                    .background(LDColor.color1)
                     .cornerRadius(12)
             }
             .padding(.bottom, 16)
             .padding(.horizontal, 12)
         }
         .frame(width: 293)
-        .background(Color.white)
+        .background(LDColor.color6)
         .cornerRadius(14)
     }
 }

@@ -37,7 +37,7 @@ struct CaptureConfirmView: View {
                         } label: {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 24, weight: .bold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(LDColor.color6)
                                 .padding(8)
                                 .frame(width: 82, height: 82)
                                 .background(Color(red: 0.14, green: 0.14, blue: 0.14), in: Circle())
