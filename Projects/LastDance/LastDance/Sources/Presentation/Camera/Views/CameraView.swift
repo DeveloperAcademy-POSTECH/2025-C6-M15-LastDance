@@ -35,23 +35,28 @@ struct CameraView: View {
                 
                 if noticeVisible {
                     VStack {
-                        HStack {
-                            Image(systemName: "speaker.slash.fill")
-                                .foregroundStyle(.black)
+                        HStack(spacing: 12) {
+                            Image("camera_warning")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 26, height: 26)
+
                             Text("카메라 소리가 나지 않으니 안심하세요!")
-                                .font(.subheadline)
-                                .foregroundStyle(.black)
+                                .font(LDFont.medium04)
+                                .foregroundStyle(LDColor.color6)
                         }
-                        .padding(.horizontal, 14)
+                        .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(LDColor.color6)
-                        .clipShape(Capsule())
+                        .background(LDColor.color1)
                         .transition(.move(edge: .top).combined(with: .opacity))
-                        .padding(.top, 8)
+                        .cornerRadius(12)
+                        .shadow(LDShadow.shadow4)
+                        .shadow(LDShadow.shadow5)
+                        .shadow(LDShadow.shadow6)
                         
                         Spacer()
                     }
-                    .padding(.top, 40)
+                    .padding(.top, 73)
                     .zIndex(2)
                 }
             }

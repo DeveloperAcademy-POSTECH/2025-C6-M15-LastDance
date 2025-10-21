@@ -16,14 +16,15 @@ struct CompleteArticleListInfoView: View {
             InfoRow(label: "작가명", value: viewModel.artist?.name ?? "")
             InfoRow(label: "전시명", value: viewModel.exhibition?.title ?? "")
         }
+        .padding(.horizontal, 20)
     }
 }
 
 struct CompleteArticleListFindButtonView: View {
     @EnvironmentObject private var router: NavigationRouter
     @ObservedObject var viewModel: CompleteArticleListViewModel
-    @State private var showNotFoundAlert = false
-    
+    @Binding var showNotFoundAlert: Bool
+
     var body: some View {
         BottomButton(text: "전시 찾기") {
             if let id = viewModel.exhibition?.id {
@@ -33,19 +34,13 @@ struct CompleteArticleListFindButtonView: View {
                 showNotFoundAlert = true
             }
         }
-        .customAlert(
-            isPresented: $showNotFoundAlert,
-            image: "warning",
-            title: "찾지 못했어요",
-            message: "작가명/전시명을 다시 확인해 주세요.",
-            buttonText: "확인"
-        ) { }
     }
 }
 
 struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = CompleteArticleListViewModel() //최상위 위치
+    @State private var showNotFoundAlert = false
 
     let selectedExhibitionId: Int
     let selectedArtistId: Int
@@ -53,17 +48,17 @@ struct CompleteArticleListView: View {
     var body: some View {
         VStack(spacing: 0) {
             PageIndicator(totalPages: 2, currentPage: 2)
-                .padding(.horizontal, -28)
+
             TitleSection(title: "어떤 작가님이신가요?", subtitle: nil)
-                .padding(.bottom, 8)
-                .padding(.top, 14)
+
             CompleteArticleListInfoView(viewModel: viewModel)   //실제 주입
                 .padding(.top, 14)
+
             Spacer()
-            CompleteArticleListFindButtonView(viewModel: viewModel)
+
+            CompleteArticleListFindButtonView(viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
         }
         .padding(.top, 18)
-        .padding(.horizontal, 28)
         .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -71,6 +66,16 @@ struct CompleteArticleListView: View {
                 router.popLast()
             }
         }
+        .customAlert(
+            isPresented: $showNotFoundAlert,
+            image: "warning",
+            title: "아쉬워요!",
+            message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
+            buttonText: "다시 찾기",
+            action: {
+                showNotFoundAlert = false
+            }
+        )
         .task {
             viewModel.fetchData(exhibitionId: selectedExhibitionId, artistId: selectedArtistId)
         }
@@ -85,18 +90,18 @@ struct InfoRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
-                .font(Font.custom("Pretendard", size: 16))
+                .font(LDFont.regular02)
                 .foregroundStyle(.black)
 
             Text(value)
-                .font(Font.custom("SF Pro Text", size: 17))
+                .font(LDFont.regular01)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(red: 0.94, green: 0.94, blue: 0.94))
+                        .fill(LDColor.gray3)
                 )
         }
     }

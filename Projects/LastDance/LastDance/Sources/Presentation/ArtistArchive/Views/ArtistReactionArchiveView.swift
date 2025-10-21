@@ -9,9 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct ArtistReactionArchiveView: View {
-    @StateObject private var viewModel = ArtistReactionArchiveViewModel()
+    let exhibitionId: String
+    @StateObject private var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
     
+    init(exhibitionId: String) {
+        self.exhibitionId = exhibitionId
+        _viewModel = StateObject(wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
+    }
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -27,7 +32,7 @@ struct ArtistReactionArchiveView: View {
                 Spacer()
                 
                 Text(viewModel.exhibitionTitle)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -45,7 +50,7 @@ struct ArtistReactionArchiveView: View {
                     ProgressView()
                         .scaleEffect(1.2)
                         .frame(maxWidth: .infinity, minHeight: 400)
-                } else if viewModel.hasReactionItems {
+                } else {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
@@ -67,19 +72,18 @@ struct ArtistReactionArchiveView: View {
                                     // 반응 카운터 배지
                                     Circle()
                                         .fill(Color.black)
-                                        .frame(width: 50, height: 50)
+                                        .frame(width: 28, height: 28)
                                         .overlay(
                                             Text("\(reactionItem.reactionCount)")
-                                                .font(.system(size: 18, weight: .bold))
+                                                .font(LDFont.regular03)
                                                 .foregroundColor(LDColor.color6)
                                         )
                                         .padding(.leading, 12)
                                         .padding(.bottom, 12)
                                 }
-                                
-                                // 반응 카테고리
-                                Text(reactionItem.category)
-                                    .font(.system(size: 16, weight: .medium))
+                                // 작품 제목
+                                Text(reactionItem.artworkTitle)
+                                    .font(LDFont.heading06)
                                     .foregroundColor(.black)
                                     .frame(width: 155, alignment: .leading)
                             }
@@ -88,15 +92,12 @@ struct ArtistReactionArchiveView: View {
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
                     .padding(.bottom, 40)
-                } else {
-                    // 빈 상태
-                    Text("아직 남긴 반응이 없습니다")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, minHeight: 400)
                 }
             }
         }
         .background(LDColor.color6)
+        .onAppear {
+            viewModel.loadReactionsFromDB()
+        }
     }
 }

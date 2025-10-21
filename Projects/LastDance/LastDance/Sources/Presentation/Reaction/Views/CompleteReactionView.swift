@@ -26,14 +26,14 @@ struct CompleteReactionView: View {
             Spacer().frame(height: 14)
 
             Text("전송 완료!")
-                .font(.title2)
-                .bold()
+                .font(LDFont.heading03)
                 .lineSpacing(10)
 
             Spacer().frame(height: 8)
 
             Text("작가에게 반응을 보냈어요")
-                .foregroundColor(Color(red: 0.31, green: 0.31, blue: 0.31))
+                .foregroundColor(LDColor.gray4)
+                .font(LDFont.regular01)
 
             Spacer()
 

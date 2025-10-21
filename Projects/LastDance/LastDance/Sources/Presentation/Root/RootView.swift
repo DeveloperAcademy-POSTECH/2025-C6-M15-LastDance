@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
+    @StateObject private var reactionInputViewModel = ReactionInputViewModel()
     @State private var userType: UserType?
 
     init() {
@@ -48,9 +49,10 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
-                        .navigationBarBackButtonHidden(true)
+                        .toolbar(.hidden, for: .navigationBar)
                 case .artworkDetail(let id, let capturedImage):
                     ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
+                        .toolbar(.hidden, for: .navigationBar)
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -58,7 +60,11 @@ struct RootView: View {
                     ArchiveView(exhibitionId: id)
                         .toolbar(.hidden, for: .navigationBar)
                 case .category:
-                    CategoryView()
+                    CategorySelectView()
+                        .navigationBarBackButtonHidden(true)
+                case .reactionTags:
+                    TagSelectView()
+                        .navigationBarBackButtonHidden(true)
                 case .completeReaction:
                     CompleteReactionView()
                 case .inputArtworkInfo(let image, let exhibitionId, let artistId):
@@ -75,8 +81,8 @@ struct RootView: View {
                 case .artistReaction:
                     ArtistReactionView()
                         .toolbar(.hidden, for: .navigationBar)
-                case .artistReactionArchiveView:
-                    ArtistReactionArchiveView()
+                case .artistReactionArchiveView(let exhibitionId):
+                    ArtistReactionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
@@ -85,5 +91,6 @@ struct RootView: View {
             }
         }
         .environmentObject(router)
+        .environmentObject(reactionInputViewModel)
     }
 }

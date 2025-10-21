@@ -21,10 +21,12 @@ enum Route: Hashable {
     case inputArtworkInfo(image: UIImage, exhibitionId: Int?, artistId: Int?)
     case archive(id: Int)
     case category
+    case reactionTags
     case completeReaction
     case articleExhibitionList
     case articleList(selectedExhibitionId: Int)
     case completeArticleList(selectedExhibitionId: Int, selectedArtistId: Int)
     case artistReaction
-    case artistReactionArchiveView
+    case artistReactionArchiveView(exhibitionId: String)
+
 }

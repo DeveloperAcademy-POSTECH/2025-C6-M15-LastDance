@@ -30,6 +30,11 @@ final class ExhibitionListViewModel: ObservableObject {
         }
     }
 
+    /// 선택된 전시 초기화
+    func clearSelection() {
+        selectedExhibitionId = nil
+    }
+
     /// 등록하기 버튼 탭
     func tapRegisterButton() {
         guard selectedExhibitionId != nil else {
