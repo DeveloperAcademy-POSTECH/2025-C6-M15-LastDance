@@ -25,8 +25,8 @@ final class ArtReactionViewModel: ObservableObject {
         static let maxWidth: CGFloat = 345
         static let minHeight: CGFloat = 400
         static let maxHeight: CGFloat = 468
-        static let animationThreshold: CGFloat = 100
-        static let tabBarFixThreshold: CGFloat = 492
+        static let animationThreshold: CGFloat = 400
+        static let tabBarFixThreshold: CGFloat = 550
     }
     
     // MARK: - Initialization
