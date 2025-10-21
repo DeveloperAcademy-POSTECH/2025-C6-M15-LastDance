@@ -119,6 +119,7 @@ extension SwiftDataManager {
     func upsertArtist(_ newValue: Artist) {
         let all = fetchAll(Artist.self)
         if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.uuid = newValue.uuid
             existing.name = newValue.name
         } else {
             insert(newValue)

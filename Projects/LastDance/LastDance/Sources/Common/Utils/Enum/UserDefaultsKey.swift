@@ -18,6 +18,12 @@ enum UserDefaultsKey: String {
 
     /// 작가 UUID 정보 Key
     case artistUUID
+    
+    /// 작가 id 정보 Key
+    case artistId
+    
+    /// 작가 Name 정보 Key
+    case artistName
 
     /// 업로드된 이미지 URL Key
     case uploadedImageUrl
