@@ -161,6 +161,15 @@ final class ReactionInputViewModel: ObservableObject {
             }
         }
     }
+    
+    func findColorForTag(tagName: String) -> Color {
+        for category in categories {
+            if category.tags.contains(where: { $0.name == tagName }) {
+                return Color(hex: category.colorHex)
+            }
+        }
+        return .gray
+    }
 }
 
 // MARK: - Category 로직
@@ -216,6 +225,15 @@ extension ReactionInputViewModel {
     func toggleCategory(_ id: Int) {
         if selectedCategoryIds.contains(id) {
             selectedCategoryIds.remove(id)
+            
+            // 카테고리 선택 해제 시, 해당 카테고리에 속한 태그들을 선택 해제
+            if let category = categories.first(where: { $0.id == id }) {
+                let tagsToDeselect = category.tags.map { $0.id }
+                selectedTagIds.subtract(tagsToDeselect)
+                
+                let tagNamesToDeselect = category.tags.map { $0.name }
+                selectedTagsName.subtract(tagNamesToDeselect)
+            }
         } else if selectedCategoryIds.count < categoryLimit {
             selectedCategoryIds.insert(id)
         }
