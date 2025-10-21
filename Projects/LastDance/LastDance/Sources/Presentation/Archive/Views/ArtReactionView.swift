@@ -23,34 +23,6 @@ struct ArtReactionView: View {
         _viewModel = StateObject(wrappedValue: ArtReactionViewModel(artworkId: artwork.id))
     }
     
-    private var imageWidth: CGFloat {
-        let minWidth: CGFloat = 300
-        let maxWidth: CGFloat = 345
-        let threshold: CGFloat = 100
-        
-        if scrollOffset < threshold {
-            return maxWidth - (scrollOffset / threshold) * (maxWidth - minWidth)
-        }
-        return minWidth
-    }
-    
-    private var imageHeight: CGFloat {
-        let minHeight: CGFloat = 400
-        let maxHeight: CGFloat = 468
-        let threshold: CGFloat = 100
-        
-        if scrollOffset < threshold {
-            return maxHeight - (scrollOffset / threshold) * (maxHeight - minHeight)
-        }
-        return minHeight
-    }
-    
-    private var isTabBarFixed: Bool {
-        
-        let imageDisappearThreshold: CGFloat = 468 + 24
-        return scrollOffset > imageDisappearThreshold
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             // 뒤로가기 버튼
@@ -63,21 +35,18 @@ struct ArtReactionView: View {
                         .foregroundColor(.black)
                         .frame(width: 44, height: 44)
                 }
-                
                 Spacer()
             }
             .padding(.horizontal, 24)
             .padding(.top, 12)
             .padding(.bottom, 0)
             .background(Color.white)
-            
             // 고정된 탭 바
-            if isTabBarFixed {
+            if viewModel.isTabBarFixed(for: scrollOffset) {
                 TabBarView(selectedTab: $selectedTab)
                     .background(Color.white)
                     .padding(.top, 0)
             }
-            
             // 스크롤 가능한 콘텐츠
             ScrollViewObserver(scrollOffset: $scrollOffset) {
                 VStack(spacing: 0) {
@@ -85,48 +54,48 @@ struct ArtReactionView: View {
                     Image(artwork.thumbnailURL ?? "mock_artworkImage_01")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: imageWidth, height: imageHeight)
+                        .frame(
+                            width: viewModel.imageWidth(for: scrollOffset),
+                            height: viewModel.imageHeight(for: scrollOffset)
+                        )
                         .clipped()
                         .cornerRadius(24)
                         .animation(.easeInOut(duration: 0.2), value: scrollOffset)
-                    
                     // 탭 바
-                    if !isTabBarFixed {
+                    if !viewModel.isTabBarFixed(for: scrollOffset) {
                         TabBarView(selectedTab: $selectedTab)
                             .padding(.top, 24)
                     }
-                    
                     // 탭 콘텐츠
                     if selectedTab == .artwork {
                         // 작품 정보
                         VStack(alignment: .leading, spacing: 16) {
                             Text(artwork.title)
                                 .font(Font.custom("Pretendard", size: 20).weight(.semibold))
-                                .foregroundColor(Color(red: 0.09, green: 0.09, blue: 0.09))
+                                .foregroundColor(LDColor.color1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             if let artistName = artist?.name {
                                 HStack {
                                     Text(artistName)
                                         .font(Font.custom("Pretendard", size: 16).weight(.medium))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(LDColor.color6)
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 8)
-                                        .background(Color(red: 0.14, green: 0.14, blue: 0.14))
+                                        .background(LDColor.color1)
                                         .cornerRadius(20)
                                     
                                     Spacer()
                                 }
                             }
-                            
                             Rectangle()
                                 .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                                 .frame(height: 0.5)
-                                .foregroundColor(Color(red: 0.78, green: 0.78, blue: 0.78))
+                                .foregroundColor(LDColor.color3)
                             
                             Text("작품 설명")
                                 .font(Font.custom("Pretendard", size: 16))
-                                .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
+                                .foregroundColor(LDColor.color2)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Spacer(minLength: 400)
@@ -145,7 +114,7 @@ struct ArtReactionView: View {
                             VStack(spacing: 16) {
                                 Text("아직 등록된 감상이 없습니다")
                                     .font(Font.custom("Pretendard", size: 16))
-                                    .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
+                                    .foregroundColor(LDColor.color2)
                                 
                                 Spacer(minLength: 400)
                             }
@@ -161,7 +130,7 @@ struct ArtReactionView: View {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감정 태그")
                                                     .font(Font.custom("Pretendard", size: 18).weight(.semibold))
-                                                    .foregroundColor(Color(red: 0.09, green: 0.09, blue: 0.09))
+                                                    .foregroundColor(LDColor.color1)
                                                 
                                                 VStack(alignment: .leading, spacing: 8) {
                                                     ForEach(reaction.category, id: \.self) { tag in
@@ -172,23 +141,22 @@ struct ArtReactionView: View {
                                                             
                                                             Text(tag)
                                                                 .font(Font.custom("Pretendard", size: 16))
-                                                                .foregroundColor(Color(red: 0.09, green: 0.09, blue: 0.09))
+                                                                .foregroundColor(LDColor.color1)
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                        
                                         // 감상평 섹션
                                         if let comment = reaction.comment, !comment.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감상평")
                                                     .font(Font.custom("Pretendard", size: 18).weight(.semibold))
-                                                    .foregroundColor(Color(red: 0.09, green: 0.09, blue: 0.09))
+                                                    .foregroundColor(LDColor.color1)
                                                 
                                                 Text(comment)
                                                     .font(Font.custom("Pretendard", size: 16))
-                                                    .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
+                                                    .foregroundColor(LDColor.color2)
                                                     .lineSpacing(4)
                                                     .frame(maxWidth: .infinity, alignment: .leading)
                                             }
@@ -209,59 +177,49 @@ struct ArtReactionView: View {
             }
         }
     }
+}
+
+// MARK: - TabBarView Component
+struct TabBarView: View {
+    @Binding var selectedTab: ArtReactionTab
     
-    
-    // MARK: - Tab Enum
-    
-    enum ArtReactionTab {
-        case artwork
-        case reaction
-    }
-    
-    // MARK: - TabBarView Component
-    
-    struct TabBarView: View {
-        @Binding var selectedTab: ArtReactionTab
-        
-        var body: some View {
-            HStack(spacing: 0) {
-                Button(action: {
-                    selectedTab = .artwork
-                }) {
-                    VStack(spacing: 8) {
-                        Text("작품")
-                            .font(Font.custom("Pretendard", size: 18).weight(.semibold))
-                            .foregroundColor(selectedTab == .artwork ? .black : Color(red: 0.73, green: 0.73, blue: 0.73))
-                        
-                        Rectangle()
-                            .fill(selectedTab == .artwork ? .black : .clear)
-                            .frame(height: 2)
-                    }
+    var body: some View {
+        HStack(spacing: 0) {
+            Button(action: {
+                selectedTab = .artwork
+            }) {
+                VStack(spacing: 8) {
+                    Text("작품")
+                        .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                        .foregroundColor(selectedTab == .artwork ? LDColor.color1 : LDColor.color2)
+                    
+                    Rectangle()
+                        .fill(selectedTab == .artwork ? LDColor.color1 : Color.clear)
+                        .frame(height: 2)
                 }
-                .frame(maxWidth: .infinity)
-                
-                Button(action: {
-                    selectedTab = .reaction
-                }) {
-                    VStack(spacing: 8) {
-                        Text("감상")
-                            .font(Font.custom("Pretendard", size: 18).weight(.semibold))
-                            .foregroundColor(selectedTab == .reaction ? .black : Color(red: 0.73, green: 0.73, blue: 0.73))
-                        
-                        Rectangle()
-                            .fill(selectedTab == .reaction ? .black : .clear)
-                            .frame(height: 2)
-                    }
-                }
-                .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, 20)
+            .frame(maxWidth: .infinity)
+            
+            Button(action: {
+                selectedTab = .reaction
+            }) {
+                VStack(spacing: 8) {
+                    Text("감상")
+                        .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                        .foregroundColor(selectedTab == .reaction ? LDColor.color1 : LDColor.color2)
+                    
+                    Rectangle()
+                        .fill(selectedTab == .reaction ? LDColor.color1 : Color.clear)
+                        .frame(height: 2)
+                }
+            }
+            .frame(maxWidth: .infinity)
         }
+        .padding(.horizontal, 20)
     }
 }
 
 // MARK: - ScrollOffsetPreferenceKey
-
 struct ScrollOffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
@@ -270,7 +228,6 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 }
 
 // MARK: - ScrollViewObserver
-
 struct ScrollViewObserver<Content: View>: UIViewRepresentable {
     let content: Content
     @Binding var scrollOffset: CGFloat
@@ -279,7 +236,6 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         _scrollOffset = scrollOffset
         self.content = content()
     }
-    
     func makeUIView(context: Context) -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
@@ -304,15 +260,12 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         
         return scrollView
     }
-    
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         context.coordinator.hostingController?.rootView = content
     }
-    
     func makeCoordinator() -> Coordinator {
         Coordinator(scrollOffset: $scrollOffset)
     }
-    
     class Coordinator: NSObject, UIScrollViewDelegate {
         @Binding var scrollOffset: CGFloat
         var hostingController: UIHostingController<Content>?
@@ -320,7 +273,6 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         init(scrollOffset: Binding<CGFloat>) {
             _scrollOffset = scrollOffset
         }
-        
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offset = max(0, scrollView.contentOffset.y)
             DispatchQueue.main.async {

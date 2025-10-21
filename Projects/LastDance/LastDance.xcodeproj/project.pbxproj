@@ -41,6 +41,7 @@
 		8F1D5E1A2EA700690064FE47 /* ReactionMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E172EA700690064FE47 /* ReactionMapper.swift */; };
 		8F1D5E1B2EA700690064FE47 /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E182EA700690064FE47 /* VisitHistoryMapper.swift */; };
 		8F1D5E1D2EA779BF0064FE47 /* MockExhibitionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E1C2EA779BF0064FE47 /* MockExhibitionData.swift */; };
+		8F1D5E1F2EA7D09C0064FE47 /* ArtReactionTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1D5E1E2EA7D09C0064FE47 /* ArtReactionTab.swift */; };
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		9635739E2E98F28300B2FA79 /* ArtworkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */; };
 		963573A12E990EE300B2FA79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963573A02E990EE000B2FA79 /* KeyboardManager.swift */; };
@@ -226,6 +227,7 @@
 		8F1D5E172EA700690064FE47 /* ReactionMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionMapper.swift; sourceTree = "<group>"; };
 		8F1D5E182EA700690064FE47 /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		8F1D5E1C2EA779BF0064FE47 /* MockExhibitionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExhibitionData.swift; sourceTree = "<group>"; };
+		8F1D5E1E2EA7D09C0064FE47 /* ArtReactionTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtReactionTab.swift; sourceTree = "<group>"; };
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		9635739D2E98F28300B2FA79 /* ArtworkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDetailView.swift; sourceTree = "<group>"; };
 		963573A02E990EE000B2FA79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
@@ -1113,6 +1115,7 @@
 		D8C7C08D2E9F38E700FCB472 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				8F1D5E1E2EA7D09C0064FE47 /* ArtReactionTab.swift */,
 				D8DB5DB72EA535BB00F4596B /* AlertType.swift */,
 				D8C7C2992EA1208700FCB472 /* ExhibitionStatus.swift */,
 				D8C7C2892EA0D02500FCB472 /* APIVersion.swift */,
@@ -1393,6 +1396,7 @@
 				99E6F0FF2E97B0CA002ED9C2 /* Exhibition.swift in Sources */,
 				D8C7C09A2E9F3F1B00FCB472 /* CompleteReactionView.swift in Sources */,
 				99E6F3A02E989CFB002ED9C2 /* MakeArtworkRequestDto.swift in Sources */,
+				8F1D5E1F2EA7D09C0064FE47 /* ArtReactionTab.swift in Sources */,
 				D8C7BEB92E9CEB1900FCB472 /* ArtworkInfoView.swift in Sources */,
 				D8C7C08F2E9F38F000FCB472 /* UserDefaultsKey.swift in Sources */,
 				8C3B37BC2E9EB838003FF185 /* ExhibitionDetailView.swift in Sources */,
