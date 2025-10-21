@@ -22,6 +22,7 @@ struct OutlinedButton: View {
                     .foregroundStyle(textColor)
                     .bold()
                     .frame(maxWidth: .infinity)
+                    .font(LDFont.heading04)
             }
         )
         .frame(height: 54)

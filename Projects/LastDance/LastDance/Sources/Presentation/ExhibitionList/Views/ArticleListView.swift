@@ -12,7 +12,7 @@ struct ArticleListSearchTextField: View {
 
     var body: some View {
         TextField("작가명을 선택해주세요", text: $searchText)
-            .font(Font.custom("SF Pro Text", size: 17))
+            .font(LDFont.regular01)
             .foregroundStyle(.black)
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
@@ -26,6 +26,7 @@ struct ArticleListSearchTextField: View {
                     .stroke(Color.black, lineWidth: 2)
             )
             .padding(.bottom, 8)
+            .padding(.horizontal, 20)
     }
 }
 
@@ -61,6 +62,8 @@ struct ArticleListContent: View {
         .frame(height: 300)
         .background(backgroundShape)
         .overlay(borderShape)
+        .padding(.horizontal, 20)
+        .scrollToMinDistance(minDisntance: 32)
     }
 }
 
@@ -81,7 +84,6 @@ struct ArticleListNextButton: View {
 struct ArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArticleListViewModel()
-    @Environment(\.keyboardManager) private var keyboardManager
 
     let selectedExhibitionId: Int
 
@@ -89,7 +91,6 @@ struct ArticleListView: View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 PageIndicator(totalPages: 2, currentPage: 1)
-                    .padding(.horizontal, -20)
 
                 TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
 
@@ -105,9 +106,7 @@ struct ArticleListView: View {
                 )
             }
             .padding(.top, 18)
-            .padding(.horizontal, 20)
             .padding(.bottom, 34)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CustomNavigationBar(title: "전시찾기") {
                     router.popLast()
@@ -126,21 +125,16 @@ struct ArticleArtistRow: View {
     var body: some View {
         Button(action: action) {
             Text(artist.name)
-                .font(.system(size: 16, weight: .regular))
+                .font(LDFont.heading04)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(isSelected ? Color(red: 0.93, green: 0.93, blue: 0.93) : Color.clear)
+                        .fill(isSelected ? LDColor.gray3 : Color.clear)
                 )
                 .padding(.horizontal, isSelected ? 8 : 0)
         }
     }
-}
-
-#Preview {
-    ArticleListView(selectedExhibitionId: 1)
-        .environmentObject(NavigationRouter())
 }

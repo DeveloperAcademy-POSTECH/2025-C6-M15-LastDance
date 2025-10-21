@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct LastDanceApp: App {
     let sharedModelContainer: ModelContainer
-    @StateObject private var keyboardManager = KeyboardManager()
     
     init() {
         do {

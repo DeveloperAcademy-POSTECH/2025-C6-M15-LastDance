@@ -40,7 +40,7 @@ struct CaptureConfirmView: View {
                                 .foregroundStyle(LDColor.color6)
                                 .padding(8)
                                 .frame(width: 82, height: 82)
-                                .background(Color(red: 0.14, green: 0.14, blue: 0.14), in: Circle())
+                                .background(LDColor.color1, in: Circle())
                         }
                         
                         Button {
@@ -48,10 +48,10 @@ struct CaptureConfirmView: View {
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(Color(red: 0.45, green: 0.45, blue: 0.45))
+                                .foregroundStyle(LDColor.black2)
                                 .padding(8)
                                 .frame(width: 52, height: 52)
-                                .background(Color(red: 0.96, green: 0.96, blue: 0.96), in: Circle())
+                                .background(LDColor.gray3, in: Circle())
                         }
                         .offset(x: 100)
                     }

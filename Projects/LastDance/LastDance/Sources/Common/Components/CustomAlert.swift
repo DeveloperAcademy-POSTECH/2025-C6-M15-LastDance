@@ -25,14 +25,14 @@ struct CustomAlert: View {
                     .padding(.horizontal, 16)
 
             Text(title)
-                .font(.system(size: 18, weight: .semibold))
+                .font(LDFont.heading04)
                 .foregroundColor(.black)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
 
             Text(message)
-                .font(.system(size: 14, weight: .regular))
-                .foregroundColor(Color(red: 0.38, green: 0.38, blue: 0.38))
+                .font(LDFont.regular03)
+                .foregroundColor(LDColor.gray1)
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
@@ -41,7 +41,7 @@ struct CustomAlert: View {
 
             Button(action: action) {
                 Text(buttonText)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(LDFont.heading06)
                     .foregroundColor(LDColor.color6)
                     .frame(maxWidth: .infinity)
                     .frame(height: 42)

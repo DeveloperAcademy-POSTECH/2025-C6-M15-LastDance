@@ -27,5 +27,6 @@ enum Route: Hashable {
     case articleList(selectedExhibitionId: Int)
     case completeArticleList(selectedExhibitionId: Int, selectedArtistId: Int)
     case artistReaction
-    case artistReactionArchiveView
+    case artistReactionArchiveView(exhibitionId: String)
+
 }

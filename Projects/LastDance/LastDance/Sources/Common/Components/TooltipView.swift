@@ -13,7 +13,7 @@ struct TooltipView: View {
     var body: some View {
         // 캡슐 모양 툴팁
         Text(text)
-            .font(.system(size: 14, weight: .regular))
+            .font(LDFont.regular03)
             .foregroundColor(LDColor.color6)
             .multilineTextAlignment(.center)
             .lineSpacing(2)
