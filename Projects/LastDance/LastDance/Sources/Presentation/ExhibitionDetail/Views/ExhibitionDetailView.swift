@@ -57,7 +57,6 @@ struct ExhibitionDetailView: View {
                 }
             }
         }
-//        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시정보") {
                 router.popLast()
@@ -85,8 +84,14 @@ struct ExhibitionDetailView: View {
 
     /// 관람객 - 관람 시작하기 버튼 처리
     private func handleStartVisit() {
-        viewModel.selectExhibitionAsUserExhibition()
-        router.push(.archive(id: exhibitionId))
+        viewModel.createVisitHistory { success in
+            if success {
+                viewModel.selectExhibitionAsUserExhibition()
+                router.push(.archive(id: exhibitionId))
+            } else {
+                Log.error("Failed to create visit history.")
+            }
+        }
     }
 }
 

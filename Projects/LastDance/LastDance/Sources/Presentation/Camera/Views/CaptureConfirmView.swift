@@ -10,6 +10,7 @@ import SwiftUI
 struct CaptureConfirmView: View {
     @EnvironmentObject private var router: NavigationRouter
     let imageData: Data
+    let exhibitionId: Int
     
     private var image: UIImage? {
         UIImage(data: imageData)
@@ -69,7 +70,7 @@ struct CaptureConfirmView: View {
         }
         .onChange(of: viewModel.uploadedImageUrl) { _, newUrl in
             if newUrl != nil, let image = image {
-                router.push(.inputArtworkInfo(image: image, exhibitionId: nil, artistId: nil))
+                router.push(.inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
             }
         }
         .alert("업로드 실패", isPresented: .constant(viewModel.errorMessage != nil)) {

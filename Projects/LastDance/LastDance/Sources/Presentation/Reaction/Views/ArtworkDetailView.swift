@@ -20,7 +20,7 @@ struct ArtworkDetailView: View {
 
     @State private var showAlert = false
     @State private var alertType: AlertType = .confirmation
-    @State private var exhibitionId: String = ""
+    @State private var exhibitionId: Int = 0
 
     init(artworkId: Int, capturedImage: UIImage? = nil) {
         self.artworkId = artworkId
@@ -93,20 +93,23 @@ struct ArtworkDetailView: View {
                     let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
                     guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
                         Log.warning("Visitor를 찾을 수 없습니다")
+                        alertType = .error
+                        showAlert = true
                         return
                     }
 
-                    // SwiftData에서 해당 Visitor의 VisitHistory 조회
-                    let visitHistories = SwiftDataManager.shared.fetchAll(VisitHistory.self)
-                    guard let visitHistory = visitHistories.first(where: { $0.visitorId == visitor.id }) else {
-                        Log.warning("VisitHistory를 찾을 수 없습니다")
+                    // UserDefaults에서 visitId 가져오기
+                    guard let visitId = UserDefaults.standard.object(
+                        forKey: UserDefaultsKey.visitId.key
+                    ) as? Int else {
+                        Log.warning("visitId를 UserDefaults에서 찾을 수 없습니다.")
+                        alertType = .error
+                        showAlert = true
                         return
                     }
 
                     let visitorId = visitor.id
-                    let visitId = visitHistory.id
-                    // 테스트를 위해 임시 tagIds 설정 (실제로는 선택된 카테고리를 태그 ID로 변환 필요)
-                    let tagIds: [Int] = [1, 2, 3]
+                    let tagIds = Array(viewModel.selectedTagIds)
 
                     viewModel.saveReaction(
                         artworkId: artworkId,
@@ -118,7 +121,7 @@ struct ArtworkDetailView: View {
                         if success {
                             Log.debug("저장 성공, 화면 이동")
                             showAlert = false
-                            router.push(.completeReaction)
+                            router.push(.completeReaction(exhibitionId: exhibitionId))
                         } else {
                             Log.debug("저장 실패")
                             alertType = .error

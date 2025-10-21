@@ -13,6 +13,8 @@ struct CameraView: View {
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var noticeVisible = false
+    
+    let exhibitionId: Int
 
     var body: some View {
         GeometryReader { geo in
@@ -70,7 +72,7 @@ struct CameraView: View {
         .task { await viewModel.setupCameraSession() }
         .onChange(of: viewModel.capturedImage) { _, newImage in
             if let image = newImage, let imageData = image.jpegData(compressionQuality: 1.0) {
-                router.push(.captureConfirm(imageData: imageData))
+                router.push(.captureConfirm(imageData: imageData, exhibitionId: exhibitionId))
                 viewModel.capturedImage = nil
             }
         }

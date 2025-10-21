@@ -1,5 +1,12 @@
+//
+//  ExhibitionDetailViewModel.swift
+//  LastDance
+//
+//  Created by 배현진 on 10/5/25.
+//
+
+import SwiftData
 import SwiftUI
-import SwiftData // Make sure SwiftData is imported for PersistentModel operations
 
 @MainActor
 final class ExhibitionDetailViewModel: ObservableObject {
@@ -9,11 +16,16 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
     private let dataManager = SwiftDataManager.shared
     private let artistAPIService: ArtistAPIServiceProtocol // Added dependency
+    private let visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol
 
     private var currentArtistId: Int? // To store the ID of the current artist
 
-    init(artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService()) {
+    init(
+        artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService(),
+        visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol = VisitHistoriesAPIService()
+    ) {
         self.artistAPIService = artistAPIService
+        self.visitHistoriesAPIService = visitHistoriesAPIService
     }
 
     /// 전시 정보 가져오기
@@ -107,5 +119,45 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
         dataManager.saveContext()
         Log.debug("ExhibitionDetailViewModel: Exhibition '\(exhibition.title)' saved as user's exhibition and linked to artist \(artistId).")
+    }
+    
+    /// 방문 기록 생성 API 함수
+    func createVisitHistory(completion: @escaping (Bool) -> Void) {
+        // UserDefaults에서 저장된 visitorUUID 가져오기
+        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+            Log.error("visitorUUID를 찾을 수 없습니다")
+            completion(false)
+            return
+        }
+
+        // SwiftData에서 UUID로 Visitor 조회
+        let visitors = dataManager.fetchAll(Visitor.self)
+        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+            Log.error("Visitor를 찾을 수 없습니다")
+            completion(false)
+            return
+        }
+
+        guard let exhibition = exhibition else {
+            completion(false)
+            return
+        }
+
+        let request = MakeVisitHistoriesRequestDto(
+            visitor_id: visitor.id,
+            exhibition_id: exhibition.id
+        )
+
+        visitHistoriesAPIService.makeVisitHistories(request: request) { result in
+            switch result {
+            case .success(let dto):
+                Log.debug("방문 기록 생성 성공: visitId=\(dto.id)")
+                UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.visitId.rawValue)
+                completion(true)
+            case .failure(let error):
+                Log.error("방문 기록 생성 실패: \(error)")
+                completion(false)
+            }
+        }
     }
 }

@@ -10,7 +10,10 @@ import SwiftUI
 struct CompleteReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
 
-    init() {
+    let exhibitionId: Int
+    
+    init(exhibitionId: Int) {
+        self.exhibitionId = exhibitionId
         // 반응 전송이 완료되면 사용한 이미지 URL을 UserDefaults에서 삭제
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.uploadedImageUrl.key)
     }
@@ -47,7 +50,7 @@ struct CompleteReactionView: View {
                     title: "관람 계속하기",
                     color: LDColor.color1, textColor: LDColor.color6
                 ) {
-                    // TODO: 라우팅 연결 필요 (아카이빙뷰)
+                    router.push(.archive(id: exhibitionId))
                 }
             }
             .padding(.horizontal, 20)

@@ -17,13 +17,13 @@ enum Route: Hashable {
     case exhibitionDetail(id: Int)
     case exhibitionArchive(exhibitionId: Int)
     case artworkDetail(id: Int, capturedImage: UIImage)
-    case camera
-    case captureConfirm(imageData: Data)
+    case camera(exhibitionId: Int)
+    case captureConfirm(imageData: Data, exhibitionId: Int)
     case inputArtworkInfo(image: UIImage, exhibitionId: Int?, artistId: Int?)
     case archive(id: Int)
     case category
     case reactionTags
-    case completeReaction
+    case completeReaction(exhibitionId: Int)
     case articleExhibitionList
     case articleList(selectedExhibitionId: Int)
     case completeArticleList(selectedExhibitionId: Int, selectedArtistId: Int)

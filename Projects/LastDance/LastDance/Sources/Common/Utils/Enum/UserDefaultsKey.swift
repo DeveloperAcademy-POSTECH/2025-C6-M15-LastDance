@@ -10,6 +10,9 @@ enum UserDefaultsKey: String {
     case selectedCategories
     case seed = "seed.v1"
     case userType
+    
+    /// 방문이력 Id 정보 Key
+    case visitId
 
     /// 방문객 UUID 정보 Key
     case visitorUUID
