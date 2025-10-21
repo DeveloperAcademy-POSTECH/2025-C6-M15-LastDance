@@ -52,7 +52,7 @@ struct ArtistReactionView: View {
                 }
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .overlay(alignment: .bottomTrailing) {
             // 플로팅 버튼
             CircleAddButton {

@@ -18,7 +18,7 @@ struct ArticleListSearchTextField: View {
             .padding(.vertical, 16)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.white)
+                    .fill(LDColor.color6)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
@@ -26,6 +26,7 @@ struct ArticleListSearchTextField: View {
                     .stroke(Color.black, lineWidth: 2)
             )
             .padding(.bottom, 8)
+            .padding(.horizontal, 20)
     }
 }
 
@@ -34,7 +35,7 @@ struct ArticleListContent: View {
 
     private var backgroundShape: some View {
         RoundedRectangle(cornerRadius: 8)
-            .fill(Color.white)
+            .fill(LDColor.color6)
     }
 
     private var borderShape: some View {
@@ -61,6 +62,8 @@ struct ArticleListContent: View {
         .frame(height: 300)
         .background(backgroundShape)
         .overlay(borderShape)
+        .padding(.horizontal, 20)
+        .scrollToMinDistance(minDisntance: 32)
     }
 }
 
@@ -81,7 +84,6 @@ struct ArticleListNextButton: View {
 struct ArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArticleListViewModel()
-    @Environment(\.keyboardManager) private var keyboardManager
 
     let selectedExhibitionId: Int
 
@@ -89,7 +91,6 @@ struct ArticleListView: View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 PageIndicator(totalPages: 2, currentPage: 1)
-                    .padding(.horizontal, -20)
 
                 TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
 
@@ -105,9 +106,7 @@ struct ArticleListView: View {
                 )
             }
             .padding(.top, 18)
-            .padding(.horizontal, 20)
             .padding(.bottom, 34)
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 CustomNavigationBar(title: "전시찾기") {
                     router.popLast()
@@ -138,9 +137,4 @@ struct ArticleArtistRow: View {
                 .padding(.horizontal, isSelected ? 8 : 0)
         }
     }
-}
-
-#Preview {
-    ArticleListView(selectedExhibitionId: 1)
-        .environmentObject(NavigationRouter())
 }

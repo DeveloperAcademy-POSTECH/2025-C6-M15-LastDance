@@ -75,8 +75,8 @@ struct ArtistReactionArchiveView: View {
                                         .frame(width: 28, height: 28)
                                         .overlay(
                                             Text("\(reactionItem.reactionCount)")
-                                                .font(.system(size: 14, weight: .bold))
-                                                .foregroundColor(.white)
+                                                .font(.system(size: 18, weight: .bold))
+                                                .foregroundColor(LDColor.color6)
                                         )
                                         .padding(.leading, 12)
                                         .padding(.bottom, 12)
@@ -96,7 +96,7 @@ struct ArtistReactionArchiveView: View {
                 }
             }
         }
-        .background(Color.white)
+        .background(LDColor.color6)
         .onAppear {
             viewModel.loadReactionsFromDB()
         }

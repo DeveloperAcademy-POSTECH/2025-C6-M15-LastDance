@@ -42,12 +42,26 @@ extension Date {
         return isoString
     }
     
-    /// ISO8601 String을 표시용 날짜 형식으로 변환 (yyyy.M. d)
+    /// ISO8601 또는 yyyy-MM-dd String을 표시용 날짜 형식으로 변환 (yyyy.M.d)
     static func formatShortDate(from isoString: String) -> String {
+        // ISO8601 형식 시도
         if let date = isoFormatter.date(from: isoString) {
             return shortDateFormatter.string(from: date)
         }
+
+        // yyyy-MM-dd 형식 시도
+        if let date = apiDateFormatter.date(from: isoString) {
+            return shortDateFormatter.string(from: date)
+        }
+
         return isoString
+    }
+
+    /// 날짜 범위를 (yyyy.M.d - yyyy.M.d) 형식으로 포맷팅
+    static func formatShortDateRange(start: String, end: String) -> String {
+        let startString = formatShortDate(from: start)
+        let endString = formatShortDate(from: end)
+        return "\(startString) - \(endString)"
     }
 
     /// ISO8601 String 두 개로 날짜 범위 포맷팅

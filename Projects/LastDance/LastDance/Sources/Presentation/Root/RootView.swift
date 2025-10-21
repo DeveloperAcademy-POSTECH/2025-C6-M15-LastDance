@@ -48,9 +48,10 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
-                        .navigationBarBackButtonHidden(true)
+                        .toolbar(.hidden, for: .navigationBar)
                 case .artworkDetail(let id, let capturedImage):
                     ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
+                        .toolbar(.hidden, for: .navigationBar)
                 case .camera:
                     CameraView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -81,8 +82,6 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
-                case .archiveHome:
-                    ArchiveHomeView()
                 }
             }
         }
