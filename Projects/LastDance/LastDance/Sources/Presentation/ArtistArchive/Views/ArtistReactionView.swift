@@ -1,5 +1,12 @@
-import SwiftUI
+//
+//  ArtistReactionArchiveView.swift
+//  LastDance
+//
+//  Created by 광로 on 10/14/25.
+//
+
 import SwiftData
+import SwiftUI
 
 struct ArtistReactionView: View {
     @StateObject private var viewModel = ArtistReactionViewModel()

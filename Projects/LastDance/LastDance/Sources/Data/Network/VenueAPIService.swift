@@ -52,7 +52,7 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                             SwiftDataManager.shared.upsertVenue(model)
                         }
                         // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
-                        SwiftDataManager.shared.printAllVenues()
+//                        SwiftDataManager.shared.printAllVenues()
                     }
                     
                     completion(.success(items))

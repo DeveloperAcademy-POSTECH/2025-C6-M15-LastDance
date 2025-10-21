@@ -15,7 +15,7 @@ enum LDShadow {
         positionY: 0)
     static let shadow1 = Shadow(
         color: LDColor.color1.opacity(0.14),
-        radius: 8,
+        radius: 2,
         positionX: 0,
         positionY: 0)
     static let shadow2 = Shadow(
