@@ -96,7 +96,6 @@ struct IdentityCardButton: View {
                         .foregroundColor(.black)
                         .padding(.horizontal, 20)
 
-                    
                     Text(subtitle)
                         .font(LDFont.regular03)
                         .foregroundColor(.gray)
