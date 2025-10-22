@@ -34,7 +34,6 @@ final class SwiftDataManager {
     /// 새 객체 추가
     func insert<T: PersistentModel>(_ object: T) {
         context.insert(object)
-        saveContext()
     }
 
     /// 특정 객체 삭제

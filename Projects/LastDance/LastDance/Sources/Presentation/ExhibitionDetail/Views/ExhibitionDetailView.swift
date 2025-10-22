@@ -87,6 +87,7 @@ struct ExhibitionDetailView: View {
         viewModel.createVisitHistory { success in
             if success {
                 viewModel.selectExhibitionAsUserExhibition()
+                SwiftDataManager.shared.saveContext()
                 router.push(.archive(id: exhibitionId))
             } else {
                 Log.error("Failed to create visit history.")

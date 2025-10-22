@@ -91,8 +91,11 @@ final class ExhibitionDetailViewModel: ObservableObject {
             return
         }
 
+        // Always set the flag for any user selecting an exhibition
         exhibition.isUserSelected = true
+        Log.debug("ExhibitionDetailViewModel: Flag 'isUserSelected' set to true for exhibition '\(exhibition.title)'.")
 
+        // Artist-specific logic
         if let artistId = currentArtistId {
             Log.debug("Running artist-specific logic for selecting exhibition.")
             let allArtists = dataManager.fetchAll(Artist.self)
@@ -113,8 +116,8 @@ final class ExhibitionDetailViewModel: ObservableObject {
             }
         }
 
-        dataManager.saveContext()
-        Log.debug("ExhibitionDetailViewModel: Context saved after selecting exhibition.")
+        // DO NOT SAVE HERE. The save will be consolidated in the View.
+        Log.debug("ExhibitionDetailViewModel: Staged changes for exhibition '\(exhibition.title)'.")
     }
     
     /// 방문 기록 생성 API 함수
