@@ -20,10 +20,28 @@ struct CustomNavigationBar: ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text(title)
                 .font(LDFont.heading04)
-                .foregroundColor(.black)
+                .foregroundColor(LDColor.color1)
         }
     }
 }
+
+struct CustomWhiteNavigationBar: ToolbarContent {
+    let title: String
+    let onBackButtonTap: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            BackWhiteButton(action: onBackButtonTap)
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color6)
+        }
+    }
+}
+
 #Preview {
     NavigationStack {
         Text("컨텐츠 영역")

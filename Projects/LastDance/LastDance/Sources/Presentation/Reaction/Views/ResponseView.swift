@@ -44,7 +44,7 @@ struct ResponseView: View {
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            CustomNavigationBar(title: artwork?.title ?? "작품 반응" ) {
+            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응" ) {
                 router.popLast()
             }
         }
