@@ -28,6 +28,7 @@ struct ArtworkDetailView: View {
 
         // 카테고리 초기화
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.selectedCategories.rawValue)
+        viewModel.selectedCategories = []
     }
 
     var body: some View {

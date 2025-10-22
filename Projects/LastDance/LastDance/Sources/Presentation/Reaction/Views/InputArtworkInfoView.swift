@@ -144,6 +144,7 @@ struct InputArtworkInfoView: View {
                     }
                     .onAppear {
                         viewModel.fetchArtists()
+                        viewModel.selectedArtworkTitle = ""
                     }
                 }
             }
