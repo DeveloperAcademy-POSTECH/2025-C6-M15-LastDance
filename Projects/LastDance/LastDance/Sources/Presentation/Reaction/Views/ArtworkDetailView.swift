@@ -17,14 +17,15 @@ struct ArtworkDetailView: View {
 
     let artworkId: Int
     let capturedImage: UIImage?
+    let exhibitionId: Int?
 
     @State private var showAlert = false
     @State private var alertType: AlertType = .confirmation
-    @State private var exhibitionId: Int = 0
 
-    init(artworkId: Int, capturedImage: UIImage? = nil) {
+    init(artworkId: Int, capturedImage: UIImage? = nil, exhibitionId: Int) {
         self.artworkId = artworkId
         self.capturedImage = capturedImage
+        self.exhibitionId = exhibitionId
 
         // 카테고리 초기화
         UserDefaults.standard.removeObject(forKey: UserDefaultsKey.selectedCategories.rawValue)
@@ -60,14 +61,25 @@ struct ArtworkDetailView: View {
         .background(LDColor.color5)
         .navigationBarHidden(false)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                BackButton {
+                    viewModel.selectedCategories = []
+                    viewModel.selectedCategoryIds = []
+                    viewModel.selectedTagIds = []
+                    viewModel.selectedTagsName = []
+                    router.popLast()
+                }
+            }
             ToolbarItem(placement: .principal) {
                 Text("반응 남기기")
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color6)
             }
         }
-        .toolbarBackground(.hidden, for: .navigationBar)
         .environmentObject(viewModel)
+        .onDisappear {
+            
+        }
         .customAlert(
             isPresented: $showAlert,
             image: alertType == .confirmation ? "message" : "warning",
@@ -98,6 +110,16 @@ struct ArtworkDetailView: View {
                         return
                     }
 
+                    // 현재 작품이 속한 전시 ID 찾기
+                    let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+                    guard let currentArtwork = artworks.first(where: { $0.id == artworkId }) else {
+                        Log.warning("현재 Artwork을 찾을 수 없습니다. (exhibitionId 파악 불가)")
+                        alertType = .error
+                        showAlert = true
+                        return
+                    }
+                    let currentExhibitionId = currentArtwork.exhibitionId
+
                     // UserDefaults에서 visitId 가져오기
                     guard let visitId = UserDefaults.standard.object(
                         forKey: UserDefaultsKey.visitId.key
@@ -121,7 +143,7 @@ struct ArtworkDetailView: View {
                         if success {
                             Log.debug("저장 성공, 화면 이동")
                             showAlert = false
-                            router.push(.completeReaction(exhibitionId: exhibitionId))
+                            router.push(.completeReaction(exhibitionId: exhibitionId ?? 1))
                         } else {
                             Log.debug("저장 실패")
                             alertType = .error

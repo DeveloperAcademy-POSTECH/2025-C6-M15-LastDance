@@ -38,7 +38,11 @@ final class ExhibitionDetailViewModel: ObservableObject {
         if exhibition != nil {
             fetchArtistNames()
             // Also fetch the current artist ID when the view model loads
-            fetchCurrentArtistId()
+            if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key),
+               let userType = UserType(rawValue: userTypeValue),
+               userType == .artist {
+                fetchCurrentArtistId()
+            }
         } else {
             showErrorAlert = true
         }

@@ -90,6 +90,9 @@ struct ArchiveView: View {
                 router.push(.camera(exhibitionId: exhibitionId))
             }
         }
+        .onAppear {
+            viewModel.loadData()
+        }
     }
 }
 

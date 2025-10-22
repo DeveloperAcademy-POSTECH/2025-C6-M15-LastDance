@@ -43,14 +43,15 @@ struct CompleteReactionView: View {
             HStack(spacing: 19) {
                 OutlinedButton(title: "관람 끝내기", color: LDColor.gray3, textColor: LDColor.gray1)
                 {
-                    // TODO: 라우팅 연결 필요 (아카이빙 홈 뷰)
+                    router.push(.audienceArchiving)
                 }
 
                 OutlinedButton(
                     title: "관람 계속하기",
                     color: LDColor.color1, textColor: LDColor.color6
                 ) {
-                    router.push(.archive(id: exhibitionId))
+                    Log.debug("CompleteReactionView: Tapping Continue Viewing. Popping to archive with exhibitionId: \(exhibitionId)")
+                    router.popTo(.archive(id: exhibitionId))
                 }
             }
             .padding(.horizontal, 20)

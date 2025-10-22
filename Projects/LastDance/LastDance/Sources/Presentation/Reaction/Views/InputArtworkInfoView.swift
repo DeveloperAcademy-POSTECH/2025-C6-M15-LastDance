@@ -88,7 +88,7 @@ struct InputArtworkInfoView: View {
                                 artistId: selectedArtist.id
                             ) { success in
                                 if success {
-                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image))
+                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!))
                                 }
                             }
                         }
@@ -152,6 +152,10 @@ struct InputArtworkInfoView: View {
                 CustomNavigationBar(title: "") {
                     router.popLast()
                 }
+            }
+            .onDisappear {
+                viewModel.selectedArtworkTitle = ""
+                viewModel.selectedArtistName = ""
             }
     }
 }
