@@ -35,20 +35,46 @@ final class ResponseViewModel: ObservableObject {
         reactionAPIService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { [weak self] result in
             guard let self = self else { return }
 
-            DispatchQueue.main.async {
-                self.isLoading = false
-                switch result {
-                case .success(let reactionDtos):
-                    Log.debug("Fetched \(reactionDtos.count) reactions for artwork \(self.artworkId).")
-                    self.reactions = reactionDtos.map { dto in
-                        return ReactionData(
-                            id: String(dto.id),
-                            comment: dto.comment ?? "",
-                            categories: []
-                        )
+            switch result {
+            case .success(let getReactionDtos):
+                Log.debug("Fetched \(getReactionDtos.count) GetReactionResponseDtos for artwork \(self.artworkId).")
+
+                let dispatchGroup = DispatchGroup()
+                var fetchedReactionData: [ReactionData] = []
+                let lock = NSLock() // To protect fetchedReactionData during concurrent access
+
+                for getReactionDto in getReactionDtos {
+                    dispatchGroup.enter()
+                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) { detailResult in
+                        defer { dispatchGroup.leave() }
+
+                        switch detailResult {
+                        case .success(let reactionResponseDto):
+                            let reactionDetailDto = reactionResponseDto.data // This is ReactionDetailResponseDto
+                            let reactionData = ReactionData(
+                                id: String(reactionDetailDto.id),
+                                comment: reactionDetailDto.comment ?? "",
+                                categories: reactionDetailDto.tags.map { $0.name }
+                            )
+                            lock.lock()
+                            fetchedReactionData.append(reactionData)
+                            lock.unlock()
+                        case .failure(let error):
+                            Log.error("Failed to fetch detail for reaction ID \(getReactionDto.id): \(error.localizedDescription)")
+                        }
                     }
-                case .failure(let error):
-                    Log.error("Failed \(self.artworkId): \(error.localizedDescription)")
+                }
+
+                dispatchGroup.notify(queue: .main) {
+                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id } // Sort to maintain order
+                    self.isLoading = false
+                    Log.debug("All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)")
+                }
+
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    Log.error("Failed to fetch reactions for artwork \(self.artworkId): \(error.localizedDescription)")
                 }
             }
         }

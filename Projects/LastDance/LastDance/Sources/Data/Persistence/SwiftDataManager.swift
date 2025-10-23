@@ -54,6 +54,17 @@ final class SwiftDataManager {
         }
     }
     
+    /// 술어를 사용하여 데이터 가져오기
+    func fetch<T: PersistentModel>(_ type: T.Type, predicate: Predicate<T>) -> [T] {
+        do {
+            let descriptor = FetchDescriptor<T>(predicate: predicate)
+            return try context.fetch(descriptor)
+        } catch {
+            Log.error("Fetch with predicate 실패: \(error)")
+            return []
+        }
+    }
+    
     /// 특정 id를 가진 객체 가져오기
     func fetchById<T: PersistentModel & Identifiable>(_ type: T.Type, id: String) -> T? {
         do {
