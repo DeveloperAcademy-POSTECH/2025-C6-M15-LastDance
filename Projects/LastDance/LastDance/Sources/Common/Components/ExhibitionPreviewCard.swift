@@ -95,26 +95,26 @@ struct ExhibitionPreviewInfo: View {
             // 전시 정보
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
-                    .font(Font.custom("Pretendard", size: 18).weight(.semibold))
-                    .foregroundColor(Color(red: 0.09, green: 0.09, blue: 0.09))
+                    .font(LDFont.heading04)
+                    .foregroundColor(LDColor.color1)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                
+
                 if !artistNames.isEmpty {
                     Text(artistNames.joined(separator: ", "))
-                        .font(Font.custom("Pretendard", size: 16))
-                        .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
+                        .font(LDFont.regular02)
+                        .foregroundColor(LDColor.color3)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
-                
+
                 Text(dateRange)
-                    .font(Font.custom("Pretendard", size: 16))
-                    .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
+                    .font(LDFont.regular02)
+                    .foregroundColor(LDColor.color3)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                
+
                 Rectangle()
                     .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                     .frame(height: 0.5)
-                    .foregroundColor(Color(red: 0.78, green: 0.78, blue: 0.78))
+                    .foregroundColor(LDColor.color3)
             }
             .padding(.top, 14)
             
