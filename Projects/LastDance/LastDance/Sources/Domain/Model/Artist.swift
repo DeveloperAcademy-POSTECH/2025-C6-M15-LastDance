@@ -1,3 +1,10 @@
+//
+//  Artist.swift
+//  LastDance
+//
+//  Created by 배현진 on 10/9/25.
+//
+
 import Foundation
 import SwiftData
 

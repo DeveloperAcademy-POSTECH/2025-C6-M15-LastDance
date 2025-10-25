@@ -67,7 +67,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
     /// 현재 아티스트 ID 가져오기
     private func fetchCurrentArtistId() {
         guard let artistUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.rawValue) else {
-            Log.error("ExhibitionDetailViewModel: Artist UUID not found in UserDefaults.")
+            Log.error("Artist UUID not found in UserDefaults.")
             return
         }
 
@@ -76,9 +76,9 @@ final class ExhibitionDetailViewModel: ObservableObject {
             switch result {
             case .success(let artistDto):
                 self.currentArtistId = artistDto.id
-                Log.debug("ExhibitionDetailViewModel: Current artist ID fetched: \(artistDto.id)")
+                Log.debug("Current artist ID fetched: \(artistDto.id)")
             case .failure(let error):
-                Log.error("ExhibitionDetailViewModel: Failed to fetch current artist by UUID: \(error.localizedDescription)")
+                Log.error("Failed to fetch current artist by UUID: \(error.localizedDescription)")
             }
         }
     }
@@ -91,15 +91,13 @@ final class ExhibitionDetailViewModel: ObservableObject {
     /// 전시를 \"나의 전시\"로 저장하고 아티스트와 연결
     func selectExhibitionAsUserExhibition() {
         guard let exhibition = exhibition else {
-            Log.error("ExhibitionDetailViewModel: No exhibition to save.")
+            Log.error("No exhibition to save.")
             return
         }
-
-        // Always set the flag for any user selecting an exhibition
+        
         exhibition.isUserSelected = true
         Log.debug("ExhibitionDetailViewModel: Flag 'isUserSelected' set to true for exhibition '\(exhibition.title)'.")
-
-        // Artist-specific logic
+        
         if let artistId = currentArtistId {
             Log.debug("Running artist-specific logic for selecting exhibition.")
             let allArtists = dataManager.fetchAll(Artist.self)
@@ -119,8 +117,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
                 }
             }
         }
-
-        // DO NOT SAVE HERE. The save will be consolidated in the View.
+        
         Log.debug("ExhibitionDetailViewModel: Staged changes for exhibition '\(exhibition.title)'.")
     }
     

@@ -1,3 +1,10 @@
+//
+//  ArtworkInfoView.swift
+//  LastDance
+//
+//  Created by 신얀 on 10/13/25.
+//
+
 import SwiftData
 import SwiftUI
 
