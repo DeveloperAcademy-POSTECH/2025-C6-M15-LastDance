@@ -46,7 +46,7 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionList:
                     ExhibitionListView()
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
                         .navigationBarBackButtonHidden(true)
