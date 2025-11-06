@@ -43,23 +43,21 @@ struct ArchiveView: View {
                                 ProgressView()
                                     .scaleEffect(1.2)
                                     .frame(maxWidth: .infinity, minHeight: 400)
-                            } else if viewModel.hasArtworks {
+                            } else {
                                 ArtworkGridView(
                                     artworks: viewModel.reactedArtworks,
-                                    getRotationAngle: viewModel.getRotationAngle
+                                    getRotationAngle: viewModel.getRotationAngle,
+                                    onAddTap: {
+                                        router.push(.camera(exhibitionId: exhibitionId))
+                                    }
                                 )
-                            } else {
-                                ArchiveEmptyStateView {
-                                    router.push(.camera(exhibitionId: exhibitionId))
-                                }
                             }
-                            
+
                             Color.clear
                                 .frame(height: 600)
                         }
                         .frame(minHeight: geometry.size.height + 400)
                     }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
                 .mask(
                     LinearGradient(
@@ -141,14 +139,15 @@ struct ArtworkCountView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
-        .padding(.top, 25)
+        .padding(.vertical, 24)
     }
 }
 
 struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
-    
+    let onAddTap: () -> Void
+
     var body: some View {
         LazyVGrid(
             columns: [
@@ -157,6 +156,25 @@ struct ArtworkGridView: View {
             ],
             spacing: 24
         ) {
+            // 첫 번째 아이템: + 버튼 (항상 고정)
+            Button(action: onAddTap) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(LDColor.color6)
+
+                    Image(systemName: "plus")
+                        .font(.system(size: 22, weight: .light))
+                        .foregroundColor(LDColor.gray8)
+                }
+                .frame(width: 157, height: 213)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
+                )
+                .rotationEffect(.degrees(-4))
+            }
+
+            // 나머지 아이템: 작품들
             ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
                 if let urlString = artwork.thumbnailURL,
                    let url = URL(string: urlString) {
@@ -171,7 +189,7 @@ struct ArtworkGridView: View {
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 157, height: 213)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .rotationEffect(.degrees(getRotationAngle(index)))
+                                .rotationEffect(.degrees(getRotationAngle(index + 1)))
                                 .applyShadow(LDShadow.shadow4)
                         case .failure:
                             // TODO: - 실패 시 대체 이미지 넣어주기
@@ -193,42 +211,8 @@ struct ArtworkGridView: View {
                         .foregroundColor(.gray)
                 }
             }
-
         }
         .padding(.horizontal, 20)
-        .padding(.top, 20)
-    }
-}
-
-struct ArchiveEmptyStateView: View {
-    let onAddTap: () -> Void
-    
-    var body: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
-            ],
-            spacing: 24
-        ) {
-            Button(action: onAddTap) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(LDColor.color6)
-                    
-                    Image(systemName: "plus")
-                        .font(.system(size: 22, weight: .light))
-                        .foregroundColor(LDColor.gray8)
-                }
-                .frame(width: 157, height: 213)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
-                )
-                .rotationEffect(.degrees(-4))
-            }
-        }
-        .padding(.horizontal, 24)
         .padding(.top, 20)
     }
 }
