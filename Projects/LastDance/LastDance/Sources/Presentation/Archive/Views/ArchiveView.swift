@@ -145,7 +145,7 @@ struct ArtworkCountView: View {
 struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
-    
+
     var body: some View {
         LazyVGrid(
             columns: [
@@ -155,42 +155,13 @@ struct ArtworkGridView: View {
             spacing: 24
         ) {
             ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                if let urlString = artwork.thumbnailURL,
-                   let url = URL(string: urlString) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 157, height: 213)
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 157, height: 213)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .rotationEffect(.degrees(getRotationAngle(index)))
-                                .applyShadow(LDShadow.shadow4)
-                        case .failure:
-                            // TODO: - 실패 시 대체 이미지 넣어주기
-                            Image(systemName: "photo")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 157, height: 213)
-                                .foregroundColor(.gray)
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
-                } else {
-                    // TODO: - URL 없을 때 대체 이미지 넣어주기
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 157, height: 213)
-                        .foregroundColor(.gray)
-                }
+                CachedImage(artwork.thumbnailURL)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 157, height: 213)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .rotationEffect(.degrees(getRotationAngle(index)))
+                    .applyShadow(LDShadow.shadow4)
             }
-
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)

@@ -180,6 +180,8 @@
 		D8C7C2C82EA29A1100FCB472 /* ArtworkAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */; };
 		D8C7C2CA2EA2A16300FCB472 /* ArtworkResponseDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */; };
 		D8C7C2D22EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */; };
+		D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D8CD5AC32EBC4BF700B9D44D /* Kingfisher */; };
+		D8CD5AC62EBC702E00B9D44D /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CD5AC52EBC702E00B9D44D /* CachedImage.swift */; };
 		D8DB5DB42EA5211E00F4596B /* ReactionTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */; };
 		D8DB5DB82EA535BD00F4596B /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DB72EA535BB00F4596B /* AlertType.swift */; };
 		D8DB5DBC2EA558D900F4596B /* VisitHistoriesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */; };
@@ -328,7 +330,6 @@
 		99E6F3992E989CFB002ED9C2 /* ReactionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionAPI.swift; sourceTree = "<group>"; };
 		99E6F39C2E989CFB002ED9C2 /* MockDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataLoader.swift; sourceTree = "<group>"; };
 		99E6F39D2E989CFB002ED9C2 /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
-		D83661F52EA7B82700B52440 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		D8C7BEB82E9CEB1900FCB472 /* ArtworkInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkInfoView.swift; sourceTree = "<group>"; };
 		D8C7BEBA2E9CEB2400FCB472 /* ReactionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionFormView.swift; sourceTree = "<group>"; };
@@ -370,6 +371,8 @@
 		D8C7C2C72EA29A0800FCB472 /* ArtworkAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkAPIService.swift; sourceTree = "<group>"; };
 		D8C7C2C92EA2A14F00FCB472 /* ArtworkResponseDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkResponseDto.swift; sourceTree = "<group>"; };
 		D8C7C2D12EA2A70B00FCB472 /* ExhibitionArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionArchiveViewModel.swift; sourceTree = "<group>"; };
+		D8CD5AC12EBC49D500B9D44D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D8CD5AC52EBC702E00B9D44D /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
 		D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTag.swift; sourceTree = "<group>"; };
 		D8DB5DB72EA535BB00F4596B /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		D8DB5DBB2EA558D100F4596B /* VisitHistoriesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoriesAPI.swift; sourceTree = "<group>"; };
@@ -388,6 +391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */,
 				963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */,
 				96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */,
 				96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */,
@@ -449,6 +453,7 @@
 		963573AC2E9A4F2B00B2FA79 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D8CD5AC52EBC702E00B9D44D /* CachedImage.swift */,
 				D8DB5DB32EA5211B00F4596B /* ReactionTag.swift */,
 				8CCA420B2EA567DB00351E19 /* ExhibitionPreviewCard.swift */,
 				D8C7C2A42EA14A3500FCB472 /* CustomAlert.swift */,
@@ -697,7 +702,7 @@
 		99E6F05E2E91E4A9002ED9C2 = {
 			isa = PBXGroup;
 			children = (
-				D83661F52EA7B82700B52440 /* Config.xcconfig */,
+				D8CD5AC12EBC49D500B9D44D /* Config.xcconfig */,
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				99E6F0B42E91EF48002ED9C2 /* LastDance */,
@@ -1242,6 +1247,7 @@
 			packageProductDependencies = (
 				96B1CA192E954A5C003E7C1C /* CombineMoya */,
 				96B1CA1B2E954A5C003E7C1C /* Moya */,
+				D8CD5AC32EBC4BF700B9D44D /* Kingfisher */,
 			);
 			productName = LastDance;
 			productReference = 99E6F0672E91E4A9002ED9C2 /* LastDance.app */;
@@ -1273,6 +1279,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */,
+				D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 99E6F0682E91E4A9002ED9C2 /* Products */;
@@ -1464,6 +1471,7 @@
 				99E6F1032E97B0D6002ED9C2 /* Artist.swift in Sources */,
 				99191F0F2EA6EB3100D2F71A /* View+Shadow.swift in Sources */,
 				D8C7C0922E9F3E0000FCB472 /* UserDefaults.swift in Sources */,
+				D8CD5AC62EBC702E00B9D44D /* CachedImage.swift in Sources */,
 				99191EA82EA497DC00D2F71A /* TagCategoryAPIService.swift in Sources */,
 				99191E892EA38A6800D2F71A /* ArtistAPIService.swift in Sources */,
 				8C3B37B42E9EB7C0003FF185 /* AudienceArchivingView.swift in Sources */,
@@ -1730,6 +1738,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.6.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1742,6 +1758,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		D8CD5AC32EBC4BF700B9D44D /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

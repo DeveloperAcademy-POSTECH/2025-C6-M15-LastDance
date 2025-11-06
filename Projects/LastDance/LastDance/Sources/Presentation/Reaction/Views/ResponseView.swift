@@ -78,42 +78,10 @@ struct ArtworkBackgroundView: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             // 이미지 영역
-            if let thumbnailURL = artwork?.thumbnailURL,
-               thumbnailURL.hasPrefix("http")
-            {
-                // 실제 URL인 경우
-                AsyncImage(url: URL(string: thumbnailURL)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(height: 393)
-                }
+            CachedImage(artwork?.thumbnailURL)
+                .aspectRatio(contentMode: .fill)
                 .frame(maxHeight: 393)
                 .clipped()
-                
-            } else if let imageName = artwork?.thumbnailURL {
-                // Mock 데이터
-                if UIImage(named: imageName) != nil {
-                    Image(imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxHeight: 393)
-                        .clipped()
-                } else {
-                    // Mock 이미지가 없는 경우
-                    Image(systemName: "photo.artframe")
-                        .foregroundColor(.gray)
-                        .frame(height: 393)
-                }
-            } else {
-                // thumbnailURL이 없는 경우
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 400)
-            }
 
              //그라데이션 오버레이
             LinearGradient(
