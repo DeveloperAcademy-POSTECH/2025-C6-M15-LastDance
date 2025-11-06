@@ -26,8 +26,9 @@ struct InputArtworkInfoView: View {
     }
 
     var body: some View {
-            ZStack(alignment: .bottom) {
-                VStack {
+        ZStack(alignment: .bottom) {
+            VStack {
+                ScrollView {
                     Spacer().frame(height: 24)
                     
                     ZStack {
@@ -42,9 +43,9 @@ struct InputArtworkInfoView: View {
                             .frame(width: 283, height: 386)
                             .clipped()
                     }
-
+                    
                     Spacer().frame(height: 36)
-
+                    
                     VStack(spacing: 12) {
                         InputFieldButton(
                             label: "제목",
@@ -52,7 +53,7 @@ struct InputArtworkInfoView: View {
                             placeholder: "작품 제목을 선택해주세요",
                             action: { activeBottomSheet = .artwork }
                         )
-
+                        
                         InputFieldButton(
                             label: "작가",
                             value: viewModel.selectedArtistName,
@@ -61,102 +62,103 @@ struct InputArtworkInfoView: View {
                         )
                     }
                     .padding(.horizontal, 24)
-
+                    
                     Spacer()
-
-                    BottomButton(
-                        text: "다음",
-                        isEnabled: !viewModel.selectedArtworkTitle.isEmpty
-                            && !viewModel.selectedArtistName.isEmpty,
-                        action: {
-                            // 선택한 작품 찾기
-                            guard let selectedArtwork = artworks.first(where: { $0.title == viewModel.selectedArtworkTitle }) else {
-                                Log.debug("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
-                                return
-                            }
-
-                            // 선택한 작가 찾기
-                            guard let selectedArtist = artists.first(where: { $0.name == viewModel.selectedArtistName }) else {
-                                Log.debug("선택한 작가를 찾을 수 없습니다: \(viewModel.selectedArtistName)")
-                                return
-                            }
-
-                            viewModel.setArtworkInfo(
-                                artworkTitle: viewModel.selectedArtworkTitle,
-                                artistName: viewModel.selectedArtistName,
-                                artworkId: selectedArtwork.id,
-                                artistId: selectedArtist.id
-                            ) { success in
-                                if success {
-                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!))
-                                }
+                }
+                
+                BottomButton(
+                    text: "다음",
+                    isEnabled: !viewModel.selectedArtworkTitle.isEmpty
+                    && !viewModel.selectedArtistName.isEmpty,
+                    action: {
+                        // 선택한 작품 찾기
+                        guard let selectedArtwork = artworks.first(where: { $0.title == viewModel.selectedArtworkTitle }) else {
+                            Log.debug("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
+                            return
+                        }
+                        
+                        // 선택한 작가 찾기
+                        guard let selectedArtist = artists.first(where: { $0.name == viewModel.selectedArtistName }) else {
+                            Log.debug("선택한 작가를 찾을 수 없습니다: \(viewModel.selectedArtistName)")
+                            return
+                        }
+                        
+                        viewModel.setArtworkInfo(
+                            artworkTitle: viewModel.selectedArtworkTitle,
+                            artistName: viewModel.selectedArtistName,
+                            artworkId: selectedArtwork.id,
+                            artistId: selectedArtist.id
+                        ) { success in
+                            if success {
+                                router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!))
                             }
                         }
+                    }
+                )
+                .padding(.bottom, 35)
+            }
+            .background(LDColor.color6)
+            
+            if isBottomSheetActive {
+                Color.black.opacity(0.8)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        activeBottomSheet = nil
+                    }
+            }
+            
+            /// 작품 제목 바텀시트
+            if activeBottomSheet == .artwork {
+                CustomBottomSheet(
+                    Binding(
+                        get: { activeBottomSheet == .artwork },
+                        set: { if !$0 { activeBottomSheet = nil } }
+                    ),
+                    height: 393
+                ) {
+                    SelectionSheet(
+                        title: "제목",
+                        items: artworks.map { $0.title },
+                        selectedItem: $viewModel.selectedArtworkTitle,
+                        onDismiss: { activeBottomSheet = nil }
                     )
-                    .padding(.bottom, 35)
                 }
-                .background(LDColor.color6)
-
-                if isBottomSheetActive {
-                    Color.black.opacity(0.8)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            activeBottomSheet = nil
-                        }
-                }
-
-                /// 작품 제목 바텀시트
-                if activeBottomSheet == .artwork {
-                    CustomBottomSheet(
-                        Binding(
-                            get: { activeBottomSheet == .artwork },
-                            set: { if !$0 { activeBottomSheet = nil } }
-                        ),
-                        height: 393
-                    ) {
-                        SelectionSheet(
-                            title: "제목",
-                            items: artworks.map { $0.title },
-                            selectedItem: $viewModel.selectedArtworkTitle,
-                            onDismiss: { activeBottomSheet = nil }
-                        )
-                    }
-                    .onAppear {
-                        viewModel.fetchArtworks(artistId: artistId, exhibitionId: exhibitionId)
-                    }
-                }
-
-                /// 작가 바텀시트
-                if activeBottomSheet == .artist {
-                    CustomBottomSheet(
-                        Binding(
-                            get: { activeBottomSheet == .artist },
-                            set: { if !$0 { activeBottomSheet = nil } }
-                        ),
-                        height: 393
-                    ) {
-                        SelectionSheet(
-                            title: "작가",
-                            items: artists.map { $0.name },
-                            selectedItem: $viewModel.selectedArtistName,
-                            onDismiss: { activeBottomSheet = nil }
-                        )
-                    }
-                    .onAppear {
-                        viewModel.fetchAllArtists()
-                    }
+                .onAppear {
+                    viewModel.fetchArtworks(artistId: artistId, exhibitionId: exhibitionId)
                 }
             }
-            .edgesIgnoringSafeArea(.bottom)
-            .toolbar {
-                CustomNavigationBar(title: "") {
-                    router.popLast()
+            
+            /// 작가 바텀시트
+            if activeBottomSheet == .artist {
+                CustomBottomSheet(
+                    Binding(
+                        get: { activeBottomSheet == .artist },
+                        set: { if !$0 { activeBottomSheet = nil } }
+                    ),
+                    height: 393
+                ) {
+                    SelectionSheet(
+                        title: "작가",
+                        items: artists.map { $0.name },
+                        selectedItem: $viewModel.selectedArtistName,
+                        onDismiss: { activeBottomSheet = nil }
+                    )
+                }
+                .onAppear {
+                    viewModel.fetchAllArtists()
                 }
             }
-            .onDisappear {
-                viewModel.selectedArtworkTitle = ""
-                viewModel.selectedArtistName = ""
+        }
+        .edgesIgnoringSafeArea(.bottom)
+        .toolbar {
+            CustomNavigationBar(title: "") {
+                router.popLast()
             }
+        }
+        .onDisappear {
+            viewModel.selectedArtworkTitle = ""
+            viewModel.selectedArtistName = ""
+        }
     }
 }
 

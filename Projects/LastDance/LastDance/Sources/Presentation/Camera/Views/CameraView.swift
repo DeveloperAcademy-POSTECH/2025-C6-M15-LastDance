@@ -140,10 +140,9 @@ private struct CloseButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: "xmark")
-                .font(.system(size: 13, weight: .bold))
+                .font(.system(size: 24, weight: .medium))
                 .foregroundColor(LDColor.color6)
-                .frame(width: 28, height: 28)
-                .padding(8)
+                .frame(width: 44, height: 44)
         }
         .contentShape(Circle())
         .accessibilityLabel(Text("닫기"))

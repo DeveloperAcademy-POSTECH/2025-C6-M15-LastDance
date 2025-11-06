@@ -26,7 +26,8 @@ struct BottomButton: View {
                     Text(text)
                         .foregroundStyle(isEnabled ? LDColor.color6 : LDColor.color1)
                 }
-                .frame(maxWidth: .infinity, maxHeight: 54, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(height: 54)
                 .background(isEnabled ? LDColor.color1 : LDColor.color6)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
