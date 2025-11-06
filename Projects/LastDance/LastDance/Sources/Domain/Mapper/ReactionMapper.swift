@@ -8,14 +8,13 @@
 enum ReactionMapper {
     /// ReactionDetail DTO를 Reaction Model로 변환
     static func mapDtoToModel(_ dto: ReactionDetailResponseDto) -> Reaction {
-        // tags를 category 문자열 배열로 변환
-        let categories = dto.tags.map { $0.name }
+        let tags = dto.tags.map { ReactionTagInfo(name: $0.name, colorHex: $0.color_hex ?? "#8F8F8F") } // Fallback to gray
         
         return Reaction(
             id: String(dto.id),
             artworkId: dto.artwork_id,
             visitorId: dto.visitor_id,
-            category: categories,
+            tags: tags,
             comment: dto.comment,
             createdAt: dto.created_at
         )
@@ -27,7 +26,7 @@ enum ReactionMapper {
             id: String(dto.id),
             artworkId: dto.artwork_id,
             visitorId: dto.visitor_id,
-            category: [],
+            tags: [], // This DTO has no tag details
             comment: dto.comment,
             createdAt: dto.created_at
         )

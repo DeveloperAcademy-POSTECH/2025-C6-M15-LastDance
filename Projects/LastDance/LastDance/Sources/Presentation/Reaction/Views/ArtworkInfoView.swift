@@ -26,18 +26,49 @@ struct ArtworkInfoView: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // 이미지 URL 표시
+            // 이미지 표시 로직
             if let capturedImage = capturedImage {
                 Image(uiImage: capturedImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxHeight: 373)
                     .clipped()
-            } else {
-                // 이미지가 없는 경우
+            } else if let thumbnailURLString = artwork?.thumbnailURL,
+                      let thumbnailURL = URL(string: thumbnailURLString) {
+                AsyncImage(url: thumbnailURL) { phase in
+                    switch phase {
+                    case .empty:
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(maxHeight: 373)
+                            .overlay(ProgressView())
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxHeight: 373)
+                            .clipped()
+                    case .failure:
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(maxHeight: 373)
+                            .overlay(
+                                Image(systemName: "PlaceholderImage")
+                                    .foregroundColor(.gray)
+                            )
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+            else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 343)
+                    .overlay(
+                        Text("이미지 없음")
+                            .foregroundColor(.gray)
+                    )
             }
 
             // 그라데이션 오버레이
@@ -65,8 +96,4 @@ struct ArtworkInfoView: View {
         }
         .ignoresSafeArea(.container, edges: .top)
     }
-}
-
-#Preview {
-    ArtworkInfoView(artworkId: 1, capturedImage: nil)
 }

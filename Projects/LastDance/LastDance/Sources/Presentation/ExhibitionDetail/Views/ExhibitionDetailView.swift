@@ -84,8 +84,15 @@ struct ExhibitionDetailView: View {
 
     /// 관람객 - 관람 시작하기 버튼 처리
     private func handleStartVisit() {
-        viewModel.selectExhibitionAsUserExhibition()
-        router.push(.archive(id: exhibitionId))
+        viewModel.createVisitHistory { success in
+            if success {
+                viewModel.selectExhibitionAsUserExhibition()
+                SwiftDataManager.shared.saveContext()
+                router.push(.archive(id: exhibitionId))
+            } else {
+                Log.error("Failed to create visit history.")
+            }
+        }
     }
 }
 

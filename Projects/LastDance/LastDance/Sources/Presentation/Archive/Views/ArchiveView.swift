@@ -50,7 +50,7 @@ struct ArchiveView: View {
                                 )
                             } else {
                                 ArchiveEmptyStateView {
-                                    router.push(.camera)
+                                    router.push(.camera(exhibitionId: exhibitionId))
                                 }
                             }
                             
@@ -87,8 +87,11 @@ struct ArchiveView: View {
         )
         .safeAreaInset(edge: .bottom) {
             CameraActionButtonView {
-                router.push(.camera)
+                router.push(.camera(exhibitionId: exhibitionId))
             }
+        }
+        .onAppear {
+            viewModel.loadData()
         }
     }
 }

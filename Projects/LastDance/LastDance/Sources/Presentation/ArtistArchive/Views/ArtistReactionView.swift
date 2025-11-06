@@ -1,12 +1,12 @@
 //
-//  ArtistReactionView.swift
+//  ArtistReactionArchiveView.swift
 //  LastDance
 //
 //  Created by 광로 on 10/14/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArtistReactionView: View {
     @StateObject private var viewModel = ArtistReactionViewModel()
@@ -30,25 +30,7 @@ struct ArtistReactionView: View {
                     .scaleEffect(1.2)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                // 그리드
-                ScrollView {
-                    LazyVGrid(
-                        columns: gridColumns,
-                        spacing: 28
-                    ) {
-                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
-                            ArtistExhibitionCard(
-                                exhibition: exhibition
-                            )
-                            .onTapGesture {
-                                router.push(.artistReactionArchiveView(exhibitionId: exhibition.id))
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 32)
-                    .padding(.top, 30)
-                    .padding(.bottom, 100)
-                }
+                ArtistExhibitionGridView(viewModel: viewModel)
             }
         }
         .background(LDColor.color6)
@@ -61,31 +43,93 @@ struct ArtistReactionView: View {
             .padding(.bottom, 40)
         }
         .onAppear {
-            viewModel.loadExhibitionsFromDB()
+            viewModel.loadArtistExhibitions()
         }
     }
 }
 
-// MARK: - Components
+// MARK: - Extracted Subview for the Grid
+private struct ArtistExhibitionGridView: View {
+    @ObservedObject var viewModel: ArtistReactionViewModel
+    @EnvironmentObject private var router: NavigationRouter
 
+    var body: some View {
+        ScrollView {
+            LazyVGrid(
+                columns: [
+                    GridItem(.fixed(155), spacing: 31), // Use the same spacing as gridColumns
+                    GridItem(.fixed(155), spacing: 31)
+                ],
+                spacing: 28
+            ) {
+                ForEach(viewModel.exhibitions) { displayItem in // Removed .enumerated() as displayItem is Identifiable
+                    ArtistExhibitionCard(
+                        displayItem: displayItem
+                    )
+                    .onTapGesture {
+                        router.push(.artistReactionArchiveView(exhibitionId: displayItem.exhibition.id))
+                    }
+                }
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 30)
+            .padding(.bottom, 100)
+        }
+    }
+}
+
+// MARK: - Components (ArtistExhibitionCard remains the same)
 struct ArtistExhibitionCard: View {
-    let exhibition: MockExhibitionData
+    let displayItem: ArtistExhibitionDisplayItem
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             // 포스터 이미지 + 반응 카운터
             ZStack(alignment: .bottomLeading) {
-                Image(exhibition.coverImageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 155, height: 219)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                if let coverImageURLString = displayItem.exhibition.coverImageName,
+                   let coverImageURL = URL(string: coverImageURLString) {
+                    AsyncImage(url: coverImageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            // Placeholder while loading
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: 155, height: 219)
+                                .overlay(ProgressView())
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 155, height: 219)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        case .failure:
+                            // Placeholder on failure
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(width: 155, height: 219)
+                                .overlay(
+                                    Image(systemName: "photo") // Changed from "PlaceholderImage"
+                                        .foregroundColor(.gray)
+                                )
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                } else {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: 155, height: 219)
+                        .overlay(
+                            Text("이미지 없음")
+                                .foregroundColor(.gray)
+                        )
+                }
                 
                 Circle()
                     .fill(Color.black)
                     .frame(width: 28, height: 28)
                     .overlay(
-                        Text("\(exhibition.reactionCount)")
+                        Text("\(displayItem.reactionCount)")
                             .font(LDFont.heading07)
                             .foregroundColor(.white)
                     )
@@ -94,7 +138,7 @@ struct ArtistExhibitionCard: View {
             }
             
             // 전시 제목 (고정 높이로 정렬 보장)
-            Text(exhibition.title)
+            Text(displayItem.exhibition.title)
                 .font(LDFont.medium04)
                 .foregroundColor(.black)
                 .lineLimit(2)

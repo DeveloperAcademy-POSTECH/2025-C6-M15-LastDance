@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 
+/// 관람객 플로우 - 내가 다녀온 전시 목록에서 전시 하나 선택했을때 보여주는 작품 목록 뷰
 struct ExhibitionArchiveView: View {
     @StateObject private var viewModel: ExhibitionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
@@ -82,11 +83,15 @@ struct ExhibitionArchiveView: View {
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
                             if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                                let artist = viewModel.artist(for: artwork)
                                 ReactionCardView(
                                     reaction: reaction,
                                     artwork: artwork,
-                                    artist: viewModel.artist(for: artwork)
+                                    artist: artist
                                 )
+                                .onTapGesture {
+                                    router.push(.artReaction(artwork: artwork, artist: artist))
+                                }
                             }
                         }
                     }
@@ -105,11 +110,6 @@ struct ExhibitionArchiveView: View {
         .background(LDColor.color6)
         .onAppear {
             viewModel.loadData()
-            // 방문 기록 생성
-            viewModel.createVisitHistory()
-            // TODO: 작품 상세뷰 만들어지면 해당 뷰에 연동 예정
-            // 임시 테스트: 작품 상세 조회 API 호출
-            viewModel.fetchArtworkDetail(artworkId: 1)
         }
         .navigationBarBackButtonHidden()
     }

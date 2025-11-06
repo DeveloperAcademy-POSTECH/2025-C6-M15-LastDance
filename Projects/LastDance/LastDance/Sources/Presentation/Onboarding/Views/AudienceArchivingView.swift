@@ -92,12 +92,33 @@ struct ExhibitionCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             // 전시 포스터 이미지
-            if let coverImageName = exhibition.coverImageName {
-                Image(coverImageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 155, height: 219)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            if let coverImageURLString = exhibition.coverImageName,
+                let coverImageURL = URL(string: coverImageURLString) {
+                AsyncImage(url: coverImageURL) { phase in
+                    switch phase {
+                    case .empty:
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(width: 155, height: 219)
+                            .overlay(ProgressView())
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 155, height: 219)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    case .failure:
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(width: 155, height: 219)
+                            .overlay(
+                                Image(systemName: "PlaceholderImage")
+                                    .foregroundColor(.gray)
+                            )
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
             } else {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color.gray.opacity(0.2))

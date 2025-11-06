@@ -59,59 +59,10 @@ enum MockDataLoader {
             localImagePath: "mock_artworkImage_02",
             createdAt: .now.addingTimeInterval(-100)
         )
-        let capture4 = CapturedArtwork(
-            id: 5,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture5 = CapturedArtwork(
-            id: 6,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now
-        )
-        let capture6 = CapturedArtwork(
-            id: 7,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_02",
-            createdAt: .now
-        )
-
-        let reaction1  = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["좋아요"],
-            comment: "빛이 멋져요",
-            createdAt: ""
-        )
-        let reaction2 = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["강한 메시지가 느껴져요", "생각하게 만드는"],
-            comment: "마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다마음에 오래 남는 작품이다",
-            createdAt: ""
-        )
-        let reaction3 = Reaction(
-            id: UUID().uuidString,
-            artworkId: artwork1.id,
-            visitorId: visitor.id,
-            category: ["감동적이에요"],
-            comment: "색감과 구도가 인상적입니다.",
-            createdAt: ""
-        )
         context.insert(artwork1); context.insert(artwork2)
         context.insert(capture1)
         context.insert(capture2)
         context.insert(capture3)
-        context.insert(capture4)
-        context.insert(capture5)
-        context.insert(capture6)
-        context.insert(reaction1)
-        context.insert(reaction2)
-        context.insert(reaction3)
         
         setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
         insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,
@@ -134,13 +85,13 @@ enum MockDataLoader {
 
     static func createArtists() -> [Artist] {
         [
-            Artist(id: 1, name: "김민준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 2, name: "박서연", exhibitions: [3], receivedReactions: []),
-            Artist(id: 3, name: "이도윤", exhibitions: [3], receivedReactions: []),
-            Artist(id: 4, name: "공지우", exhibitions: [3], receivedReactions: []),
-            Artist(id: 5, name: "서예준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 6, name: "최하은", exhibitions: [3], receivedReactions: []),
-            Artist(id: 7, name: "정우진", exhibitions: [3], receivedReactions: [])
+            Artist(id: 1, uuid: UUID().uuidString, name: "김민준", exhibitions: [3], receivedReactions: []),
+            Artist(id: 2, uuid: UUID().uuidString, name: "박서연", exhibitions: [3], receivedReactions: []),
+            Artist(id: 3, uuid: UUID().uuidString, name: "이도윤", exhibitions: [3], receivedReactions: []),
+            Artist(id: 4, uuid: UUID().uuidString, name: "공지우", exhibitions: [3], receivedReactions: []),
+            Artist(id: 5, uuid: UUID().uuidString, name: "서예준", exhibitions: [3], receivedReactions: []),
+            Artist(id: 6, uuid: UUID().uuidString, name: "최하은", exhibitions: [3], receivedReactions: []),
+            Artist(id: 7, uuid: UUID().uuidString, name: "정우진", exhibitions: [3], receivedReactions: [])
         ]
     }
 
@@ -222,7 +173,7 @@ enum MockDataLoader {
         let capture = CapturedArtwork(id: 200, artworkId: artworkId,
                                      localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
         let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
-                               category: ["좋아요"], comment: "빛이 멋져요", createdAt: "")
+                               tags: [ReactionTagInfo(name: "좋아요", colorHex: "#FF0000")], comment: "빛이 멋져요", createdAt: "")
         return (capture, reaction)
     }
 

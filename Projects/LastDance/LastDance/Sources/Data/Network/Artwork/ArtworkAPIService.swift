@@ -40,10 +40,11 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         artworks.forEach { dto in
-                            let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
-                            SwiftDataManager.shared.insert(artwork)
-                        }
-                        Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
+                        let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
+                        SwiftDataManager.shared.insert(artwork)
+                    }
+                    SwiftDataManager.shared.saveContext() // 명시적으로 저장
+                    Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
                     }
 
                     completion(.success(artworks))

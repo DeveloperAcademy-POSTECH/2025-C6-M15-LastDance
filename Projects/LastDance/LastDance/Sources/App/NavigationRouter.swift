@@ -25,10 +25,16 @@ final class NavigationRouter: ObservableObject {
 
     /// 특정 화면까지 전부 pop
     func popTo(_ target: Route) {
+        Log.debug("popTo: Target: \(target)")
         while let last = path.last {
-            if last == target { break }
+            Log.debug("popTo: Current last in path: \(last)")
+            if last == target {
+                Log.debug("popTo: Found target: \(target)")
+                break
+            }
             _ = path.popLast()
         }
+        Log.debug("popTo: Path after operation: \(path)")
     }
     
     func popToLast(where predicate: (Route) -> Bool) {

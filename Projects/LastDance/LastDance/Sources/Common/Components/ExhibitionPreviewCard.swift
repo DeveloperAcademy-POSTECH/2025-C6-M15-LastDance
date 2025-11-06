@@ -41,21 +41,56 @@ struct ExhibitionPreviewImage: View {
     let imageName: String?
     
     var body: some View {
-        if let imageName = imageName {
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 365, height: 468)
-                .clipped()
-                .clipShape(
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: 12,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 12
-                    )
-                )
+        if let imageName = imageName, let url = URL(string: imageName) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .empty:
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 365, height: 468)
+                        .overlay(ProgressView())
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 365, height: 468)
+                        .clipped()
+                        .clipShape(
+                            UnevenRoundedRectangle(
+                                topLeadingRadius: 12,
+                                bottomLeadingRadius: 0,
+                                bottomTrailingRadius: 0,
+                                topTrailingRadius: 12
+                            )
+                        )
+                case .failure:
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 365, height: 468)
+                        .clipShape(
+                            UnevenRoundedRectangle(
+                                topLeadingRadius: 12,
+                                bottomLeadingRadius: 0,
+                                bottomTrailingRadius: 0,
+                                topTrailingRadius: 12
+                            )
+                        )
+                        .overlay(
+                            VStack {
+                                Image(systemName: "photo")
+                                    .font(.system(size: 40))
+                                    .foregroundColor(.gray)
+                                Text("이미지 없음")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        )
+                @unknown default:
+                    EmptyView()
+                }
+            }
         } else {
+            // Fallback if imageName is nil or not a valid URL
             Rectangle()
                 .fill(Color.gray.opacity(0.3))
                 .frame(width: 365, height: 468)

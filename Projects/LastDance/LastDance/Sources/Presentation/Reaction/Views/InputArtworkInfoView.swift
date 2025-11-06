@@ -88,7 +88,7 @@ struct InputArtworkInfoView: View {
                                 artistId: selectedArtist.id
                             ) { success in
                                 if success {
-                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image))
+                                    router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!))
                                 }
                             }
                         }
@@ -142,9 +142,21 @@ struct InputArtworkInfoView: View {
                             onDismiss: { activeBottomSheet = nil }
                         )
                     }
+                    .onAppear {
+                        viewModel.fetchAllArtists()
+                    }
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
+            .toolbar {
+                CustomNavigationBar(title: "") {
+                    router.popLast()
+                }
+            }
+            .onDisappear {
+                viewModel.selectedArtworkTitle = ""
+                viewModel.selectedArtistName = ""
+            }
     }
 }
 
