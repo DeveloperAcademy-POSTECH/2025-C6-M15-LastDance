@@ -100,6 +100,9 @@
 		99191F142EA6EDC000D2F71A /* ArtworkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191F102EA6EDC000D2F71A /* ArtworkMapper.swift */; };
 		99191F152EA6EDC000D2F71A /* VisitHistoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191F122EA6EDC000D2F71A /* VisitHistoryMapper.swift */; };
 		99191F1F2EA7877900D2F71A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191F1E2EA7877900D2F71A /* Date+Extensions.swift */; };
+		99191F282EA7F19600D2F71A /* ArtistExhibitionDisplayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191F262EA7F19600D2F71A /* ArtistExhibitionDisplayItem.swift */; };
+		99191F292EA7F19600D2F71A /* ArtworkDisplayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99191F272EA7F19600D2F71A /* ArtworkDisplayItem.swift */; };
+		997B9CBC2EB5FED40052F9BA /* Navigation_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997B9CBB2EB5FEBD0052F9BA /* Navigation_Ext.swift */; };
 		99DAB0A82E9C48D700379F27 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */; };
 		99DAB0AA2E9C490600379F27 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0A92E9C490300379F27 /* CameraManager.swift */; };
 		99DAB0AE2E9C4A2C00379F27 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */; };
@@ -286,6 +289,9 @@
 		99191F112EA6EDC000D2F71A /* ReactionMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionMapper.swift; sourceTree = "<group>"; };
 		99191F122EA6EDC000D2F71A /* VisitHistoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitHistoryMapper.swift; sourceTree = "<group>"; };
 		99191F1E2EA7877900D2F71A /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		99191F262EA7F19600D2F71A /* ArtistExhibitionDisplayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistExhibitionDisplayItem.swift; sourceTree = "<group>"; };
+		99191F272EA7F19600D2F71A /* ArtworkDisplayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkDisplayItem.swift; sourceTree = "<group>"; };
+		997B9CBB2EB5FEBD0052F9BA /* Navigation_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation_Ext.swift; sourceTree = "<group>"; };
 		99DAB0A72E9C48D100379F27 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		99DAB0A92E9C490300379F27 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		99DAB0AD2E9C4A2800379F27 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -475,6 +481,7 @@
 		963573C02E9B84ED00B2FA79 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				997B9CBB2EB5FEBD0052F9BA /* Navigation_Ext.swift */,
 				D8A4F99C2EA7295D0093728D /* TapGestureRecognizer.swift */,
 				99191F0E2EA6EB2B00D2F71A /* View+Shadow.swift */,
 				99191EBE2EA4E11D00D2F71A /* Color+Extension.swift */,
@@ -895,6 +902,8 @@
 				8C0F9F4B2E9CE192005B8C12 /* UserType.swift */,
 				99191E4B2EA1C8CF00D2F71A /* ArtistReactionItem.swift */,
 				8CCA420F2EA56C0B00351E19 /* ReactionData.swift */,
+				99191F262EA7F19600D2F71A /* ArtistExhibitionDisplayItem.swift */,
+				99191F272EA7F19600D2F71A /* ArtworkDisplayItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1496,9 +1505,12 @@
 				8CA9E8702EA73CB000C92F5A /* ArticleButtons.swift in Sources */,
 				8F1D5E0D2EA56ECD0064FE47 /* BackGround.swift in Sources */,
 				8C3B37A62E9E7089003FF185 /* PageIndicator.swift in Sources */,
+				997B9CBC2EB5FED40052F9BA /* Navigation_Ext.swift in Sources */,
 				99191EE02EA6782D00D2F71A /* CheckCircleCategoryView.swift in Sources */,
 				99191E762EA3657E00D2F71A /* ArtistListResponseDto.swift in Sources */,
 				99E6F1052E97B0DA002ED9C2 /* Visitor.swift in Sources */,
+				99191F282EA7F19600D2F71A /* ArtistExhibitionDisplayItem.swift in Sources */,
+				99191F292EA7F19600D2F71A /* ArtworkDisplayItem.swift in Sources */,
 				D8DB5DC22EA5598D00F4596B /* VisitorHistoriesResponseDto.swift in Sources */,
 				99DAB0B42E9C765900379F27 /* BottomControllerView.swift in Sources */,
 				D8C7C2BB2EA27E6600FCB472 /* BottomButton.swift in Sources */,
@@ -1651,6 +1663,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDance/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "여운";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1662,12 +1676,16 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.developerAcademy.LastDance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1686,6 +1704,8 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDance/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "여운";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1697,12 +1717,16 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.developerAcademy.LastDance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -5,8 +5,8 @@
 //  Created by 광로 on 10/14/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @MainActor
 final class ExhibitionArchiveViewModel: ObservableObject {
@@ -29,11 +29,49 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         loadData()
     }
     
-    /// 전시 상세 조회 api 호출
     func loadData() {
-        isLoading = true
-        errorMessage = ""
+        Task { @MainActor in
+            isLoading = true
+            errorMessage = ""
 
+            if await hasLocalData() {
+                // 로컬 데이터가 있으면 API 호출 없이 swiftData 로드
+                await loadLocalData()
+            } else {
+                // 로컬 데이터가 없으면 API 호출
+                fetchExhibitionAPI()
+            }
+        }
+    }
+
+    /// SwiftData에 해당 전시의 데이터가 있는지 확인
+    private func hasLocalData() async -> Bool {
+        do {
+            let artworks = try await fetchArtworksForExhibition()
+            return !artworks.isEmpty
+        } catch {
+            return false
+        }
+    }
+
+    /// 로컬 데이터만 로드 (API 호출 X)
+    private func loadLocalData() async {
+        do {
+            self.reactions = try await self.fetchReactions()
+            self.artists   = try await self.fetchArtists()
+            self.artworks = try await self.fetchArtworksForExhibition()
+
+            Log.debug("로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
+            self.isLoading = false
+        } catch {
+            Log.error("로컬 데이터 로드 실패: \(error)")
+            self.isLoading = false
+            self.errorMessage = "데이터를 불러오는데 실패했습니다."
+        }
+    }
+
+    /// API호출
+    private func fetchExhibitionAPI() {
         apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
 
@@ -146,38 +184,6 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                     self.loadData()
                 case .failure(let error):
                     Log.error("작품 상세 조회 실패: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-
-    /// 방문 기록 생성 API 함수
-    func createVisitHistory() {
-        // UserDefaults에서 저장된 visitorUUID 가져오기
-        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
-            Log.error("visitorUUID를 찾을 수 없습니다")
-            return
-        }
-
-        // SwiftData에서 UUID로 Visitor 조회
-        let visitors = swiftDataManager.fetchAll(Visitor.self)
-        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
-            Log.error("Visitor를 찾을 수 없습니다")
-            return
-        }
-
-        let request = MakeVisitHistoriesRequestDto(
-            visitor_id: visitor.id,
-            exhibition_id: exhibitionId
-        )
-
-        visitHistoriesAPIService.makeVisitHistories(request: request) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let dto):
-                    Log.debug("방문 기록 생성 성공: visitId=\(dto.id)")
-                case .failure(let error):
-                    Log.error("방문 기록 생성 실패: \(error)")
                 }
             }
         }

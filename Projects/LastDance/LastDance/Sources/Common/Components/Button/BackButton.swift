@@ -20,3 +20,16 @@ struct BackButton: View {
         }
     }
 }
+
+struct BackWhiteButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image("chevron.left.white")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+        }
+    }
+}

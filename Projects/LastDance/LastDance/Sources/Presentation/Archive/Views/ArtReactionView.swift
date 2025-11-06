@@ -51,16 +51,24 @@ struct ArtReactionView: View {
             ScrollViewObserver(scrollOffset: $scrollOffset) {
                 VStack(spacing: 0) {
                     // 작품 이미지
-                    Image(artwork.thumbnailURL ?? "mock_artworkImage_01")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(
-                            width: viewModel.imageWidth(for: scrollOffset),
-                            height: viewModel.imageHeight(for: scrollOffset)
-                        )
+                    if let imageURLString = artwork.thumbnailURL,
+                        let imageURL = URL(string: imageURLString) {
+                        AsyncImage(url: imageURL) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 356, height: 468)
                         .clipped()
                         .cornerRadius(24)
-                        .animation(.easeInOut(duration: 0.2), value: scrollOffset)
+                    } else {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 356, height: 468)
+                            .overlay(Text("이미지 없음"))
+                            .cornerRadius(24)
+                    }
                     // 탭 바
                     if !viewModel.isTabBarFixed(for: scrollOffset) {
                         TabBarView(selectedTab: $selectedTab)
@@ -93,10 +101,24 @@ struct ArtReactionView: View {
                                 .frame(height: 0.5)
                                 .foregroundColor(LDColor.color3)
                             
-                            Text("작품 설명")
-                                .font(Font.custom("Pretendard", size: 16))
-                                .foregroundColor(LDColor.color2)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            if let description = artwork.descriptionText, !description.isEmpty {
+                                Text("작품 설명")
+                                    .font(Font.custom("Pretendard", size: 16))
+                                    .foregroundColor(LDColor.color2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.bottom, -12) // Add some spacing
+                                
+                                Text(description)
+                                    .font(Font.custom("Pretendard", size: 16))
+                                    .foregroundColor(LDColor.color2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .lineSpacing(4)
+                            } else {
+                                Text("작품 설명이 없습니다.")
+                                    .font(Font.custom("Pretendard", size: 16))
+                                    .foregroundColor(LDColor.color2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                             
                             Spacer(minLength: 400)
                         }
@@ -126,22 +148,19 @@ struct ArtReactionView: View {
                                 ForEach(viewModel.reactions, id: \.id) { reaction in
                                     VStack(alignment: .leading, spacing: 16) {
                                         // 감정 태그 섹션
-                                        if !reaction.category.isEmpty {
+                                        if !reaction.tags.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감정 태그")
                                                     .font(Font.custom("Pretendard", size: 18).weight(.semibold))
                                                     .foregroundColor(LDColor.color1)
                                                 
-                                                VStack(alignment: .leading, spacing: 8) {
-                                                    ForEach(reaction.category, id: \.self) { tag in
-                                                        HStack(spacing: 8) {
-                                                            Circle()
-                                                                .fill(Color.red)
-                                                                .frame(width: 8, height: 8)
-                                                            
-                                                            Text(tag)
-                                                                .font(Font.custom("Pretendard", size: 16))
-                                                                .foregroundColor(LDColor.color1)
+                                                ScrollView(.horizontal, showsIndicators: false) {
+                                                    HStack {
+                                                        ForEach(reaction.tags, id: \.self) { tagInfo in
+                                                            ReactionTag(text: tagInfo.name, color: Color(hex: tagInfo.colorHex))
+                                                                .applyShadow(LDShadow.shadow1)
+                                                                .padding(.vertical, 10)
+                                                                .padding(.horizontal, 2)
                                                         }
                                                     }
                                                 }

@@ -5,77 +5,103 @@
 //  Created by 광로 on 10/15/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @MainActor
 final class ArtistReactionArchiveViewModel: ObservableObject {
-    @Published var exhibition: Exhibition?
-    @Published var reactionItems: [ReactionItem] = []
+    @Published var artworks: [ArtworkDisplayItem] = [] // Changed type
     @Published var isLoading = false
 
     private let exhibitionId: Int
     private let swiftDataManager = SwiftDataManager.shared
 
-    init(exhibitionId: Int) {
-        self.exhibitionId = exhibitionId
-        loadData()
-    }
-
-    func loadData() {
-        isLoading = true
-        Task {
-            await loadExhibitionAndReactions()
-            self.isLoading = false
-        }
-    }
-
     var exhibitionTitle: String {
         exhibition?.title ?? "전시 제목"
     }
 
-    private func loadExhibitionAndReactions() async {
+    private var exhibition: Exhibition?
+    private let reactionAPIService: ReactionAPIServiceProtocol
+    private let artworkAPIService: ArtworkAPIServiceProtocol // Added dependency
+
+    init(
+        exhibitionId: Int,
+        reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService(),
+        artworkAPIService: ArtworkAPIServiceProtocol = ArtworkAPIService()
+    ) {
+        self.exhibitionId = exhibitionId
+        self.reactionAPIService = reactionAPIService
+        self.artworkAPIService = artworkAPIService
+    }
+    
+    func loadArtworksAndReactions() {
+        isLoading = true
+        artworks = []
+        
+        let exhibitionDescriptor = FetchDescriptor<Exhibition>(
+            predicate: #Predicate { $0.id == exhibitionId }
+        )
         do {
-            guard let container = swiftDataManager.container else {
-                throw NSError(domain: "ArtistReactionArchiveViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Container not available"])
-            }
-
-            let context = container.mainContext
-
-            // Exhibition 데이터 가져오기
-            let targetId = self.exhibitionId
-            let predicate = #Predicate<Exhibition> { exhibition in
-                exhibition.id == targetId
-            }
-            let exhibitionDescriptor = FetchDescriptor<Exhibition>(predicate: predicate)
-            let exhibitions = try context.fetch(exhibitionDescriptor)
-
-            guard let fetchedExhibition = exhibitions.first else {
-                Log.warning("Exhibition not found for id: \(exhibitionId)")
-                return
-            }
-
-            // Reaction 데이터 가져오기
-            let exhibitionArtworks = fetchedExhibition.artworks
-            let reactionDescriptor = FetchDescriptor<Reaction>()
-            let allReactions = try context.fetch(reactionDescriptor)
-
-            let items: [ReactionItem] = exhibitionArtworks.compactMap { artwork -> ReactionItem? in
-                let artworkReactions = allReactions.filter { $0.artworkId == artwork.id }
-                guard !artworkReactions.isEmpty else { return nil }
-                return ReactionItem(
-                    imageName: artwork.thumbnailURL ?? "mock_artworkImage_01",
-                    reactionCount: artworkReactions.count,
-                    artworkTitle: artwork.title
-                )
-            }
-
-            await MainActor.run {
-                self.exhibition = fetchedExhibition
-                self.reactionItems = items
-            }
+            exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor).first
         } catch {
-            Log.error("Failed to load exhibition and reactions: \(error)")
+            Log.error("Failed SwiftData: \(error.localizedDescription)")
+        }
+        
+        guard let currentExhibition = exhibition else {
+            Log.warning("Exhibition not found for id: \(exhibitionId)")
+            isLoading = false
+            return
+        }
+        
+        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let artworkDtos):
+                Log.debug("Fetched \(artworkDtos.count) artworks for exhibition \(exhibitionId).")
+
+                if artworkDtos.isEmpty {
+                    Log.warning("No artworks \(exhibitionId).")
+                    self.isLoading = false
+                    return
+                }
+
+                let group = DispatchGroup()
+                var fetchedArtworkDisplayItems: [ArtworkDisplayItem] = []
+                let lock = NSLock()
+
+                for artworkDto in artworkDtos {
+                    group.enter()
+                    let artworkModel = ArtworkMapper.mapDtoToModel(artworkDto, exhibitionId: exhibitionId)
+                    self.swiftDataManager.upsertArtwork(artworkModel)
+                    self.reactionAPIService.getReactions(artworkId: artworkDto.id, visitorId: nil, visitId: nil) { reactionResult in
+                        var reactionCount = 0
+                        switch reactionResult {
+                        case .success(let reactions):
+                            reactionCount = reactions.count
+                            Log.debug("Artwork \(artworkDto.id) has \(reactionCount) reactions.")
+                        case .failure(let error):
+                            Log.error("Failed to fetch reactions for artwork \(artworkDto.id): \(error.localizedDescription)")
+                        }
+                        
+                        lock.lock()
+                        fetchedArtworkDisplayItems.append(ArtworkDisplayItem(id: artworkDto.id, artwork: artworkModel, reactionCount: reactionCount))
+                        lock.unlock()
+                        group.leave()
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    self.artworks = fetchedArtworkDisplayItems.sorted {
+                        $0.artwork.title < $1.artwork.title
+                    }
+                    Log.debug("Final artworks count: \(self.artworks.count)")
+                    self.isLoading = false
+                }
+
+            case .failure(let error):
+                Log.error("Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)")
+                self.isLoading = false
+            }
         }
     }
 }

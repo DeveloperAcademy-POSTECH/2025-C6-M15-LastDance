@@ -13,6 +13,7 @@ final class Artwork {
     @Attribute(.unique) var id: Int
     var exhibitionId: Int
     var title: String
+    var descriptionText: String?
     var artistId: Int?
     var thumbnailURL: String?
 
@@ -23,6 +24,7 @@ final class Artwork {
     init(id: Int,
          exhibitionId: Int,
          title: String,
+         descriptionText: String? = nil,
          artistId: Int? = nil,
          thumbnailURL: String? = nil,
          exhibition: Exhibition? = nil
@@ -30,6 +32,7 @@ final class Artwork {
         self.id = id
         self.exhibitionId = exhibitionId
         self.title = title
+        self.descriptionText = descriptionText
         self.artistId = artistId
         self.thumbnailURL = thumbnailURL
         self.exhibition = exhibition

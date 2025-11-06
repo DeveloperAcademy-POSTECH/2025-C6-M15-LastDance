@@ -12,6 +12,7 @@ enum ArtworkMapper {
             id: dto.id,
             exhibitionId: exhibitionId != nil ? exhibitionId! : 0,
             title: dto.title,
+            descriptionText: dto.description,
             artistId: dto.artist_id,
             thumbnailURL: dto.thumbnail_url
         )

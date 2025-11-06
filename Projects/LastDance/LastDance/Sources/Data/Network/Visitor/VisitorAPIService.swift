@@ -62,7 +62,7 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                             SwiftDataManager.shared.upsertVisitor(model)
                         }
                         // TODO: - 전체 Visitors 확인 용도 (이후에 제거 가능)
-                        SwiftDataManager.shared.printAllVisitors()
+//                        SwiftDataManager.shared.printAllVisitors()
                     }
                     
                     completion(.success(items))

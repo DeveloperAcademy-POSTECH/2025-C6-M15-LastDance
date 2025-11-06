@@ -121,12 +121,13 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                     id: artworkInfo.id,
                                     exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
+                                    descriptionText: artworkInfo.description,
                                     artistId: artworkInfo.artist_id,
                                     thumbnailURL: artworkInfo.thumbnail_url,
                                     exhibition: exhibition
                                 )
                                 SwiftDataManager.shared.upsertArtwork(artwork)
-                                SwiftDataManager.shared.printAllArtworks()
+//                                SwiftDataManager.shared.printAllArtworks()
 
                                 if !exhibition.artworks.contains(where: { $0.id == artwork.id }) {
                                     exhibition.artworks.append(artwork)

@@ -113,40 +113,21 @@ final class ArchiveViewModel: ObservableObject {
             case .success(let reactions):
                 Log.debug("전체 반응 수: \(reactions.count)")
                 
-                // 현재 전시의 작품 id 목록
-                guard let exhibition = self.currentExhibition else {
-                    Log.error("전시 정보가 없음. 필터링 불가.")
-                    isLoading = false
-                    return
+                let reactedArtworkIds = Set(reactions.map { $0.artwork_id })
+                
+                let currentExhibitionId = self.exhibitionId // Capture the value
+                // 현재 전시에 속하고 반응이 있는 Artwork만 필터링하여 reactedArtworks에 추가
+                let allArtworksInExhibition = swiftDataManager.fetch(Artwork.self, predicate: #Predicate<Artwork> { artwork in
+                    artwork.exhibitionId == currentExhibitionId
+                })
+                
+                self.reactedArtworks = allArtworksInExhibition.filter { artwork in
+                    reactedArtworkIds.contains(artwork.id)
                 }
                 
-                let exhibitionArtworkIds = Set(exhibition.artworks.map { $0.id })
-                
-                // 전시에 속한 반응만 필터링
-                let filteredReactions = reactions.filter {
-                    exhibitionArtworkIds.contains($0.artwork_id)
-                }
-                Log.info("전시에 해당하는 반응 수: \(filteredReactions.count)")
-                
-                if filteredReactions.isEmpty {
-                    Log.info("해당 전시에 대한 반응이 없습니다.")
-                    isLoading = false
-                    return
-                }
-                
-                // 해당 artwork 상세 정보 조회 (with DispatchGroup)
-                let group = DispatchGroup()
-                filteredReactions.forEach { reaction in
-                    group.enter()
-                    self.fetchArtworkDetail(artworkId: reaction.artwork_id) {
-                        group.leave()
-                    }
-                }
-                
-                group.notify(queue: .main) {
-                    Log.info("작품 정보 로드 완료. 총 작품 수: \(self.reactedArtworks.count)")
-                    self.isLoading = false
-                }
+                Log.info("작품 정보 로드 완료. 총 작품 수: \(self.reactedArtworks.count)")
+                Log.debug("DEBUG: reactedArtworks count after load: \(self.reactedArtworks.count)")
+                self.isLoading = false
                 
             case .failure(let error):
                 Log.error("반응 조회 실패: \(error)")

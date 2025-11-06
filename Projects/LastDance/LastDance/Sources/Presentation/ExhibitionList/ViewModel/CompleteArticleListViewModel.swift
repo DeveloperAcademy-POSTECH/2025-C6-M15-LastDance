@@ -27,6 +27,17 @@ final class CompleteArticleListViewModel: ObservableObject {
         Log.debug("로컬 DB 조회 - 전시: \(exhibition?.title ?? "없음"), 작가: \(artist?.name ?? "없음")")
     }
     
+    func saveCurrentArtistAsUser() {
+        guard let artist = artist else {
+            Log.warning("저장할 작가 정보가 없습니다.")
+            return
+        }
+        UserDefaults.standard.set(artist.id, forKey: UserDefaultsKey.artistId.key)
+        UserDefaults.standard.set(artist.name, forKey: UserDefaultsKey.artistName.key)
+        UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
+        Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id))")
+    }
+    
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
     func findExhibitionIdByCurrentFields() -> Int? {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)

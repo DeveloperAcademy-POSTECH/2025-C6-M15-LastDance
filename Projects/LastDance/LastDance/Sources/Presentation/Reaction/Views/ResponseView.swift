@@ -5,39 +5,53 @@
 //  Created by donghee on 10/19/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ResponseView: View {
-    @StateObject private var viewModel = ResponseViewModel()
-    @Query private var allArtworks: [Artwork]
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel: ResponseViewModel // Initialize with artworkId
+    @Query private var allArtworks: [Artwork] // Keep for fetching artwork details
     let artworkId: Int
 
+    // Initialize viewModel with artworkId
+    init(artworkId: Int) {
+        self.artworkId = artworkId
+        _viewModel = StateObject(wrappedValue: ResponseViewModel(artworkId: artworkId))
+    }
+
     private var artwork: Artwork? {
-        viewModel.getArtwork(from: allArtworks, id: artworkId)
+        // Fetch artwork from SwiftData using the artworkId
+        // This assumes the artwork has been saved to SwiftData by previous API calls
+        allArtworks.first { $0.id == artworkId }
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            ResponseContentView(
-                artwork: artwork,
-                viewModel: viewModel
-            )
+            if viewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ResponseContentView(
+                    artwork: artwork, // Pass the fetched artwork
+                    viewModel: viewModel
+                )
+            }
             BlurEffectView()
         }
         .background(LDColor.color5)
         .ignoresSafeArea(.container, edges: .bottom)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(artwork?.title ?? "작품 반응")
-                    .font(LDFont.heading04)
-                    .foregroundColor(LDColor.color6)
+            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응" ) {
+                router.popLast()
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
-        
     }
 }
+
 // MARK: - ResponseContentView
 
 struct ResponseContentView: View {
@@ -83,7 +97,7 @@ struct ArtworkBackgroundView: View {
                 .frame(maxHeight: 393)
                 .clipped()
 
-             //그라데이션 오버레이
+            //그라데이션 오버레이
             LinearGradient(
                 gradient: Gradient(colors: [
                     LDColor.color5.opacity(0),
@@ -127,8 +141,6 @@ struct ReactionHeaderView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 4)
-        
-        
     }
 }
 

@@ -40,6 +40,7 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     DispatchQueue.main.async {
                         let reaction = ReactionMapper.mapDtoToModel(reactionDetail)
                         SwiftDataManager.shared.insert(reaction)
+                        SwiftDataManager.shared.saveContext() // 명시적으로 저장
                         Log.debug("로컬 저장 완료")
                     }
                     completion(.success(responseDto))

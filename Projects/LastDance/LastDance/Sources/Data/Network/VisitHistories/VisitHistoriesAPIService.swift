@@ -57,9 +57,9 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                             SwiftDataManager.shared.insert(visitHistory)
                             Log.debug("방문 기록 로컬 저장 완료: id=\(visitHistory.id)")
                         }
+                        completion(.success(dto))
                     }
 
-                    completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))

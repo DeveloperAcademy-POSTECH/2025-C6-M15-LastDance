@@ -46,16 +46,19 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionList:
                     ExhibitionListView()
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 case .exhibitionDetail(let id):
                     ExhibitionDetailView(exhibitionId: id)
+                        .navigationBarBackButtonHidden(true)
+                case .artworkDetail(let id, let capturedImage, let exhibitionId):
+                    ArtworkDetailView(artworkId: id, capturedImage: capturedImage, exhibitionId: exhibitionId)
+                        .navigationBarBackButtonHidden(true)
+                case .camera(let exhibitionId):
+                    CameraView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
-                case .artworkDetail(let id, let capturedImage):
-                    ArtworkDetailView(artworkId: id, capturedImage: capturedImage)
-                        .toolbar(.hidden, for: .navigationBar)
-                case .camera:
-                    CameraView()
-                        .toolbar(.hidden, for: .navigationBar)
+                case .captureConfirm(let imageData, let exhibitionId):
+                    CaptureConfirmView(imageData: imageData, exhibitionId: exhibitionId)
+                        .navigationBarBackButtonHidden(true)
                 case .archive(let id):
                     ArchiveView(exhibitionId: id)
                         .toolbar(.hidden, for: .navigationBar)
@@ -65,10 +68,15 @@ struct RootView: View {
                 case .reactionTags:
                     TagSelectView()
                         .navigationBarBackButtonHidden(true)
-                case .completeReaction:
-                    CompleteReactionView()
+                case .completeReaction(let exhibitionId):
+                    CompleteReactionView(exhibitionId: exhibitionId)
                 case .inputArtworkInfo(let image, let exhibitionId, let artistId):
-                    InputArtworkInfoView(image: image, exhibitionId: exhibitionId, artistId: artistId)
+                    InputArtworkInfoView(
+                        image: image,
+                        exhibitionId: exhibitionId,
+                        artistId: artistId
+                    )
+                        .navigationBarBackButtonHidden(true)
                 case .articleExhibitionList:
                     ArticleExhibitionListView()
                         .navigationBarBackButtonHidden(true)
@@ -87,9 +95,12 @@ struct RootView: View {
                 case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
+                case .response(let artworkId):
+                    ResponseView(artworkId: artworkId)
+                        .navigationBarBackButtonHidden(true)
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 }
             }
         }
