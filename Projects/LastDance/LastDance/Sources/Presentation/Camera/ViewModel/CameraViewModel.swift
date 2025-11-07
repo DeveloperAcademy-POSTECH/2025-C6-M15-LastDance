@@ -27,7 +27,7 @@ final class CameraViewModel: ObservableObject {
         do {
             try await requestCameraAuthorization()
             try await configureCaptureSession()
-            startSession()
+            await startSession()
             
             if !hasShownSilentNotice {
                 hasShownSilentNotice = true
@@ -39,9 +39,15 @@ final class CameraViewModel: ObservableObject {
     }
 
     /// 카메라 세션 시작
-    func startSession() {
+    func startSession() async {
         manager.startRunning()
         isRunning = true
+        
+        try? await Task.sleep(for: .milliseconds(100))
+        
+        if zoomScale != 1.0 {
+            selectZoomScale(zoomScale, animated: false)
+        }
     }
 
     /// 카메라 세션 중지
