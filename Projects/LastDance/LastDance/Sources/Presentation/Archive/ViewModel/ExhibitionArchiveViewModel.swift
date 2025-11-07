@@ -30,7 +30,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     }
     
     func loadData() {
-        Task { @MainActor in
+        Task {
             isLoading = true
             errorMessage = ""
 
@@ -39,7 +39,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                 await loadLocalData()
             } else {
                 // 로컬 데이터가 없으면 API 호출
-                fetchExhibitionAPI()
+                await fetchExhibitionAPI()
             }
         }
     }
@@ -71,7 +71,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     }
 
     /// API호출
-    private func fetchExhibitionAPI() {
+    private func fetchExhibitionAPI() async {
         apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
 
@@ -81,7 +81,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                 case .success:
                     Log.debug("전시 상세 조회 API 성공")
 
-                    Task { @MainActor in
+                    Task {
                         do {
                             self.reactions = try await self.fetchReactions()
                             self.artists   = try await self.fetchArtists()
@@ -176,7 +176,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         Log.debug("작품 상세 조회 API 호출 - artworkId: \(artworkId)")
 
         artworkAPIService.getArtworkDetail(artworkId: artworkId) { result in
-            Task { @MainActor in
+            Task {
                 switch result {
                 case .success(let artwork):
                     Log.debug("작품 상세 조회 성공! 작품명: \(artwork.title)")
