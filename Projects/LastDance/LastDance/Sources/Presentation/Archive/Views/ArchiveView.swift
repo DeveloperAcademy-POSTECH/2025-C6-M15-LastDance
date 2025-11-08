@@ -10,10 +10,11 @@ import SwiftUI
 
 struct ArchiveView: View {
     let exhibitionId: Int
-    
+
     @StateObject private var viewModel: ArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+    @Query private var artists: [Artist]
+
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
         _viewModel = StateObject(
@@ -49,6 +50,12 @@ struct ArchiveView: View {
                                     getRotationAngle: viewModel.getRotationAngle,
                                     onAddTap: {
                                         router.push(.camera(exhibitionId: exhibitionId))
+                                    },
+                                    onArtworkTap: { artwork in
+                                        if let artistId = artwork.artistId,
+                                           let artist = artists.first(where: { $0.id == artistId }) {
+                                            router.push(.artReaction(artwork: artwork, artist: artist))
+                                        }
                                     }
                                 )
                             }
@@ -147,6 +154,7 @@ struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
     let onAddTap: () -> Void
+    let onArtworkTap: (Artwork) -> Void
 
     var body: some View {
         LazyVGrid(
@@ -176,39 +184,43 @@ struct ArtworkGridView: View {
 
             // 나머지 아이템: 작품들
             ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                if let urlString = artwork.thumbnailURL,
-                   let url = URL(string: urlString) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 157, height: 213)
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 157, height: 213)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .rotationEffect(.degrees(getRotationAngle(index + 1)))
-                                .applyShadow(LDShadow.shadow4)
-                        case .failure:
-                            // TODO: - 실패 시 대체 이미지 넣어주기
-                            Image(systemName: "photo")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 157, height: 213)
-                                .foregroundColor(.gray)
-                        @unknown default:
-                            EmptyView()
+                Button(action: {
+                    onArtworkTap(artwork)
+                }) {
+                    if let urlString = artwork.thumbnailURL,
+                       let url = URL(string: urlString) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: 157, height: 213)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 157, height: 213)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .rotationEffect(.degrees(getRotationAngle(index + 1)))
+                                    .applyShadow(LDShadow.shadow4)
+                            case .failure:
+                                // TODO: - 실패 시 대체 이미지 넣어주기
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 157, height: 213)
+                                    .foregroundColor(.gray)
+                            @unknown default:
+                                EmptyView()
+                            }
                         }
+                    } else {
+                        // TODO: - URL 없을 때 대체 이미지 넣어주기
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 157, height: 213)
+                            .foregroundColor(.gray)
                     }
-                } else {
-                    // TODO: - URL 없을 때 대체 이미지 넣어주기
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 157, height: 213)
-                        .foregroundColor(.gray)
                 }
             }
         }

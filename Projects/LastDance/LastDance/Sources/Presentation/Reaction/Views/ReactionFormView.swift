@@ -50,19 +50,25 @@ struct ReactionFormView: View {
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 6) {
-                Text("감정 태그")
-                    .bold()
-                    .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
-
                 if hasSelectedEmotion {
                     Button {
                         router.push(.category)
                     } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.black.opacity(0.6))
+                        HStack(spacing: 6) {
+                            Text("감정 태그")
+                                .bold()
+                                .foregroundColor(LDColor.color1)
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.black.opacity(0.6))
+                        }
                     }
                     .buttonStyle(.plain)
+                } else {
+                    Text("감정 태그")
+                        .bold()
+                        .foregroundColor(LDColor.color1)
                 }
 
                 Spacer()

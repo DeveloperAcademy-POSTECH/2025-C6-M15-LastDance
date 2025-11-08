@@ -231,8 +231,12 @@ private struct SelectionSheet: View {
             }
             .padding(.horizontal, 12)
 
-            BottomButton(text: "완료", action: onDismiss)
-                .padding(.bottom, 35)
+            BottomButton(
+                text: "완료",
+                isEnabled: !selectedItem.isEmpty,
+                action: onDismiss
+            )
+            .padding(.bottom, 35)
         }
     }
 }

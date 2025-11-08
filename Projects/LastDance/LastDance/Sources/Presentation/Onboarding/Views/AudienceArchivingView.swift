@@ -22,7 +22,7 @@ struct AudienceArchivingView: View {
             Text("나의 전시")
                 .font(LDFont.heading02)
                 .foregroundColor(.black)
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 24)
                 .padding(.top, 20)
             
             if viewModel.isLoading {
@@ -34,6 +34,7 @@ struct AudienceArchivingView: View {
                 ScrollView {
                     LazyVGrid(
                         columns: gridColumns,
+                        alignment: .leading,
                         spacing: 24
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
@@ -47,9 +48,10 @@ struct AudienceArchivingView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 24)
                     .padding(.top, 30)
                     .padding(.bottom, 100)
+    
                 }
             } else {
                 // 빈 상태

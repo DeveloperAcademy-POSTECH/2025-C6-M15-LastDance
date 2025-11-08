@@ -31,38 +31,24 @@ struct ExhibitionArchiveView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Button(action: {
-                    router.popLast()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(.black)
-                        .frame(width: 44, height: 44)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 5)
-            .padding(.top, 20)
-            
             // 전시 제목
             HStack {
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
-                    .font(LDFont.heading06)
+                    .font(LDFont.heading02)
                     .foregroundColor(.black)
                 Spacer()
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 14)
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
 
             // 날짜
             HStack {
                 Text(exhibition?.createdAt ?? "")
                     .font(LDFont.regular03)
-                    .foregroundColor(.gray)
+                    .foregroundColor(LDColor.color2)
                 Spacer()
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 24)
             .padding(.top, 4)
             
             // 반응 목록
@@ -79,6 +65,7 @@ struct ExhibitionArchiveView: View {
                             GridItem(.fixed(155), spacing: 16),
                             GridItem(.fixed(155), spacing: 16)
                         ],
+                        alignment: .leading,
                         spacing: 24
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
@@ -95,7 +82,7 @@ struct ExhibitionArchiveView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 24)
                     .padding(.top, 20)
                     .padding(.bottom, 40)
                 } else {
@@ -108,10 +95,16 @@ struct ExhibitionArchiveView: View {
             }
         }
         .background(LDColor.color6)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            CustomNavigationBar(title: "") {
+                router.popLast()
+            }
+        }
         .onAppear {
             viewModel.loadData()
         }
-        .navigationBarBackButtonHidden()
     }
 }
 
@@ -167,7 +160,7 @@ struct ReactionCardView: View {
             if let artist = artist {
                 Text(artist.name)
                     .font(LDFont.regular02)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color2)
             }
         }
     }
