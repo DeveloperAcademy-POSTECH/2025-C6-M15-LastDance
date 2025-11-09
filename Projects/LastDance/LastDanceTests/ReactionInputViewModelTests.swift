@@ -5,13 +5,6 @@
 //  Created by 신얀 on 11/7/25.
 //
 
-//
-//  ReactionInputViewModelTests.swift
-//  LastDanceTests
-//
-//  Created by 신얀 on 11/7/25.
-//
-
 import Combine
 import Foundation
 import Testing
