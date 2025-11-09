@@ -17,21 +17,26 @@ final class CameraViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var zoomScale: CGFloat = 1.0
     @Published var showSilentNotice = false
-    @Published var isReadyForPreview = false
-    
+    @Published var previewPhase: PreviewPhase = .hidden
+
     private(set) var hasShownSilentNotice = false
     private var hideNoticeTask: Task<Void, Never>?
 
     let manager = CameraManager()
 
     func setupCameraSession() async {
-        isReadyForPreview = false
+        previewPhase = .hidden
         do {
             try await requestCameraAuthorization()
             try await configureCaptureSession()
             
             manager.onFirstFrame = { [weak self] in
-                self?.isReadyForPreview = true
+                guard let self else { return }
+                self.previewPhase = .blurred
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(400))
+                    self.previewPhase = .visible
+                }
             }
             
             await startSession()
@@ -55,7 +60,6 @@ final class CameraViewModel: ObservableObject {
     func stopSession() {
         manager.stopRunning()
         isRunning = false
-        isReadyForPreview = false
         
         hideNoticeTask?.cancel()
         hideNoticeTask = nil
