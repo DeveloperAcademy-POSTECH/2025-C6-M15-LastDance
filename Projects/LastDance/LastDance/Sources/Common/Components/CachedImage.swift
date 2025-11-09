@@ -22,48 +22,57 @@ struct CachedImage: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            Group {
-                if let imageURL = imageURL, imageURL.hasPrefix("http") {
-                    // 실제 URL인 경우 - Kingfisher가 자동으로 캐시 우선 처리
-                    KFImage(URL(string: imageURL))
-                        .placeholder {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.3))
-                                .overlay(
-                                    ProgressView()
-                                        .scaleEffect(0.8)
-                                )
-                        }
-                        .setProcessor(createProcessor(for: targetSize ?? geometry.size))
-                        .onFailure { error in
-                            Log.fault("❌ Image loading failed: \(error.localizedDescription)")
-                        }
-                        .onSuccess { result in
-                            Log.info("✅ Image loaded from: \(result.cacheType)")
-                        }
-                        .cacheOriginalImage() // 원본 이미지 캐싱
-                        .diskCacheExpiration(.days(7)) // 7일간 디스크 캐시
-                        .memoryCacheExpiration(.seconds(300)) // 5분간 메모리 캐시
-                        .loadDiskFileSynchronously() // 디스크 캐시 동기 로딩으로 빠른 표시
-                        .fade(duration: 0.25)
-                        .resizable()
+        if let targetSize = targetSize {
+            contentView(size: targetSize)
+        } else {
+            GeometryReader { geometry in
+                contentView(size: geometry.size)
+            }
+        }
+    }
 
-                } else if let imageName = imageURL {
-                    // Mock 데이터 또는 로컬 이미지
-                    if UIImage(named: imageName) != nil {
-                        Image(imageName)
-                            .resizable()
-                    } else {
-                        // Mock 이미지가 없는 경우
-                        Image(systemName: "photo.artframe")
-                            .foregroundColor(.gray)
+    @ViewBuilder
+    private func contentView(size: CGSize) -> some View {
+        Group {
+            if let imageURL = imageURL, imageURL.hasPrefix("http") {
+                // 실제 URL인 경우 - Kingfisher가 자동으로 캐시 우선 처리
+                KFImage(URL(string: imageURL))
+                    .placeholder {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .overlay(
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                            )
                     }
+                    .setProcessor(createProcessor(for: size))
+                    .onFailure { error in
+                        Log.fault("❌ Image loading failed: \(error.localizedDescription)")
+                    }
+                    .onSuccess { result in
+                        Log.info("✅ Image loaded from: \(result.cacheType)")
+                    }
+                    .cacheOriginalImage() // 원본 이미지 캐싱
+                    .diskCacheExpiration(.days(7)) // 7일간 디스크 캐시
+                    .memoryCacheExpiration(.seconds(300)) // 5분간 메모리 캐시
+                    .loadDiskFileSynchronously() // 디스크 캐시 동기 로딩으로 빠른 표시
+                    .fade(duration: 0.25)
+                    .resizable()
+
+            } else if let imageName = imageURL {
+                // Mock 데이터 또는 로컬 이미지
+                if UIImage(named: imageName) != nil {
+                    Image(imageName)
+                        .resizable()
                 } else {
-                    // imageURL이 없는 경우
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
+                    // Mock 이미지가 없는 경우
+                    Image(systemName: "photo.artframe")
+                        .foregroundColor(.gray)
                 }
+            } else {
+                // imageURL이 없는 경우
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
             }
         }
     }
