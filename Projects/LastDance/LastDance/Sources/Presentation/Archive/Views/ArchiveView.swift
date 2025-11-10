@@ -153,6 +153,30 @@ struct ArtworkCountView: View {
 struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
+
+    var body: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: 31),
+                GridItem(.flexible(), spacing: 31)
+            ],
+            spacing: 24
+        ) {
+            ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
+                CachedImage(artwork.thumbnailURL)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 157, height: 213)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .rotationEffect(.degrees(getRotationAngle(index)))
+                    .applyShadow(LDShadow.shadow4)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+    }
+}
+
+struct ArchiveEmptyStateView: View {
     let onAddTap: () -> Void
     let onArtworkTap: (Artwork) -> Void
 

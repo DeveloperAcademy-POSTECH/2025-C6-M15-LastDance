@@ -29,11 +29,49 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         loadData()
     }
     
-    /// 전시 상세 조회 api 호출
     func loadData() {
-        isLoading = true
-        errorMessage = ""
+        Task {
+            isLoading = true
+            errorMessage = ""
 
+            if await hasLocalData() {
+                // 로컬 데이터가 있으면 API 호출 없이 swiftData 로드
+                await loadLocalData()
+            } else {
+                // 로컬 데이터가 없으면 API 호출
+                await fetchExhibitionAPI()
+            }
+        }
+    }
+
+    /// SwiftData에 해당 전시의 데이터가 있는지 확인
+    private func hasLocalData() async -> Bool {
+        do {
+            let artworks = try await fetchArtworksForExhibition()
+            return !artworks.isEmpty
+        } catch {
+            return false
+        }
+    }
+
+    /// 로컬 데이터만 로드 (API 호출 X)
+    private func loadLocalData() async {
+        do {
+            self.reactions = try await self.fetchReactions()
+            self.artists   = try await self.fetchArtists()
+            self.artworks = try await self.fetchArtworksForExhibition()
+
+            Log.debug("로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
+            self.isLoading = false
+        } catch {
+            Log.error("로컬 데이터 로드 실패: \(error)")
+            self.isLoading = false
+            self.errorMessage = "데이터를 불러오는데 실패했습니다."
+        }
+    }
+
+    /// API호출
+    private func fetchExhibitionAPI() async {
         apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
 
@@ -43,7 +81,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                 case .success:
                     Log.debug("전시 상세 조회 API 성공")
 
-                    Task { @MainActor in
+                    Task {
                         do {
                             self.reactions = try await self.fetchReactions()
                             self.artists   = try await self.fetchArtists()
@@ -138,7 +176,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         Log.debug("작품 상세 조회 API 호출 - artworkId: \(artworkId)")
 
         artworkAPIService.getArtworkDetail(artworkId: artworkId) { result in
-            Task { @MainActor in
+            Task {
                 switch result {
                 case .success(let artwork):
                     Log.debug("작품 상세 조회 성공! 작품명: \(artwork.title)")
