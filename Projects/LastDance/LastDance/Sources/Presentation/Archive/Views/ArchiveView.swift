@@ -48,15 +48,15 @@ struct ArchiveView: View {
                                 ArtworkGridView(
                                     artworks: viewModel.reactedArtworks,
                                     getRotationAngle: viewModel.getRotationAngle,
-//                                    onAddTap: {
-//                                        router.push(.camera(exhibitionId: exhibitionId))
-//                                    },
-//                                    onArtworkTap: { artwork in
-//                                        if let artistId = artwork.artistId,
-//                                           let artist = artists.first(where: { $0.id == artistId }) {
-//                                            router.push(.artReaction(artwork: artwork, artist: artist))
-//                                        }
-//                                    }
+                                    onAddTap: {
+                                        router.push(.camera(exhibitionId: exhibitionId))
+                                    },
+                                    onArtworkTap: { artwork in
+                                        if let artistId = artwork.artistId,
+                                           let artist = artists.first(where: { $0.id == artistId }) {
+                                            router.push(.artReaction(artwork: artwork, artist: artist))
+                                        }
+                                    }
                                 )
                             }
 
@@ -153,7 +153,8 @@ struct ArtworkCountView: View {
 struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
-
+    let onAddTap: () -> Void
+    let onArtworkTap: (Artwork) -> Void
 
     var body: some View {
         LazyVGrid(
@@ -163,13 +164,36 @@ struct ArtworkGridView: View {
             ],
             spacing: 24
         ) {
+            // 첫 번째 아이템: + 버튼 (항상 고정)
+            Button(action: onAddTap) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(LDColor.color6)
+
+                    Image(systemName: "plus")
+                        .font(.system(size: 22, weight: .light))
+                        .foregroundColor(LDColor.gray8)
+                }
+                .frame(width: 157, height: 213)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
+                )
+                .rotationEffect(.degrees(-4))
+            }
+
+            // 나머지 아이템: 작품들
             ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                CachedImage(artwork.thumbnailURL)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 157, height: 213)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .rotationEffect(.degrees(getRotationAngle(index)))
-                    .applyShadow(LDShadow.shadow4)
+                Button(action: {
+                    onArtworkTap(artwork)
+                }) {
+                    CachedImage(artwork.thumbnailURL)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 157, height: 213)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .rotationEffect(.degrees(getRotationAngle(index + 1)))
+                        .applyShadow(LDShadow.shadow4)
+                }
             }
         }
         .padding(.horizontal, 20)
@@ -178,7 +202,8 @@ struct ArtworkGridView: View {
 }
 
 struct ArchiveEmptyStateView: View {
-
+    let artworks: [Artwork]
+    let getRotationAngle: (Int) -> Double
     let onAddTap: () -> Void
     let onArtworkTap: (Artwork) -> Void
 
