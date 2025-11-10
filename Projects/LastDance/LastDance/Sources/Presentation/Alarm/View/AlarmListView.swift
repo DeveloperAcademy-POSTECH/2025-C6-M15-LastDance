@@ -10,14 +10,29 @@ import SwiftUI
 // MARK: AlarmListView
 struct AlarmListView: View {
     @EnvironmentObject private var router: NavigationRouter
+    let userType: UserType
 
-    // 임시 더미데이터
-    private let notifications: [NotificationItem] = [
-            .init(type: .artist, sender: "조셀초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "방금 전"),
-            .init(type: .artist, sender: "조셀초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "2시간 전"),
-            .init(type: .viewer, sender: "조셀초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일"),
-            .init(type: .viewer, sender: "조셀초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일")
-        ]
+    // 임시 더미데이터 - userType에 따라 다른 알림 표시
+    private var notifications: [NotificationItem] {
+        switch userType {
+        case .artist:
+            // 작가용 알림
+            return [
+                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "방금 전"),
+                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "2시간 전"),
+                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일"),
+                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일")
+            ]
+        case .viewer:
+            // 관람객용 알림
+            return [
+                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "방금 전"),
+                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "2시간 전"),
+                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
+                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일")
+            ]
+        }
+    }
 
     var body: some View {
             ScrollView {
@@ -66,13 +81,20 @@ struct NotificationCell: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: item.type.icon)
-                .frame(width: 22)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 17, height: 17)
+                .padding(2)
+                .foregroundColor(LDColor.color4)
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text(item.sender)
                         .font(LDFont.heading06)
                         .foregroundColor(LDColor.color3)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+
                     Spacer()
 
                     Text(item.timeAgo)
@@ -92,5 +114,6 @@ struct NotificationCell: View {
 }
 
 #Preview {
-    AlarmListView()
+    AlarmListView(userType: .viewer)
+        .environmentObject(NavigationRouter())
 }

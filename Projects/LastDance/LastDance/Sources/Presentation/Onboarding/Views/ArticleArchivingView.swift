@@ -123,7 +123,7 @@ struct ArticleArchivingView: View {
                 Spacer()
 
                 Button(action: {
-                    router.push(.alarmList)
+                    router.push(.alarmList(userType: .artist))
                 }) {
                     Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
                         .resizable()

@@ -31,5 +31,5 @@ enum Route: Hashable {
     case response(artworkId: Int)
     case artistReactionArchiveView(exhibitionId: Int)
     case artReaction(artwork: Artwork, artist: Artist?)
-    case alarmList
+    case alarmList(userType: UserType)
 }
