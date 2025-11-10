@@ -21,22 +21,32 @@ struct ArchiveView: View {
             wrappedValue: ArchiveViewModel(exhibitionId: exhibitionId)
         )
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ArchiveHeaderView {
                 router.popLast()
             }
             .padding(.bottom, 12)
-            
+
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
-            
+
             ArtworkCountView(count: viewModel.reactedArtworksCount)
                 .padding(.bottom, -2)
-          
+
             GeometryReader { geometry in
                 ZStack(alignment: .top) {
                     BackGround(geometry: geometry)
+
+                    LinearGradient(
+                        colors: [
+                            LDColor.color6,
+                            LDColor.color6.opacity(0),
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 100)
 
                     ScrollView {
                         VStack(spacing: 0) {
@@ -47,14 +57,25 @@ struct ArchiveView: View {
                             } else {
                                 ArtworkGridView(
                                     artworks: viewModel.reactedArtworks,
-                                    getRotationAngle: viewModel.getRotationAngle,
+                                    getRotationAngle: viewModel
+                                        .getRotationAngle,
                                     onAddTap: {
-                                        router.push(.camera(exhibitionId: exhibitionId))
+                                        router.push(
+                                            .camera(exhibitionId: exhibitionId)
+                                        )
                                     },
                                     onArtworkTap: { artwork in
                                         if let artistId = artwork.artistId,
-                                           let artist = artists.first(where: { $0.id == artistId }) {
-                                            router.push(.artReaction(artwork: artwork, artist: artist))
+                                            let artist = artists.first(where: {
+                                                $0.id == artistId
+                                            })
+                                        {
+                                            router.push(
+                                                .artReaction(
+                                                    artwork: artwork,
+                                                    artist: artist
+                                                )
+                                            )
                                         }
                                     }
                                 )
@@ -75,7 +96,7 @@ struct ArchiveView: View {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.5),
                             Color.black.opacity(0.2),
-                            Color.clear
+                            Color.clear,
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -103,7 +124,7 @@ struct ArchiveView: View {
 
 struct ArchiveHeaderView: View {
     let onClose: () -> Void
-    
+
     var body: some View {
         HStack {
             Button(action: onClose) {
@@ -121,7 +142,7 @@ struct ArchiveHeaderView: View {
 
 struct ExhibitionTitleView: View {
     let title: String
-    
+
     var body: some View {
         Text(title)
             .font(LDFont.heading02)
@@ -134,7 +155,7 @@ struct ExhibitionTitleView: View {
 
 struct ArtworkCountView: View {
     let count: Int
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("현재까지 촬영한 이미지")
@@ -160,7 +181,7 @@ struct ArtworkGridView: View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
+                GridItem(.flexible(), spacing: 31),
             ],
             spacing: 24
         ) {
@@ -177,13 +198,18 @@ struct ArtworkGridView: View {
                 .frame(width: 157, height: 213)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
+                        .stroke(
+                            LDColor.gray8,
+                            style: StrokeStyle(lineWidth: 1.4, dash: [8])
+                        )
                 )
                 .rotationEffect(.degrees(-4))
             }
 
             // 나머지 아이템: 작품들
-            ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
+            ForEach(Array(artworks.enumerated()), id: \.element.id) {
+                index,
+                artwork in
                 Button(action: {
                     onArtworkTap(artwork)
                 }) {
@@ -201,95 +227,20 @@ struct ArtworkGridView: View {
     }
 }
 
-struct ArchiveEmptyStateView: View {
-    let artworks: [Artwork]
-    let getRotationAngle: (Int) -> Double
-    let onAddTap: () -> Void
-    let onArtworkTap: (Artwork) -> Void
-
-    var body: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
-            ],
-            spacing: 24
-        ) {
-            // 첫 번째 아이템: + 버튼 (항상 고정)
-            Button(action: onAddTap) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(LDColor.color6)
-
-                    Image(systemName: "plus")
-                        .font(.system(size: 22, weight: .light))
-                        .foregroundColor(LDColor.gray8)
-                }
-                .frame(width: 157, height: 213)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
-                )
-                .rotationEffect(.degrees(-4))
-            }
-
-            // 나머지 아이템: 작품들
-            ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                Button(action: {
-                    onArtworkTap(artwork)
-                }) {
-                    if let urlString = artwork.thumbnailURL,
-                       let url = URL(string: urlString) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: 157, height: 213)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 157, height: 213)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .rotationEffect(.degrees(getRotationAngle(index + 1)))
-                                    .applyShadow(LDShadow.shadow4)
-                            case .failure:
-                                // TODO: - 실패 시 대체 이미지 넣어주기
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 157, height: 213)
-                                    .foregroundColor(.gray)
-                            @unknown default:
-                                EmptyView()
-                            }
-                        }
-                    } else {
-                        // TODO: - URL 없을 때 대체 이미지 넣어주기
-                        Image(systemName: "photo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 157, height: 213)
-                            .foregroundColor(.gray)
-                    }
-                }
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-    }
-}
-
 struct CameraActionButtonView: View {
     let action: () -> Void
     @State private var showTooltip: Bool
-    
+
     init(action: @escaping () -> Void) {
         self.action = action
         // 첫 리액션 등록 전이면 툴팁 표시
-        _showTooltip = State(initialValue: !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction))
+        _showTooltip = State(
+            initialValue: !UserDefaults.standard.bool(
+                forKey: .hasRegisteredFirstReaction
+            )
+        )
     }
-    
+
     var body: some View {
         VStack(spacing: 22) {
             // 툴팁

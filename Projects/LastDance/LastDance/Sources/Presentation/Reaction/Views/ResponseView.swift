@@ -53,24 +53,20 @@ struct ResponseView: View {
 
 struct ResponseContentView: View {
     let artwork: Artwork?
-
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
         ScrollView {
-            ZStack(alignment: .topLeading) {
-                VStack(alignment: .leading, spacing: 0) {
-                    ArtworkBackgroundView(artwork: artwork)
-                        .offset(y: -120)
-                        .ignoresSafeArea(.container, edges: .top)
-                        .padding(.bottom, -120)
+            VStack(alignment: .leading, spacing: 0) {
+                ArtworkBackgroundView(artwork: artwork)
+                    .offset(y: -120)
+                    .ignoresSafeArea(.container, edges: .top)
+                    .padding(.bottom, -120)
 
-                    ReactionListView(viewModel: viewModel)
-                        .padding(.top, 20)
-
-                    Spacer()
-                }
-
+                ReactionListView(viewModel: viewModel)
+                    .padding(.top, 20)
+            }
+            .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer().frame(height: 343 - 120 - 40)
                     ReactionHeaderView(count: viewModel.reactions.count)
@@ -78,34 +74,6 @@ struct ResponseContentView: View {
             }
         }
         .scrollToMinDistance(minDisntance: 32)
-    }
-}
-
-// MARK: - ArtworkBackgroundView
-
-struct ArtworkBackgroundView: View {
-    let artwork: Artwork?
-
-    var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            // 이미지 영역
-            CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(contentMode: .fill)
-                .frame(maxHeight: 393)
-                .clipped()
-
-            //그라데이션 오버레이
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    LDColor.color5.opacity(0),
-                    LDColor.color5
-                ]),
-                startPoint: .center,
-                endPoint: .bottom
-            )
-        }
-        .offset(y: -35)
-        .ignoresSafeArea(.container, edges: .top)
     }
 }
 
@@ -191,166 +159,3 @@ struct BlurEffectView: View {
     }
 }
 
-// MARK: - ReactionItemView
-
-struct ReactionItemView: View {
-    let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // 댓글 텍스트
-            Text(viewModel.displayText(for: reaction))
-                .font(LDFont.medium03)
-                .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
-                .lineSpacing(10)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id))
-
-            // 더보기/접기 버튼
-            if reaction.comment.count > 100 {
-                Button(action: {
-                    viewModel.handleExpandToggle(for: reaction)
-                }) {
-                    Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                        .font(LDFont.medium05)
-                        .foregroundColor(.gray)
-                }
-            }
-
-            // 태그들
-            CategoryTagsView(
-                reaction: reaction,
-                viewModel: viewModel
-            )
-        }
-        
-        .padding(.vertical, 8)
-
-    }
-}
-
-// MARK: - CategoryTagsView
-
-struct CategoryTagsView: View {
-    let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
-
-    var body: some View {
-        let showAll = viewModel.showAllReactions[reaction.id] ?? false
-        let displayCategories = showAll ? reaction.categories : Array(reaction.categories.prefix(1))
-
-        FlowLayout(spacing: 8) {
-            ForEach(displayCategories, id: \.self) { category in
-                CategoryTagView(text: category)
-                    .onTapGesture {
-                        if showAll {
-                            viewModel.toggleShowAllReactions(id: reaction.id)
-                        }
-                    }
-            }
-
-            if !showAll && reaction.categories.count >= 2 {
-                MoreCategoriesButton(
-                    count: viewModel.hiddenCount(for: reaction),
-                    action: { viewModel.toggleShowAllReactions(id: reaction.id) }
-                )
-            }
-        }
-    }
-}
-
-// MARK: - FlowLayout
-
-struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let result = FlowResult(
-            in: proposal.replacingUnspecifiedDimensions().width,
-            subviews: subviews,
-            spacing: spacing
-        )
-        return result.size
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let result = FlowResult(
-            in: bounds.width,
-            subviews: subviews,
-            spacing: spacing
-        )
-        for (index, subview) in subviews.enumerated() {
-            subview.place(at: CGPoint(x: bounds.minX + result.positions[index].x, y: bounds.minY + result.positions[index].y), proposal: .unspecified)
-        }
-    }
-
-    struct FlowResult {
-        var size: CGSize = .zero
-        var positions: [CGPoint] = []
-
-        init(in maxWidth: CGFloat, subviews: Subviews, spacing: CGFloat) {
-            var currentX: CGFloat = 0
-            var currentY: CGFloat = 0
-            var lineHeight: CGFloat = 0
-
-            for subview in subviews {
-                let size = subview.sizeThatFits(.unspecified)
-
-                if currentX + size.width > maxWidth && currentX > 0 {
-                    // 다음 줄로 이동
-                    currentX = 0
-                    currentY += lineHeight + spacing
-                    lineHeight = 0
-                }
-
-                positions.append(CGPoint(x: currentX, y: currentY))
-                lineHeight = max(lineHeight, size.height)
-                currentX += size.width + spacing
-            }
-
-            self.size = CGSize(width: maxWidth, height: currentY + lineHeight)
-        }
-    }
-}
-
-// MARK: - CategoryTagView
-
-struct CategoryTagView: View {
-    let text: String
-    var body: some View {
-        HStack(alignment: .center, spacing: 8) {
-            Circle()
-                .fill(Color.orange)
-                .frame(width: 6, height: 6)
-
-            Text(text)
-                .font(LDFont.medium06)
-                .foregroundColor(.primary)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(LDColor.color6)
-        .cornerRadius(42)
-        .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
-    }
-}
-
-// MARK: - MoreCategoriesButton
-
-struct MoreCategoriesButton: View {
-    let count: Int
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text("+\(count)")
-                .font(LDFont.medium06)
-                .foregroundColor(.gray)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(LDColor.color6)
-                .cornerRadius(42)
-                .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
-        }
-    }
-}
