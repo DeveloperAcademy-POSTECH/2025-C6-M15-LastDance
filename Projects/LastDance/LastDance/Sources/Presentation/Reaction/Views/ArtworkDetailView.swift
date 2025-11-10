@@ -47,6 +47,7 @@ struct ArtworkDetailView: View {
                     Spacer()
                 }
             }
+            .scrollDismissesKeyboard(.never)
             .scrollToMinDistance(minDisntance: 32)
 
             BottomButton(
@@ -77,9 +78,6 @@ struct ArtworkDetailView: View {
             }
         }
         .environmentObject(viewModel)
-        .onDisappear {
-            
-        }
         .customAlert(
             isPresented: $showAlert,
             image: alertType == .confirmation ? "message" : "warning",
