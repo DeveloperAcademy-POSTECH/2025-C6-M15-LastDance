@@ -23,6 +23,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedTagsName: Set<String> = []
     @Published var shouldShowConfirmAlert = false
     @Published var shouldTriggerSend = false
+    @Published var alertType: AlertType = .confirmation
 
     private var cancellables = Set<AnyCancellable>()
     private let sendButtonTapped = PassthroughSubject<Void, Never>() // 하단 버튼 전송하기 탭 관리
@@ -68,7 +69,7 @@ final class ReactionInputViewModel: ObservableObject {
         confirmSendTapped.send()
     }
 
-    // Throttling 설정
+    /// Throttling 설정
     private func setupThrottling() {
         // BottomButton 스로틀링
         sendButtonTapped
@@ -148,17 +149,86 @@ final class ReactionInputViewModel: ObservableObject {
                     self.message = ""
                     self.selectedCategories.removeAll()
                     Log.debug("반응 저장 성공")
-                    
+
                     // 첫 리액션 등록 플래그 저장
                     if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
-                    
                     completion(true)
+            
                 case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")
                     completion(false)
                 }
+            }
+        }
+    }
+
+    /// UserDefaults, SwiftData 접근 및 검증 메서드
+    func performSendReaction(artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void) {
+        // UserDefaults에서 업로드된 이미지 URL 가져오기
+        let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+
+        // UserDefaults에서 저장된 visitorUUID 가져오기
+        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+            Log.warning("visitorUUID를 찾을 수 없습니다")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // SwiftData에서 UUID로 Visitor 조회
+        let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
+        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+            Log.warning("Visitor를 찾을 수 없습니다")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // 현재 작품이 속한 전시 ID 찾기
+        let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+        guard let currentArtwork = artworks.first(where: { $0.id == artworkId }) else {
+            Log.warning("현재 Artwork을 찾을 수 없습니다. (exhibitionId 파악 불가)")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // UserDefaults에서 visitId 가져오기
+        guard let visitId = UserDefaults.standard.object(
+            forKey: UserDefaultsKey.visitId.key
+        ) as? Int else {
+            Log.warning("visitId를 UserDefaults에서 찾을 수 없습니다.")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        let visitorId = visitor.id
+        let tagIds = Array(selectedTagIds)
+
+        saveReaction(
+            artworkId: artworkId,
+            visitorId: visitorId,
+            visitId: visitId,
+            imageUrl: imageUrl,
+            tagIds: tagIds
+        ) { [weak self] success in
+            guard let self = self else { return }
+
+            if success {
+                Log.debug("저장 성공, 화면 이동")
+                self.shouldShowConfirmAlert = false
+                completion(true, exhibitionId ?? 1)
+            } else {
+                Log.debug("저장 실패")
+                self.alertType = .error
+                completion(false, nil)
             }
         }
     }
