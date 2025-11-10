@@ -101,6 +101,9 @@ struct RootView: View {
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
                         .navigationBarBackButtonHidden(true)
+                case .alarmList:
+                    AlarmListView()
+                        .navigationBarBackButtonHidden(true)
                 }
             }
         }

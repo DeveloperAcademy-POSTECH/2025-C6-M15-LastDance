@@ -9,12 +9,14 @@ import SwiftUI
 
 struct ArtistExhibitionCardView: View {
     let displayItem: ArtistExhibitionDisplayItem
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .bottomLeading) {
-                if let coverImageURLString = displayItem.exhibition.coverImageName,
-                   let coverImageURL = URL(string: coverImageURLString) {
+                if let coverImageURLString = displayItem.exhibition
+                    .coverImageName,
+                    let coverImageURL = URL(string: coverImageURLString)
+                {
                     AsyncImage(url: coverImageURL) { phase in
                         switch phase {
                         case .empty:
@@ -49,7 +51,7 @@ struct ArtistExhibitionCardView: View {
                                 .foregroundColor(.gray)
                         )
                 }
-                
+
                 Circle()
                     .fill(Color.black)
                     .frame(width: 28, height: 28)
@@ -61,7 +63,7 @@ struct ArtistExhibitionCardView: View {
                     .padding(.leading, 12)
                     .padding(.bottom, 12)
             }
-            
+
             Text(displayItem.exhibition.title)
                 .font(LDFont.medium04)
                 .foregroundColor(.black)
@@ -81,7 +83,7 @@ private struct ArtistExhibitionGridView: View {
             LazyVGrid(
                 columns: [
                     GridItem(.fixed(155), spacing: 31),
-                    GridItem(.fixed(155), spacing: 31)
+                    GridItem(.fixed(155), spacing: 31),
                 ],
                 spacing: 28
             ) {
@@ -90,7 +92,11 @@ private struct ArtistExhibitionGridView: View {
                         displayItem: displayItem
                     )
                     .onTapGesture {
-                        router.push(.artistReactionArchiveView(exhibitionId: displayItem.exhibition.id))
+                        router.push(
+                            .artistReactionArchiveView(
+                                exhibitionId: displayItem.exhibition.id
+                            )
+                        )
                     }
                 }
             }
@@ -101,20 +107,33 @@ private struct ArtistExhibitionGridView: View {
     }
 }
 
-
 /// 아카이빙 시작 뷰
 struct ArticleArchivingView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArtistReactionViewModel()
+    @StateObject private var alarmViewModel = AlarmViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("나의 전시")
-                .font(LDFont.heading02)
-                .foregroundColor(.black)
-                .padding(.horizontal, 40)
-                .padding(.top, 20)
-            
+            HStack {
+                Text("나의 전시")
+                    .font(LDFont.heading02)
+                    .foregroundColor(.black)
+
+                Spacer()
+
+                Button(action: {
+                    router.push(.alarmList)
+                }) {
+                    Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
+            }
+            .foregroundColor(.black)
+            .padding(.top, 20)
+            .padding(.horizontal, 24)
+
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -141,7 +160,7 @@ struct ArticleArchivingView: View {
         .background(LDColor.color6)
         .overlay(alignment: .bottomTrailing) {
             if !viewModel.isLoading && !viewModel.exhibitions.isEmpty {
-                 CircleAddButton {
+                CircleAddButton {
                     router.push(.articleExhibitionList)
                 }
                 .padding(.trailing, 24)
@@ -150,6 +169,7 @@ struct ArticleArchivingView: View {
         }
         .onAppear {
             viewModel.loadArtistExhibitions()
+            alarmViewModel.checkNotifications()
         }
         .navigationBarBackButtonHidden(true)
     }
