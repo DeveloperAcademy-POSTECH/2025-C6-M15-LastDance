@@ -112,44 +112,15 @@ struct ReactionCardView: View {
     let reaction: Reaction
     let artwork: Artwork?
     let artist: Artist?
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // 작품 이미지
-            if let artwork = artwork, let thumbnailURL = artwork.thumbnailURL {
-                AsyncImage(url: URL(string: thumbnailURL)) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 155, height: 219)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    case .failure(_):
-                        Image(thumbnailURL)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 155, height: 219)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    case .empty:
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.gray.opacity(0.1))
-                            .frame(width: 155, height: 219)
-                            .overlay(
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            )
-                    @unknown default:
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(width: 155, height: 219)
-                    }
-                }
-            } else {
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(width: 155, height: 219)
-            }
+            CachedImage(artwork?.thumbnailURL)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 155, height: 219)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+
             // 작품 이름
             if let artwork = artwork {
                 Text(artwork.title)
