@@ -6,9 +6,9 @@
 //
 
 struct VisitorDetailResponseDto: Codable {
-  let id: Int
-  let uuid: String
-  let name: String?
-  let created_at: String
-  let updated_at: String?
+    let id: Int
+    let uuid: String
+    let name: String?
+    let created_at: String
+    let updated_at: String?
 }

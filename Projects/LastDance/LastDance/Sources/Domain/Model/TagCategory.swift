@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct TagCategory: Identifiable, Hashable {
-  let id: Int
-  let name: String
-  let colorHex: String
-  var color: Color {
-    Color(hex: colorHex)
-  }
-  let tags: [Tag]
+    let id: Int
+    let name: String
+    let colorHex: String
+    var color: Color {
+        Color(hex: colorHex)
+    }
+
+    let tags: [Tag]
 }

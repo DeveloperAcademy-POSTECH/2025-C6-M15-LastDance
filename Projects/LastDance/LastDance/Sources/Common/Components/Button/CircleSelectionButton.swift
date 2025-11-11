@@ -9,20 +9,20 @@ import SwiftUI
 
 /// 원형 선택 버튼 컴포넌트
 struct CircleSelectionButton: View {
-  let title: String
-  let isSelected: Bool
-  let action: () -> Void
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
 
-  var body: some View {
-    Button(action: action) {
-      Text(title)
-        .font(LDFont.medium01)
-        .foregroundStyle(isSelected ? .white : .gray)
-        .frame(width: 200, height: 200)
-        .background(
-          Circle()
-            .fill(isSelected ? Color.black : Color.gray3)
-        )
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(LDFont.medium01)
+                .foregroundStyle(isSelected ? .white : .gray)
+                .frame(width: 200, height: 200)
+                .background(
+                    Circle()
+                        .fill(isSelected ? Color.black : Color.gray3)
+                )
+        }
     }
-  }
 }

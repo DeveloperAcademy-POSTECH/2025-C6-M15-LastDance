@@ -8,143 +8,144 @@
 import SwiftUI
 
 struct ArticleListSearchTextField: View {
-  @ObservedObject var viewModel: ArticleListViewModel
+    @ObservedObject var viewModel: ArticleListViewModel
 
-  var body: some View {
-    TextField(
-      "작가명을 선택해주세요",
-      text: Binding(
-        get: {
-          viewModel.selectedArtistName.isEmpty ? viewModel.searchText : viewModel.selectedArtistName
-        },
-        set: { viewModel.searchText = $0 }
-      )
-    )
-    .font(LDFont.regular01)
-    .foregroundStyle(.black)
-    .padding(.horizontal, 16)
-    .padding(.vertical, 16)
-    .background(
-      RoundedRectangle(cornerRadius: 8)
-        .fill(LDColor.color6)
-    )
-    .overlay(
-      RoundedRectangle(cornerRadius: 8)
-        .inset(by: 1)
-        .stroke(Color.black, lineWidth: 2)
-    )
-    .padding(.bottom, 8)
-    .padding(.horizontal, 20)
-  }
+    var body: some View {
+        TextField(
+            "작가명을 선택해주세요",
+            text: Binding(
+                get: {
+                    viewModel.selectedArtistName.isEmpty ? viewModel.searchText : viewModel.selectedArtistName
+                },
+                set: { viewModel.searchText = $0 }
+            )
+        )
+        .font(LDFont.regular01)
+        .foregroundStyle(.black)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(LDColor.color6)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .inset(by: 1)
+                .stroke(Color.black, lineWidth: 2)
+        )
+        .padding(.bottom, 8)
+        .padding(.horizontal, 20)
+    }
 }
 
 struct ArticleListContent: View {
-  @ObservedObject var viewModel: ArticleListViewModel
+    @ObservedObject var viewModel: ArticleListViewModel
 
-  private var backgroundShape: some View {
-    RoundedRectangle(cornerRadius: 8)
-      .fill(LDColor.color6)
-  }
-
-  private var borderShape: some View {
-    RoundedRectangle(cornerRadius: 8)
-      .inset(by: 0.5)
-      .stroke(Color.black.opacity(0.18), lineWidth: 1)
-  }
-
-  var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 0) {
-        ForEach(viewModel.filteredArtists, id: \.id) { artist in
-          ArticleArtistRow(
-            artist: artist,
-            isSelected: viewModel.selectedArtistId == artist.id
-          ) {
-            viewModel.selectArtist(artist)
-          }
-        }
-      }
-      .padding(.vertical, 8)
+    private var backgroundShape: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(LDColor.color6)
     }
-    .frame(height: 300)
-    .background(backgroundShape)
-    .overlay(borderShape)
-    .padding(.horizontal, 20)
-    .scrollToMinDistance(minDisntance: 32)
-  }
+
+    private var borderShape: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .inset(by: 0.5)
+            .stroke(Color.black.opacity(0.18), lineWidth: 1)
+    }
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(viewModel.filteredArtists, id: \.id) { artist in
+                    ArticleArtistRow(
+                        artist: artist,
+                        isSelected: viewModel.selectedArtistId == artist.id
+                    ) {
+                        viewModel.selectArtist(artist)
+                    }
+                }
+            }
+            .padding(.vertical, 8)
+        }
+        .frame(height: 300)
+        .background(backgroundShape)
+        .overlay(borderShape)
+        .padding(.horizontal, 20)
+        .scrollToMinDistance(minDisntance: 32)
+    }
 }
 
 struct ArticleListNextButton: View {
-  @EnvironmentObject private var router: NavigationRouter
-  let selectedExhibitionId: Int
-  @ObservedObject var viewModel: ArticleListViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    let selectedExhibitionId: Int
+    @ObservedObject var viewModel: ArticleListViewModel
 
-  var body: some View {
-    BottomButton(text: "다음") {
-      if let artistId = viewModel.tapNextButton() {
-        router.push(
-          .completeArticleList(
-            selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId))
-      }
+    var body: some View {
+        BottomButton(text: "다음") {
+            if let artistId = viewModel.tapNextButton() {
+                router.push(
+                    .completeArticleList(
+                        selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId
+                    ))
+            }
+        }
     }
-  }
 }
 
 /// 작가 플로우에서 작가 선택 뷰
 struct ArticleListView: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @StateObject private var viewModel = ArticleListViewModel()
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ArticleListViewModel()
 
-  let selectedExhibitionId: Int
+    let selectedExhibitionId: Int
 
-  var body: some View {
-    GeometryReader { geometry in
-      VStack(spacing: 0) {
-        PageIndicator(totalPages: 2, currentPage: 1)
+    var body: some View {
+        GeometryReader { _ in
+            VStack(spacing: 0) {
+                PageIndicator(totalPages: 2, currentPage: 1)
 
-        TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
+                TitleSection(title: "어떤 작가님이신가요?", subtitle: "작가명")
 
-        ArticleListSearchTextField(viewModel: viewModel)
+                ArticleListSearchTextField(viewModel: viewModel)
 
-        ArticleListContent(viewModel: viewModel)
+                ArticleListContent(viewModel: viewModel)
 
-        Spacer()
+                Spacer()
 
-        ArticleListNextButton(
-          selectedExhibitionId: selectedExhibitionId,
-          viewModel: viewModel
-        )
-      }
-      .padding(.top, 18)
-      .padding(.bottom, 34)
-      .toolbar {
-        CustomNavigationBar(title: "전시찾기") {
-          router.popLast()
+                ArticleListNextButton(
+                    selectedExhibitionId: selectedExhibitionId,
+                    viewModel: viewModel
+                )
+            }
+            .padding(.top, 18)
+            .padding(.bottom, 34)
+            .toolbar {
+                CustomNavigationBar(title: "전시찾기") {
+                    router.popLast()
+                }
+            }
         }
-      }
     }
-  }
 }
 
 /// 작가 목록 행 컴포넌트
 struct ArticleArtistRow: View {
-  let artist: Artist
-  let isSelected: Bool
-  let action: () -> Void
+    let artist: Artist
+    let isSelected: Bool
+    let action: () -> Void
 
-  var body: some View {
-    Button(action: action) {
-      Text(artist.name)
-        .font(LDFont.heading04)
-        .foregroundStyle(.black)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 16)
-        .background(
-          RoundedRectangle(cornerRadius: 8)
-            .fill(isSelected ? LDColor.gray3 : Color.clear)
-        )
-        .padding(.horizontal, isSelected ? 8 : 0)
+    var body: some View {
+        Button(action: action) {
+            Text(artist.name)
+                .font(LDFont.heading04)
+                .foregroundStyle(.black)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(isSelected ? LDColor.gray3 : Color.clear)
+                )
+                .padding(.horizontal, isSelected ? 8 : 0)
+        }
     }
-  }
 }

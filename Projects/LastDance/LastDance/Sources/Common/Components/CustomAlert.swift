@@ -9,96 +9,96 @@ import SwiftUI
 
 /// 커스텀 Alert 컴포넌트
 struct CustomAlert: View {
-  let image: String
-  let title: String
-  let message: String
-  let buttonText: String
-  let action: () -> Void
+    let image: String
+    let title: String
+    let message: String
+    let buttonText: String
+    let action: () -> Void
 
-  var body: some View {
-    VStack(spacing: 0) {
-      Image(image)
-        .resizable()
-        .scaledToFit()
-        .frame(width: 54, height: 53)
-        .padding(.top, 28)
-        .padding(.horizontal, 16)
+    var body: some View {
+        VStack(spacing: 0) {
+            Image(image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 54, height: 53)
+                .padding(.top, 28)
+                .padding(.horizontal, 16)
 
-      Text(title)
-        .font(LDFont.heading04)
-        .foregroundColor(.black)
-        .padding(.top, 8)
-        .padding(.horizontal, 16)
+            Text(title)
+                .font(LDFont.heading04)
+                .foregroundColor(.black)
+                .padding(.top, 8)
+                .padding(.horizontal, 16)
 
-      Text(message)
-        .font(LDFont.regular03)
-        .foregroundColor(LDColor.gray1)
-        .multilineTextAlignment(.center)
-        .padding(.top, 8)
-        .padding(.horizontal, 16)
+            Text(message)
+                .font(LDFont.regular03)
+                .foregroundColor(LDColor.gray1)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
+                .padding(.horizontal, 16)
 
-      Spacer().frame(height: 22)
+            Spacer().frame(height: 22)
 
-      Button(action: action) {
-        Text(buttonText)
-          .font(LDFont.heading06)
-          .foregroundColor(LDColor.color6)
-          .frame(maxWidth: .infinity)
-          .frame(height: 42)
-          .background(LDColor.color1)
-          .cornerRadius(12)
-      }
-      .padding(.bottom, 16)
-      .padding(.horizontal, 12)
+            Button(action: action) {
+                Text(buttonText)
+                    .font(LDFont.heading06)
+                    .foregroundColor(LDColor.color6)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 42)
+                    .background(LDColor.color1)
+                    .cornerRadius(12)
+            }
+            .padding(.bottom, 16)
+            .padding(.horizontal, 12)
+        }
+        .frame(width: 293)
+        .background(LDColor.color6)
+        .cornerRadius(14)
     }
-    .frame(width: 293)
-    .background(LDColor.color6)
-    .cornerRadius(14)
-  }
 }
 
 /// Alert를 표시하기 위한 Modifier
 struct CustomAlertModifier: ViewModifier {
-  @Binding var isPresented: Bool
-  let image: String
-  let title: String
-  let message: String
-  let buttonText: String
-  let action: () -> Void
+    @Binding var isPresented: Bool
+    let image: String
+    let title: String
+    let message: String
+    let buttonText: String
+    let action: () -> Void
 
-  func body(content: Content) -> some View {
-    ZStack {
-      content
-
-      if isPresented {
+    func body(content: Content) -> some View {
         ZStack {
-          Color.black.opacity(0.4)
-            .ignoresSafeArea()
-            .onTapGesture {
-              // 배경 탭 시 닫지 않음
-            }
+            content
 
-          CustomAlert(
-            image: image,
-            title: title,
-            message: message,
-            buttonText: buttonText,
-            action: action
-          )
+            if isPresented {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            // 배경 탭 시 닫지 않음
+                        }
+
+                    CustomAlert(
+                        image: image,
+                        title: title,
+                        message: message,
+                        buttonText: buttonText,
+                        action: action
+                    )
+                }
+                .ignoresSafeArea(.all)
+            }
         }
-        .ignoresSafeArea(.all)
-      }
     }
-  }
 }
 
 #Preview {
-  CustomAlert(
-    image: "warning",
-    title: "아쉬워요!",
-    message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
-    buttonText: "다시 찾기"
-  ) {
-    print("Alert button tapped")
-  }
+    CustomAlert(
+        image: "warning",
+        title: "아쉬워요!",
+        message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
+        buttonText: "다시 찾기"
+    ) {
+        print("Alert button tapped")
+    }
 }

@@ -9,88 +9,88 @@ import SwiftData
 import SwiftUI
 
 struct ExhibitionListTitleSection: View {
-  var body: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      Text("관람하러 온 전시를 알려주세요")
-        .font(LDFont.heading02)
-        .foregroundStyle(.black)
-        .frame(maxWidth: .infinity, alignment: .leading)
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("관람하러 온 전시를 알려주세요")
+                .font(LDFont.heading02)
+                .foregroundStyle(.black)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-      Text("전시명")
-        .font(LDFont.regular03)
-        .foregroundColor(LDColor.gray6)
-        .padding(.top, 24)
+            Text("전시명")
+                .font(LDFont.regular03)
+                .foregroundColor(LDColor.gray6)
+                .padding(.top, 24)
+        }
+        .padding(.top, 20)
+        .padding(.bottom, 16)
+        .padding(.horizontal, 20)
     }
-    .padding(.top, 20)
-    .padding(.bottom, 16)
-    .padding(.horizontal, 20)
-  }
 }
 
 struct ExhibitionListContent: View {
-  @ObservedObject var viewModel: ExhibitionListViewModel
+    @ObservedObject var viewModel: ExhibitionListViewModel
 
-  let exhibitions: [Exhibition]
+    let exhibitions: [Exhibition]
 
-  var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 0) {
-        ForEach(exhibitions, id: \.id) { exhibition in
-          SelectionRow(
-            title: exhibition.title,
-            isSelected: viewModel.selectedExhibitionId == exhibition.id
-          ) {
-            viewModel.selectExhibition(exhibition)
-          }
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(exhibitions, id: \.id) { exhibition in
+                    SelectionRow(
+                        title: exhibition.title,
+                        isSelected: viewModel.selectedExhibitionId == exhibition.id
+                    ) {
+                        viewModel.selectExhibition(exhibition)
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
         }
-      }
-      .padding(.horizontal, 20)
     }
-  }
 }
 
 struct ExhibitionListRegisterButton: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @ObservedObject var viewModel: ExhibitionListViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    @ObservedObject var viewModel: ExhibitionListViewModel
 
-  var body: some View {
-    BottomButton(
-      text: "등록하기",
-      isEnabled: viewModel.selectedExhibitionId != nil
-    ) {
-      if let exhibitionId = viewModel.selectedExhibitionId {
-        router.push(.exhibitionDetail(id: exhibitionId))
-      }
+    var body: some View {
+        BottomButton(
+            text: "등록하기",
+            isEnabled: viewModel.selectedExhibitionId != nil
+        ) {
+            if let exhibitionId = viewModel.selectedExhibitionId {
+                router.push(.exhibitionDetail(id: exhibitionId))
+            }
+        }
     }
-  }
 }
 
 struct ExhibitionListView: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @StateObject private var viewModel = ExhibitionListViewModel()
-  @Query private var exhibitions: [Exhibition]
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ExhibitionListViewModel()
+    @Query private var exhibitions: [Exhibition]
 
-  private let dataManager = SwiftDataManager.shared
+    private let dataManager = SwiftDataManager.shared
 
-  var body: some View {
-    VStack(spacing: 0) {
-      ExhibitionListTitleSection()
+    var body: some View {
+        VStack(spacing: 0) {
+            ExhibitionListTitleSection()
 
-      ExhibitionListContent(viewModel: viewModel, exhibitions: exhibitions)
+            ExhibitionListContent(viewModel: viewModel, exhibitions: exhibitions)
 
-      Spacer()
+            Spacer()
 
-      ExhibitionListRegisterButton(viewModel: viewModel)
+            ExhibitionListRegisterButton(viewModel: viewModel)
+        }
+        .padding(.top, 18)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomNavigationBar(title: "전시찾기") {
+                router.popLast()
+            }
+        }
+        .onAppear {
+            viewModel.getExhibitions()
+        }
     }
-    .padding(.top, 18)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-      CustomNavigationBar(title: "전시찾기") {
-        router.popLast()
-      }
-    }
-    .onAppear {
-      viewModel.getExhibitions()
-    }
-  }
 }

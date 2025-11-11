@@ -10,23 +10,23 @@ import SwiftData
 
 @Model
 final class IdentificatedArtwork {
-  var id: String
-  var capturedId: String
-  var uploadedImagePath: String
-  var recognizedArtworkName: String
-  var recognizedArtistName: String
+    var id: String
+    var capturedId: String
+    var uploadedImagePath: String
+    var recognizedArtworkName: String
+    var recognizedArtistName: String
 
-  init(
-    id: String,
-    capturedId: String,
-    uploadedImagePath: String,
-    recognizedArtworkName: String,
-    recognizedArtistName: String
-  ) {
-    self.id = id
-    self.capturedId = capturedId
-    self.uploadedImagePath = uploadedImagePath
-    self.recognizedArtworkName = recognizedArtworkName
-    self.recognizedArtistName = recognizedArtistName
-  }
+    init(
+        id: String,
+        capturedId: String,
+        uploadedImagePath: String,
+        recognizedArtworkName: String,
+        recognizedArtistName: String
+    ) {
+        self.id = id
+        self.capturedId = capturedId
+        self.uploadedImagePath = uploadedImagePath
+        self.recognizedArtworkName = recognizedArtworkName
+        self.recognizedArtistName = recognizedArtistName
+    }
 }

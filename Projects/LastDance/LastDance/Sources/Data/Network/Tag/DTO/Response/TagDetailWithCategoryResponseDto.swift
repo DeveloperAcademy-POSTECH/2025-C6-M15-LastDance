@@ -6,9 +6,9 @@
 //
 
 struct TagDetailWithCategoryResponseDto: Codable {
-  let id: Int
-  let name: String
-  let category_id: Int
-  let color_hex: String
-  let category: TagCategoryListResponseDto
+    let id: Int
+    let name: String
+    let category_id: Int
+    let color_hex: String
+    let category: TagCategoryListResponseDto
 }

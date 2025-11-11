@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct OnboardingView: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @StateObject private var viewModel = OnboardingViewModel()
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = OnboardingViewModel()
 
-  var body: some View {
-    VStack(spacing: 20) {
-      Text("Onboarding View")
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Onboarding View")
+        }
     }
-  }
 }
 
 #Preview {
-  OnboardingView()
+    OnboardingView()
 }

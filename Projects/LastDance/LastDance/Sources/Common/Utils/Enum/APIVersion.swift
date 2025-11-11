@@ -7,5 +7,5 @@
 
 /// API를 버전별로 상수 값으로 관리하기 위한 enum
 enum APIVersion {
-  static let version1 = "/api/v1"
+    static let version1 = "/api/v1"
 }

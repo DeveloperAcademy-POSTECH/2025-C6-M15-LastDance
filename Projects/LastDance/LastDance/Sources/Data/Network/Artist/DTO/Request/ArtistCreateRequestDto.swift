@@ -6,7 +6,7 @@
 //
 
 struct ArtistCreateRequestDto: Codable {
-  let name: String?
-  let bio: String?
-  let email: String?
+    let name: String?
+    let bio: String?
+    let email: String?
 }

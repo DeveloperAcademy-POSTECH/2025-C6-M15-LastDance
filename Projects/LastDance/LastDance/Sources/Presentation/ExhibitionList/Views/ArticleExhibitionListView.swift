@@ -9,77 +9,77 @@ import SwiftData
 import SwiftUI
 
 struct ArticleExhibitionListContent: View {
-  let exhibitions: [Exhibition]
-  @ObservedObject var viewModel: ArticleExhibitionListViewModel
+    let exhibitions: [Exhibition]
+    @ObservedObject var viewModel: ArticleExhibitionListViewModel
 
-  var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 0) {
-        ForEach(exhibitions, id: \.id) { exhibition in
-          SelectionRow(
-            title: exhibition.title,
-            isSelected: viewModel.selectedExhibitionId == exhibition.id
-          ) {
-            viewModel.selectExhibition(exhibition)
-          }
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(exhibitions, id: \.id) { exhibition in
+                    SelectionRow(
+                        title: exhibition.title,
+                        isSelected: viewModel.selectedExhibitionId == exhibition.id
+                    ) {
+                        viewModel.selectExhibition(exhibition)
+                    }
+                }
+            }
         }
-      }
+        .padding(.horizontal, 20)
     }
-    .padding(.horizontal, 20)
-  }
 }
 
 struct ArticleExhibitionListNextButton: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @ObservedObject var viewModel: ArticleExhibitionListViewModel
+    @EnvironmentObject private var router: NavigationRouter
+    @ObservedObject var viewModel: ArticleExhibitionListViewModel
 
-  var body: some View {
-    BottomButton(
-      text: "다음",
-      isEnabled: viewModel.selectedExhibitionId != nil
-    ) {
-      if let exhibitionId = viewModel.tapNextButton() {
-        router.push(.articleList(selectedExhibitionId: exhibitionId))
-      }
+    var body: some View {
+        BottomButton(
+            text: "다음",
+            isEnabled: viewModel.selectedExhibitionId != nil
+        ) {
+            if let exhibitionId = viewModel.tapNextButton() {
+                router.push(.articleList(selectedExhibitionId: exhibitionId))
+            }
+        }
     }
-  }
 }
 
 /// 작가 플로우에서 전시 선택 뷰
 struct ArticleExhibitionListView: View {
-  @EnvironmentObject private var router: NavigationRouter
-  @StateObject private var viewModel = ArticleExhibitionListViewModel()
-  @Query private var exhibitions: [Exhibition]
+    @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = ArticleExhibitionListViewModel()
+    @Query private var exhibitions: [Exhibition]
 
-  var body: some View {
-    VStack(spacing: 0) {
-      PageIndicator(totalPages: 2, currentPage: 1)
-        .padding(.horizontal, -20)
+    var body: some View {
+        VStack(spacing: 0) {
+            PageIndicator(totalPages: 2, currentPage: 1)
+                .padding(.horizontal, -20)
 
-      TitleSection(title: "참여한 전시를 알려주세요", subtitle: "전시명")
+            TitleSection(title: "참여한 전시를 알려주세요", subtitle: "전시명")
 
-      ArticleExhibitionListContent(exhibitions: exhibitions, viewModel: viewModel)
+            ArticleExhibitionListContent(exhibitions: exhibitions, viewModel: viewModel)
 
-      Spacer()
+            Spacer()
 
-      ArticleExhibitionListNextButton(viewModel: viewModel)
+            ArticleExhibitionListNextButton(viewModel: viewModel)
+        }
+        .padding(.top, 18)
+        .padding(.bottom, 34)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomNavigationBar(title: "전시찾기") {
+                router.popLast()
+            }
+        }
+        .onAppear {
+            viewModel.loadAllExhibitions()
+            viewModel.loadAllArtists()
+        }
     }
-    .padding(.top, 18)
-    .padding(.bottom, 34)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-      CustomNavigationBar(title: "전시찾기") {
-        router.popLast()
-      }
-    }
-    .onAppear {
-      viewModel.loadAllExhibitions()
-      viewModel.loadAllArtists()
-    }
-  }
 }
 
 #Preview {
-  ArticleExhibitionListView()
-    .environmentObject(NavigationRouter())
+    ArticleExhibitionListView()
+        .environmentObject(NavigationRouter())
 }

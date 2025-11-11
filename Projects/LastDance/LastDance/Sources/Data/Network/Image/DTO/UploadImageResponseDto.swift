@@ -6,6 +6,6 @@
 //
 
 struct UploadImageResponseDto: Codable {
-  let filename: String
-  let url: String
+    let filename: String
+    let url: String
 }

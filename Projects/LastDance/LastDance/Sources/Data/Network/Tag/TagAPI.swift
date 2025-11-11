@@ -8,38 +8,38 @@
 import Moya
 
 enum TagAPI {
-  case getTags(categoryId: Int? = nil)
-  case getTag(id: Int)
+    case getTags(categoryId: Int? = nil)
+    case getTag(id: Int)
 }
 
 extension TagAPI: BaseTargetType {
-  var path: String {
-    switch self {
-    case .getTags:
-      return "\(APIVersion.version1)/tags"
-    case .getTag(let id):
-      return "\(APIVersion.version1)/tags/\(id)"
+    var path: String {
+        switch self {
+        case .getTags:
+            return "\(APIVersion.version1)/tags"
+        case let .getTag(id):
+            return "\(APIVersion.version1)/tags/\(id)"
+        }
     }
-  }
 
-  var method: Moya.Method {
-    switch self {
-    case .getTags, .getTag:
-      return .get
+    var method: Moya.Method {
+        switch self {
+        case .getTags, .getTag:
+            return .get
+        }
     }
-  }
 
-  var queryParameters: [String: Any]? {
-    switch self {
-    case .getTags(let categoryId):
-      guard let categoryId else { return nil }
-      return ["category_id": categoryId]
-    case .getTag:
-      return nil
+    var queryParameters: [String: Any]? {
+        switch self {
+        case let .getTags(categoryId):
+            guard let categoryId else { return nil }
+            return ["category_id": categoryId]
+        case .getTag:
+            return nil
+        }
     }
-  }
 
-  var bodyParameters: Codable? {
-    nil
-  }
+    var bodyParameters: Codable? {
+        nil
+    }
 }

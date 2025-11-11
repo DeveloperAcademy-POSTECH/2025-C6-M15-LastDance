@@ -10,20 +10,20 @@ import SwiftData
 
 @Model
 final class VisitHistory {
-  var id: Int
-  var visitorId: Int
-  var exhibitionId: Int
-  var visitedAt: Date
+    var id: Int
+    var visitorId: Int
+    var exhibitionId: Int
+    var visitedAt: Date
 
-  init(
-    id: Int,
-    visitorId: Int,
-    exhibitionId: Int,
-    visitedAt: Date
-  ) {
-    self.id = id
-    self.visitorId = visitorId
-    self.exhibitionId = exhibitionId
-    self.visitedAt = visitedAt
-  }
+    init(
+        id: Int,
+        visitorId: Int,
+        exhibitionId: Int,
+        visitedAt: Date
+    ) {
+        self.id = id
+        self.visitorId = visitorId
+        self.exhibitionId = exhibitionId
+        self.visitedAt = visitedAt
+    }
 }

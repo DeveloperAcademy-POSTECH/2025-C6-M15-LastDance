@@ -8,6 +8,6 @@
 import Foundation
 
 enum ArtReactionTab {
-  case artwork
-  case reaction
+    case artwork
+    case reaction
 }

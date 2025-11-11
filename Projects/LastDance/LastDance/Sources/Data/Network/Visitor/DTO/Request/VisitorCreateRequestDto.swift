@@ -6,6 +6,6 @@
 //
 
 struct VisitorCreateRequestDto: Codable {
-  let uuid: String
-  let name: String?
+    let uuid: String
+    let name: String?
 }
