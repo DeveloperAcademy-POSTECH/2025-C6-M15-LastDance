@@ -12,8 +12,10 @@ struct ClipArtReactionView: View {
     let exhibitionId: Int
     
     @StateObject private var viewModel: ClipArtReactionViewModel
+    @EnvironmentObject private var router: ClipNavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
+    @FocusState private var isMessageFieldFocused: Bool
 
     init(artworkId: Int, exhibitionId: Int) {
         self.artworkId = artworkId
@@ -31,21 +33,17 @@ struct ClipArtReactionView: View {
         let imageHeight = max(200, 414 - scrollOffset * 0.5)
         let imageWidth = max(150, 305 - (414 - imageHeight) * 0.76)
         
-        VStack(spacing: 0) {
-            Color.clear
-                .frame(height: 36)
-                .background(Color.white)
-            
-            // 고정 탭바
-            if viewModel.isTabBarFixed(for: scrollOffset) {
-                TabBarView(selectedTab: $selectedTab)
-                    .background(Color.white)
-            }
-            
+        ZStack(alignment: .top) {
             // 데이터가 로드될 때까지는 로딩만
             if viewModel.isLoaded {
+                // 스크롤 가능한 콘텐츠 영역
                 ScrollViewObserver(scrollOffset: $scrollOffset) {
                     VStack(spacing: 0) {
+                        
+                        Color.clear
+                            .frame(height: 36)
+                            .background(Color.white)
+                        
                         // 작품 이미지
                         if let imageURLString = viewModel.artwork?.thumbnailURL,
                            let url = URL(string: imageURLString) {
@@ -64,21 +62,13 @@ struct ClipArtReactionView: View {
                                 .fill(Color.gray.opacity(0.15))
                                 .frame(width: imageWidth, height: imageHeight)
                                 .cornerRadius(24)
-                                .overlay(
-                                    Text("이미지 없음")
-                                        .foregroundColor(.gray)
-                                )
+                                .overlay(Text("이미지 없음").foregroundColor(.gray))
                         }
                         
-                        // 스크롤 안에 들어오는 탭바
-                        if !viewModel.isTabBarFixed(for: scrollOffset) {
-                            TabBarView(selectedTab: $selectedTab)
-                                .padding(.top, 24)
-                        } else {
-                            TabBarView(selectedTab: $selectedTab)
-                                .padding(.top, 24)
-                                .hidden()
-                        }
+                        // 스크롤 안에 들어오는 탭바 (고정 탭바와 겹치지 않게 투명도 조정)
+                        TabBarView(selectedTab: $selectedTab)
+                            .padding(.top, 24)
+                            .opacity(viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused ? 0 : 1)
                         
                         // 탭별 콘텐츠
                         if selectedTab == .artwork {
@@ -89,6 +79,7 @@ struct ClipArtReactionView: View {
                     }
                 }
                 .background(Color.white)
+                
             } else {
                 // 처음 로딩 상태
                 VStack {
@@ -99,17 +90,42 @@ struct ClipArtReactionView: View {
                 .background(Color.white)
             }
             
-            if selectedTab == .reaction {
-                ClipBottomButton(
-                    text: "전송하기",
-                    isEnabled: viewModel.hasText,
-                    action: viewModel.sendReaction
-                )
+            // 최상단 고정 탭바 (ZStack의 .top에 위치하며 스크롤 및 키보드에 영향을 받지 않음)
+            VStack(spacing: 0) {
+                Color.clear
+                    .frame(height: 36)
+                    .background(Color.white)
+                
+                TabBarView(selectedTab: $selectedTab)
+                    .background(Color.white)
+            }
+            // 고정 탭바 표시 조건: 스크롤 임계값 도달 OR 메시지 필드에 포커스
+            .opacity((viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused) ? 1 : 0)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+            
+            
+            // 하단 버튼 (ZStack에 배치하여 스크롤과 독립적으로 위치)
+            VStack {
+                Spacer()
+                if selectedTab == .reaction {
+                    ClipBottomButton(
+                        text: "전송하기",
+                        isEnabled: viewModel.hasText,
+                        action: { buttonAction() }
+                    )
+                    .background(Color.white)
+                }
             }
         }
         .task {
             await viewModel.loadArtwork()
         }
+        .scrollDismissesKeyboard(.interactively)
+    }
+    
+    private func buttonAction() {
+        viewModel.sendReaction()
+        router.push(.complete)
     }
     
     // MARK: - 작품 탭

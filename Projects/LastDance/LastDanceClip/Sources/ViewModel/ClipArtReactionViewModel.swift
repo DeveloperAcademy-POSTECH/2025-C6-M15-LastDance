@@ -14,8 +14,7 @@ final class ClipArtReactionViewModel: ObservableObject {
     @Published var message: String = ""
     @Published var isLoading: Bool = false
     @Published var isLoaded: Bool = false
-    @EnvironmentObject private var router: ClipNavigationRouter
-
+    
     let limit = 500
 
     private let artworkId: Int
@@ -79,7 +78,7 @@ final class ClipArtReactionViewModel: ObservableObject {
     }
 
     func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
-        scrollOffset > 492
+        scrollOffset > 200
     }
     
     func sendReaction() {
@@ -122,9 +121,6 @@ final class ClipArtReactionViewModel: ObservableObject {
                     exhibitionId: exhibitionId,
                     artworkId: artworkId
                 )
-                
-                router.push(.complete)
-                
             } catch {
                 Log.error("createReaction error: \(error)")
             }
