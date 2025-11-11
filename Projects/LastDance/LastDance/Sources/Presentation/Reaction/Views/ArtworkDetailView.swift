@@ -42,6 +42,7 @@ struct ArtworkDetailView: View {
                     Spacer()
                 }
             }
+            .scrollDismissesKeyboard(.never)
             .scrollToMinDistance(minDisntance: 32)
 
             BottomButton(
