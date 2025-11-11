@@ -33,7 +33,7 @@ final class CameraViewModel: ObservableObject {
             manager.onFirstFrame = { [weak self] in
                 guard let self else { return }
                 self.previewPhase = .blurred
-                Task { @MainActor in
+                Task {
                     try? await Task.sleep(for: .milliseconds(400))
                     self.previewPhase = .visible
                 }
