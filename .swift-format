@@ -55,7 +55,7 @@
     "OneVariableDeclarationPerLine" : true,
     "OnlyOneTrailingClosureArgument" : true,
     "OrderedImports" : true,
-    "ReplaceForEachWithForLoop" : true,
+    "ReplaceForEachWithForLoop" : false,
     "ReturnVoidInsteadOfEmptyTuple" : true,
     "TypeNamesShouldBeCapitalized" : true,
     "UseEarlyExits" : false,
@@ -66,7 +66,10 @@
     "UseSynthesizedInitializer" : true,
     "UseTripleSlashForDocumentationComments" : true,
     "UseWhereClausesInForLoops" : false,
-    "ValidateDocumentationComments" : false
+    "ValidateDocumentationComments" : false,
+    "lineBreakAroundMarks" : false,
+    "lineBreakAroundMarkComments": false,
+    "wrapConditionalBodies": false
   },
   "spacesAroundRangeFormationOperators" : false,
   "spacesBeforeEndOfLineComments" : 2,
