@@ -9,16 +9,16 @@ import SwiftUI
 
 /// 4개 모서리에 L-자 모양 코너 마크를 그려주는 오버레이
 private struct PreviewCornerMarks: View {
-    var length: CGFloat = 22 // 각 코너의 선 길이
-    var lineWidth: CGFloat = 3 // 선 두께
-    var color: Color = LDColor.color6 // 선 색
-    var inset: CGFloat = 6 // 프리뷰 테두리로부터 안쪽 여백
+    var length: CGFloat = 22  // 각 코너의 선 길이
+    var lineWidth: CGFloat = 3  // 선 두께
+    var color: Color = LDColor.color6  // 선 색
+    var inset: CGFloat = 6  // 프리뷰 테두리로부터 안쪽 여백
 
     var body: some View {
         GeometryReader { proxy in
             let proxyWidth = proxy.size.width
             let proxyHeight = proxy.size.height
-            let proxyLength = min(length, min(proxyWidth, proxyHeight) / 2) // 너무 큰 값 방지
+            let proxyLength = min(length, min(proxyWidth, proxyHeight) / 2)  // 너무 큰 값 방지
 
             Canvas { ctx, _ in
                 var path = Path()
@@ -41,12 +41,13 @@ private struct PreviewCornerMarks: View {
                 // Bottom-Right
                 path.move(to: CGPoint(x: proxyWidth - inset - proxyLength, y: proxyHeight - inset))
                 path.addLine(to: CGPoint(x: proxyWidth - inset, y: proxyHeight - inset))
-                path.addLine(to: CGPoint(x: proxyWidth - inset, y: proxyHeight - inset - proxyLength))
+                path.addLine(
+                    to: CGPoint(x: proxyWidth - inset, y: proxyHeight - inset - proxyLength))
 
                 ctx.stroke(path, with: .color(color), lineWidth: lineWidth)
             }
         }
-        .allowsHitTesting(false) // 터치 통과
+        .allowsHitTesting(false)  // 터치 통과
         .accessibilityHidden(true)
     }
 }

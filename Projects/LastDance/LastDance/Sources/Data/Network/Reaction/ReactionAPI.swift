@@ -18,7 +18,7 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction, .getReactions:
             return "\(APIVersion.version1)/reactions"
-        case let .getDetailReaction(reactionId):
+        case .getDetailReaction(let reactionId):
             return "\(APIVersion.version1)/reactions/\(reactionId)"
         }
     }
@@ -36,7 +36,7 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction, .getDetailReaction:
             return nil
-        case let .getReactions(artworkId, visitorId, visitId):
+        case .getReactions(let artworkId, let visitorId, let visitId):
             var params: [String: Any] = [:]
             if let artworkId = artworkId {
                 params["artwork_id"] = artworkId
@@ -53,7 +53,7 @@ extension ReactionAPI: BaseTargetType {
 
     var bodyParameters: Codable? {
         switch self {
-        case let .createReaction(dto):
+        case .createReaction(let dto):
             return dto
         case .getReactions, .getDetailReaction:
             return nil

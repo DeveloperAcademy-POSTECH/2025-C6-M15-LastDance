@@ -52,10 +52,10 @@ struct CachedImage: View {
                     .onSuccess { result in
                         Log.info("✅ Image loaded from: \(result.cacheType)")
                     }
-                    .cacheOriginalImage() // 원본 이미지 캐싱
-                    .diskCacheExpiration(.days(7)) // 7일간 디스크 캐시
-                    .memoryCacheExpiration(.seconds(300)) // 5분간 메모리 캐시
-                    .loadDiskFileSynchronously() // 디스크 캐시 동기 로딩으로 빠른 표시
+                    .cacheOriginalImage()  // 원본 이미지 캐싱
+                    .diskCacheExpiration(.days(7))  // 7일간 디스크 캐시
+                    .memoryCacheExpiration(.seconds(300))  // 5분간 메모리 캐시
+                    .loadDiskFileSynchronously()  // 디스크 캐시 동기 로딩으로 빠른 표시
                     .fade(duration: 0.25)
                     .resizable()
 

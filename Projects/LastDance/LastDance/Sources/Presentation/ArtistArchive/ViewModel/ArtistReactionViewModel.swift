@@ -57,7 +57,7 @@ final class ArtistReactionViewModel: ObservableObject {
     ) {
         let group = DispatchGroup()
         var displayItems: [ArtistExhibitionDisplayItem] = []
-        let lock = NSLock() // To protect displayItems from concurrent access
+        let lock = NSLock()  // To protect displayItems from concurrent access
 
         for exhibition in exhibitions {
             group.enter()
@@ -90,9 +90,9 @@ final class ArtistReactionViewModel: ObservableObject {
                     visitId: nil
                 ) { reactionResult in
                     switch reactionResult {
-                    case let .success(reactions):
+                    case .success(let reactions):
                         totalReactionCount += reactions.count
-                    case let .failure(error):
+                    case .failure(let error):
                         Log.error("Failed. artwork \(artworkId): \(error.localizedDescription)")
                     }
                     innerGroup.leave()
@@ -106,7 +106,8 @@ final class ArtistReactionViewModel: ObservableObject {
                         id: exhibition.id, exhibition: exhibition, reactionCount: totalReactionCount
                     ))
                 lock.unlock()
-                Log.debug("Calculated \(totalReactionCount) reactions for exhibition \(exhibition.id).")
+                Log.debug(
+                    "Calculated \(totalReactionCount) reactions for exhibition \(exhibition.id).")
                 group.leave()
             }
         }

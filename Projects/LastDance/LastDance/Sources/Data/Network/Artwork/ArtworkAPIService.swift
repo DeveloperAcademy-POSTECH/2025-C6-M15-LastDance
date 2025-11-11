@@ -45,7 +45,7 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
 
         provider.request(.getArtworks(artistId: artistId, exhibitionId: exhibitionId)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("서버 응답: \(jsonString)")
@@ -57,10 +57,11 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         for dto in artworks {
-                            let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
+                            let artwork = ArtworkMapper.mapDtoToModel(
+                                dto, exhibitionId: exhibitionId)
                             SwiftDataManager.shared.insert(artwork)
                         }
-                        SwiftDataManager.shared.saveContext() // 명시적으로 저장
+                        SwiftDataManager.shared.saveContext()  // 명시적으로 저장
                         Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
                     }
 
@@ -69,13 +70,14 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(
-                       ErrorResponseDto.self, from: response.data
-                   )
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
                 {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("API 요청 실패: \(error)")
@@ -92,12 +94,13 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
 
         provider.request(.getArtworkDetail(artworkId: artworkId)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("작품 상세 조회 응답: \(jsonString)")
                     }
-                    let artwork = try JSONDecoder().decode(ArtworkDetailResponseDto.self, from: response.data)
+                    let artwork = try JSONDecoder().decode(
+                        ArtworkDetailResponseDto.self, from: response.data)
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -111,13 +114,14 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     Log.error("작품 상세 조회 JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(
-                       ErrorResponseDto.self, from: response.data
-                   )
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
                 {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 상세 조회 API 요청 실패: \(error)")
@@ -135,12 +139,13 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
 
         provider.request(.makeArtwork(dto: dto)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("작품 생성 응답: \(jsonString)")
                     }
-                    let artwork = try JSONDecoder().decode(ArtworkDetailResponseDto.self, from: response.data)
+                    let artwork = try JSONDecoder().decode(
+                        ArtworkDetailResponseDto.self, from: response.data)
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -154,13 +159,14 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     Log.error("작품 생성 JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(
-                       ErrorResponseDto.self, from: response.data
-                   )
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
                 {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 생성 API 요청 실패: \(error)")

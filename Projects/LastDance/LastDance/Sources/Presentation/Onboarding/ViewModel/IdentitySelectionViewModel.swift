@@ -51,7 +51,7 @@ final class IdentitySelectionViewModel: ObservableObject {
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case let .success(dto):
+                case .success(let dto):
                     UserDefaults.standard.set(
                         dto.uuid,
                         forKey: UserDefaultsKey.visitorUUID.rawValue
@@ -64,10 +64,10 @@ final class IdentitySelectionViewModel: ObservableObject {
                         name: dto.name
                     )
                     self.dataManager.insert(visitor)
-                case let .failure(error):
+                case .failure(let error):
                     if let moyaError = error as? MoyaError,
-                       let data = moyaError.response?.data,
-                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                        let data = moyaError.response?.data,
+                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                     {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                         Log.warning("Visitor create validation error: \(messages)")
@@ -80,7 +80,8 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     /// 저장된 uuid가 있으면 재사용, 없으면 새로 생성해서 저장
     private func loadOrCreateVisitorUUID() -> String {
-        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) {
+        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue)
+        {
             return existing
         }
         let newUUID = UUID().uuidString
@@ -94,12 +95,12 @@ final class IdentitySelectionViewModel: ObservableObject {
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case let .success(list):
+                case .success(let list):
                     Log.info("success. count=\(list.count)")
-                case let .failure(error):
+                case .failure(let error):
                     if let moyaError = error as? MoyaError,
-                       let data = moyaError.response?.data,
-                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                        let data = moyaError.response?.data,
+                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                     {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                         Log.warning("validation: \(messages)")

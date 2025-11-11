@@ -14,7 +14,7 @@ struct PageIndicator: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(1 ... totalPages, id: \.self) { page in
+            ForEach(1...totalPages, id: \.self) { page in
                 Rectangle()
                     .fill(page <= currentPage ? LDColor.color1 : LDColor.color1.opacity(0.18))
                     .frame(height: 2)

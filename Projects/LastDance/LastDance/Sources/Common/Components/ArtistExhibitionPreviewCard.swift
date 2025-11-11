@@ -21,7 +21,8 @@ struct ArtistExhibitionPreviewCard: View {
             ArtistExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
+                dateRange: Date.formatShortDateRange(
+                    start: exhibition.startDate, end: exhibition.endDate),
                 onConfirm: onConfirm
             )
             .padding(.horizontal, 12)
@@ -47,7 +48,7 @@ struct ArtistExhibitionPreviewImage: View {
                         .fill(Color.gray.opacity(0.3))
                         .frame(width: 365, height: 468)
                         .overlay(ProgressView())
-                case let .success(image):
+                case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

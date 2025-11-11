@@ -105,7 +105,7 @@ final class CameraViewModel: ObservableObject {
         hideNoticeTask = Task { [weak self] in
             do {
                 try await Task.sleep(for: visibleFor)
-            } catch { return } // 취소됨
+            } catch { return }  // 취소됨
             await MainActor.run { [weak self] in
                 self?.showSilentNotice = false
             }

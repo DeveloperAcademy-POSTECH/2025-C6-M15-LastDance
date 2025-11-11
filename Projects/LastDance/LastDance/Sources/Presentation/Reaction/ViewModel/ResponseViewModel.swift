@@ -16,44 +16,46 @@ final class ResponseViewModel: ObservableObject {
     @Published var expandedReactions: Set<String> = []
     @Published var showAllReactions: [String: Bool] = [:]
     @Published var reactions: [ReactionData] = []
-    @Published var isLoading = false // Added isLoading property
+    @Published var isLoading = false  // Added isLoading property
 
-    private let artworkId: Int // Added artworkId property
-    private let reactionAPIService: ReactionAPIServiceProtocol // Added dependency
-    private let swiftDataManager = SwiftDataManager.shared // To fetch Artwork for display
+    private let artworkId: Int  // Added artworkId property
+    private let reactionAPIService: ReactionAPIServiceProtocol  // Added dependency
+    private let swiftDataManager = SwiftDataManager.shared  // To fetch Artwork for display
 
     init(artworkId: Int, reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService()) {
         self.artworkId = artworkId
         self.reactionAPIService = reactionAPIService
-        fetchReactions() // Automatically fetch reactions on init
+        fetchReactions()  // Automatically fetch reactions on init
     }
 
     /// API를 통해 실제 반응 데이터를 불러오는 로직 구현
     func fetchReactions() {
         isLoading = true
-        reactions = [] // Clear previous data
+        reactions = []  // Clear previous data
 
         reactionAPIService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) {
             [weak self] result in
             guard let self = self else { return }
 
             switch result {
-            case let .success(getReactionDtos):
+            case .success(let getReactionDtos):
                 Log.debug(
-                    "Fetched \(getReactionDtos.count) GetReactionResponseDtos for artwork \(self.artworkId).")
+                    "Fetched \(getReactionDtos.count) GetReactionResponseDtos for artwork \(self.artworkId)."
+                )
 
                 let dispatchGroup = DispatchGroup()
                 var fetchedReactionData: [ReactionData] = []
-                let lock = NSLock() // To protect fetchedReactionData during concurrent access
+                let lock = NSLock()  // To protect fetchedReactionData during concurrent access
 
                 for getReactionDto in getReactionDtos {
                     dispatchGroup.enter()
-                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) { detailResult in
+                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) {
+                        detailResult in
                         defer { dispatchGroup.leave() }
 
                         switch detailResult {
-                        case let .success(reactionResponseDto):
-                            let reactionDetailDto = reactionResponseDto.data // This is ReactionDetailResponseDto
+                        case .success(let reactionResponseDto):
+                            let reactionDetailDto = reactionResponseDto.data  // This is ReactionDetailResponseDto
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
@@ -62,7 +64,7 @@ final class ResponseViewModel: ObservableObject {
                             lock.lock()
                             fetchedReactionData.append(reactionData)
                             lock.unlock()
-                        case let .failure(error):
+                        case .failure(let error):
                             Log.error(
                                 "Failed to fetch detail for reaction ID \(getReactionDto.id): \(error.localizedDescription)"
                             )
@@ -71,14 +73,14 @@ final class ResponseViewModel: ObservableObject {
                 }
 
                 dispatchGroup.notify(queue: .main) {
-                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id } // Sort to maintain order
+                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id }  // Sort to maintain order
                     self.isLoading = false
                     Log.debug(
                         "All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)"
                     )
                 }
 
-            case let .failure(error):
+            case .failure(let error):
                 DispatchQueue.main.async {
                     self.isLoading = false
                     Log.error(
@@ -128,7 +130,8 @@ final class ResponseViewModel: ObservableObject {
         if expandedReactions.contains(reaction.id) {
             return reaction.comment
         } else {
-            return String(reaction.comment.prefix(100)) + (reaction.comment.count > 100 ? "..." : "")
+            return String(reaction.comment.prefix(100))
+                + (reaction.comment.count > 100 ? "..." : "")
         }
     }
 

@@ -10,7 +10,8 @@ import SwiftUI
 extension UIApplication {
     func addTapGestureRecognizer() {
         guard let window = windows.first else { return }
-        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
+        let tapGesture = UITapGestureRecognizer(
+            target: window, action: #selector(UIView.endEditing))
         tapGesture.requiresExclusiveTouchType = false
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self

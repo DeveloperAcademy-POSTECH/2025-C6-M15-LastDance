@@ -51,7 +51,8 @@ public struct CustomBottomSheet<Content>: View where Content: View {
             DragGesture()
                 .updating($translation) { value, state, _ in
                     if value.translation.height >= 0 {
-                        let translation = min(self.height, max(-self.height, value.translation.height))
+                        let translation = min(
+                            self.height, max(-self.height, value.translation.height))
                         state = translation
                     }
                 }
@@ -86,8 +87,8 @@ public struct RoundedCorner: Shape {
 
 // MARK: 해당 파일에서만 사용되는 extension
 
-public extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+extension View {
+    public func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners))
     }
 }

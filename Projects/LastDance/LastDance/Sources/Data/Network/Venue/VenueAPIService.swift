@@ -11,13 +11,13 @@ import Moya
 protocol VenueAPIServiceProtocol {
     func getVenues(
         completion:
-        @escaping (Result<[VenueDetailResponseDto], Error>)
+            @escaping (Result<[VenueDetailResponseDto], Error>)
             -> Void
     )
     func getVenue(
         id: Int,
         completion:
-        @escaping (Result<VenueDetailResponseDto, Error>)
+            @escaping (Result<VenueDetailResponseDto, Error>)
             -> Void
     )
 }
@@ -35,12 +35,12 @@ final class VenueAPIService: VenueAPIServiceProtocol {
     /// 전체 Venue 목록 가져오기 함수
     func getVenues(
         completion:
-        @escaping (Result<[VenueDetailResponseDto], Error>)
+            @escaping (Result<[VenueDetailResponseDto], Error>)
             -> Void
     ) {
         provider.request(.getVenues) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("Get Venues 요청 성공. 응답: \(json)")
@@ -64,9 +64,9 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let message = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validtation Error: \(message)")
@@ -81,12 +81,12 @@ final class VenueAPIService: VenueAPIServiceProtocol {
     func getVenue(
         id: Int,
         completion:
-        @escaping (Result<VenueDetailResponseDto, any Error>)
+            @escaping (Result<VenueDetailResponseDto, any Error>)
             -> Void
     ) {
         provider.request(.getVenue(id: id)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("API 요청 성공. 응답: \(json)")
@@ -100,9 +100,9 @@ final class VenueAPIService: VenueAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")

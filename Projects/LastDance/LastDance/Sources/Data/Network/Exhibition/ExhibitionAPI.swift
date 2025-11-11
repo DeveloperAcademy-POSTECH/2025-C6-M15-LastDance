@@ -18,7 +18,7 @@ extension ExhibitionAPI: BaseTargetType {
         switch self {
         case .getExhibitions, .makeExhibition:
             return "\(APIVersion.version1)/exhibitions"
-        case let .getDetailExhibition(exhibition_id):
+        case .getDetailExhibition(let exhibition_id):
             return "\(APIVersion.version1)/exhibitions/\(exhibition_id)"
         }
     }
@@ -34,7 +34,7 @@ extension ExhibitionAPI: BaseTargetType {
 
     var queryParameters: [String: Any]? {
         switch self {
-        case let .getExhibitions(status, venue_id):
+        case .getExhibitions(let status, let venue_id):
             var params: [String: Any] = [:]
             if let status = status {
                 params["status"] = status
@@ -52,7 +52,7 @@ extension ExhibitionAPI: BaseTargetType {
         switch self {
         case .getExhibitions, .getDetailExhibition:
             return nil
-        case let .makeExhibition(dto):
+        case .makeExhibition(let dto):
             return dto
         }
     }

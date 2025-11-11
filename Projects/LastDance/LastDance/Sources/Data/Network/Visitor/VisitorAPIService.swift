@@ -13,25 +13,25 @@ import Moya
 protocol VisitorAPIServiceProtocol {
     func getVisitors(
         completion:
-        @escaping (Result<[VisitorListResponseDto], Error>)
+            @escaping (Result<[VisitorListResponseDto], Error>)
             -> Void
     )
     func createVisitor(
         request: VisitorCreateRequestDto,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     )
     func getVisitor(
         id: Int,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     )
     func getVisitorByUUID(
         _ uuid: String,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     )
 }
@@ -42,7 +42,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
     private let provider: MoyaProvider<VisitorAPI>
 
     init(
-        provider: MoyaProvider<VisitorAPI> = MoyaProvider<VisitorAPI>(plugins: [NetworkLoggerPlugin()])
+        provider: MoyaProvider<VisitorAPI> = MoyaProvider<VisitorAPI>(plugins: [
+            NetworkLoggerPlugin()
+        ])
     ) {
         self.provider = provider
     }
@@ -50,12 +52,12 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
     /// Visitor 목록 가져오기 함수
     func getVisitors(
         completion:
-        @escaping (Result<[VisitorListResponseDto], Error>)
+            @escaping (Result<[VisitorListResponseDto], Error>)
             -> Void
     ) {
         provider.request(.getVisitors) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("getVisitors 응답: \(json)")
@@ -79,9 +81,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -96,12 +98,12 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
     func createVisitor(
         request: VisitorCreateRequestDto,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.createVisitor(dto: request)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("createVisitor 응답: \(json)")
@@ -118,9 +120,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -135,12 +137,12 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
     func getVisitor(
         id: Int,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.getVisitor(id: id)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("getVisitor 응답: \(json)")
@@ -154,9 +156,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -171,12 +173,12 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
     func getVisitorByUUID(
         _ uuid: String,
         completion:
-        @escaping (Result<VisitorDetailResponseDto, Error>)
+            @escaping (Result<VisitorDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.getVisitorByUUID(uuid: uuid)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("getVisitorByUUID 응답: \(json)")
@@ -190,9 +192,9 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let message = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(message)")

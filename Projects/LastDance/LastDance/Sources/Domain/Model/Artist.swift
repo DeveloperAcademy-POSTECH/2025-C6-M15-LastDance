@@ -13,8 +13,8 @@ final class Artist {
     @Attribute(.unique) var id: Int
     var uuid: String
     var name: String
-    var exhibitions: [Int] = [] // 전시 ID 목록
-    var receivedReactions: [Reaction] = [] // 관계형 데이터
+    var exhibitions: [Int] = []  // 전시 ID 목록
+    var receivedReactions: [Reaction] = []  // 관계형 데이터
 
     init(
         id: Int,

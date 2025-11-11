@@ -44,7 +44,8 @@ final class CompleteArticleListViewModel: ObservableObject {
         let allArtists = dataManager.fetchAll(Artist.self)
 
         let artistName = (artist?.name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let exhibitionTitle = (exhibition?.title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let exhibitionTitle = (exhibition?.title ?? "").trimmingCharacters(
+            in: .whitespacesAndNewlines)
 
         guard !exhibitionTitle.isEmpty, !artistName.isEmpty else { return nil }
 

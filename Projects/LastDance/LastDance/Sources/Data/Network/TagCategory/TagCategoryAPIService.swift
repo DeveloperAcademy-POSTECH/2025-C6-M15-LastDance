@@ -22,7 +22,7 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
 
     init(
         provider: MoyaProvider<TagCategoryAPI> = MoyaProvider<TagCategoryAPI>(plugins: [
-            NetworkLoggerPlugin(),
+            NetworkLoggerPlugin()
         ])
     ) {
         self.provider = provider
@@ -33,7 +33,7 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
     ) {
         provider.request(.getTagCategories) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("[TagCategoryAPI] 목록 응답: \(json)")
@@ -46,9 +46,9 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
                     Log.error("[TagCategoryAPI] 디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("[TagCategoryAPI] Validation Error: \(messages)")
@@ -64,20 +64,21 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
     ) {
         provider.request(.getTagCategory(id: id)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("[TagCategoryAPI] 상세 응답(\(id)): \(json)")
                     }
-                    let dto = try JSONDecoder().decode(TagCategoryDetailResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        TagCategoryDetailResponseDto.self, from: response.data)
                     completion(.success(dto))
                 } catch {
                     Log.error("[TagCategoryAPI] 디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("[TagCategoryAPI] Validation Error: \(messages)")

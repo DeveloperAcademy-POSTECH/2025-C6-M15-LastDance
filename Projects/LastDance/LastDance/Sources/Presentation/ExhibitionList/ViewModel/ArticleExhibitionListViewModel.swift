@@ -49,19 +49,21 @@ final class ArticleExhibitionListViewModel: ObservableObject {
         resultMessage = ""
         errorMessage = ""
 
-        exhibitionAPIService.getExhibitions(status: status, venueId: venueId) { [weak self] result in
+        exhibitionAPIService.getExhibitions(status: status, venueId: venueId) {
+            [weak self] result in
             guard let self else { return }
 
             DispatchQueue.main.async {
                 self.isLoading = false
                 switch result {
-                case let .success(exhibitions):
+                case .success(let exhibitions):
                     self.resultMessage = "성공. 총 \(exhibitions.count)개의 전시"
                     Log.debug("전시 조회 성공: \(exhibitions.count)개")
 
-                case let .failure(error):
+                case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self.errorMessage = "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self.errorMessage =
+                            "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self.errorMessage = "실패: \(error.localizedDescription)"
                     }
@@ -78,11 +80,12 @@ final class ArticleExhibitionListViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.isLoading = false
                 switch result {
-                case let .success(list):
+                case .success(let list):
                     Log.debug("성공. count=\(list.count)")
-                case let .failure(error):
+                case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self.errorMessage = "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self.errorMessage =
+                            "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self.errorMessage = "실패: \(error.localizedDescription)"
                     }

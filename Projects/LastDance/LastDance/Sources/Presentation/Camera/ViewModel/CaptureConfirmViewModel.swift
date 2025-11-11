@@ -37,13 +37,14 @@ final class CaptureConfirmViewModel: ObservableObject {
                 self.isUploading = false
 
                 switch result {
-                case let .success(response):
+                case .success(let response):
                     self.uploadedImageUrl = response.url
                     // UserDefaults에 업로드된 URL 저장
-                    UserDefaults.standard.set(response.url, forKey: UserDefaultsKey.uploadedImageUrl.key)
+                    UserDefaults.standard.set(
+                        response.url, forKey: UserDefaultsKey.uploadedImageUrl.key)
                     Log.info("이미지 업로드 성공: \(response.url)")
 
-                case let .failure(error):
+                case .failure(let error):
                     self.errorMessage = "업로드 실패: \(error.localizedDescription)"
                     Log.error("이미지 업로드 실패: \(error)")
                 }

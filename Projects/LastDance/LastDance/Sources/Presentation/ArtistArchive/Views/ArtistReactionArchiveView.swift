@@ -75,12 +75,12 @@ private struct ArtistArtworkScrollView: View {
                     ],
                     spacing: 28
                 ) {
-                    ForEach(viewModel.artworks) { displayItem in // Changed from viewModel.reactionItems to viewModel.artworks
+                    ForEach(viewModel.artworks) { displayItem in  // Changed from viewModel.reactionItems to viewModel.artworks
                         VStack(alignment: .leading, spacing: 12) {
                             // 작품 카드 이미지
                             ZStack(alignment: .bottomLeading) {
                                 if let thumbnailURLString = displayItem.artwork.thumbnailURL,
-                                   let thumbnailURL = URL(string: thumbnailURLString)
+                                    let thumbnailURL = URL(string: thumbnailURLString)
                                 {
                                     AsyncImage(url: thumbnailURL) { phase in
                                         switch phase {
@@ -89,7 +89,7 @@ private struct ArtistArtworkScrollView: View {
                                                 .fill(Color.gray.opacity(0.2))
                                                 .frame(width: 155, height: 219)
                                                 .overlay(ProgressView())
-                                        case let .success(image):
+                                        case .success(let image):
                                             image
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)

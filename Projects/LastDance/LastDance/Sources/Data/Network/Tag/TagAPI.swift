@@ -17,7 +17,7 @@ extension TagAPI: BaseTargetType {
         switch self {
         case .getTags:
             return "\(APIVersion.version1)/tags"
-        case let .getTag(id):
+        case .getTag(let id):
             return "\(APIVersion.version1)/tags/\(id)"
         }
     }
@@ -31,7 +31,7 @@ extension TagAPI: BaseTargetType {
 
     var queryParameters: [String: Any]? {
         switch self {
-        case let .getTags(categoryId):
+        case .getTags(let categoryId):
             guard let categoryId else { return nil }
             return ["category_id": categoryId]
         case .getTag:

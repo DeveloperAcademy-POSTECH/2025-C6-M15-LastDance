@@ -15,10 +15,10 @@ final class ExhibitionDetailViewModel: ObservableObject {
     @Published var showErrorAlert = false
 
     private let dataManager = SwiftDataManager.shared
-    private let artistAPIService: ArtistAPIServiceProtocol // Added dependency
+    private let artistAPIService: ArtistAPIServiceProtocol  // Added dependency
     private let visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol
 
-    private var currentArtistId: Int? // To store the ID of the current artist
+    private var currentArtistId: Int?  // To store the ID of the current artist
 
     init(
         artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService(),
@@ -38,9 +38,10 @@ final class ExhibitionDetailViewModel: ObservableObject {
         if exhibition != nil {
             fetchArtistNames()
             // Also fetch the current artist ID when the view model loads
-            if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key),
-               let userType = UserType(rawValue: userTypeValue),
-               userType == .artist
+            if let userTypeValue = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.userType.key),
+                let userType = UserType(rawValue: userTypeValue),
+                userType == .artist
             {
                 fetchCurrentArtistId()
             }
@@ -62,13 +63,15 @@ final class ExhibitionDetailViewModel: ObservableObject {
         let artistIds = exhibition.artworks.compactMap { $0.artistId }
         artistNames =
             allArtists
-                .filter { artistIds.contains($0.id) }
-                .map { $0.name }
+            .filter { artistIds.contains($0.id) }
+            .map { $0.name }
     }
 
     /// 현재 아티스트 ID 가져오기
     private func fetchCurrentArtistId() {
-        guard let artistUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.rawValue)
+        guard
+            let artistUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.artistUUID.rawValue)
         else {
             Log.error("Artist UUID not found in UserDefaults.")
             return
@@ -77,10 +80,10 @@ final class ExhibitionDetailViewModel: ObservableObject {
         artistAPIService.getArtistByUUID(artistUUID) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(artistDto):
+            case .success(let artistDto):
                 self.currentArtistId = artistDto.id
                 Log.debug("Current artist ID fetched: \(artistDto.id)")
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("Failed to fetch current artist by UUID: \(error.localizedDescription)")
             }
         }
@@ -109,7 +112,8 @@ final class ExhibitionDetailViewModel: ObservableObject {
             if let currentArtist = allArtists.first(where: { $0.id == artistId }) {
                 if !currentArtist.exhibitions.contains(exhibition.id) {
                     currentArtist.exhibitions.append(exhibition.id)
-                    Log.debug("Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
+                    Log.debug(
+                        "Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
                 }
             } else {
                 Log.warning("Current artist (ID: \(artistId)) not found in SwiftData.")
@@ -130,7 +134,8 @@ final class ExhibitionDetailViewModel: ObservableObject {
     func createVisitHistory(completion: @escaping (Bool) -> Void) {
         // UserDefaults에서 저장된 visitorUUID 가져오기
         guard
-            let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue)
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
         else {
             Log.error("visitorUUID를 찾을 수 없습니다")
             completion(false)
@@ -157,11 +162,11 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
         visitHistoriesAPIService.makeVisitHistories(request: request) { result in
             switch result {
-            case let .success(dto):
+            case .success(let dto):
                 Log.debug("방문 기록 생성 성공: visitId=\(dto.id)")
                 UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.visitId.rawValue)
                 completion(true)
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("방문 기록 생성 실패: \(error)")
                 completion(false)
             }

@@ -35,7 +35,8 @@ public class KeyboardInfo: ObservableObject {
             height = 0
         } else {
             height =
-                (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0
+                (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height
+                ?? 0
         }
     }
 }
@@ -55,8 +56,8 @@ struct KeyboardAware: ViewModifier {
 // MARK: View Extension
 
 /// 해당 뷰에서만 사용하는 extension입니다.
-public extension View {
-    func scrollToMinDistance(minDisntance: CGFloat) -> some View {
+extension View {
+    public func scrollToMinDistance(minDisntance: CGFloat) -> some View {
         ModifiedContent(content: self, modifier: KeyboardAware(minDisntance: minDisntance))
     }
 }

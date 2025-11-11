@@ -97,7 +97,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                         }
                     }
 
-                case let .failure(error):
+                case .failure(let error):
                     self.errorMessage = "전시 정보를 불러오는데 실패했습니다."
                     Log.error("전시 상세 조회 실패: \(error)")
                 }
@@ -182,11 +182,11 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         artworkAPIService.getArtworkDetail(artworkId: artworkId) { result in
             Task {
                 switch result {
-                case let .success(artwork):
+                case .success(let artwork):
                     Log.debug("작품 상세 조회 성공! 작품명: \(artwork.title)")
                     // 로컬 데이터 다시 로드
                     self.loadData()
-                case let .failure(error):
+                case .failure(let error):
                     Log.error("작품 상세 조회 실패: \(error.localizedDescription)")
                 }
             }

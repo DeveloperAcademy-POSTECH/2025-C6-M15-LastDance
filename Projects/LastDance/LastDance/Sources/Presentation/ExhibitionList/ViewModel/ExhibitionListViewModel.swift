@@ -54,16 +54,17 @@ final class ExhibitionListViewModel: ObservableObject {
                 self?.isLoading = false
 
                 switch result {
-                case let .success(exhibitions):
+                case .success(let exhibitions):
                     self?.resultMessage = """
-                    ✅ 전시 조회 성공!
-                    총 \(exhibitions.count)개의 전시
-                    """
+                        ✅ 전시 조회 성공!
+                        총 \(exhibitions.count)개의 전시
+                        """
                     Log.debug("전시 조회 성공: \(exhibitions.count)개")
 
-                case let .failure(error):
+                case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self?.errorMessage = "❌ 실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self?.errorMessage =
+                            "❌ 실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self?.errorMessage = "❌ 실패: \(error.localizedDescription)"
                     }
@@ -100,7 +101,7 @@ final class ExhibitionListViewModel: ObservableObject {
             title: firstArtwork.title,
             description_text: "Test exhibition created from local data",
             start_date: Date().toAPIDateString(),
-            end_date: Date().addingTimeInterval(86400 * 30).toAPIDateString(), // 30일 후
+            end_date: Date().addingTimeInterval(86400 * 30).toAPIDateString(),  // 30일 후
             venue_id: firstVenue.id,
             cover_image_url: firstArtwork.thumbnailURL,
             artwork_ids: [firstArtwork.id]
@@ -111,20 +112,21 @@ final class ExhibitionListViewModel: ObservableObject {
                 self?.isLoading = false
 
                 switch result {
-                case let .success(response):
+                case .success(let response):
                     let artworkCount = response.artworks?.count ?? 0
                     self?.resultMessage = """
-                    ✅ 전시 생성 성공!
-                    ID: \(response.id)
-                    Title: \(response.title)
-                    Venue: \(response.venue.name)
-                    Artworks: \(artworkCount)개
-                    """
+                        ✅ 전시 생성 성공!
+                        ID: \(response.id)
+                        Title: \(response.title)
+                        Venue: \(response.venue.name)
+                        Artworks: \(artworkCount)개
+                        """
                     Log.debug("전시 생성 성공: \(response.title)")
 
-                case let .failure(error):
+                case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self?.errorMessage = "❌ 실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self?.errorMessage =
+                            "❌ 실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self?.errorMessage = "❌ 실패: \(error.localizedDescription)"
                     }

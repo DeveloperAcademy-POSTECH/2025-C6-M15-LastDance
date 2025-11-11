@@ -32,7 +32,7 @@ final class TagAPIService: TagAPIServiceProtocol {
     ) {
         provider.request(.getTags(categoryId: categoryId)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("성공. 응답: \(json)")
@@ -46,9 +46,9 @@ final class TagAPIService: TagAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -65,7 +65,7 @@ final class TagAPIService: TagAPIServiceProtocol {
     ) {
         provider.request(.getTag(id: id)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("성공. 응답: \(json)")
@@ -79,9 +79,9 @@ final class TagAPIService: TagAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")

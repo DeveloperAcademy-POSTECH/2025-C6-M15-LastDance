@@ -13,7 +13,7 @@ enum NetworkError: Error {
     case notFound
     case decodingFailed
     case networkFailure
-    case serverError // 보통 500번대
+    case serverError  // 보통 500번대
 
     var message: String {
         switch self {

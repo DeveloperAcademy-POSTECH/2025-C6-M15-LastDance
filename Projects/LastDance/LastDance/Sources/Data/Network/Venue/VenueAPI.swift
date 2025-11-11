@@ -17,7 +17,7 @@ extension VenueAPI: BaseTargetType {
         switch self {
         case .getVenues:
             return "\(APIVersion.version1)/venues"
-        case let .getVenue(id):
+        case .getVenue(let id):
             return "\(APIVersion.version1)/venues/\(id)"
         }
     }

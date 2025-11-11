@@ -73,7 +73,7 @@ private struct CategoryListView: View {
                 .disabled(
                     !isSelected
                         && viewModel.selectedCategoryIds.count
-                        >= viewModel.categoryLimit
+                            >= viewModel.categoryLimit
                 )
             }
         }

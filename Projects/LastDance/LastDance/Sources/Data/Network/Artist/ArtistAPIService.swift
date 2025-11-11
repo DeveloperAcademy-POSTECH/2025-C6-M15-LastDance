@@ -13,25 +13,25 @@ import Moya
 protocol ArtistAPIServiceProtocol {
     func getArtists(
         completion:
-        @escaping (Result<[ArtistListItemDto], Error>)
+            @escaping (Result<[ArtistListItemDto], Error>)
             -> Void
     )
     func createArtist(
         request: ArtistCreateRequestDto,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     )
     func getArtist(
         id: Int,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     )
     func getArtistByUUID(
         _ uuid: String,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     )
 }
@@ -42,7 +42,8 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
     private let provider: MoyaProvider<ArtistAPI>
 
     init(
-        provider: MoyaProvider<ArtistAPI> = MoyaProvider<ArtistAPI>(plugins: [NetworkLoggerPlugin()])
+        provider: MoyaProvider<ArtistAPI> = MoyaProvider<ArtistAPI>(plugins: [NetworkLoggerPlugin()]
+        )
     ) {
         self.provider = provider
     }
@@ -50,17 +51,18 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
     /// Artist 전체 목록 가져오기 함수
     func getArtists(
         completion:
-        @escaping (Result<[ArtistListItemDto], Error>)
+            @escaping (Result<[ArtistListItemDto], Error>)
             -> Void
     ) {
         provider.request(.getArtists) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let list = try JSONDecoder().decode([ArtistListItemDto].self, from: response.data)
+                    let list = try JSONDecoder().decode(
+                        [ArtistListItemDto].self, from: response.data)
 
                     DispatchQueue.main.async {
                         for dto in list {
@@ -73,9 +75,9 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -90,26 +92,27 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
     func createArtist(
         request: ArtistCreateRequestDto,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.createArtist(dto: request)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        ArtistDetailResponseDto.self, from: response.data)
                     Log.info("Artist created. id=\(dto.id), uuid=\(dto.uuid)")
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -124,26 +127,27 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
     func getArtist(
         id: Int,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.getArtist(id: id)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        ArtistDetailResponseDto.self, from: response.data)
 
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -158,25 +162,26 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
     func getArtistByUUID(
         _ uuid: String,
         completion:
-        @escaping (Result<ArtistDetailResponseDto, Error>)
+            @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     ) {
         provider.request(.getArtistByUUID(uuid: uuid)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("API 요청 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(ArtistDetailResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        ArtistDetailResponseDto.self, from: response.data)
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")

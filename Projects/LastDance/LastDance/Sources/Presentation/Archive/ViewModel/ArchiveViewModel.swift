@@ -49,8 +49,10 @@ final class ArchiveViewModel: ObservableObject {
             guard let self else { return }
 
             // Visitor ID 로드
-            guard let visitorIdStr = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorId.key),
-                  let visitorId = Int(visitorIdStr)
+            guard
+                let visitorIdStr = UserDefaults.standard.string(
+                    forKey: UserDefaultsKey.visitorId.key),
+                let visitorId = Int(visitorIdStr)
             else {
                 Log.warning("Visitor ID 없음")
                 isLoading = false
@@ -83,7 +85,7 @@ final class ArchiveViewModel: ObservableObject {
                     self.fetchExhibition(by: exhibitionId)
                     Log.debug("전시 상세 저장 완료. 작품 수: \(self.currentExhibition?.artworks.count ?? 0)")
                     completion()
-                case let .failure(error):
+                case .failure(let error):
                     Log.error("전시 상세 조회 실패: \(error.localizedDescription)")
                     completion()
                 }
@@ -93,7 +95,7 @@ final class ArchiveViewModel: ObservableObject {
 
     /// 대각선 효과
     func getRotationAngle(for index: Int) -> Double {
-        let angles: [Double] = [-4, 3, 3, -4] // 좌상, 우상, 좌하, 우하
+        let angles: [Double] = [-4, 3, 3, -4]  // 좌상, 우상, 좌하, 우하
         return angles[index % angles.count]
     }
 
@@ -113,12 +115,12 @@ final class ArchiveViewModel: ObservableObject {
             guard let self else { return }
 
             switch result {
-            case let .success(reactions):
+            case .success(let reactions):
                 Log.debug("전체 반응 수: \(reactions.count)")
 
                 let reactedArtworkIds = Set(reactions.map { $0.artwork_id })
 
-                let currentExhibitionId = self.exhibitionId // Capture the value
+                let currentExhibitionId = self.exhibitionId  // Capture the value
                 // 현재 전시에 속하고 반응이 있는 Artwork만 필터링하여 reactedArtworks에 추가
                 let allArtworksInExhibition = swiftDataManager.fetch(
                     Artwork.self,
@@ -135,7 +137,7 @@ final class ArchiveViewModel: ObservableObject {
                 Log.debug("DEBUG: reactedArtworks count after load: \(self.reactedArtworks.count)")
                 self.isLoading = false
 
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("반응 조회 실패: \(error)")
                 isLoading = false
             }
@@ -151,7 +153,7 @@ final class ArchiveViewModel: ObservableObject {
             }
 
             switch result {
-            case let .success(dto):
+            case .success(let dto):
                 let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: self.exhibitionId)
 
                 if !self.reactedArtworks.contains(where: { $0.id == artwork.id }) {
@@ -159,7 +161,7 @@ final class ArchiveViewModel: ObservableObject {
                     Log.debug("작품 추가: \(artwork.title)")
                 }
 
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("조회 실패 (id: \(artworkId)): \(error.localizedDescription)")
             }
 

@@ -19,9 +19,9 @@ extension ArtistAPI: BaseTargetType {
         switch self {
         case .getArtists, .createArtist:
             return "\(APIVersion.version1)/artists"
-        case let .getArtist(id):
+        case .getArtist(let id):
             return "\(APIVersion.version1)/artists/\(id)"
-        case let .getArtistByUUID(uuid):
+        case .getArtistByUUID(let uuid):
             return "\(APIVersion.version1)/artists/uuid/\(uuid)"
         }
     }
@@ -39,7 +39,7 @@ extension ArtistAPI: BaseTargetType {
 
     var bodyParameters: Codable? {
         switch self {
-        case let .createArtist(dto):
+        case .createArtist(let dto):
             return dto
         default:
             return nil

@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ResponseView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel: ResponseViewModel // Initialize with artworkId
-    @Query private var allArtworks: [Artwork] // Keep for fetching artwork details
+    @StateObject private var viewModel: ResponseViewModel  // Initialize with artworkId
+    @Query private var allArtworks: [Artwork]  // Keep for fetching artwork details
     let artworkId: Int
 
     // Initialize viewModel with artworkId
@@ -34,7 +34,7 @@ struct ResponseView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ResponseContentView(
-                    artwork: artwork, // Pass the fetched artwork
+                    artwork: artwork,  // Pass the fetched artwork
                     viewModel: viewModel
                 )
             }
@@ -206,7 +206,8 @@ struct ReactionItemView: View {
                 .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
                 .lineSpacing(10)
                 .animation(
-                    .easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id)
+                    .easeInOut(duration: 0.3),
+                    value: viewModel.expandedReactions.contains(reaction.id)
                 )
 
             // 더보기/접기 버튼
@@ -238,7 +239,8 @@ struct CategoryTagsView: View {
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
-        let firstLine = viewModel.firstLineCategories(for: reaction.categories, reactionId: reaction.id)
+        let firstLine = viewModel.firstLineCategories(
+            for: reaction.categories, reactionId: reaction.id)
         let hidden = viewModel.hiddenCategories(for: reaction.categories, reactionId: reaction.id)
         let showAll = viewModel.showAllReactions[reaction.id] ?? false
 

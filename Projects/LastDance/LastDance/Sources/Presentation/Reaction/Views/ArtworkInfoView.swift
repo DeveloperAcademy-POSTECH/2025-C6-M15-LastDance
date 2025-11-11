@@ -34,7 +34,7 @@ struct ArtworkInfoView: View {
                     .frame(maxHeight: 373)
                     .clipped()
             } else if let thumbnailURLString = artwork?.thumbnailURL,
-                      let thumbnailURL = URL(string: thumbnailURLString)
+                let thumbnailURL = URL(string: thumbnailURLString)
             {
                 AsyncImage(url: thumbnailURL) { phase in
                     switch phase {
@@ -43,7 +43,7 @@ struct ArtworkInfoView: View {
                             .fill(Color.gray.opacity(0.3))
                             .frame(maxHeight: 373)
                             .overlay(ProgressView())
-                    case let .success(image):
+                    case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)

@@ -33,7 +33,7 @@ extension ImageAPI: BaseTargetType {
 
     var queryParameters: [String: Any]? {
         switch self {
-        case let .uploadImage(folder, _):
+        case .uploadImage(let folder, _):
             return ["folder": folder.rawValue]
         }
     }
@@ -51,7 +51,7 @@ extension ImageAPI: BaseTargetType {
 
     var multipartData: [Moya.MultipartFormData]? {
         switch self {
-        case let .uploadImage(_, imageData):
+        case .uploadImage(_, let imageData):
             let formData = Moya.MultipartFormData(
                 provider: .data(imageData),
                 name: "file",

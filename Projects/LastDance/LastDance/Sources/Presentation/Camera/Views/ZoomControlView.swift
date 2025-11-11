@@ -76,7 +76,7 @@ private struct ZoomCircleButton: View {
     var body: some View {
         Text(text)
             .font(.system(size: 13, weight: .bold))
-            .minimumScaleFactor(0.7) // "1.8x" 같은 텍스트도 원 안에 안전하게
+            .minimumScaleFactor(0.7)  // "1.8x" 같은 텍스트도 원 안에 안전하게
             .lineLimit(1)
             .foregroundColor(isActive ? .yellow : LDColor.color6)
             .frame(width: diameter, height: diameter)

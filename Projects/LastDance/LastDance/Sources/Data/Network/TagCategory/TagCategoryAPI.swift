@@ -17,7 +17,7 @@ extension TagCategoryAPI: BaseTargetType {
         switch self {
         case .getTagCategories:
             return "\(APIVersion.version1)/tag-categories"
-        case let .getTagCategory(id):
+        case .getTagCategory(let id):
             return "\(APIVersion.version1)/tag-categories/\(id)"
         }
     }

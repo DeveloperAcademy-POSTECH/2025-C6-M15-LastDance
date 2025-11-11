@@ -52,7 +52,7 @@ struct ArtReactionView: View {
                 VStack(spacing: 0) {
                     // 작품 이미지
                     if let imageURLString = artwork.thumbnailURL,
-                       let imageURL = URL(string: imageURLString)
+                        let imageURL = URL(string: imageURLString)
                     {
                         AsyncImage(url: imageURL) { image in
                             image.resizable()
@@ -107,7 +107,7 @@ struct ArtReactionView: View {
                                     .font(Font.custom("Pretendard", size: 16))
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.bottom, -12) // Add some spacing
+                                    .padding(.bottom, -12)  // Add some spacing
 
                                 Text(description)
                                     .font(Font.custom("Pretendard", size: 16))
@@ -152,16 +152,23 @@ struct ArtReactionView: View {
                                         if !reaction.tags.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감정 태그")
-                                                    .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                                                    .font(
+                                                        Font.custom("Pretendard", size: 18).weight(
+                                                            .semibold)
+                                                    )
                                                     .foregroundColor(LDColor.color1)
 
                                                 ScrollView(.horizontal, showsIndicators: false) {
                                                     HStack {
-                                                        ForEach(reaction.tags, id: \.self) { tagInfo in
-                                                            ReactionTag(text: tagInfo.name, color: Color(hex: tagInfo.colorHex))
-                                                                .applyShadow(LDShadow.shadow1)
-                                                                .padding(.vertical, 10)
-                                                                .padding(.horizontal, 2)
+                                                        ForEach(reaction.tags, id: \.self) {
+                                                            tagInfo in
+                                                            ReactionTag(
+                                                                text: tagInfo.name,
+                                                                color: Color(hex: tagInfo.colorHex)
+                                                            )
+                                                            .applyShadow(LDShadow.shadow1)
+                                                            .padding(.vertical, 10)
+                                                            .padding(.horizontal, 2)
                                                         }
                                                     }
                                                 }
@@ -171,7 +178,10 @@ struct ArtReactionView: View {
                                         if let comment = reaction.comment, !comment.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감상평")
-                                                    .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                                                    .font(
+                                                        Font.custom("Pretendard", size: 18).weight(
+                                                            .semibold)
+                                                    )
                                                     .foregroundColor(LDColor.color1)
 
                                                 Text(comment)

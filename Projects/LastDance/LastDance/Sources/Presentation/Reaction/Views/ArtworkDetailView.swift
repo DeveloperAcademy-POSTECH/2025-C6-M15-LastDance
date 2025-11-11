@@ -91,7 +91,8 @@ struct ArtworkDetailView: View {
                     Log.debug("message: \(viewModel.message)")
 
                     // UserDefaults에서 업로드된 이미지 URL 가져오기
-                    let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+                    let imageUrl = UserDefaults.standard.string(
+                        forKey: UserDefaultsKey.uploadedImageUrl.key)
 
                     // UserDefaults에서 저장된 visitorUUID 가져오기
                     guard

@@ -16,7 +16,9 @@ struct CheckCircleCategoryView: View {
         HStack {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 20))
-                .foregroundStyle(isSelected ? category.color : Color(red: 0.73, green: 0.73, blue: 0.73))
+                .foregroundStyle(
+                    isSelected ? category.color : Color(red: 0.73, green: 0.73, blue: 0.73)
+                )
                 .padding(.trailing, 8)
 
             Text(category.name)

@@ -17,7 +17,8 @@ protocol ExhibitionAPIServiceProtocol {
         completion: @escaping (Result<[TotalExhibitionResponseDto], Error>) -> Void
     )
     func makeExhibition(
-        dto: ExhibitionRequestDto, completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void
+        dto: ExhibitionRequestDto,
+        completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void
     )
     func getDetailExhibition(
         exhibitionId: Int, completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void
@@ -48,7 +49,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
         provider.request(.getExhibitions(status: exhibitionStatus?.rawValue, venue_id: venueId)) {
             result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
@@ -74,7 +75,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
@@ -88,21 +89,22 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
     ) {
         provider.request(.makeExhibition(dto: dto)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("서버 응답: \(jsonString)")
                     }
 
-                    let exhibition = try JSONDecoder().decode(ExhibitionResponseDto.self, from: response.data)
+                    let exhibition = try JSONDecoder().decode(
+                        ExhibitionResponseDto.self, from: response.data)
                     Log.debug("전시 생성 성공: \(exhibition.title)")
                     completion(.success(exhibition))
                 } catch {
                     Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }
@@ -116,7 +118,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
     ) {
         provider.request(.getDetailExhibition(exhibition_id: exhibitionId)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     // 서버 응답 로깅
                     if let jsonString = String(data: response.data, encoding: .utf8) {
@@ -163,7 +165,7 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
             }

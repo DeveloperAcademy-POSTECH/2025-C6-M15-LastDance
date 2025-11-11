@@ -19,9 +19,9 @@ extension VisitorAPI: BaseTargetType {
         switch self {
         case .getVisitors, .createVisitor:
             return "\(APIVersion.version1)/visitors"
-        case let .getVisitor(id):
+        case .getVisitor(let id):
             return "\(APIVersion.version1)/visitors/\(id)"
-        case let .getVisitorByUUID(uuid):
+        case .getVisitorByUUID(let uuid):
             return "\(APIVersion.version1)/visitors/uuid/\(uuid)"
         }
     }
@@ -41,7 +41,7 @@ extension VisitorAPI: BaseTargetType {
 
     var bodyParameters: Codable? {
         switch self {
-        case let .createVisitor(dto):
+        case .createVisitor(let dto):
             return dto
         default:
             return nil

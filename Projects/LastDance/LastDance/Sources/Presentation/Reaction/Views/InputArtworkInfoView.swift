@@ -83,7 +83,9 @@ struct InputArtworkInfoView: View {
 
                         // 선택한 작가 찾기
                         guard
-                            let selectedArtist = artists.first(where: { $0.name == viewModel.selectedArtistName })
+                            let selectedArtist = artists.first(where: {
+                                $0.name == viewModel.selectedArtistName
+                            })
                         else {
                             Log.debug("선택한 작가를 찾을 수 없습니다: \(viewModel.selectedArtistName)")
                             return
@@ -98,7 +100,8 @@ struct InputArtworkInfoView: View {
                             if success {
                                 router.push(
                                     .artworkDetail(
-                                        id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!
+                                        id: selectedArtwork.id, capturedImage: image,
+                                        exhibitionId: exhibitionId!
                                     ))
                             }
                         }

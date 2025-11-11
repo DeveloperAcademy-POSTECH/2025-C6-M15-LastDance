@@ -11,11 +11,11 @@ import SwiftUI
 
 @MainActor
 final class ReactionInputViewModel: ObservableObject {
-    @Published var message: String = "" // 반응을 남기기 위한 textEditor 메세지
+    @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
-    @Published var selectedArtworkTitle: String = "" // 선택한 작품 제목
-    @Published var selectedArtistName: String = "" // 선택한 작가 이름
-    @Published var capturedImage: UIImage? // 촬영한 이미지
+    @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
+    @Published var selectedArtistName: String = ""  // 선택한 작가 이름
+    @Published var capturedImage: UIImage?  // 촬영한 이미지
     @Published var categories: [TagCategory] = []
     @Published var selectedCategoryIds: Set<Int> = []
     @Published var selectedTagIds: Set<Int> = []
@@ -23,10 +23,10 @@ final class ReactionInputViewModel: ObservableObject {
 
     let categoryLimit = 2
     let tagLimit = 6
-    let limit = 500 // texteditor 최대 글자수 제한
+    let limit = 500  // texteditor 최대 글자수 제한
 
-    var selectedArtworkId: Int? // 선택한 작품 ID (내부 저장용)
-    var selectedArtistId: Int? // 선택한 작가 ID (내부 저장용)
+    var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
+    var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
     // TODO: - 프로토콜 사용 적용하기
     private let dataManager = SwiftDataManager.shared
@@ -78,7 +78,8 @@ final class ReactionInputViewModel: ObservableObject {
         dataManager.updateArtworkArtist(artworkId: artworkId, artistId: artistId)
 
         Log.debug(
-            "작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), 작품ID: \(artworkId), 작가ID: \(artistId)")
+            "작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), 작품ID: \(artworkId), 작가ID: \(artistId)"
+        )
         completion(true)
     }
 
@@ -117,7 +118,7 @@ final class ReactionInputViewModel: ObservableObject {
                     }
 
                     completion(true)
-                case let .failure(error):
+                case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")
                     completion(false)
                 }
@@ -131,9 +132,9 @@ final class ReactionInputViewModel: ObservableObject {
 
         apiService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { result in
             switch result {
-            case let .success(reactions):
+            case .success(let reactions):
                 Log.debug("반응 조회 성공! 조회된 반응 수: \(reactions.count)")
-            case let .failure(error):
+            case .failure(let error):
                 Log.debug("반응 조회 실패: \(error)")
             }
         }
@@ -148,7 +149,7 @@ final class ReactionInputViewModel: ObservableObject {
                 switch result {
                 case .success:
                     Log.debug("반응 상세 조회 성공!")
-                case let .failure(error):
+                case .failure(let error):
                     Log.debug("반응 상세 조회 실패: \(error.localizedDescription)")
                 }
             }
@@ -164,9 +165,9 @@ final class ReactionInputViewModel: ObservableObject {
         artworkAPIService.getArtworks(artistId: artistId, exhibitionId: exhibitionId) { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(artworks):
+                case .success(let artworks):
                     Log.debug("작품 목록 조회 성공! 조회된 작품 수: \(artworks.count)")
-                case let .failure(error):
+                case .failure(let error):
                     Log.error("작품 목록 조회 실패: \(error.localizedDescription)")
                 }
             }
@@ -187,9 +188,9 @@ final class ReactionInputViewModel: ObservableObject {
         artistAPIService.getArtists { result in
             DispatchQueue.main.async {
                 switch result {
-                case let .success(artists):
+                case .success(let artists):
                     Log.debug("작가 목록 조회 성공! 조회된 작가 수: \(artists.count)")
-                case let .failure(error):
+                case .failure(let error):
                     Log.error("작가 목록 조회 실패: \(error.localizedDescription)")
                 }
             }
@@ -208,11 +209,11 @@ extension ReactionInputViewModel {
             guard let self else { return }
 
             switch result {
-            case let .failure(error):
+            case .failure(let error):
                 Log.error("❌ 카테고리 목록 요청 실패: \(error)")
                 return
 
-            case let .success(listDtos):
+            case .success(let listDtos):
                 let group = DispatchGroup()
                 var fetched: [TagCategory] = []
                 var firstError: Error?
@@ -222,10 +223,10 @@ extension ReactionInputViewModel {
                     self.categoryService.getTagCategory(id: dto.id) { detailResult in
                         defer { group.leave() }
                         switch detailResult {
-                        case let .success(detailDto):
+                        case .success(let detailDto):
                             let category = TagCategoryMapper.toCategory(from: detailDto)
                             fetched.append(category)
-                        case let .failure(err):
+                        case .failure(let err):
                             firstError = firstError ?? err
                             // 하위 태그 불러오기에 실패하더라도 최소한 이름, 색상은 보여줄 수 있도록
                             let fallback = TagCategoryMapper.toCategory(from: dto, tags: [])
@@ -278,7 +279,7 @@ extension ReactionInputViewModel {
             group.enter()
             tagAPIService.getTags(categoryId: category.id) { result in
                 switch result {
-                case let .success(dtoList):
+                case .success(let dtoList):
                     let tags = dtoList.map { TagMapper.toTag($0) }
                     let updated = TagCategory(
                         id: category.id,
@@ -287,8 +288,9 @@ extension ReactionInputViewModel {
                         tags: tags
                     )
                     updatedCategories.append(updated)
-                case let .failure(error):
-                    Log.error("태그 로드 실패 (categoryId: \(category.id)): \(error.localizedDescription)")
+                case .failure(let error):
+                    Log.error(
+                        "태그 로드 실패 (categoryId: \(category.id)): \(error.localizedDescription)")
                 }
                 group.leave()
             }

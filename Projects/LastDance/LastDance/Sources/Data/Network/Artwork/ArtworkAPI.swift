@@ -18,7 +18,7 @@ extension ArtworkAPI: BaseTargetType {
         switch self {
         case .getArtworks, .makeArtwork:
             return "\(APIVersion.version1)/artworks"
-        case let .getArtworkDetail(artworkId):
+        case .getArtworkDetail(let artworkId):
             return "\(APIVersion.version1)/artworks/\(artworkId)"
         }
     }
@@ -34,7 +34,7 @@ extension ArtworkAPI: BaseTargetType {
 
     var queryParameters: [String: Any]? {
         switch self {
-        case let .getArtworks(artistId, exhibitionId):
+        case .getArtworks(let artistId, let exhibitionId):
             var params: [String: Any] = [:]
             if let artistId = artistId {
                 params["artist_id"] = artistId
@@ -52,7 +52,7 @@ extension ArtworkAPI: BaseTargetType {
         switch self {
         case .getArtworks, .getArtworkDetail:
             return nil
-        case let .makeArtwork(dto):
+        case .makeArtwork(let dto):
             return dto
         }
     }

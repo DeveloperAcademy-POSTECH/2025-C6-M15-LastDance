@@ -20,12 +20,12 @@ struct NetworkLoggerPlugin: PluginType {
 
         /// HTTP Request Summary
         var httpLog = """
-        =========================================================
-        📤 REQUEST
-        =========================================================
-        [\(method)] \(url)
-        Target: \(target)
-        """
+            =========================================================
+            📤 REQUEST
+            =========================================================
+            [\(method)] \(url)
+            Target: \(target)
+            """
 
         /// HTTP Request Header
         httpLog.append("HEADER: [\n")
@@ -36,7 +36,7 @@ struct NetworkLoggerPlugin: PluginType {
 
         /// HTTP Request Body
         if let body = httpRequest.httpBody,
-           let bodyString = String(bytes: body, encoding: String.Encoding.utf8)
+            let bodyString = String(bytes: body, encoding: String.Encoding.utf8)
         {
             httpLog.append("BODY: \n\(bodyString)\n")
         }
@@ -48,9 +48,9 @@ struct NetworkLoggerPlugin: PluginType {
     /// Response 받을 때 요청하는 함수
     func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
         switch result {
-        case let .success(response):
+        case .success(let response):
             onSuceed(response, target: target, isFromError: false)
-        case let .failure(error):
+        case .failure(let error):
             onFail(error, target: target)
         }
     }
@@ -60,16 +60,16 @@ struct NetworkLoggerPlugin: PluginType {
         let request = response.request
         let url = request?.url?.absoluteString ?? "nil"
         let statusCode = response.statusCode
-        let statusIcon = (200 ..< 300).contains(statusCode) ? "✅" : "⚠️"
+        let statusIcon = (200..<300).contains(statusCode) ? "✅" : "⚠️"
 
         /// HTTP Response Summary
         var httpLog = """
-        =========================================================
-        📤 RESPONSE \(statusIcon) \(statusCode)
-        =========================================================
-        \(url)
-        Target: \(target)
-        """
+            =========================================================
+            📤 RESPONSE \(statusIcon) \(statusCode)
+            =========================================================
+            \(url)
+            Target: \(target)
+            """
 
         /// HTTP Response Header
         httpLog.append("HEADER: [\n")
@@ -100,12 +100,12 @@ struct NetworkLoggerPlugin: PluginType {
 
         /// HTTP Error Summary
         var httpLog = """
-        =========================================================
-        ❌ NETWORK ERROR
-        =========================================================
-        Target: \(target)
-        Error Code: \(error.errorCode)
-        """
+            =========================================================
+            ❌ NETWORK ERROR
+            =========================================================
+            Target: \(target)
+            Error Code: \(error.errorCode)
+            """
 
         httpLog.append(
             "MESSAGE: \(error.failureReason ?? error.errorDescription ?? "알 수 없는 에러")\n"

@@ -14,7 +14,7 @@ struct ArtistExhibitionCardView: View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .bottomLeading) {
                 if let coverImageURLString = displayItem.exhibition.coverImageName,
-                   let coverImageURL = URL(string: coverImageURLString)
+                    let coverImageURL = URL(string: coverImageURLString)
                 {
                     AsyncImage(url: coverImageURL) { phase in
                         switch phase {
@@ -23,7 +23,7 @@ struct ArtistExhibitionCardView: View {
                                 .fill(Color.gray.opacity(0.2))
                                 .frame(width: 155, height: 219)
                                 .overlay(ProgressView())
-                        case let .success(image):
+                        case .success(let image):
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -91,7 +91,8 @@ private struct ArtistExhibitionGridView: View {
                         displayItem: displayItem
                     )
                     .onTapGesture {
-                        router.push(.artistReactionArchiveView(exhibitionId: displayItem.exhibition.id))
+                        router.push(
+                            .artistReactionArchiveView(exhibitionId: displayItem.exhibition.id))
                     }
                 }
             }

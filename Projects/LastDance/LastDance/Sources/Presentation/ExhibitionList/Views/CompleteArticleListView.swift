@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - CompleteArticleListInfoView
 
 struct CompleteArticleListInfoView: View {
-    @ObservedObject var viewModel: CompleteArticleListViewModel // 주입받음
+    @ObservedObject var viewModel: CompleteArticleListViewModel  // 주입받음
 
     var body: some View {
         VStack(spacing: 28) {
@@ -41,7 +41,7 @@ struct CompleteArticleListFindButtonView: View {
 
 struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = CompleteArticleListViewModel() // 최상위 위치
+    @StateObject private var viewModel = CompleteArticleListViewModel()  // 최상위 위치
     @State private var showNotFoundAlert = false
 
     let selectedExhibitionId: Int
@@ -53,12 +53,13 @@ struct CompleteArticleListView: View {
 
             TitleSection(title: "어떤 작가님이신가요?", subtitle: nil)
 
-            CompleteArticleListInfoView(viewModel: viewModel) // 실제 주입
+            CompleteArticleListInfoView(viewModel: viewModel)  // 실제 주입
                 .padding(.top, 14)
 
             Spacer()
 
-            CompleteArticleListFindButtonView(viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
+            CompleteArticleListFindButtonView(
+                viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
         }
         .padding(.top, 18)
         .padding(.bottom, 34)

@@ -49,7 +49,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
                     // 후면 카메라만 사용
                     guard let device = Self.bestDevice(position: .back),
-                          let input = try? AVCaptureDeviceInput(device: device)
+                        let input = try? AVCaptureDeviceInput(device: device)
                     else { throw CameraManagerError.configurationFailed }
 
                     if self.session.canAddInput(input) { self.session.addInput(input) }
@@ -132,9 +132,9 @@ final class CameraManager: NSObject, @unchecked Sendable {
                 self.photoProcessors[id] = nil
 
                 switch result {
-                case let .success(image):
+                case .success(let image):
                     cont.resume(returning: image)
-                case let .failure(error):
+                case .failure(let error):
                     cont.resume(throwing: error)
                 }
             }
@@ -149,7 +149,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
         await withCheckedContinuation { continuation in
             videoQueue.async {
                 guard let buffer = self.lastVideoBuffer,
-                      let img = UIImage.from(sampleBuffer: buffer, orientation: .right)
+                    let img = UIImage.from(sampleBuffer: buffer, orientation: .right)
                 else {
                     DispatchQueue.main.async { continuation.resume(returning: nil) }
                     return
@@ -210,7 +210,7 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
             return
         }
         guard let data = photo.fileDataRepresentation(),
-              let image = UIImage(data: data)
+            let image = UIImage(data: data)
         else {
             finish(.failure(CameraManagerError.captureFailed))
             return

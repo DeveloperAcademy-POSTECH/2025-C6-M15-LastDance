@@ -15,7 +15,8 @@ struct ArticleListSearchTextField: View {
             "작가명을 선택해주세요",
             text: Binding(
                 get: {
-                    viewModel.selectedArtistName.isEmpty ? viewModel.searchText : viewModel.selectedArtistName
+                    viewModel.selectedArtistName.isEmpty
+                        ? viewModel.searchText : viewModel.selectedArtistName
                 },
                 set: { viewModel.searchText = $0 }
             )

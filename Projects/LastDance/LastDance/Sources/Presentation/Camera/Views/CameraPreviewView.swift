@@ -11,7 +11,7 @@ import SwiftUI
 struct CameraPreviewView: UIViewRepresentable {
     let session: AVCaptureSession
 
-    let currentScaleProvider: () -> CGFloat // 현재 UI 스케일(예: viewModel.zoomScale)
+    let currentScaleProvider: () -> CGFloat  // 현재 UI 스케일(예: viewModel.zoomScale)
     let applyScale: (_ newScale: CGFloat, _ animated: Bool) -> Void
     let endInteraction: () -> Void
 
@@ -55,7 +55,8 @@ final class PreviewUIView: UIView {
         videoPreviewLayer.videoGravity = .resizeAspectFill
 
         // ✅ 핀치 제스처 등록
-        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+        let pinchRecognizer = UIPinchGestureRecognizer(
+            target: self, action: #selector(handlePinch(_:)))
         pinchRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(pinchRecognizer)
     }
@@ -78,9 +79,9 @@ final class PreviewUIView: UIView {
         case .changed:
             // 누적 배율 → 시작스케일 × 핀치배율
             let nextScale = pinchStartScale * recognizer.scale
-            applyScale?(nextScale, true) // animated=true로 부드럽게
+            applyScale?(nextScale, true)  // animated=true로 부드럽게
         case .ended, .cancelled, .failed:
-            endInteraction?() // 램프 정리 등
+            endInteraction?()  // 램프 정리 등
         default:
             break
         }

@@ -82,7 +82,8 @@ struct CaptureConfirmView: View {
         }
         .onChange(of: viewModel.uploadedImageUrl) { _, newUrl in
             if newUrl != nil, let image = image {
-                router.push(.inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
+                router.push(
+                    .inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
             }
         }
         .alert("업로드 실패", isPresented: .constant(viewModel.errorMessage != nil)) {

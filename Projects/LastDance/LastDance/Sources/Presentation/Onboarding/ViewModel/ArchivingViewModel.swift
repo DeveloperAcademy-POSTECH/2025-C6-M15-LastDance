@@ -46,12 +46,12 @@ final class ArchivingViewModel: ObservableObject {
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case let .success(list):
+                case .success(let list):
                     Log.info("Get Artists success. count=\(list.count)")
-                case let .failure(error):
+                case .failure(let error):
                     if let moyaError = error as? MoyaError,
-                       let data = moyaError.response?.data,
-                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                        let data = moyaError.response?.data,
+                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                     {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                         Log.warning("Get Artist validation: \(messages)")
@@ -67,9 +67,9 @@ final class ArchivingViewModel: ObservableObject {
     func loadVisitorAPI() {
         visitorService.getVisitors { result in
             switch result {
-            case let .success(list):
+            case .success(let list):
                 Log.debug("방문자 수: \(list.count)")
-            case let .failure(err):
+            case .failure(let err):
                 Log.debug("목록 실패: \(err)")
             }
         }

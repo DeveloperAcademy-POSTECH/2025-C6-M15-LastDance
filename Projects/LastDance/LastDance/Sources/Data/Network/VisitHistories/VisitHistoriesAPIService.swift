@@ -34,7 +34,7 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
 
     init(
         provider: MoyaProvider<VisitHistoriesAPI> = MoyaProvider<VisitHistoriesAPI>(plugins: [
-            NetworkLoggerPlugin(),
+            NetworkLoggerPlugin()
         ])
     ) {
         self.provider = provider
@@ -47,7 +47,7 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
     ) {
         provider.request(.makeVisitHistories(dto: request)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("makeVisitHistories 응답: \(json)")
@@ -70,9 +70,9 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -92,7 +92,7 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
         provider.request(.getVisitHistories(visitorId: visitorId, exhibitionId: exhibitionId)) {
             result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("getVisitHistories 응답: \(json)")
@@ -117,9 +117,9 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
@@ -137,7 +137,7 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
     ) {
         provider.request(.getVisitHistory(visitId: visitId)) { result in
             switch result {
-            case let .success(response):
+            case .success(let response):
                 do {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("getVisitHistory 응답: \(json)")
@@ -160,9 +160,9 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
-            case let .failure(error):
+            case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
                 {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")

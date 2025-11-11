@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 final class ArtistReactionArchiveViewModel: ObservableObject {
-    @Published var artworks: [ArtworkDisplayItem] = [] // Changed type
+    @Published var artworks: [ArtworkDisplayItem] = []  // Changed type
     @Published var isLoading = false
 
     private let exhibitionId: Int
@@ -22,7 +22,7 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
 
     private var exhibition: Exhibition?
     private let reactionAPIService: ReactionAPIServiceProtocol
-    private let artworkAPIService: ArtworkAPIServiceProtocol // Added dependency
+    private let artworkAPIService: ArtworkAPIServiceProtocol  // Added dependency
 
     init(
         exhibitionId: Int,
@@ -42,7 +42,8 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
             predicate: #Predicate { $0.id == exhibitionId }
         )
         do {
-            exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor).first
+            exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor)
+                .first
         } catch {
             Log.error("Failed SwiftData: \(error.localizedDescription)")
         }
@@ -53,10 +54,11 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
             return
         }
 
-        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) { [weak self] result in
+        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) {
+            [weak self] result in
             guard let self = self else { return }
             switch result {
-            case let .success(artworkDtos):
+            case .success(let artworkDtos):
                 Log.debug("Fetched \(artworkDtos.count) artworks for exhibition \(exhibitionId).")
 
                 if artworkDtos.isEmpty {
@@ -71,17 +73,18 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
 
                 for artworkDto in artworkDtos {
                     group.enter()
-                    let artworkModel = ArtworkMapper.mapDtoToModel(artworkDto, exhibitionId: exhibitionId)
+                    let artworkModel = ArtworkMapper.mapDtoToModel(
+                        artworkDto, exhibitionId: exhibitionId)
                     self.swiftDataManager.upsertArtwork(artworkModel)
                     self.reactionAPIService.getReactions(
                         artworkId: artworkDto.id, visitorId: nil, visitId: nil
                     ) { reactionResult in
                         var reactionCount = 0
                         switch reactionResult {
-                        case let .success(reactions):
+                        case .success(let reactions):
                             reactionCount = reactions.count
                             Log.debug("Artwork \(artworkDto.id) has \(reactionCount) reactions.")
-                        case let .failure(error):
+                        case .failure(let error):
                             Log.error(
                                 "Failed to fetch reactions for artwork \(artworkDto.id): \(error.localizedDescription)"
                             )
@@ -90,7 +93,8 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
                         lock.lock()
                         fetchedArtworkDisplayItems.append(
                             ArtworkDisplayItem(
-                                id: artworkDto.id, artwork: artworkModel, reactionCount: reactionCount
+                                id: artworkDto.id, artwork: artworkModel,
+                                reactionCount: reactionCount
                             ))
                         lock.unlock()
                         group.leave()
@@ -105,9 +109,10 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
                     self.isLoading = false
                 }
 
-            case let .failure(error):
+            case .failure(let error):
                 Log.error(
-                    "Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)")
+                    "Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)"
+                )
                 self.isLoading = false
             }
         }

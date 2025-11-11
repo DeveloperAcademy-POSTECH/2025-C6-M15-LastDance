@@ -84,7 +84,9 @@ struct ExhibitionArchiveView: View {
                         spacing: 24
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
-                            if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                            if let reaction = viewModel.reactions.first(where: {
+                                $0.artworkId == artwork.id
+                            }) {
                                 let artist = viewModel.artist(for: artwork)
                                 ReactionCardView(
                                     reaction: reaction,

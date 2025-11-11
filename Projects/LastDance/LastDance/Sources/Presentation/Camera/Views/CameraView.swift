@@ -20,7 +20,8 @@ struct CameraView: View {
         GeometryReader { geo in
             let maxPreviewHeight = max(
                 1,
-                geo.size.height - (CameraViewLayout.previewTopInset + CameraViewLayout.previewBottomInset)
+                geo.size.height
+                    - (CameraViewLayout.previewTopInset + CameraViewLayout.previewBottomInset)
             )
             let maxPreviewWidth = max(1, geo.size.width)
 

@@ -8,9 +8,9 @@
 import Foundation
 
 public enum CameraError: Error, LocalizedError {
-    case unauthorized // 권한 거부/미승인
-    case configurationFailed // 세션/입력/출력 구성 실패
-    case captureFailed // 촬영/프레임 추출 실패
+    case unauthorized  // 권한 거부/미승인
+    case configurationFailed  // 세션/입력/출력 구성 실패
+    case captureFailed  // 촬영/프레임 추출 실패
 
     public var errorDescription: String? {
         switch self {

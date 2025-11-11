@@ -92,13 +92,27 @@ enum MockDataLoader {
 
     static func createArtists() -> [Artist] {
         [
-            Artist(id: 1, uuid: UUID().uuidString, name: "김민준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 2, uuid: UUID().uuidString, name: "박서연", exhibitions: [3], receivedReactions: []),
-            Artist(id: 3, uuid: UUID().uuidString, name: "이도윤", exhibitions: [3], receivedReactions: []),
-            Artist(id: 4, uuid: UUID().uuidString, name: "공지우", exhibitions: [3], receivedReactions: []),
-            Artist(id: 5, uuid: UUID().uuidString, name: "서예준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 6, uuid: UUID().uuidString, name: "최하은", exhibitions: [3], receivedReactions: []),
-            Artist(id: 7, uuid: UUID().uuidString, name: "정우진", exhibitions: [3], receivedReactions: []),
+            Artist(
+                id: 1, uuid: UUID().uuidString, name: "김민준", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 2, uuid: UUID().uuidString, name: "박서연", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 3, uuid: UUID().uuidString, name: "이도윤", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 4, uuid: UUID().uuidString, name: "공지우", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 5, uuid: UUID().uuidString, name: "서예준", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 6, uuid: UUID().uuidString, name: "최하은", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 7, uuid: UUID().uuidString, name: "정우진", exhibitions: [3], receivedReactions: []
+            ),
         ]
     }
 
@@ -170,7 +184,8 @@ enum MockDataLoader {
         return artworkData.map { data in
             Artwork(
                 id: data.0, exhibitionId: exhibitionId, title: data.1,
-                artistId: data.2, thumbnailURL: "mock_artworkImage_\(String(format: "%02d", data.0))"
+                artistId: data.2,
+                thumbnailURL: "mock_artworkImage_\(String(format: "%02d", data.0))"
             )
         }
     }
@@ -184,7 +199,8 @@ enum MockDataLoader {
         )
         let reaction = Reaction(
             id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
-            tags: [ReactionTagInfo(name: "좋아요", colorHex: "#FF0000")], comment: "빛이 멋져요", createdAt: ""
+            tags: [ReactionTagInfo(name: "좋아요", colorHex: "#FF0000")], comment: "빛이 멋져요",
+            createdAt: ""
         )
         return (capture, reaction)
     }
@@ -235,9 +251,9 @@ enum MockDataLoader {
     }
 }
 
-private extension ModelContext {
+extension ModelContext {
     /// 모든 레코드 삭제 유틸 (개발용)
-    func delete<T: PersistentModel>(model _: T.Type) throws -> Int {
+    fileprivate func delete<T: PersistentModel>(model _: T.Type) throws -> Int {
         let items = try fetch(FetchDescriptor<T>())
         items.forEach { delete($0) }
         try save()
