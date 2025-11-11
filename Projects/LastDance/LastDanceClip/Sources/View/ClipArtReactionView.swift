@@ -12,18 +12,18 @@ struct ClipArtReactionView: View {
     let exhibitionId: Int
     
     @StateObject private var viewModel: ClipArtReactionViewModel
-    @EnvironmentObject private var router: ClipNavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
-    
-    private let visitorService: ClipVisitorAPIServiceProtocol = ClipVisitorAPIService()
-    private let visitService: ClipVisitHistoriesAPIServiceProtocol = ClipVisitHistoriesAPIService()
-    private let reactionService: ClipReactionAPIServiceProtocol = ClipReactionAPIService()
 
     init(artworkId: Int, exhibitionId: Int) {
         self.artworkId = artworkId
         self.exhibitionId = exhibitionId
-        _viewModel = StateObject(wrappedValue: ClipArtReactionViewModel(artworkId: artworkId))
+        _viewModel = StateObject(
+            wrappedValue: ClipArtReactionViewModel(
+                artworkId: artworkId,
+                exhibitionId: exhibitionId
+            )
+        )
     }
     
     var body: some View {
@@ -103,50 +103,12 @@ struct ClipArtReactionView: View {
                 ClipBottomButton(
                     text: "전송하기",
                     isEnabled: viewModel.hasText,
-                    action: sendReaction
+                    action: viewModel.sendReaction
                 )
             }
         }
         .task {
             await viewModel.loadArtwork()
-        }
-    }
-    
-    private func sendReaction() {
-        Task {
-            do {
-                // 기기 UUID 만들기 or 기존 거 꺼내기
-                let uuid = UserDefaults.standard.string(
-                    forKey: UserDefaultsKey.visitorUUID.key
-                ) ?? {
-                    let newUUID = UUID().uuidString
-                    UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.key)
-                    return newUUID
-                }()
-
-                // 서버에서 이 uuid로 visitorId 확보
-                let visitorId = try await visitorService.ensureVisitorId(for: uuid)
-                
-                // 서버에서 이 visitorId로 visitId 확보
-                let visitId = try await visitService.ensureVisitId(visitorId: visitorId, exhibitionId: exhibitionId)
-
-                // comment가 message고, imageUrl/tagIds는 없는 버전
-                let dto = ReactionRequestDto(
-                    artworkId: artworkId,
-                    visitorId: visitorId,
-                    visitId: visitId,
-                    comment: viewModel.message.isEmpty ? nil : viewModel.message,
-                    imageUrl: nil,
-                    tagIds: nil
-                )
-                
-                try await reactionService.createReaction(dto: dto)
-                
-                router.push(.complete)
-                
-            } catch {
-                Log.error("createReaction error: \(error)")
-            }
         }
     }
     
