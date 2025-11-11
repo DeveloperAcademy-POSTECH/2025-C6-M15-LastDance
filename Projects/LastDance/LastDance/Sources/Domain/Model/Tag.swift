@@ -6,7 +6,7 @@
 //
 
 struct Tag: Identifiable, Hashable {
-    let id: Int
-    let name: String
-    let categoryId: Int
+  let id: Int
+  let name: String
+  let categoryId: Int
 }

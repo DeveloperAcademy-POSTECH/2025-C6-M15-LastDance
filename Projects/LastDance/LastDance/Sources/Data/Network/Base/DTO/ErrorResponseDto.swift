@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - ErrorResponseDto
 struct ErrorResponseDto: Codable, Error {
-    let detail: [ErrorDetail]
+  let detail: [ErrorDetail]
 }
 
 // MARK: - ErrorDetail
 struct ErrorDetail: Codable {
-    let msg: String
-    let type: String
+  let msg: String
+  let type: String
 }

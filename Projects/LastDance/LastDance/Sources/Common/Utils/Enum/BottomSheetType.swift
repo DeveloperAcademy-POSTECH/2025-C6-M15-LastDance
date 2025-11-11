@@ -6,6 +6,6 @@
 //
 
 enum BottomSheetType {
-    case artwork
-    case artist
+  case artwork
+  case artist
 }

@@ -6,6 +6,6 @@
 //
 
 struct MakeVisitHistoriesRequestDto: Codable {
-    let visitor_id: Int
-    let exhibition_id: Int
+  let visitor_id: Int
+  let exhibition_id: Int
 }

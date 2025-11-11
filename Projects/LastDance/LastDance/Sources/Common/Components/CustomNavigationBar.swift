@@ -9,47 +9,47 @@ import SwiftUI
 
 /// 커스텀 네비게이션 바 컴포넌트
 struct CustomNavigationBar: ToolbarContent {
-    let title: String
-    let onBackButtonTap: () -> Void
+  let title: String
+  let onBackButtonTap: () -> Void
 
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            BackButton(action: onBackButtonTap)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(title)
-                .font(LDFont.heading04)
-                .foregroundColor(LDColor.color1)
-        }
+  var body: some ToolbarContent {
+    ToolbarItem(placement: .navigationBarLeading) {
+      BackButton(action: onBackButtonTap)
     }
+
+    ToolbarItem(placement: .principal) {
+      Text(title)
+        .font(LDFont.heading04)
+        .foregroundColor(LDColor.color1)
+    }
+  }
 }
 
 struct CustomWhiteNavigationBar: ToolbarContent {
-    let title: String
-    let onBackButtonTap: () -> Void
+  let title: String
+  let onBackButtonTap: () -> Void
 
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            BackWhiteButton(action: onBackButtonTap)
-        }
-
-        ToolbarItem(placement: .principal) {
-            Text(title)
-                .font(LDFont.heading04)
-                .foregroundColor(LDColor.color6)
-        }
+  var body: some ToolbarContent {
+    ToolbarItem(placement: .navigationBarLeading) {
+      BackWhiteButton(action: onBackButtonTap)
     }
+
+    ToolbarItem(placement: .principal) {
+      Text(title)
+        .font(LDFont.heading04)
+        .foregroundColor(LDColor.color6)
+    }
+  }
 }
 
 #Preview {
-    NavigationStack {
-        Text("컨텐츠 영역")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                CustomNavigationBar(title: "전시정보") {
-                    print("Back button tapped")
-                }
-            }
-    }
+  NavigationStack {
+    Text("컨텐츠 영역")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        CustomNavigationBar(title: "전시정보") {
+          print("Back button tapped")
+        }
+      }
+  }
 }

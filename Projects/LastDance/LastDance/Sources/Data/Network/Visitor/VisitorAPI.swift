@@ -8,43 +8,43 @@
 import Moya
 
 enum VisitorAPI {
-    case getVisitors
-    case createVisitor(dto: VisitorCreateRequestDto)
-    case getVisitor(id: Int)
-    case getVisitorByUUID(uuid: String)
+  case getVisitors
+  case createVisitor(dto: VisitorCreateRequestDto)
+  case getVisitor(id: Int)
+  case getVisitorByUUID(uuid: String)
 }
 
 extension VisitorAPI: BaseTargetType {
-    var path: String {
-        switch self {
-        case .getVisitors, .createVisitor:
-            return "\(APIVersion.version1)/visitors"
-        case .getVisitor(let id):
-            return "\(APIVersion.version1)/visitors/\(id)"
-        case .getVisitorByUUID(let uuid):
-            return "\(APIVersion.version1)/visitors/uuid/\(uuid)"
-        }
+  var path: String {
+    switch self {
+    case .getVisitors, .createVisitor:
+      return "\(APIVersion.version1)/visitors"
+    case .getVisitor(let id):
+      return "\(APIVersion.version1)/visitors/\(id)"
+    case .getVisitorByUUID(let uuid):
+      return "\(APIVersion.version1)/visitors/uuid/\(uuid)"
     }
+  }
 
-    var method: Moya.Method {
-        switch self {
-        case .getVisitors, .getVisitor, .getVisitorByUUID:
-            return .get
-        case .createVisitor:
-            return .post
-        }
+  var method: Moya.Method {
+    switch self {
+    case .getVisitors, .getVisitor, .getVisitorByUUID:
+      return .get
+    case .createVisitor:
+      return .post
     }
+  }
 
-    var queryParameters: [String : Any]? {
-        return nil
-    }
+  var queryParameters: [String: Any]? {
+    return nil
+  }
 
-    var bodyParameters: Codable? {
-        switch self {
-        case .createVisitor(let dto):
-            return dto
-        default:
-            return nil
-        }
+  var bodyParameters: Codable? {
+    switch self {
+    case .createVisitor(let dto):
+      return dto
+    default:
+      return nil
     }
+  }
 }

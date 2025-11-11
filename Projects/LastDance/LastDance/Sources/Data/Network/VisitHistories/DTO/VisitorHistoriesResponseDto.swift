@@ -6,8 +6,8 @@
 //
 
 struct VisitorHistoriesResponseDto: Codable {
-    let id: Int
-    let visitor_id: Int
-    let exhibition_id: Int
-    let visited_at: String
+  let id: Int
+  let visitor_id: Int
+  let exhibition_id: Int
+  let visited_at: String
 }

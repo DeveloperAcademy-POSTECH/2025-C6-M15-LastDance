@@ -5,160 +5,160 @@
 //  Created by donghee on 10/20/25.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct ExhibitionPreviewCard: View {
-    let exhibition: Exhibition
-    let artistNames: [String]
-    let onSearchMore: () -> Void
-    let onStartVisit: () -> Void
-    
-    var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            // 전시 이미지
-            ExhibitionPreviewImage(imageName: exhibition.coverImageName)
-            // 전시 정보 및 버튼
-            ExhibitionPreviewInfo(
-                title: exhibition.title,
-                artistNames: artistNames,
-                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
-                onSearchMore: onSearchMore,
-                onStartVisit: onStartVisit
-            )
-            .padding(.horizontal, 12)
-            
-        }
-        .frame(maxWidth: .infinity)
-        .background(.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 0)
+  let exhibition: Exhibition
+  let artistNames: [String]
+  let onSearchMore: () -> Void
+  let onStartVisit: () -> Void
+
+  var body: some View {
+    VStack(alignment: .center, spacing: 0) {
+      // 전시 이미지
+      ExhibitionPreviewImage(imageName: exhibition.coverImageName)
+      // 전시 정보 및 버튼
+      ExhibitionPreviewInfo(
+        title: exhibition.title,
+        artistNames: artistNames,
+        dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
+        onSearchMore: onSearchMore,
+        onStartVisit: onStartVisit
+      )
+      .padding(.horizontal, 12)
+
     }
+    .frame(maxWidth: .infinity)
+    .background(.white)
+    .cornerRadius(12)
+    .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 0)
+  }
 }
 
 // MARK: - ExhibitionPreviewImage
 struct ExhibitionPreviewImage: View {
-    let imageName: String?
-    
-    var body: some View {
-        if let imageName = imageName, let url = URL(string: imageName) {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .empty:
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 365, height: 468)
-                        .overlay(ProgressView())
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 365, height: 468)
-                        .clipped()
-                        .clipShape(
-                            UnevenRoundedRectangle(
-                                topLeadingRadius: 12,
-                                bottomLeadingRadius: 0,
-                                bottomTrailingRadius: 0,
-                                topTrailingRadius: 12
-                            )
-                        )
-                case .failure:
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 365, height: 468)
-                        .clipShape(
-                            UnevenRoundedRectangle(
-                                topLeadingRadius: 12,
-                                bottomLeadingRadius: 0,
-                                bottomTrailingRadius: 0,
-                                topTrailingRadius: 12
-                            )
-                        )
-                        .overlay(
-                            VStack {
-                                Image(systemName: "photo")
-                                    .font(.system(size: 40))
-                                    .foregroundColor(.gray)
-                                Text("이미지 없음")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                        )
-                @unknown default:
-                    EmptyView()
-                }
-            }
-        } else {
-            // Fallback if imageName is nil or not a valid URL
-            Rectangle()
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 365, height: 468)
-                .clipShape(
-                    UnevenRoundedRectangle(
-                        topLeadingRadius: 12,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 12
-                    )
-                )
-                .overlay(
-                    VStack {
-                        Image(systemName: "photo")
-                            .font(.system(size: 40))
-                            .foregroundColor(.gray)
-                        Text("이미지 없음")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                )
+  let imageName: String?
+
+  var body: some View {
+    if let imageName = imageName, let url = URL(string: imageName) {
+      AsyncImage(url: url) { phase in
+        switch phase {
+        case .empty:
+          Rectangle()
+            .fill(Color.gray.opacity(0.3))
+            .frame(width: 365, height: 468)
+            .overlay(ProgressView())
+        case .success(let image):
+          image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 365, height: 468)
+            .clipped()
+            .clipShape(
+              UnevenRoundedRectangle(
+                topLeadingRadius: 12,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 12
+              )
+            )
+        case .failure:
+          Rectangle()
+            .fill(Color.gray.opacity(0.3))
+            .frame(width: 365, height: 468)
+            .clipShape(
+              UnevenRoundedRectangle(
+                topLeadingRadius: 12,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 12
+              )
+            )
+            .overlay(
+              VStack {
+                Image(systemName: "photo")
+                  .font(.system(size: 40))
+                  .foregroundColor(.gray)
+                Text("이미지 없음")
+                  .font(.caption)
+                  .foregroundColor(.gray)
+              }
+            )
+        @unknown default:
+          EmptyView()
         }
+      }
+    } else {
+      // Fallback if imageName is nil or not a valid URL
+      Rectangle()
+        .fill(Color.gray.opacity(0.3))
+        .frame(width: 365, height: 468)
+        .clipShape(
+          UnevenRoundedRectangle(
+            topLeadingRadius: 12,
+            bottomLeadingRadius: 0,
+            bottomTrailingRadius: 0,
+            topTrailingRadius: 12
+          )
+        )
+        .overlay(
+          VStack {
+            Image(systemName: "photo")
+              .font(.system(size: 40))
+              .foregroundColor(.gray)
+            Text("이미지 없음")
+              .font(.caption)
+              .foregroundColor(.gray)
+          }
+        )
     }
+  }
 }
 
 // MARK: - ExhibitionPreviewInfo
 
 struct ExhibitionPreviewInfo: View {
-    let title: String
-    let artistNames: [String]
-    let dateRange: String
-    let onSearchMore: () -> Void
-    let onStartVisit: () -> Void
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            // 전시 정보
-            VStack(alignment: .leading, spacing: 8) {
-                Text(title)
-                    .font(LDFont.heading04)
-                    .foregroundColor(LDColor.color1)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+  let title: String
+  let artistNames: [String]
+  let dateRange: String
+  let onSearchMore: () -> Void
+  let onStartVisit: () -> Void
 
-                if !artistNames.isEmpty {
-                    Text(artistNames.joined(separator: ", "))
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.color3)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
+  var body: some View {
+    VStack(alignment: .leading, spacing: 14) {
+      // 전시 정보
+      VStack(alignment: .leading, spacing: 8) {
+        Text(title)
+          .font(LDFont.heading04)
+          .foregroundColor(LDColor.color1)
+          .frame(maxWidth: .infinity, alignment: .topLeading)
 
-                Text(dateRange)
-                    .font(LDFont.regular02)
-                    .foregroundColor(LDColor.color3)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                Rectangle()
-                    .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
-                    .frame(height: 0.5)
-                    .foregroundColor(LDColor.color3)
-            }
-            .padding(.top, 14)
-            
-            // 액션 버튼들
-            ArticleButtons(
-                onSearchMore: onSearchMore,
-                onStartVisit: onStartVisit
-            )
-            .padding(.bottom, 14)
+        if !artistNames.isEmpty {
+          Text(artistNames.joined(separator: ", "))
+            .font(LDFont.regular02)
+            .foregroundColor(LDColor.color3)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
+
+        Text(dateRange)
+          .font(LDFont.regular02)
+          .foregroundColor(LDColor.color3)
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+
+        Rectangle()
+          .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
+          .frame(height: 0.5)
+          .foregroundColor(LDColor.color3)
+      }
+      .padding(.top, 14)
+
+      // 액션 버튼들
+      ArticleButtons(
+        onSearchMore: onSearchMore,
+        onStartVisit: onStartVisit
+      )
+      .padding(.bottom, 14)
     }
+  }
 }

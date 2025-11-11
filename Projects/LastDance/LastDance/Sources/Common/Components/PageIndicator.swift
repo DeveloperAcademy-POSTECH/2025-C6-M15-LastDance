@@ -9,25 +9,25 @@ import SwiftUI
 
 /// 페이지 인디케이터 컴포넌트
 struct PageIndicator: View {
-    let totalPages: Int
-    let currentPage: Int
+  let totalPages: Int
+  let currentPage: Int
 
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(1...totalPages, id: \.self) { page in
-                Rectangle()
-                    .fill(page <= currentPage ? LDColor.color1 : LDColor.color1.opacity(0.18))
-                    .frame(height: 2)
-                    .frame(maxWidth: .infinity)
-            }
-        }
+  var body: some View {
+    HStack(spacing: 0) {
+      ForEach(1...totalPages, id: \.self) { page in
+        Rectangle()
+          .fill(page <= currentPage ? LDColor.color1 : LDColor.color1.opacity(0.18))
+          .frame(height: 2)
+          .frame(maxWidth: .infinity)
+      }
     }
+  }
 }
 
 #Preview {
-    VStack(spacing: 20) {
-        PageIndicator(totalPages: 2, currentPage: 1)
-        PageIndicator(totalPages: 2, currentPage: 2)
-    }
-    .padding()
+  VStack(spacing: 20) {
+    PageIndicator(totalPages: 2, currentPage: 1)
+    PageIndicator(totalPages: 2, currentPage: 2)
+  }
+  .padding()
 }

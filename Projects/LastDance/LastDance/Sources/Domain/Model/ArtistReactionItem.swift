@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ReactionItem: Identifiable {
-    let id = UUID()
-    let imageName: String
-    let reactionCount: Int
-    let artworkTitle: String
+  let id = UUID()
+  let imageName: String
+  let reactionCount: Int
+  let artworkTitle: String
 }

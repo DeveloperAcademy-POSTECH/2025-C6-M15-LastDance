@@ -6,6 +6,6 @@
 //
 
 enum AlertType {
-    case confirmation
-    case error
+  case confirmation
+  case error
 }

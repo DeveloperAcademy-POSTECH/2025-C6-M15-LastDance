@@ -6,7 +6,7 @@
 //
 
 enum ExhibitionStatus: String {
-    case ongoing = "ongoing"
-    case upcoming = "upcoming"
-    case past = "past"
+  case ongoing = "ongoing"
+  case upcoming = "upcoming"
+  case past = "past"
 }
