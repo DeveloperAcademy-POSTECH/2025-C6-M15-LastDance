@@ -38,7 +38,6 @@ struct ExhibitionArchiveView: View {
                     .foregroundColor(.black)
                 Spacer()
             }
-            .padding(.horizontal, 24)
             .padding(.top, 24)
 
             // 날짜
@@ -48,9 +47,7 @@ struct ExhibitionArchiveView: View {
                     .foregroundColor(LDColor.color2)
                 Spacer()
             }
-            .padding(.horizontal, 24)
             .padding(.top, 4)
-            
             // 반응 목록
             ScrollView {
                 if viewModel.isLoading {
@@ -62,8 +59,8 @@ struct ExhibitionArchiveView: View {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
-                            GridItem(.fixed(155), spacing: 16),
-                            GridItem(.fixed(155), spacing: 16)
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
                         ],
                         alignment: .leading,
                         spacing: 24
@@ -82,7 +79,6 @@ struct ExhibitionArchiveView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 24)
                     .padding(.top, 20)
                     .padding(.bottom, 40)
                 } else {
@@ -94,6 +90,7 @@ struct ExhibitionArchiveView: View {
                 }
             }
         }
+        .padding(.horizontal, 24)
         .background(LDColor.color6)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
@@ -118,8 +115,8 @@ struct ReactionCardView: View {
             // 작품 이미지
             CachedImage(artwork?.thumbnailURL)
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 155, height: 219)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .frame(width: 157, height: 219)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
 
             // 작품 이름
             if let artwork = artwork {
