@@ -112,6 +112,12 @@ private struct Preview: View {
                         }
                     )
                     .viewfinderCorners(length: 21, lineWidth: 3, color: LDColor.color6, inset: 2)
+                    .blur(radius: viewModel.previewPhase.blurRadius)
+                    .opacity(viewModel.previewPhase.opacity)
+                    .animation(
+                        .easeInOut(duration: viewModel.previewPhase.animationDuration),
+                        value: viewModel.previewPhase
+                    )
                 } else {
                     Color.black
                         .overlay(
