@@ -47,9 +47,10 @@ struct CustomWhiteNavigationBar: ToolbarContent {
         Text("컨텐츠 영역")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                CustomNavigationBar(title: "전시정보") {
+                CustomWhiteNavigationBar(title: "전시정보") {
                     print("Back button tapped")
                 }
             }
+            .preferredColorScheme(.dark)
     }
 }
