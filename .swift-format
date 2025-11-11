@@ -59,7 +59,7 @@
     "ReturnVoidInsteadOfEmptyTuple" : true,
     "TypeNamesShouldBeCapitalized" : true,
     "UseEarlyExits" : false,
-    "UseExplicitNilCheckInConditions" : true,
+    "UseExplicitNilCheckInConditions" : false,
     "UseLetInEveryBoundCaseVariable" : true,
     "UseShorthandTypeNames" : true,
     "UseSingleLinePropertyGetter" : true,
@@ -72,7 +72,6 @@
     "wrapConditionalBodies": false
   },
   "spacesAroundRangeFormationOperators" : false,
-  "spacesBeforeEndOfLineComments" : 2,
   "tabWidth" : 8,
   "version" : 1
 }
