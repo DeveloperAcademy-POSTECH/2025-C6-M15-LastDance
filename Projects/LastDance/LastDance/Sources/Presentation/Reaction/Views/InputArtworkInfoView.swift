@@ -33,7 +33,7 @@ struct InputArtworkInfoView: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(LDColor.color6)
+                            .fill(LDColor.color5)
                             .frame(width: 311, height: 411)
                             .shadow(color: .black.opacity(0.24), radius: 6, x: 0, y: 0)
                         
@@ -41,6 +41,7 @@ struct InputArtworkInfoView: View {
                             .resizable()
                             .scaledToFill()
                             .frame(width: 283, height: 386)
+                            .cornerRadius(12)
                             .clipped()
                     }
                     
