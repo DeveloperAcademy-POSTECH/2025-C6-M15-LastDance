@@ -91,26 +91,25 @@ struct ArtReactionView: View {
 
                             if let description = artwork.descriptionText, !description.isEmpty {
                                 Text("작품 설명")
-                                    .font(Font.custom("Pretendard", size: 16))
-                                    .foregroundColor(LDColor.color2)
+                                    .font(LDFont.heading04)
+                                    .foregroundColor(LDColor.color1)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.bottom, -12)
 
                                 Text(description)
-                                    .font(Font.custom("Pretendard", size: 16))
+                                    .font(LDFont.medium04)
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .lineSpacing(4)
                             } else {
                                 Text("작품 설명이 없습니다.")
-                                    .font(Font.custom("Pretendard", size: 16))
+                                    .font(LDFont.medium04)
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 24)
                         .padding(.top, 24)
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 44)
                         .opacity(selectedTab == .artwork ? 1 : 0)
 
                         // 감상 탭

@@ -59,8 +59,8 @@ struct ExhibitionArchiveView: View {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
+                            GridItem(.fixed(155),spacing: 31),
+                            GridItem(.fixed(155))
                         ],
                         alignment: .leading,
                         spacing: 24

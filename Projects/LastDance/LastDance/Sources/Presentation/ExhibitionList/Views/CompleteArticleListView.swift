@@ -60,7 +60,6 @@ struct CompleteArticleListView: View {
             CompleteArticleListFindButtonView(viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {

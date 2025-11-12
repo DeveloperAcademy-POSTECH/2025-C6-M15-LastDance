@@ -45,6 +45,7 @@ struct ArticleExhibitionListNextButton: View {
     }
 }
 
+
 /// 작가 플로우에서 전시 선택 뷰
 struct ArticleExhibitionListView: View {
     @EnvironmentObject private var router: NavigationRouter
@@ -65,7 +66,6 @@ struct ArticleExhibitionListView: View {
             ArticleExhibitionListNextButton(viewModel: viewModel)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {
