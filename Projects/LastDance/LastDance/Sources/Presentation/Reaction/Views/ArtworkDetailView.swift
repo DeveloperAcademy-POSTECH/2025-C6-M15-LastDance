@@ -74,7 +74,8 @@ struct ArtworkDetailView: View {
         .environmentObject(viewModel)
         .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
             if shouldTrigger {
-                viewModel.performSendReaction(artworkId: artworkId, exhibitionId: exhibitionId) { success, exhibitionId in
+                viewModel.performSendReaction(artworkId: artworkId, exhibitionId: exhibitionId) {
+                    success, exhibitionId in
                     if success, let exhibitionId = exhibitionId {
                         router.push(.completeReaction(exhibitionId: exhibitionId))
                     }
@@ -89,6 +90,7 @@ struct ArtworkDetailView: View {
             message: viewModel.alertType.message,
             buttonText: viewModel.alertType.buttonText,
             action: {
+
                 if viewModel.alertType == .confirmation {
                     viewModel.confirmSendAction()
                 } else {

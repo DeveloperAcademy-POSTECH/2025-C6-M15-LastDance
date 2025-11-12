@@ -15,10 +15,10 @@ final class ExhibitionDetailViewModel: ObservableObject {
     @Published var showErrorAlert = false
 
     private let dataManager = SwiftDataManager.shared
-    private let artistAPIService: ArtistAPIServiceProtocol // Added dependency
+    private let artistAPIService: ArtistAPIServiceProtocol  // Added dependency
     private let visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol
 
-    private var currentArtistId: Int? // To store the ID of the current artist
+    private var currentArtistId: Int?  // To store the ID of the current artist
 
     init(
         artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService(),
@@ -29,7 +29,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
     }
 
     /// 전시 정보 가져오기
-    func fetchExhibition(by id: Int ) {
+    func fetchExhibition(by id: Int) {
         // TODO: SwiftDataManager.fetchById 사용 시 predicate 오류 발생
         // 임시로 fetchAll 후 필터링 사용
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
@@ -38,9 +38,11 @@ final class ExhibitionDetailViewModel: ObservableObject {
         if exhibition != nil {
             fetchArtistNames()
             // Also fetch the current artist ID when the view model loads
-            if let userTypeValue = UserDefaults.standard.string(forKey: UserDefaultsKey.userType.key),
-               let userType = UserType(rawValue: userTypeValue),
-               userType == .artist {
+            if let userTypeValue = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.userType.key),
+                let userType = UserType(rawValue: userTypeValue),
+                userType == .artist
+            {
                 fetchCurrentArtistId()
             }
         } else {
@@ -59,14 +61,18 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
         let allArtists = dataManager.fetchAll(Artist.self)
         let artistIds = exhibition.artworks.compactMap { $0.artistId }
-        artistNames = allArtists
+        artistNames =
+            allArtists
             .filter { artistIds.contains($0.id) }
             .map { $0.name }
     }
 
     /// 현재 아티스트 ID 가져오기
     private func fetchCurrentArtistId() {
-        guard let artistUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.rawValue) else {
+        guard
+            let artistUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.artistUUID.rawValue)
+        else {
             Log.error("Artist UUID not found in UserDefaults.")
             return
         }
@@ -94,17 +100,20 @@ final class ExhibitionDetailViewModel: ObservableObject {
             Log.error("No exhibition to save.")
             return
         }
-        
+
         exhibition.isUserSelected = true
-        Log.debug("ExhibitionDetailViewModel: Flag 'isUserSelected' set to true for exhibition '\(exhibition.title)'.")
-        
+        Log.debug(
+            "ExhibitionDetailViewModel: Flag 'isUserSelected' set to true for exhibition '\(exhibition.title)'."
+        )
+
         if let artistId = currentArtistId {
             Log.debug("Running artist-specific logic for selecting exhibition.")
             let allArtists = dataManager.fetchAll(Artist.self)
             if let currentArtist = allArtists.first(where: { $0.id == artistId }) {
                 if !currentArtist.exhibitions.contains(exhibition.id) {
                     currentArtist.exhibitions.append(exhibition.id)
-                    Log.debug("Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
+                    Log.debug(
+                        "Added exhibition \(exhibition.id) to artist \(artistId)'s exhibitions.")
                 }
             } else {
                 Log.warning("Current artist (ID: \(artistId)) not found in SwiftData.")
@@ -117,14 +126,17 @@ final class ExhibitionDetailViewModel: ObservableObject {
                 }
             }
         }
-        
+
         Log.debug("ExhibitionDetailViewModel: Staged changes for exhibition '\(exhibition.title)'.")
     }
-    
+
     /// 방문 기록 생성 API 함수
     func createVisitHistory(completion: @escaping (Bool) -> Void) {
         // UserDefaults에서 저장된 visitorUUID 가져오기
-        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+        guard
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
+        else {
             Log.error("visitorUUID를 찾을 수 없습니다")
             completion(false)
             return

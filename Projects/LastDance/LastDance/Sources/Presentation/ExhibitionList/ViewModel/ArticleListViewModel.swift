@@ -17,6 +17,7 @@ final class ArticleListViewModel: ObservableObject {
             filterArtists()
         }
     }
+
     @Published var selectedArtistId: Int? = nil
     @Published var selectedArtistName: String = ""
 
@@ -31,7 +32,7 @@ final class ArticleListViewModel: ObservableObject {
         artists = dataManager.fetchAll(Artist.self)
         filteredArtists = artists
         Log.debug("📊 Fetched \(artists.count) artists")
-        artists.forEach { artist in
+        for artist in artists {
             Log.debug("  - \(artist.name)")
         }
     }

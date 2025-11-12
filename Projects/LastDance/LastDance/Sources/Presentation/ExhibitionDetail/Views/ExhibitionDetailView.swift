@@ -101,13 +101,13 @@ struct ExhibitionInfoSection: View {
     let exhibition: Exhibition
     let artistNames: [String]
     let formatDateRange: (String, String) -> String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(exhibition.title)
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(LDColor.black1)
-            
+
             if !artistNames.isEmpty {
                 Text(artistNames.joined(separator: ", "))
                     .font(LDFont.regular02)

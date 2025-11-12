@@ -11,7 +11,7 @@ import SwiftUI
 @main
 struct LastDanceApp: App {
     let sharedModelContainer: ModelContainer
-    
+
     init() {
         do {
             let schema = Schema([
@@ -22,22 +22,22 @@ struct LastDanceApp: App {
                 Venue.self,
                 CapturedArtwork.self,
                 Reaction.self,
-                IdentificatedArtwork.self
+                IdentificatedArtwork.self,
             ])
-            
+
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false 
+                isStoredInMemoryOnly: false
             )
 
-            self.sharedModelContainer = try ModelContainer(
+            sharedModelContainer = try ModelContainer(
                 for: schema,
                 configurations: [modelConfiguration]
             )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-        
+
         // SwiftUI가 아닌 외부에서 사용 가능하도록 SwiftDataManager에 container 주입
         SwiftDataManager.shared.configure(with: sharedModelContainer)
     }
@@ -47,13 +47,13 @@ struct LastDanceApp: App {
             RootView()
                 .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
             // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
-//                .onAppear {
-//                    #if DEBUG
-//                    Task { @MainActor in
-//                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
-//                    }
-//                    #endif
-//                }
+            //                .onAppear {
+            //                    #if DEBUG
+            //                    Task { @MainActor in
+            //                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
+            //                    }
+            //                    #endif
+            //                }
         }
         .modelContainer(sharedModelContainer)
     }

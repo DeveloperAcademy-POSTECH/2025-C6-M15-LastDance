@@ -10,47 +10,52 @@ import SwiftData
 import SwiftUI
 
 // MARK: - ResponseViewModel
-@MainActor 
+
+@MainActor
 final class ResponseViewModel: ObservableObject {
     @Published var expandedReactions: Set<String> = []
     @Published var showAllReactions: [String: Bool] = [:]
     @Published var reactions: [ReactionData] = []
-    @Published var isLoading = false // Added isLoading property
+    @Published var isLoading = false  // Added isLoading property
 
-    private let artworkId: Int // Added artworkId property
-    private let reactionAPIService: ReactionAPIServiceProtocol // Added dependency
-    private let swiftDataManager = SwiftDataManager.shared // To fetch Artwork for display
+    private let artworkId: Int  // Added artworkId property
+    private let reactionAPIService: ReactionAPIServiceProtocol  // Added dependency
+    private let swiftDataManager = SwiftDataManager.shared  // To fetch Artwork for display
 
     init(artworkId: Int, reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService()) {
         self.artworkId = artworkId
         self.reactionAPIService = reactionAPIService
-        fetchReactions() // Automatically fetch reactions on init
+        fetchReactions()  // Automatically fetch reactions on init
     }
 
     /// API를 통해 실제 반응 데이터를 불러오는 로직 구현
     func fetchReactions() {
         isLoading = true
-        reactions = [] // Clear previous data
+        reactions = []  // Clear previous data
 
-        reactionAPIService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) { [weak self] result in
+        reactionAPIService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) {
+            [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case .success(let getReactionDtos):
-                Log.debug("Fetched \(getReactionDtos.count) GetReactionResponseDtos for artwork \(self.artworkId).")
+                Log.debug(
+                    "Fetched \(getReactionDtos.count) GetReactionResponseDtos for artwork \(self.artworkId)."
+                )
 
                 let dispatchGroup = DispatchGroup()
                 var fetchedReactionData: [ReactionData] = []
-                let lock = NSLock() // To protect fetchedReactionData during concurrent access
+                let lock = NSLock()  // To protect fetchedReactionData during concurrent access
 
                 for getReactionDto in getReactionDtos {
                     dispatchGroup.enter()
-                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) { detailResult in
+                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) {
+                        detailResult in
                         defer { dispatchGroup.leave() }
 
                         switch detailResult {
                         case .success(let reactionResponseDto):
-                            let reactionDetailDto = reactionResponseDto.data // This is ReactionDetailResponseDto
+                            let reactionDetailDto = reactionResponseDto.data  // This is ReactionDetailResponseDto
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
@@ -60,21 +65,27 @@ final class ResponseViewModel: ObservableObject {
                             fetchedReactionData.append(reactionData)
                             lock.unlock()
                         case .failure(let error):
-                            Log.error("Failed to fetch detail for reaction ID \(getReactionDto.id): \(error.localizedDescription)")
+                            Log.error(
+                                "Failed to fetch detail for reaction ID \(getReactionDto.id): \(error.localizedDescription)"
+                            )
                         }
                     }
                 }
 
                 dispatchGroup.notify(queue: .main) {
-                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id } // Sort to maintain order
+                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id }  // Sort to maintain order
                     self.isLoading = false
-                    Log.debug("All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)")
+                    Log.debug(
+                        "All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)"
+                    )
                 }
 
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.isLoading = false
-                    Log.error("Failed to fetch reactions for artwork \(self.artworkId): \(error.localizedDescription)")
+                    Log.error(
+                        "Failed to fetch reactions for artwork \(self.artworkId): \(error.localizedDescription)"
+                    )
                 }
             }
         }
@@ -102,7 +113,7 @@ final class ResponseViewModel: ObservableObject {
         toggleExpandReaction(id: reaction.id)
 
         if willExpand {
-            if !(showAllReactions[reaction.id] ?? false) && reaction.categories.count > 1 {
+            if !(showAllReactions[reaction.id] ?? false), reaction.categories.count > 1 {
                 toggleShowAllReactions(id: reaction.id)
             }
         } else {
@@ -119,7 +130,8 @@ final class ResponseViewModel: ObservableObject {
         if expandedReactions.contains(reaction.id) {
             return reaction.comment
         } else {
-            return String(reaction.comment.prefix(100)) + (reaction.comment.count > 100 ? "..." : "")
+            return String(reaction.comment.prefix(100))
+                + (reaction.comment.count > 100 ? "..." : "")
         }
     }
 
@@ -135,7 +147,7 @@ final class ResponseViewModel: ObservableObject {
     ///   - artworks: 전체 작품 목록
     ///   - artworkId: 찾으려는 작품 ID
     /// - Returns: 해당 ID의 작품, 없으면 nil
-    func getArtwork(from artworks: [Artwork], id artworkId: Int) -> Artwork? {
+    func getArtwork(from _: [Artwork], id artworkId: Int) -> Artwork? {
         return swiftDataManager.fetchAll(Artwork.self).first { $0.id == artworkId }
     }
 
@@ -156,7 +168,7 @@ final class ResponseViewModel: ObservableObject {
     /// - Returns: 전체 보기 시 3번째 이후 카테고리, 그렇지 않으면 빈 배열
     func hiddenCategories(for categories: [String], reactionId: String) -> [String] {
         let showAll = showAllReactions[reactionId] ?? false
-        if showAll && categories.count > 2 {
+        if showAll, categories.count > 2 {
             return Array(categories.dropFirst(2))
         }
         return []

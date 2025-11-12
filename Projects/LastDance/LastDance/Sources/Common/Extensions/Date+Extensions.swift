@@ -41,7 +41,7 @@ extension Date {
         }
         return isoString
     }
-    
+
     /// ISO8601 또는 yyyy-MM-dd String을 표시용 날짜 형식으로 변환 (yyyy.M.d)
     static func formatShortDate(from isoString: String) -> String {
         // ISO8601 형식 시도

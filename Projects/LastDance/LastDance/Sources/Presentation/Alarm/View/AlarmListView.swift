@@ -18,51 +18,72 @@ struct AlarmListView: View {
         case .artist:
             // 작가용 알림
             return [
-                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "방금 전"),
-                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "2시간 전"),
-                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일"),
-                .init(type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "10월 31일")
+                .init(
+                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선 기억의 지층, 경계를 넘는 시선",
+                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "방금 전"),
+                .init(
+                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "2시간 전"),
+                .init(
+                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.",
+                    timeAgo: "10월 31일"),
+                .init(
+                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.",
+                    timeAgo: "10월 31일"),
             ]
         case .viewer:
             // 관람객용 알림
             return [
-                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "방금 전"),
-                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "2시간 전"),
-                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
-                .init(type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선", message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일")
+                .init(
+                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "방금 전"),
+                .init(
+                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "2시간 전"),
+                .init(
+                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
+                .init(
+                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
+                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
             ]
         }
     }
 
     var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(notifications) { item in
-                        Button(action: {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(notifications) { item in
+                    Button(
+                        action: {
                             // TODO: 셀 클릭시 반응 모아보기 딥링크 연동
-                        }, label: {
+                        },
+                        label: {
                             VStack(spacing: 0) {
                                 NotificationCell(item: item)
                                 Divider()
                             }
-                        })
-                        .buttonStyle(NotificationCellButtonStyle())
-                    }
+                        }
+                    )
+                    .buttonStyle(NotificationCellButtonStyle())
                 }
             }
-            .ignoresSafeArea(edges: .bottom)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    BackButton {
-                        router.popLast()
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("알림")
-                        .font(LDFont.heading04)
-                        .foregroundColor(LDColor.color1)
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                BackButton {
+                    router.popLast()
                 }
             }
+            ToolbarItem(placement: .principal) {
+                Text("알림")
+                    .font(LDFont.heading04)
+                    .foregroundColor(LDColor.color1)
+            }
+        }
     }
 }
 

@@ -9,16 +9,16 @@ import SwiftData
 import SwiftUI
 
 struct ArtistReactionArchiveView: View {
-
     let exhibitionId: Int
     @StateObject private var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
-        _viewModel = StateObject(wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
+        _viewModel = StateObject(
+            wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -30,22 +30,22 @@ struct ArtistReactionArchiveView: View {
                         .foregroundColor(.black)
                         .frame(width: 44, height: 44)
                 }
-                
+
                 Spacer()
-                
+
                 Text(viewModel.exhibitionTitle)
                     .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .lineLimit(1)
                     .truncationMode(.tail)
-                
+
                 Spacer()
                 Color.clear
                     .frame(width: 44, height: 44)
             }
             .padding(.horizontal, 20)
             .padding(.top, 20)
-            
+
             ArtistArtworkScrollView(viewModel: viewModel)
         }
         .background(LDColor.color6)
@@ -58,7 +58,7 @@ struct ArtistReactionArchiveView: View {
 private struct ArtistArtworkScrollView: View {
     @ObservedObject var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+
     var body: some View {
         ScrollView {
             if viewModel.isLoading {
@@ -71,16 +71,17 @@ private struct ArtistArtworkScrollView: View {
                 LazyVGrid(
                     columns: [
                         GridItem(.fixed(155), spacing: 27),
-                        GridItem(.fixed(155), spacing: 27)
+                        GridItem(.fixed(155), spacing: 27),
                     ],
                     spacing: 28
                 ) {
-                    ForEach(viewModel.artworks) { displayItem in // Changed from viewModel.reactionItems to viewModel.artworks
+                    ForEach(viewModel.artworks) { displayItem in  // Changed from viewModel.reactionItems to viewModel.artworks
                         VStack(alignment: .leading, spacing: 12) {
                             // 작품 카드 이미지
                             ZStack(alignment: .bottomLeading) {
                                 if let thumbnailURLString = displayItem.artwork.thumbnailURL,
-                                   let thumbnailURL = URL(string: thumbnailURLString) {
+                                    let thumbnailURL = URL(string: thumbnailURLString)
+                                {
                                     AsyncImage(url: thumbnailURL) { phase in
                                         switch phase {
                                         case .empty:

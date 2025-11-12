@@ -10,6 +10,7 @@ import Moya
 import SwiftData
 
 // MARK: VisitHistoriesAPIServiceProtocol
+
 protocol VisitHistoriesAPIServiceProtocol {
     func makeVisitHistories(
         request: MakeVisitHistoriesRequestDto,
@@ -27,10 +28,15 @@ protocol VisitHistoriesAPIServiceProtocol {
 }
 
 // MARK: VisitHistoriesAPIService
+
 final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
     private let provider: MoyaProvider<VisitHistoriesAPI>
 
-    init(provider: MoyaProvider<VisitHistoriesAPI> = MoyaProvider<VisitHistoriesAPI>(plugins: [NetworkLoggerPlugin()])) {
+    init(
+        provider: MoyaProvider<VisitHistoriesAPI> = MoyaProvider<VisitHistoriesAPI>(plugins: [
+            NetworkLoggerPlugin()
+        ])
+    ) {
         self.provider = provider
     }
 
@@ -66,7 +72,8 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
@@ -82,7 +89,8 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
         exhibitionId: Int,
         completion: @escaping (Result<[VisitorHistoriesResponseDto], Error>) -> Void
     ) {
-        provider.request(.getVisitHistories(visitorId: visitorId, exhibitionId: exhibitionId)) { result in
+        provider.request(.getVisitHistories(visitorId: visitorId, exhibitionId: exhibitionId)) {
+            result in
             switch result {
             case .success(let response):
                 do {
@@ -111,7 +119,8 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
@@ -153,7 +162,8 @@ final class VisitHistoriesAPIService: VisitHistoriesAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }

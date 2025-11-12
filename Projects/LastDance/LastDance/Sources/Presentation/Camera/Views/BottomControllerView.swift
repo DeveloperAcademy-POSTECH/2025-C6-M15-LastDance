@@ -14,10 +14,10 @@ struct BottomControllerView: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-            
+
             ZoomControlView(viewModel: viewModel)
                 .padding(.bottom, 40)
-            
+
             ShutterButton {
                 Task { await viewModel.captureSilentFrame() }
             }

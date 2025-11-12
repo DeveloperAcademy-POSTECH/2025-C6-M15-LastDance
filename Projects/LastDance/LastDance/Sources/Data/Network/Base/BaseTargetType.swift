@@ -12,7 +12,7 @@ protocol BaseTargetType: TargetType {
     var queryParameters: [String: Any]? { get }
     var bodyParameters: Codable? { get }
     var isMultipart: Bool { get }
-    var multipartData: [Moya.MultipartFormData]? { get }  //파일 업로드를 위한 속성
+    var multipartData: [Moya.MultipartFormData]? { get }  // 파일 업로드를 위한 속성
 }
 
 extension BaseTargetType {

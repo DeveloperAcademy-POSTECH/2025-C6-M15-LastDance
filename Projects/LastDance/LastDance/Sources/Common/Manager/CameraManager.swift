@@ -19,12 +19,13 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
     private(set) var isConfigured = false
     private var photoProcessors: [Int64: PhotoCaptureProcessor] = [:]
-    
+
     private let videoOutput = AVCaptureVideoDataOutput()
     private let videoQueue = DispatchQueue(label: "camera.video.queue")
     private(set) var lastVideoBuffer: CMSampleBuffer?
 
     // MARK: - Permission
+
     static func checkAuthorizationStatus() -> AVAuthorizationStatus {
         AVCaptureDevice.authorizationStatus(for: .video)
     }
@@ -36,6 +37,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
     }
 
     // MARK: - Configure (rear-only)
+
     func configureIfNeeded(initialZoomScale: CGFloat? = nil) async throws {
         guard !isConfigured else { return }
         guard Self.checkAuthorizationStatus() == .authorized else {
@@ -50,7 +52,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
                     // 후면 카메라만 사용
                     guard let device = Self.bestDevice(position: .back),
-                          let input = try? AVCaptureDeviceInput(device: device)
+                        let input = try? AVCaptureDeviceInput(device: device)
                     else { throw CameraManagerError.configurationFailed }
 
                     if self.session.canAddInput(input) { self.session.addInput(input) }
@@ -64,7 +66,8 @@ final class CameraManager: NSObject, @unchecked Sendable {
                             try device.lockForConfiguration()
                             let clamped = max(
                                 device.minAvailableVideoZoomFactor,
-                                min(targetZoomFactor,
+                                min(
+                                    targetZoomFactor,
                                     device.maxAvailableVideoZoomFactor)
                             )
                             device.videoZoomFactor = clamped
@@ -73,7 +76,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
                             Log.error("initial zoom set failed: \(error)")
                         }
                     }
-                    
+
                     if self.session.canAddOutput(self.photoOutput) {
                         self.session.addOutput(self.photoOutput)
 
@@ -93,7 +96,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
                             }
                         }
                     }
-                    
+
                     // 무음 스냅샷용 비디오 데이터
                     self.videoOutput.alwaysDiscardsLateVideoFrames = true
                     self.videoOutput.setSampleBufferDelegate(self, queue: self.videoQueue)
@@ -114,6 +117,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
     }
 
     // MARK: - Start/Stop
+
     func startRunning() {
         sessionQueue.async {
             if !self.session.isRunning {
@@ -122,25 +126,26 @@ final class CameraManager: NSObject, @unchecked Sendable {
             }
         }
     }
-    
+
     func stopRunning() {
         sessionQueue.async { if self.session.isRunning { self.session.stopRunning() } }
     }
 
     // MARK: - Capture
+
     func capturePhoto() async throws -> UIImage {
         try await withCheckedThrowingContinuation { cont in
             let settings = AVCapturePhotoSettings()
-            
+
             if #unavailable(iOS 16.0) {
                 // iOS 15 이하: isHighResolutionPhotoEnabled 사용
                 settings.isHighResolutionPhotoEnabled =
                     self.photoOutput.isHighResolutionCaptureEnabled
             }
             // iOS 16 이상: maxPhotoDimensions 자동 반영됨
-            
+
             let id = settings.uniqueID
-            
+
             let processor = PhotoCaptureProcessor(id: id) { [weak self] result in
                 guard let self else { return }
                 // 메모리 해제
@@ -153,18 +158,19 @@ final class CameraManager: NSObject, @unchecked Sendable {
                     cont.resume(throwing: error)
                 }
             }
-            
+
             self.photoProcessors[id] = processor
             self.photoOutput.capturePhoto(with: settings, delegate: processor)
         }
     }
-    
+
     // 무음 촬영 메서드 추가
     func captureSilent() async -> UIImage? {
         await withCheckedContinuation { continuation in
             videoQueue.async {
                 guard let buffer = self.lastVideoBuffer,
-                      let img = UIImage.from(sampleBuffer: buffer, orientation: .right) else {
+                    let img = UIImage.from(sampleBuffer: buffer, orientation: .right)
+                else {
                     DispatchQueue.main.async { continuation.resume(returning: nil) }
                     return
                 }
@@ -174,12 +180,13 @@ final class CameraManager: NSObject, @unchecked Sendable {
     }
 
     // MARK: - Helpers
+
     private static func bestDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
         let preferredOrders: [AVCaptureDevice.DeviceType] = [
             .builtInTripleCamera,
             .builtInDualWideCamera,
             .builtInDualCamera,
-            .builtInWideAngleCamera
+            .builtInWideAngleCamera,
         ]
 
         for type in preferredOrders {
@@ -195,6 +202,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
 }
 
 // MARK: - 사진 촬영을 위한 delegate
+
 private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelegate {
     let id: Int64
     private let completion: (Result<UIImage, Error>) -> Void
@@ -212,15 +220,18 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
     }
 
     // 사진 처리 콜백
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishProcessingPhoto photo: AVCapturePhoto,
-                     error: Error?) {
+    func photoOutput(
+        _: AVCapturePhotoOutput,
+        didFinishProcessingPhoto photo: AVCapturePhoto,
+        error: Error?
+    ) {
         if let error = error {
             finish(.failure(error))
             return
         }
         guard let data = photo.fileDataRepresentation(),
-              let image = UIImage(data: data) else {
+            let image = UIImage(data: data)
+        else {
             finish(.failure(CameraManagerError.captureFailed))
             return
         }
@@ -228,14 +239,16 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
     }
 
     // 콜백이 오지 않는 드문 경우를 대비
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     error: Error?) {
+    func photoOutput(
+        _: AVCapturePhotoOutput,
+        didFinishCaptureFor _: AVCaptureResolvedPhotoSettings,
+        error: Error?
+    ) {
         if let error = error {
             finish(.failure(error))
             return
         }
-        
+
         if !didFinish {
             finish(.failure(CameraManagerError.captureFailed))
         }
@@ -243,12 +256,15 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
 }
 
 // MARK: - 영상 촬영을 위한 delegate
+
 extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput,
-                       didOutput sampleBuffer: CMSampleBuffer,
-                       from connection: AVCaptureConnection) {
+    func captureOutput(
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
+    ) {
         lastVideoBuffer = sampleBuffer
-        
+
         if !didSendFirstFrame {
             didSendFirstFrame = true
             DispatchQueue.main.async { [weak self] in
@@ -259,6 +275,7 @@ extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
 }
 
 // MARK: - Zoom
+
 extension CameraManager {
     /// UI에서 쓰는 스케일(0.5~6.0)을 장치 팩터로 매핑할 때 쓰는 계수
     private var uiToDeviceFactor: CGFloat { 2.0 }
@@ -307,9 +324,9 @@ extension CameraManager {
             try device.lockForConfiguration()
             if device.isRampingVideoZoom { device.cancelVideoZoomRamp() }
             device.unlockForConfiguration()
-        } catch { }
+        } catch {}
     }
-    
+
     /// UI 스케일을 디바이스 실제 줌팩터로 변환
     fileprivate func deviceZoomFactor(fromUIScale uiScale: CGFloat) -> CGFloat {
         uiScale * uiToDeviceFactor

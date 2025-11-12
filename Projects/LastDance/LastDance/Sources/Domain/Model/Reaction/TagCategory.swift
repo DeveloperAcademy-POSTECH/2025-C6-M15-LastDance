@@ -14,5 +14,6 @@ struct TagCategory: Identifiable, Hashable {
     var color: Color {
         Color(hex: colorHex)
     }
+
     let tags: [Tag]
 }

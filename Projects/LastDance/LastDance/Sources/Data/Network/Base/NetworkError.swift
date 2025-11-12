@@ -11,10 +11,10 @@ import Foundation
 enum NetworkError: Error {
     case badRequest
     case notFound
-    case decodingFailed 
+    case decodingFailed
     case networkFailure
-    case serverError // 보통 500번대
-    
+    case serverError  // 보통 500번대
+
     var message: String {
         switch self {
         case .badRequest:
@@ -30,5 +30,3 @@ enum NetworkError: Error {
         }
     }
 }
-
-

@@ -15,10 +15,12 @@ final class VisitHistory {
     var exhibitionId: Int
     var visitedAt: Date
 
-    init(id: Int,
-         visitorId: Int,
-         exhibitionId: Int,
-         visitedAt: Date) {
+    init(
+        id: Int,
+        visitorId: Int,
+        exhibitionId: Int,
+        visitedAt: Date
+    ) {
         self.id = id
         self.visitorId = visitorId
         self.exhibitionId = exhibitionId

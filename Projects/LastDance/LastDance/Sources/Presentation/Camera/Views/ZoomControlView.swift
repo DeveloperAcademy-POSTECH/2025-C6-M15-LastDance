@@ -18,7 +18,7 @@ struct ZoomControlView: View {
     private let zoomRanges: [ZoomRange] = [
         .init(label: ".5", min: 0.0, max: 0.95, preset: 0.5),
         .init(label: "1", min: 0.95, max: 1.9, preset: 1.0),
-        .init(label: "2", min: 1.9, max: .infinity, preset: 2.0)
+        .init(label: "2", min: 1.9, max: .infinity, preset: 2.0),
     ]
 
     var body: some View {
@@ -67,6 +67,7 @@ struct ZoomControlView: View {
 }
 
 // MARK: - Circle Button
+
 private struct ZoomCircleButton: View {
     let text: String
     let isActive: Bool
@@ -75,7 +76,7 @@ private struct ZoomCircleButton: View {
     var body: some View {
         Text(text)
             .font(.system(size: 13, weight: .bold))
-            .minimumScaleFactor(0.7)   // "1.8x" 같은 텍스트도 원 안에 안전하게
+            .minimumScaleFactor(0.7)  // "1.8x" 같은 텍스트도 원 안에 안전하게
             .lineLimit(1)
             .foregroundColor(isActive ? .yellow : LDColor.color6)
             .frame(width: diameter, height: diameter)
@@ -91,12 +92,13 @@ private struct ZoomCircleButton: View {
 }
 
 // MARK: - Range/Config
+
 private struct ZoomRange {
     let label: String
     let min: CGFloat
     let max: CGFloat
     let preset: CGFloat
-    
+
     private let activeDiameter: CGFloat = Layout.circleActiveDiameter
     private let inactiveDiameter: CGFloat = Layout.circleInactiveDiameter
 
@@ -105,7 +107,8 @@ private struct ZoomRange {
     }
 
     func buttonConfiguration(for current: CGFloat)
-      -> (text: String, diameter: CGFloat, isActive: Bool) {
+        -> (text: String, diameter: CGFloat, isActive: Bool)
+    {
         let active = isActive(current)
         let text = active ? formatted(current) : label
         let diameter = active ? activeDiameter : inactiveDiameter
@@ -119,6 +122,7 @@ private struct ZoomRange {
 }
 
 // MARK: - Layout
+
 private enum Layout {
     static let indicatorSpacing: CGFloat = 12
     static let indicatorPadding: CGFloat = 8
