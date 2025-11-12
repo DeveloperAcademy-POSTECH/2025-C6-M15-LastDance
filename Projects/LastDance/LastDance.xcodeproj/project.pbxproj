@@ -80,6 +80,7 @@
 				"Resources/Fonts/Pretendard-Thin.otf",
 				Sources/Common/DesignSystem/LDColor.swift,
 				Sources/Common/DesignSystem/LDFont.swift,
+				"Sources/Common/Extensions/Date+Extensions.swift",
 				Sources/Common/Extensions/Log.swift,
 				Sources/Common/Extensions/Navigation_Ext.swift,
 				Sources/Common/Extensions/TapGestureRecognizer.swift,
@@ -120,6 +121,13 @@
 			);
 			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
 		};
+		997BB1DD2EC3D8A30052F9BA /* Exceptions for "LastDanceClip" folder in "LastDance" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Sources/Shared/SharedKeys.swift,
+			);
+			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -135,6 +143,7 @@
 		997BB14E2EC1388D0052F9BA /* LastDanceClip */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				997BB1DD2EC3D8A30052F9BA /* Exceptions for "LastDanceClip" folder in "LastDance" target */,
 				997BB1622EC1388E0052F9BA /* Exceptions for "LastDanceClip" folder in "LastDanceClip" target */,
 			);
 			path = LastDanceClip;
@@ -594,7 +603,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance_Push;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -639,7 +648,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance_Push;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
