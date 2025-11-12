@@ -30,8 +30,8 @@ struct ClipArtReactionView: View {
     
     var body: some View {
         // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(200, 408 - scrollOffset * 0.5)
-        let imageWidth = max(150, 305 - (408 - imageHeight) * 0.76)
+        let imageHeight = max(200, 388 - scrollOffset * 0.5)
+        let imageWidth = max(150, 281 - (388 - imageHeight) * 0.76)
         
         ZStack(alignment: .top) {
             // 데이터가 로드될 때까지는 로딩만
@@ -55,8 +55,12 @@ struct ClipArtReactionView: View {
                                 ProgressView()
                             }
                             .frame(width: imageWidth, height: imageHeight)
-                            .clipped()
                             .cornerRadius(24)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(Color.color5, lineWidth: 10)
+                            )
+                            .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
                         } else {
                             Rectangle()
                                 .fill(Color.gray.opacity(0.15))
@@ -67,7 +71,7 @@ struct ClipArtReactionView: View {
                         
                         // 스크롤 안에 들어오는 탭바 (고정 탭바와 겹치지 않게 투명도 조정)
                         TabBarView(selectedTab: $selectedTab)
-                            .padding(.top, 17)
+                            .padding(.top, 23)
                             .opacity(viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused ? 0 : 1)
                         
                         // 탭별 콘텐츠
