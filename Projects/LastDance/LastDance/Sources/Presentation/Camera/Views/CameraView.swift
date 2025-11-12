@@ -11,15 +11,17 @@ import SwiftUI
 struct CameraView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = CameraViewModel()
-    
+
     @State private var noticeVisible = false
-    
+
     let exhibitionId: Int
 
     var body: some View {
         GeometryReader { geo in
-            let maxPreviewHeight = max(1, geo.size.height - (
-                CameraViewLayout.previewTopInset + CameraViewLayout.previewBottomInset)
+            let maxPreviewHeight = max(
+                1,
+                geo.size.height
+                    - (CameraViewLayout.previewTopInset + CameraViewLayout.previewBottomInset)
             )
             let maxPreviewWidth = max(1, geo.size.width)
 
@@ -33,7 +35,7 @@ struct CameraView: View {
                 )
 
                 BottomControllerView(viewModel: viewModel)
-                
+
                 if noticeVisible {
                     VStack {
                         HStack(spacing: 12) {
@@ -54,7 +56,7 @@ struct CameraView: View {
                         .shadow(LDShadow.shadow4)
                         .shadow(LDShadow.shadow5)
                         .shadow(LDShadow.shadow6)
-                        
+
                         Spacer()
                     }
                     .padding(.top, 73)
@@ -91,14 +93,14 @@ struct CameraView: View {
 
 private struct Preview: View {
     @ObservedObject var viewModel: CameraViewModel
-    
+
     var maxWidth: CGFloat?
     var maxHeight: CGFloat?
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Spacer(minLength: CameraViewLayout.previewTopInset)
-            
+
             Group {
                 if viewModel.isAuthorized {
                     CameraPreviewView(
@@ -142,7 +144,7 @@ private struct Preview: View {
 
 private struct CloseButton: View {
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             Image(systemName: "xmark")
@@ -156,6 +158,7 @@ private struct CloseButton: View {
 }
 
 // MARK: - Constants
+
 enum CameraViewLayout {
     /// 스틸 기본 4:3 (세로 기준 3:4)
     static let aspect: CGFloat = 3.0 / 4.0

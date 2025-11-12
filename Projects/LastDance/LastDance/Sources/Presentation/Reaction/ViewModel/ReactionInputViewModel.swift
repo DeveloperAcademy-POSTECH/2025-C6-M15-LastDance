@@ -15,7 +15,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
-    @Published var selectedArtistName: String = ""    // 선택한 작가 이름
+    @Published var selectedArtistName: String = ""  // 선택한 작가 이름
     @Published var capturedImage: UIImage?  // 촬영한 이미지
     @Published var categories: [TagCategory] = []
     @Published var selectedCategoryIds: Set<Int> = []
@@ -26,13 +26,13 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var alertType: AlertType = .confirmation
 
     private var cancellables = Set<AnyCancellable>()
-    private let sendButtonTapped = PassthroughSubject<Void, Never>() // 하단 버튼 전송하기 탭 관리
-    private let confirmSendTapped = PassthroughSubject<Void, Never>() // 알림창 내부 전송하기 탭 관리
+    private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
+    private let confirmSendTapped = PassthroughSubject<Void, Never>()  // 알림창 내부 전송하기 탭 관리
     private let throttleInterval: TimeInterval = 2.0
 
     let categoryLimit = 2
     let tagLimit = 6
-    let limit = 500 // texteditor 최대 글자수 제한
+    let limit = 500  // texteditor 최대 글자수 제한
 
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
@@ -53,7 +53,7 @@ final class ReactionInputViewModel: ObservableObject {
     var isSendButtonDisabled: Bool {
         return selectedTagIds.isEmpty
     }
-    
+
     // 선택 개수 충족 검사
     var isFull: Bool {
         selectedTagIds.count >= tagLimit
@@ -111,21 +111,29 @@ final class ReactionInputViewModel: ObservableObject {
     }
 
     /// 인식된 작품의 작품명과 작가 정보를 저장하는 함수
-    func setArtworkInfo(artworkTitle: String, artistName: String, artworkId: Int, artistId: Int, completion: @escaping (Bool) -> Void) {
-        self.selectedArtworkTitle = artworkTitle
-        self.selectedArtistName = artistName
-        self.selectedArtworkId = artworkId
-        self.selectedArtistId = artistId
+    func setArtworkInfo(
+        artworkTitle: String, artistName: String, artworkId: Int, artistId: Int,
+        completion: @escaping (Bool) -> Void
+    ) {
+        selectedArtworkTitle = artworkTitle
+        selectedArtistName = artistName
+        selectedArtworkId = artworkId
+        selectedArtistId = artistId
 
         // SwiftData에서 작품의 artistId 업데이트
         dataManager.updateArtworkArtist(artworkId: artworkId, artistId: artistId)
 
-        Log.debug("작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), 작품ID: \(artworkId), 작가ID: \(artistId)")
+        Log.debug(
+            "작품 정보 설정 - 작품: \(artworkTitle), 작가: \(artistName), 작품ID: \(artworkId), 작가ID: \(artistId)"
+        )
         completion(true)
     }
 
     /// 작품 반응을 저장하는 함수
-    func saveReaction(artworkId: Int, visitorId: Int, visitId: Int, imageUrl: String?, tagIds: [Int], completion: @escaping (Bool) -> Void) {
+    func saveReaction(
+        artworkId: Int, visitorId: Int, visitId: Int, imageUrl: String?, tagIds: [Int],
+        completion: @escaping (Bool) -> Void
+    ) {
         guard !tagIds.isEmpty else {
             completion(false)
             return
@@ -157,8 +165,9 @@ final class ReactionInputViewModel: ObservableObject {
                     if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
+
                     completion(true)
-            
+
                 case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")
                     completion(false)
@@ -168,12 +177,17 @@ final class ReactionInputViewModel: ObservableObject {
     }
 
     /// UserDefaults, SwiftData 접근 및 검증 메서드
-    func performSendReaction(artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void) {
+    func performSendReaction(
+        artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
+    ) {
         // UserDefaults에서 업로드된 이미지 URL 가져오기
         let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
 
         // UserDefaults에서 저장된 visitorUUID 가져오기
-        guard let visitorUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) else {
+        guard
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
+        else {
             Log.warning("visitorUUID를 찾을 수 없습니다")
             alertType = .error
             shouldShowConfirmAlert = true
@@ -202,9 +216,11 @@ final class ReactionInputViewModel: ObservableObject {
         }
 
         // UserDefaults에서 visitId 가져오기
-        guard let visitId = UserDefaults.standard.object(
-            forKey: UserDefaultsKey.visitId.key
-        ) as? Int else {
+        guard
+            let visitId = UserDefaults.standard.object(
+                forKey: UserDefaultsKey.visitId.key
+            ) as? Int
+        else {
             Log.warning("visitId를 UserDefaults에서 찾을 수 없습니다.")
             alertType = .error
             shouldShowConfirmAlert = true
@@ -235,7 +251,7 @@ final class ReactionInputViewModel: ObservableObject {
             }
         }
     }
-    
+
     // TODO: 실제데이터 연동 후 파라미터 교체 예정
     func getReactionsAPI(artworkId: Int) {
         Log.debug("반응 조회 API 테스트 시작")
@@ -268,7 +284,9 @@ final class ReactionInputViewModel: ObservableObject {
 
     /// 작품 목록 조회 API 함수
     func fetchArtworks(artistId: Int? = nil, exhibitionId: Int? = nil) {
-        Log.debug("작품 목록 조회 API 호출 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
+        Log.debug(
+            "작품 목록 조회 API 호출 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))"
+        )
 
         artworkAPIService.getArtworks(artistId: artistId, exhibitionId: exhibitionId) { result in
             DispatchQueue.main.async {
@@ -281,7 +299,7 @@ final class ReactionInputViewModel: ObservableObject {
             }
         }
     }
-    
+
     func findColorForTag(tagName: String) -> Color {
         for category in categories {
             if category.tags.contains(where: { $0.name == tagName }) {
@@ -290,7 +308,7 @@ final class ReactionInputViewModel: ObservableObject {
         }
         return .gray
     }
-    
+
     func fetchAllArtists() {
         Log.debug("작가 목록 조회 API 호출")
         artistAPIService.getArtists { result in
@@ -307,6 +325,7 @@ final class ReactionInputViewModel: ObservableObject {
 }
 
 // MARK: - Category 로직
+
 extension ReactionInputViewModel {
     /// 서버에서 카테고리 + 하위 태그 불러오기
     func loadCategories() {
@@ -356,15 +375,16 @@ extension ReactionInputViewModel {
     }
 
     // MARK: - 선택 관리
+
     func toggleCategory(_ id: Int) {
         if selectedCategoryIds.contains(id) {
             selectedCategoryIds.remove(id)
-            
+
             // 카테고리 선택 해제 시, 해당 카테고리에 속한 태그들을 선택 해제
             if let category = categories.first(where: { $0.id == id }) {
                 let tagsToDeselect = category.tags.map { $0.id }
                 selectedTagIds.subtract(tagsToDeselect)
-                
+
                 let tagNamesToDeselect = category.tags.map { $0.name }
                 selectedTagsName.subtract(tagNamesToDeselect)
             }
@@ -375,6 +395,7 @@ extension ReactionInputViewModel {
 }
 
 // MARK: - Tag 로직
+
 extension ReactionInputViewModel {
     func loadTagsForSelectedCategories() {
         let group = DispatchGroup()
@@ -394,7 +415,8 @@ extension ReactionInputViewModel {
                     )
                     updatedCategories.append(updated)
                 case .failure(let error):
-                    Log.error("태그 로드 실패 (categoryId: \(category.id)): \(error.localizedDescription)")
+                    Log.error(
+                        "태그 로드 실패 (categoryId: \(category.id)): \(error.localizedDescription)")
                 }
                 group.leave()
             }
@@ -407,6 +429,7 @@ extension ReactionInputViewModel {
     }
 
     // MARK: - 태그 선택 로직
+
     func toggleTag(_ tag: Tag) {
         if selectedTagIds.contains(tag.id) {
             selectedTagIds.remove(tag.id)

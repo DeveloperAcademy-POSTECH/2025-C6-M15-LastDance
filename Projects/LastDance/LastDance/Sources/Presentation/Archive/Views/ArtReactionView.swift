@@ -11,18 +11,18 @@ import UIKit
 struct ArtReactionView: View {
     let artwork: Artwork
     let artist: Artist?
-    
+
     @StateObject private var viewModel: ArtReactionViewModel
     @EnvironmentObject private var router: NavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
-    
+
     init(artwork: Artwork, artist: Artist?) {
         self.artwork = artwork
         self.artist = artist
         _viewModel = StateObject(wrappedValue: ArtReactionViewModel(artworkId: artwork.id))
     }
-    
+
     var body: some View {
         // 스크롤에 따라 이미지 크기 조정
         let imageHeight = max(200, 468 - scrollOffset * 0.5)
@@ -40,7 +40,8 @@ struct ArtReactionView: View {
                 VStack(spacing: 0) {
                     // 작품 이미지
                     if let imageURLString = artwork.thumbnailURL,
-                        let imageURL = URL(string: imageURLString) {
+                        let imageURL = URL(string: imageURLString)
+                    {
                         AsyncImage(url: imageURL) { image in
                             image.resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -193,9 +194,10 @@ struct ArtReactionView: View {
 }
 
 // MARK: - TabBarView Component
+
 struct TabBarView: View {
     @Binding var selectedTab: ArtReactionTab
-    
+
     var body: some View {
         HStack(spacing: 0) {
             Button(action: {
@@ -205,14 +207,14 @@ struct TabBarView: View {
                     Text("작품")
                         .font(Font.custom("Pretendard", size: 18).weight(.semibold))
                         .foregroundColor(selectedTab == .artwork ? LDColor.color1 : LDColor.color2)
-                    
+
                     Rectangle()
                         .fill(selectedTab == .artwork ? LDColor.color1 : Color.clear)
                         .frame(height: 2)
                 }
             }
             .frame(maxWidth: .infinity)
-            
+
             Button(action: {
                 selectedTab = .reaction
             }) {
@@ -220,7 +222,7 @@ struct TabBarView: View {
                     Text("감상")
                         .font(Font.custom("Pretendard", size: 18).weight(.semibold))
                         .foregroundColor(selectedTab == .reaction ? LDColor.color1 : LDColor.color2)
-                    
+
                     Rectangle()
                         .fill(selectedTab == .reaction ? LDColor.color1 : Color.clear)
                         .frame(height: 2)
@@ -233,6 +235,7 @@ struct TabBarView: View {
 }
 
 // MARK: - ScrollOffsetPreferenceKey
+
 struct ScrollOffsetPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
@@ -241,6 +244,7 @@ struct ScrollOffsetPreferenceKey: PreferenceKey {
 }
 
 // MARK: - ScrollViewObserver
+
 struct ScrollViewObserver<Content: View>: UIViewRepresentable {
     let content: Content
     @Binding var scrollOffset: CGFloat
@@ -249,6 +253,7 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         _scrollOffset = scrollOffset
         self.content = content()
     }
+
     func makeUIView(context: Context) -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
@@ -266,19 +271,22 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
             hostingController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             hostingController.view.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            hostingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            hostingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
 
         context.coordinator.hostingController = hostingController
 
         return scrollView
     }
-    func updateUIView(_ uiView: UIScrollView, context: Context) {
+
+    func updateUIView(_: UIScrollView, context: Context) {
         context.coordinator.hostingController?.rootView = content
     }
+
     func makeCoordinator() -> Coordinator {
         Coordinator(scrollOffset: $scrollOffset)
     }
+
     class Coordinator: NSObject, UIScrollViewDelegate {
         @Binding var scrollOffset: CGFloat
         var hostingController: UIHostingController<Content>?
@@ -286,6 +294,7 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         init(scrollOffset: Binding<CGFloat>) {
             _scrollOffset = scrollOffset
         }
+
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offset = max(0, scrollView.contentOffset.y)
             DispatchQueue.main.async {

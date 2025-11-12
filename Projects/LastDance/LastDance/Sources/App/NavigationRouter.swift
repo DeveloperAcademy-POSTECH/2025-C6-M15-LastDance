@@ -36,7 +36,7 @@ final class NavigationRouter: ObservableObject {
         }
         Log.debug("popTo: Path after operation: \(path)")
     }
-    
+
     func popToLast(where predicate: (Route) -> Bool) {
         guard let lastIndex = path.lastIndex(where: predicate) else { return }
         path.removeSubrange((lastIndex + 1)...)

@@ -106,7 +106,10 @@ struct ArticleListNextButton: View {
             isEnabled: viewModel.selectedArtistId != nil
         ) {
             if let artistId = viewModel.tapNextButton() {
-                router.push(.completeArticleList(selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId))
+                router.push(
+                    .completeArticleList(
+                        selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId
+                    ))
             }
         }
     }
@@ -121,7 +124,7 @@ struct ArticleListView: View {
     let selectedExhibitionId: Int
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack(spacing: 0) {
                 PageIndicator(totalPages: 2, currentPage: 1)
 

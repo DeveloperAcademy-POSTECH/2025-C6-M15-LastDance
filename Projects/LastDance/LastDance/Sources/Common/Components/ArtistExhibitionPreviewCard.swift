@@ -5,8 +5,8 @@
 //  Created by donghee on 10/21/25.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct ArtistExhibitionPreviewCard: View {
     let exhibition: Exhibition
@@ -21,11 +21,11 @@ struct ArtistExhibitionPreviewCard: View {
             ArtistExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
+                dateRange: Date.formatShortDateRange(
+                    start: exhibition.startDate, end: exhibition.endDate),
                 onConfirm: onConfirm
             )
             .padding(.horizontal, 12)
-
         }
         .frame(maxWidth: .infinity)
         .background(.white)
@@ -35,6 +35,7 @@ struct ArtistExhibitionPreviewCard: View {
 }
 
 // MARK: - ArtistExhibitionPreviewImage
+
 struct ArtistExhibitionPreviewImage: View {
     let imageName: String?
 

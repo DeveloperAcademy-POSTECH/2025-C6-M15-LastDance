@@ -19,14 +19,16 @@ struct ExhibitionArchiveView: View {
     }
 
     init(exhibitionId: Int) {
-        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(
-            exhibitionId: exhibitionId
-        ))
+        _viewModel = StateObject(
+            wrappedValue: ExhibitionArchiveViewModel(
+                exhibitionId: exhibitionId
+            ))
 
-            // 해당 id에 맞는 Exhibition 정보만 가져옴
-        _exhibitions = Query(filter: #Predicate<Exhibition> { exhibition in
-            exhibition.id == exhibitionId
-        })
+        // 해당 id에 맞는 Exhibition 정보만 가져옴
+        _exhibitions = Query(
+            filter: #Predicate<Exhibition> { exhibition in
+                exhibition.id == exhibitionId
+            })
     }
 
     var body: some View {
@@ -66,7 +68,9 @@ struct ExhibitionArchiveView: View {
                         spacing: 24
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
-                            if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                            if let reaction = viewModel.reactions.first(where: {
+                                $0.artworkId == artwork.id
+                            }) {
                                 let artist = viewModel.artist(for: artwork)
                                 ReactionCardView(
                                     reaction: reaction,

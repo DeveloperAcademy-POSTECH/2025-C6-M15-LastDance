@@ -5,8 +5,8 @@
 //  Created by 아우신얀 on 10/15/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct InputArtworkInfoView: View {
     @EnvironmentObject private var router: NavigationRouter
@@ -30,13 +30,13 @@ struct InputArtworkInfoView: View {
             VStack {
                 ScrollView {
                     Spacer().frame(height: 24)
-                    
+
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LDColor.color5)
                             .frame(width: 311, height: 411)
                             .shadow(color: .black.opacity(0.24), radius: 6, x: 0, y: 0)
-                        
+
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFill()
@@ -44,9 +44,9 @@ struct InputArtworkInfoView: View {
                             .cornerRadius(12)
                             .clipped()
                     }
-                    
+
                     Spacer().frame(height: 36)
-                    
+
                     VStack(spacing: 12) {
                         InputFieldButton(
                             label: "제목",
@@ -54,7 +54,7 @@ struct InputArtworkInfoView: View {
                             placeholder: "작품 제목을 선택해주세요",
                             action: { activeBottomSheet = .artwork }
                         )
-                        
+
                         InputFieldButton(
                             label: "작가",
                             value: viewModel.selectedArtistName,
@@ -63,27 +63,35 @@ struct InputArtworkInfoView: View {
                         )
                     }
                     .padding(.horizontal, 24)
-                    
+
                     Spacer()
                 }
-                
+
                 BottomButton(
                     text: "다음",
                     isEnabled: !viewModel.selectedArtworkTitle.isEmpty
-                    && !viewModel.selectedArtistName.isEmpty,
+                        && !viewModel.selectedArtistName.isEmpty,
                     action: {
                         // 선택한 작품 찾기
-                        guard let selectedArtwork = artworks.first(where: { $0.title == viewModel.selectedArtworkTitle }) else {
+                        guard
+                            let selectedArtwork = artworks.first(where: {
+                                $0.title == viewModel.selectedArtworkTitle
+                            })
+                        else {
                             Log.debug("선택한 작품을 찾을 수 없습니다: \(viewModel.selectedArtworkTitle)")
                             return
                         }
-                        
+
                         // 선택한 작가 찾기
-                        guard let selectedArtist = artists.first(where: { $0.name == viewModel.selectedArtistName }) else {
+                        guard
+                            let selectedArtist = artists.first(where: {
+                                $0.name == viewModel.selectedArtistName
+                            })
+                        else {
                             Log.debug("선택한 작가를 찾을 수 없습니다: \(viewModel.selectedArtistName)")
                             return
                         }
-                        
+
                         viewModel.setArtworkInfo(
                             artworkTitle: viewModel.selectedArtworkTitle,
                             artistName: viewModel.selectedArtistName,
@@ -91,7 +99,11 @@ struct InputArtworkInfoView: View {
                             artistId: selectedArtist.id
                         ) { success in
                             if success {
-                                router.push(.artworkDetail(id: selectedArtwork.id, capturedImage: image, exhibitionId: exhibitionId!))
+                                router.push(
+                                    .artworkDetail(
+                                        id: selectedArtwork.id, capturedImage: image,
+                                        exhibitionId: exhibitionId!
+                                    ))
                             }
                         }
                     }
@@ -99,7 +111,7 @@ struct InputArtworkInfoView: View {
                 .padding(.bottom, 35)
             }
             .background(LDColor.color6)
-            
+
             if isBottomSheetActive {
                 Color.black.opacity(0.8)
                     .ignoresSafeArea()
@@ -107,7 +119,7 @@ struct InputArtworkInfoView: View {
                         activeBottomSheet = nil
                     }
             }
-            
+
             /// 작품 제목 바텀시트
             if activeBottomSheet == .artwork {
                 CustomBottomSheet(
@@ -128,7 +140,7 @@ struct InputArtworkInfoView: View {
                     viewModel.fetchArtworks(artistId: artistId, exhibitionId: exhibitionId)
                 }
             }
-            
+
             /// 작가 바텀시트
             if activeBottomSheet == .artist {
                 CustomBottomSheet(
@@ -164,6 +176,7 @@ struct InputArtworkInfoView: View {
 }
 
 // MARK: - InputFieldButton
+
 private struct InputFieldButton: View {
     let label: String
     let value: String
@@ -180,7 +193,7 @@ private struct InputFieldButton: View {
                 Text(value.isEmpty ? placeholder : value)
                     .foregroundColor(
                         value.isEmpty
-                        ? LDColor.gray9
+                            ? LDColor.gray9
                             : .primary
                     )
             }
@@ -193,6 +206,7 @@ private struct InputFieldButton: View {
 }
 
 // MARK: - SelectionSheet
+
 private struct SelectionSheet: View {
     let title: String
     let items: [String]

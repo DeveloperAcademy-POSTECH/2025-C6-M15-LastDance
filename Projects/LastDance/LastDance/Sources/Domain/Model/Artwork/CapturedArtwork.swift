@@ -16,11 +16,13 @@ final class CapturedArtwork {
     var createdAt: Date
     var note: String?
 
-    init(id: Int,
-         artworkId: Int? = nil,
-         localImagePath: String,
-         createdAt: Date = .now,
-         note: String? = nil) {
+    init(
+        id: Int,
+        artworkId: Int? = nil,
+        localImagePath: String,
+        createdAt: Date = .now,
+        note: String? = nil
+    ) {
         self.id = id
         self.artworkId = artworkId
         self.localImagePath = localImagePath

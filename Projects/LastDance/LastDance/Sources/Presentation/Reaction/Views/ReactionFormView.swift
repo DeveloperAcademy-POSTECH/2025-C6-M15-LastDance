@@ -20,7 +20,7 @@ struct ReactionFormView: View {
     private var hasSelectedEmotion: Bool {
         !viewModel.selectedCategories.isEmpty || !viewModel.selectedTagsName.isEmpty
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("반응 남기기")
@@ -106,8 +106,11 @@ struct ReactionFormView: View {
                     if !viewModel.selectedCategories.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedCategories).sorted(), id: \.self) { categoryName in
-                                    let category = viewModel.categories.first { $0.name == categoryName }
+                                ForEach(Array(viewModel.selectedCategories).sorted(), id: \.self) {
+                                    categoryName in
+                                    let category = viewModel.categories.first {
+                                        $0.name == categoryName
+                                    }
                                     ReactionTag(
                                         text: categoryName,
                                         color: Color(hex: category?.colorHex ?? "#FFFFFF")
@@ -120,7 +123,8 @@ struct ReactionFormView: View {
                     if !viewModel.selectedTagsName.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedTagsName).sorted(), id: \.self) { tagName in
+                                ForEach(Array(viewModel.selectedTagsName).sorted(), id: \.self) {
+                                    tagName in
                                     ReactionTag(
                                         text: tagName,
                                         color: viewModel.findColorForTag(tagName: tagName)
@@ -134,7 +138,6 @@ struct ReactionFormView: View {
         }
     }
 
-
     @ViewBuilder
     private var MessageEditor: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -143,7 +146,6 @@ struct ReactionFormView: View {
 
             VStack(alignment: .trailing, spacing: 8) {
                 ZStack(alignment: .topLeading) {
-
                     Rectangle()
                         .fill(LDColor.color6)
                         .frame(minHeight: 100, maxHeight: 152)
@@ -189,7 +191,6 @@ struct ReactionFormView: View {
                         .foregroundStyle(.gray)
                 }
             }
-
         }
     }
 }

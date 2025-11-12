@@ -11,7 +11,7 @@ struct CompleteReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
 
     let exhibitionId: Int
-    
+
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
         // 반응 전송이 완료되면 사용한 이미지 URL을 UserDefaults에서 삭제
@@ -41,8 +41,7 @@ struct CompleteReactionView: View {
             Spacer()
 
             HStack(spacing: 19) {
-                OutlinedButton(title: "관람 끝내기", color: LDColor.gray3, textColor: LDColor.gray1)
-                {
+                OutlinedButton(title: "관람 끝내기", color: LDColor.gray3, textColor: LDColor.gray1) {
                     router.push(.audienceArchiving)
                 }
 
@@ -50,7 +49,9 @@ struct CompleteReactionView: View {
                     title: "관람 계속하기",
                     color: LDColor.color1, textColor: LDColor.color6
                 ) {
-                    Log.debug("CompleteReactionView: Tapping Continue Viewing. Popping to archive with exhibitionId: \(exhibitionId)")
+                    Log.debug(
+                        "CompleteReactionView: Tapping Continue Viewing. Popping to archive with exhibitionId: \(exhibitionId)"
+                    )
                     router.popTo(.archive(id: exhibitionId))
                 }
             }

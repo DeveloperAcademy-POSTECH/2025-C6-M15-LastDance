@@ -10,7 +10,7 @@ enum Config {
     enum Network {
         static let baseURL = "BASE_URL"
     }
-    
+
     private static let infoDictionarys: [String: Any] = {
         guard let dict = Bundle.main.infoDictionary else {
             fatalError("plist cannot found.")

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct AudienceArchivingView: View {
     @StateObject private var viewModel = ArchivingViewModel()
+    @StateObject private var alarmViewModel = AlarmViewModel()
     @EnvironmentObject private var router: NavigationRouter
-    
+
     private let gridColumns: [GridItem] = [
         GridItem(.fixed(155), spacing: 16),
-        GridItem(.fixed(155), spacing: 16)
+        GridItem(.fixed(155), spacing: 16),
     ]
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
@@ -37,7 +38,8 @@ struct AudienceArchivingView: View {
                         alignment: .leading,
                         spacing: 24
                     ) {
-                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) { index, exhibition in
+                        ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) {
+                            index, exhibition in
                             ExhibitionCardView(
                                 exhibition: exhibition,
                                 dateString: viewModel.dateString(for: exhibition)
@@ -81,6 +83,7 @@ struct AudienceArchivingView: View {
         }
         .onAppear {
             viewModel.loadExhibitions()
+            alarmViewModel.checkNotifications()
         }
     }
 }
@@ -90,12 +93,13 @@ struct AudienceArchivingView: View {
 struct ExhibitionCardView: View {
     let exhibition: Exhibition
     let dateString: String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             // 전시 포스터 이미지
             if let coverImageURLString = exhibition.coverImageName,
-                let coverImageURL = URL(string: coverImageURLString) {
+                let coverImageURL = URL(string: coverImageURLString)
+            {
                 AsyncImage(url: coverImageURL) { phase in
                     switch phase {
                     case .empty:
@@ -137,7 +141,7 @@ struct ExhibitionCardView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .frame(width: 155, alignment: .leading)
-            
+
             // 날짜
             Text(dateString)
                 .font(LDFont.regular03)

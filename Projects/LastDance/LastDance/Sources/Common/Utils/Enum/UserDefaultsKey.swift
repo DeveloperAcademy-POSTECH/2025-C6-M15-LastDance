@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  UserDefaultsKey.swift
 //  LastDance
 //
 //  Created by 아우신얀 on 10/15/25.
@@ -10,7 +10,7 @@ enum UserDefaultsKey: String {
     case selectedCategories
     case seed = "seed.v1"
     case userType
-    
+
     /// 방문이력 Id 정보 Key
     case visitId
 
@@ -21,20 +21,20 @@ enum UserDefaultsKey: String {
 
     /// 작가 UUID 정보 Key
     case artistUUID
-    
+
     /// 작가 id 정보 Key
     case artistId
-    
+
     /// 작가 Name 정보 Key
     case artistName
 
     /// 업로드된 이미지 URL Key
     case uploadedImageUrl
-    
+
     /// 첫 리액션 등록 여부
     case hasRegisteredFirstReaction
-    
+
     var key: String {
-        return self.rawValue
+        return rawValue
     }
 }

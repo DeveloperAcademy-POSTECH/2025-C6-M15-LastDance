@@ -11,4 +11,3 @@ enum ArtReactionTab {
     case artwork
     case reaction
 }
-

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BackGround: View {
     let geometry: GeometryProxy
-    
+
     var body: some View {
         Image("bauhausArt08")
             .resizable()

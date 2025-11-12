@@ -29,10 +29,10 @@ extension TagCategoryAPI: BaseTargetType {
         }
     }
 
-    var queryParameters: [String : Any]? {
+    var queryParameters: [String: Any]? {
         nil
     }
-    
+
     var bodyParameters: Codable? {
         nil
     }

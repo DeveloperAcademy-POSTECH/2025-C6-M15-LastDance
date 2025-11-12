@@ -22,7 +22,7 @@ extension ExhibitionAPI: BaseTargetType {
             return "\(APIVersion.version1)/exhibitions/\(exhibition_id)"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
         case .getExhibitions, .getDetailExhibition:
@@ -31,8 +31,8 @@ extension ExhibitionAPI: BaseTargetType {
             return .post
         }
     }
-    
-    var queryParameters: [String : Any]? {
+
+    var queryParameters: [String: Any]? {
         switch self {
         case .getExhibitions(let status, let venue_id):
             var params: [String: Any] = [:]
@@ -47,7 +47,7 @@ extension ExhibitionAPI: BaseTargetType {
             return nil
         }
     }
-    
+
     var bodyParameters: Codable? {
         switch self {
         case .getExhibitions, .getDetailExhibition:
@@ -57,4 +57,3 @@ extension ExhibitionAPI: BaseTargetType {
         }
     }
 }
-
