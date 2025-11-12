@@ -33,25 +33,27 @@ struct ExhibitionArchiveView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 전시 제목
-            HStack {
+            // 전시 정보 헤더
+            VStack(alignment: .leading, spacing: 8) {
+                // 전시 제목
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
-                    .font(LDFont.heading02)
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
-                Spacer()
-            }
-            .padding(.top, 24)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            // 날짜
-            HStack {
+                // 날짜
                 Text(exhibition?.createdAt ?? "")
                     .font(LDFont.regular03)
                     .foregroundColor(LDColor.color2)
-                Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.top, 4)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 16)
+            .border(.yellow)
+
             // 반응 목록
-            ScrollView {
+            ZStack(alignment: .top) {
+                ScrollView {
                 if viewModel.isLoading {
                     // 로딩 상태
                     ProgressView()
@@ -83,7 +85,8 @@ struct ExhibitionArchiveView: View {
                             }
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 5)
                     .padding(.bottom, 40)
                 } else {
                     // 빈 상태
@@ -93,8 +96,21 @@ struct ExhibitionArchiveView: View {
                         .frame(maxWidth: .infinity, minHeight: 400)
                 }
             }
+
+                // 상단 블러 효과
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        LDColor.color6,
+                        LDColor.color6.opacity(0.8),
+                        LDColor.color6.opacity(0)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 5)
+                .allowsHitTesting(false)
+            }
         }
-        .padding(.horizontal, 24)
         .background(LDColor.color6)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
@@ -119,7 +135,7 @@ struct ReactionCardView: View {
             // 작품 이미지
             CachedImage(artwork?.thumbnailURL)
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 157, height: 219)
+                .frame(width: 157, height: 213)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
             // 작품 이름

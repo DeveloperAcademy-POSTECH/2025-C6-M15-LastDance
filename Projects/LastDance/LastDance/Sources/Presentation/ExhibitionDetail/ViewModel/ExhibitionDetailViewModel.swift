@@ -17,36 +17,64 @@ final class ExhibitionDetailViewModel: ObservableObject {
     private let dataManager = SwiftDataManager.shared
     private let artistAPIService: ArtistAPIServiceProtocol  // Added dependency
     private let visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol
+    private let exhibitionAPIService: ExhibitionAPIServiceProtocol
 
     private var currentArtistId: Int?  // To store the ID of the current artist
 
     init(
         artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService(),
-        visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol = VisitHistoriesAPIService()
+        visitHistoriesAPIService: VisitHistoriesAPIServiceProtocol = VisitHistoriesAPIService(),
+        exhibitionAPIService: ExhibitionAPIServiceProtocol = ExhibitionAPIService()
     ) {
         self.artistAPIService = artistAPIService
         self.visitHistoriesAPIService = visitHistoriesAPIService
+        self.exhibitionAPIService = exhibitionAPIService
     }
 
     /// 전시 정보 가져오기
     func fetchExhibition(by id: Int) {
-        // TODO: SwiftDataManager.fetchById 사용 시 predicate 오류 발생
-        // 임시로 fetchAll 후 필터링 사용
-        let allExhibitions = dataManager.fetchAll(Exhibition.self)
-        exhibition = allExhibitions.first { $0.id == id }
+        // API로 전시 상세 정보 가져오기 (artworks 포함)
+        exhibitionAPIService.getDetailExhibition(exhibitionId: id) { [weak self] result in
+            guard let self = self else { return }
 
-        if exhibition != nil {
-            fetchArtistNames()
-            // Also fetch the current artist ID when the view model loads
-            if let userTypeValue = UserDefaults.standard.string(
-                forKey: UserDefaultsKey.userType.key),
-                let userType = UserType(rawValue: userTypeValue),
-                userType == .artist
-            {
-                fetchCurrentArtistId()
+            switch result {
+            case .success(let exhibitionDto):
+                Log.debug("fetchExhibition: API로 전시 상세 조회 성공 - id: \(id), title: \(exhibitionDto.title)")
+
+                // 로컬 DB에서 가져오기 (API 호출 시 이미 저장됨)
+                let allExhibitions = self.dataManager.fetchAll(Exhibition.self)
+                self.exhibition = allExhibitions.first { $0.id == id }
+
+                if let exhibition = self.exhibition {
+                    Log.debug("fetchExhibition: Found exhibition with id \(id), artworks count: \(exhibition.artworks.count)")
+                    self.fetchArtistNames()
+
+                    // Also fetch the current artist ID when the view model loads
+                    if let userTypeValue = UserDefaults.standard.string(
+                        forKey: UserDefaultsKey.userType.key),
+                        let userType = UserType(rawValue: userTypeValue),
+                        userType == .artist
+                    {
+                        self.fetchCurrentArtistId()
+                    }
+                } else {
+                    Log.debug("fetchExhibition: Exhibition not found in local DB after API call")
+                    self.showErrorAlert = true
+                }
+
+            case .failure(let error):
+                Log.error("fetchExhibition: API 호출 실패 - \(error)")
+                // API 실패 시 로컬 DB에서 시도
+                let allExhibitions = self.dataManager.fetchAll(Exhibition.self)
+                self.exhibition = allExhibitions.first { $0.id == id }
+
+                if let exhibition = self.exhibition {
+                    Log.debug("fetchExhibition: Found exhibition in local DB (fallback)")
+                    self.fetchArtistNames()
+                } else {
+                    self.showErrorAlert = true
+                }
             }
-        } else {
-            showErrorAlert = true
         }
     }
 
@@ -57,14 +85,24 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
     /// 작가 이름 가져오기
     private func fetchArtistNames() {
-        guard let exhibition = exhibition else { return }
+        guard let exhibition = exhibition else {
+            Log.debug("fetchArtistNames: exhibition is nil")
+            return
+        }
 
         let allArtists = dataManager.fetchAll(Artist.self)
         let artistIds = exhibition.artworks.compactMap { $0.artistId }
+
+        Log.debug("fetchArtistNames: exhibition.artworks count = \(exhibition.artworks.count)")
+        Log.debug("fetchArtistNames: artistIds = \(artistIds)")
+        Log.debug("fetchArtistNames: allArtists count = \(allArtists.count)")
+
         artistNames =
             allArtists
             .filter { artistIds.contains($0.id) }
             .map { $0.name }
+
+        Log.debug("fetchArtistNames: artistNames = \(artistNames)")
     }
 
     /// 현재 아티스트 ID 가져오기

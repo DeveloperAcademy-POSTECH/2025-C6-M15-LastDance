@@ -50,6 +50,7 @@ struct ArticleButtons: View {
                 .cornerRadius(12)
             }
         }
+        .padding(.bottom, 8)
     }
 }
 
@@ -71,7 +72,6 @@ struct ArtistConfirmationButtons: View {
                     .font(LDFont.regular02)
                     .foregroundColor(LDColor.gray5)
             }
-            .padding(.bottom, 16)
             Spacer()
             // 내 전시가 맞아요 버튼
             Button(action: onConfirm) {
@@ -86,10 +86,10 @@ struct ArtistConfirmationButtons: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .frame(maxWidth: 160)
                 .background(LDColor.color1)
                 .cornerRadius(12)
             }
         }
+        .padding(.bottom, 8)
     }
 }

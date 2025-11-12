@@ -13,7 +13,7 @@ struct ArticleListSearchTextField: View {
 
     var body: some View {
         TextField(
-            "작가명을 검색해주세요",
+            "작가명을 선택해주세요",
             text: $viewModel.searchText
         )
         .font(LDFont.regular01)
@@ -22,7 +22,7 @@ struct ArticleListSearchTextField: View {
         .padding(.vertical, 16)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(LDColor.color6)
+                .fill(LDColor.color5)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 8)

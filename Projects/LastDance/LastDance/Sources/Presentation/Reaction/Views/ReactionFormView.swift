@@ -83,17 +83,17 @@ struct ReactionFormView: View {
                                 .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
-                                    LDColor.black2
+                                    LDColor.color2
                                 )
                                 .lineSpacing(5)
 
                             Spacer()
 
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.system(size: 20, weight: .semibold))
                                 .frame(width: 15, height: 20)
                                 .padding(.vertical, 4)
-                                .foregroundColor(.black.opacity(0.6))
+                                .foregroundColor(LDColor.color2)
                         }
                         .padding(12)
                         .frame(maxWidth: .infinity, alignment: .leading)
