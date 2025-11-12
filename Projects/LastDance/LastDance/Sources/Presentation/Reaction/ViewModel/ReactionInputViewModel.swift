@@ -34,6 +34,7 @@ final class ReactionInputViewModel: ObservableObject {
     let tagLimit = 6
     let limit = 500  // texteditor 최대 글자수 제한
 
+    let profanity = ProfanityFilter()
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
@@ -46,6 +47,7 @@ final class ReactionInputViewModel: ObservableObject {
     private let tagAPIService = TagAPIService()
 
     init() {
+        loadBadwordsFromBundle()
         setupThrottling()
     }
 
@@ -76,8 +78,14 @@ final class ReactionInputViewModel: ObservableObject {
             .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                guard let self else { return }
                 Log.debug("BottomButton 스로틀링 통과 - Alert 표시")
-                self?.shouldShowConfirmAlert = true
+                if self.profanity.containsProfanity(in: self.message) {
+                    self.alertType = .restriction
+                } else {
+                    self.alertType = .confirmation
+                }
+                self.shouldShowConfirmAlert = true
             }
             .store(in: &cancellables)
 
@@ -86,10 +94,22 @@ final class ReactionInputViewModel: ObservableObject {
             .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                guard let self else { return }
                 Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
-                self?.shouldTriggerSend = true
+                self.shouldTriggerSend = true
             }
             .store(in: &cancellables)
+    }
+
+    // 번들에서 badword_filter.txt 로드
+    private func loadBadwordsFromBundle() {
+        if let url = Bundle.main.url(forResource: "badword_filter", withExtension: "txt"),
+           let data = try? Data(contentsOf: url) {
+            profanity.load(from: data)
+            Log.info("badword_filter.txt 로드 완료 (\(profanity.words.count)개)")
+        } else {
+            Log.warning("badword_filter.txt 를 번들에 없음")
+        }
     }
 
     // 텍스트 길이 제한 로직
