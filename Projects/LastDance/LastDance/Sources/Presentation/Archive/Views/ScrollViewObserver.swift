@@ -16,6 +16,7 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         _scrollOffset = scrollOffset
         self.content = content()
     }
+    
     func makeUIView(context: Context) -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.delegate = context.coordinator
@@ -40,12 +41,15 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         
         return scrollView
     }
+    
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         context.coordinator.hostingController?.rootView = content
     }
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(scrollOffset: $scrollOffset)
     }
+    
     class Coordinator: NSObject, UIScrollViewDelegate {
         @Binding var scrollOffset: CGFloat
         var hostingController: UIHostingController<Content>?
@@ -53,6 +57,7 @@ struct ScrollViewObserver<Content: View>: UIViewRepresentable {
         init(scrollOffset: Binding<CGFloat>) {
             _scrollOffset = scrollOffset
         }
+        
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offset = max(0, scrollView.contentOffset.y)
             DispatchQueue.main.async {

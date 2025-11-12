@@ -34,10 +34,9 @@ struct ClipCompleteView: View {
             
             Spacer()
 
-            ClipBottomButton(text: "전시 계속 보기") {
+            BottomButton(text: "전시 계속 보기") {
                 openURL(appStoreURL)
             }
-                .padding(.bottom, 12)
         }
         .navigationBarBackButtonHidden()
     }

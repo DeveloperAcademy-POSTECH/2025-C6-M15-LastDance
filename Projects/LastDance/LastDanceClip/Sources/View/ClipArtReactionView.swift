@@ -39,10 +39,7 @@ struct ClipArtReactionView: View {
                 // 스크롤 가능한 콘텐츠 영역
                 ScrollViewObserver(scrollOffset: $scrollOffset) {
                     VStack(spacing: 0) {
-                        
-                        Color.clear
-                            .frame(height: 36)
-                            .background(Color.white)
+                        Color.clear.frame(height: 36)
                         
                         // 작품 이미지
                         if let imageURLString = viewModel.artwork?.thumbnailURL,
@@ -54,7 +51,7 @@ struct ClipArtReactionView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            .frame(width: imageWidth, height: imageHeight)
+                            .frame(width: imageWidth, height: isMessageFieldFocused ? 0 : imageHeight)
                             .cornerRadius(24)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 24)
@@ -64,7 +61,7 @@ struct ClipArtReactionView: View {
                         } else {
                             Rectangle()
                                 .fill(Color.gray.opacity(0.15))
-                                .frame(width: imageWidth, height: imageHeight)
+                                .frame(width: imageWidth, height: isMessageFieldFocused ? 0 : imageHeight)
                                 .cornerRadius(24)
                                 .overlay(Text("이미지 없음").foregroundColor(.gray))
                         }
@@ -94,7 +91,7 @@ struct ClipArtReactionView: View {
                 .background(Color.white)
             }
             
-            // 최상단 고정 탭바 (ZStack의 .top에 위치하며 스크롤 및 키보드에 영향을 받지 않음)
+            // 최상단 고정 탭바
             VStack(spacing: 0) {
                 Color.clear
                     .frame(height: 36)
@@ -107,12 +104,11 @@ struct ClipArtReactionView: View {
             .opacity((viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused) ? 1 : 0)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             
-            
-            // 하단 버튼 (ZStack에 배치하여 스크롤과 독립적으로 위치)
+            // 하단 버튼
             VStack {
                 Spacer()
                 if selectedTab == .reaction {
-                    ClipBottomButton(
+                    BottomButton(
                         text: "전송하기",
                         isEnabled: viewModel.hasText,
                         action: { buttonAction() }
@@ -213,46 +209,44 @@ struct ClipArtReactionView: View {
                 .foregroundColor(.black)
             
             ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.gray.opacity(0.06))
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(LDColor.color5)
                     .frame(height: 123)
                 
-                if viewModel.message.isEmpty {
+                if viewModel.message.isEmpty && !isMessageFieldFocused {
                     Text("작품에 대한 생각을 자유롭게 적어보세요.")
-                        .foregroundColor(Color.gray.opacity(0.6))
+                        .foregroundColor(LDColor.color3)
                         .padding(.top, 12)
                         .padding(.leading, 14)
                 }
                 
-                TextEditor(text: $viewModel.message)
-                    .scrollContentBackground(.hidden)
-                    .background(Color.clear)
-                    .tint(LDColor.gray5)
-                    .padding(.top, 3)
-                    .padding(.leading, 5)
-                    .padding(.trailing, 5)
-                    .padding(.bottom, 10)
-                    .frame(height: 123)
-                    .onChange(of: viewModel.message) { newValue in
-                        viewModel.updateMessage(newValue)
+                VStack(spacing: 14) {
+                    TextEditor(text: $viewModel.message)
+                        .scrollContentBackground(.hidden)
+                        .background(Color.clear)
+                        .tint(LDColor.gray5)
+                        .padding(.top, 3)
+                        .padding(.leading, 5)
+                        .padding(.trailing, 5)
+                        .frame(height: 84)
+                        .focused($isMessageFieldFocused)
+                        .onChange(of: viewModel.message) { newValue in
+                            viewModel.updateMessage(newValue)
+                        }
+                    HStack {
+                        Spacer()
+                        Text("\(viewModel.message.count)/\(viewModel.limit)")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(LDColor.color3)
+                            .padding(.trailing, 14)
+                            .padding(.bottom, 10)
                     }
-            }
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.gray.opacity(0.05))
-            )
-            
-            HStack {
-                Spacer()
-                Text("\(viewModel.message.count)/\(viewModel.limit)")
-                    .font(.system(size: 12))
-                    .foregroundColor(.gray)
+                }
             }
             
             Spacer(minLength: 300)
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
-        .padding(.bottom, 40)
     }
 }
