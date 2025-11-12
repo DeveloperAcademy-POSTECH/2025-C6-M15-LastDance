@@ -14,6 +14,11 @@ protocol ReactionAPIServiceProtocol {
     func createReaction(dto: ReactionRequestDto, completion: @escaping (Result<ReactionResponseDto, Error>) -> Void)
     func getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?, completion: @escaping (Result<[GetReactionResponseDto], Error>) -> Void)
     func getDetailReaction(reactionId: Int, completion: @escaping (Result<ReactionResponseDto, Error>) -> Void)
+    func getReactionsAsync(
+            artworkId: Int?,
+            visitorId: Int?,
+            visitId: Int?
+        ) async throws -> [GetReactionResponseDto]
 }
 
 // MARK: ReactionAPIService

@@ -13,6 +13,7 @@
 		99191EC62EA545DF00D2F71A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		997BB15E2EC1388E0052F9BA /* LastDanceClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB18C2EC14ACA0052F9BA /* Moya */; };
+		997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB4022EC50C1B0052F9BA /* Kingfisher */; };
 		D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D8CD5AC32EBC4BF700B9D44D /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,8 @@
 				"Resources/Fonts/Pretendard-Regular.otf",
 				"Resources/Fonts/Pretendard-SemiBold.otf",
 				"Resources/Fonts/Pretendard-Thin.otf",
+				Sources/Common/Components/Button/BottomButton.swift,
+				Sources/Common/Components/CachedImage.swift,
 				Sources/Common/DesignSystem/LDColor.swift,
 				Sources/Common/DesignSystem/LDFont.swift,
 				"Sources/Common/Extensions/Date+Extensions.swift",
@@ -156,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */,
 				997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,6 +229,7 @@
 			name = LastDanceClip;
 			packageProductDependencies = (
 				997BB18C2EC14ACA0052F9BA /* Moya */,
+				997BB4022EC50C1B0052F9BA /* Kingfisher */,
 			);
 			productName = LastDanceClip;
 			productReference = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */;
@@ -725,6 +730,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		997BB4022EC50C1B0052F9BA /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		D8CD5AC32EBC4BF700B9D44D /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

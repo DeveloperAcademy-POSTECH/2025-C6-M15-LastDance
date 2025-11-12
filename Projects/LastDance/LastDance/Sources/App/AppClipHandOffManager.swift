@@ -33,11 +33,3 @@ final class AppClipHandOffManager {
         )
     }
 }
-
-struct ClipPayload {
-    let visitorUUID: String
-    let visitorId: Int
-    let visitId: Int
-    let exhibitionId: Int
-    let artworkId: Int?
-}

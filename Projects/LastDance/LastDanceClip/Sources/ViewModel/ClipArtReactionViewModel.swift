@@ -14,6 +14,7 @@ final class ClipArtReactionViewModel: ObservableObject {
     @Published var message: String = ""
     @Published var isLoading: Bool = false
     @Published var isLoaded: Bool = false
+    @Published var isSending = false
     
     let limit = 500
 
@@ -78,52 +79,58 @@ final class ClipArtReactionViewModel: ObservableObject {
     }
 
     func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
-        scrollOffset > 200
+        scrollOffset > 100
     }
     
-    func sendReaction() {
-        Task {
-            do {
-                // 기기 UUID 만들기 or 기존 거 꺼내기
-                let uuid = UserDefaults.standard.string(
-                    forKey: UserDefaultsKey.visitorUUID.key
-                ) ?? {
-                    let newUUID = UUID().uuidString
-                    UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.key)
-                    return newUUID
-                }()
+    func sendReaction() async -> Bool {
+        guard !isSending else { return false } // 중복 탭 방지
+        isSending = true
+        defer { isSending = false }
+    
+        do {
+            // 기기 UUID 만들기 or 기존 거 꺼내기
+            let uuid = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.key
+            ) ?? {
+                let newUUID = UUID().uuidString
+                UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.key)
+                return newUUID
+            }()
 
-                // 서버에서 이 uuid로 visitorId 확보
-                let visitorId = try await visitorService.ensureVisitorId(for: uuid)
-                
-                // 서버에서 이 visitorId로 visitId 확보
-                let visitId = try await visitService.ensureVisitId(
-                    visitorId: visitorId,
-                    exhibitionId: exhibitionId
-                )
+            // 서버에서 이 uuid로 visitorId 확보
+            let visitorId = try await visitorService.ensureVisitorId(for: uuid)
+            
+            // 서버에서 이 visitorId로 visitId 확보
+            let visitId = try await visitService.ensureVisitId(
+                visitorId: visitorId,
+                exhibitionId: exhibitionId
+            )
 
-                // comment가 message고, imageUrl/tagIds는 없는 버전
-                let dto = ReactionRequestDto(
-                    artworkId: artworkId,
-                    visitorId: visitorId,
-                    visitId: visitId,
-                    comment: message.isEmpty ? nil : message,
-                    imageUrl: nil,
-                    tagIds: nil
-                )
-                
-                try await reactionService.createReaction(dto: dto)
-                
-                persistForMainApp(
-                    visitorUUID: uuid,
-                    visitorId: visitorId,
-                    visitId: visitId,
-                    exhibitionId: exhibitionId,
-                    artworkId: artworkId
-                )
-            } catch {
-                Log.error("createReaction error: \(error)")
-            }
+            // comment가 message고, imageUrl/tagIds는 없는 버전
+            let dto = ReactionRequestDto(
+                artworkId: artworkId,
+                visitorId: visitorId,
+                visitId: visitId,
+                comment: message.isEmpty ? nil : message,
+                imageUrl: nil,
+                tagIds: nil
+            )
+            
+            try await reactionService.createReaction(dto: dto)
+            
+            persistForMainApp(
+                visitorUUID: uuid,
+                visitorId: visitorId,
+                visitId: visitId,
+                exhibitionId: exhibitionId,
+                artworkId: artworkId
+            )
+            
+            Log.info("createReaction success")
+            return true
+        } catch {
+            Log.error("createReaction error: \(error)")
+            return false
         }
     }
     

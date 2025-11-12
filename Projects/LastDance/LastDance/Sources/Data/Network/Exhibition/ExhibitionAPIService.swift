@@ -14,6 +14,7 @@ protocol ExhibitionAPIServiceProtocol {
     func getExhibitions(status: String?, venueId: Int?, completion: @escaping (Result<[TotalExhibitionResponseDto], Error>) -> Void)
     func makeExhibition(dto: ExhibitionRequestDto, completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void)
     func getDetailExhibition(exhibitionId: Int, completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void)
+    func getExhibitionDetailAsync(id: Int) async throws -> ExhibitionResponseDto
 }
 
 // MARK: ExhibitionAPIService

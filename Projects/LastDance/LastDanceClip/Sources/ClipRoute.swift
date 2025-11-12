@@ -1,5 +1,5 @@
 //
-//  AppClipRoute.swift
+//  ClipRoute.swift
 //  LastDance
 //
 //  Created by 배현진 on 11/10/25.
