@@ -24,6 +24,7 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var shouldShowConfirmAlert = false
     @Published var shouldTriggerSend = false
     @Published var alertType: AlertType = .confirmation
+    @Published private(set) var forceDisableSendButton = false
 
     private var cancellables = Set<AnyCancellable>()
     private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
@@ -53,7 +54,7 @@ final class ReactionInputViewModel: ObservableObject {
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
-        return selectedTagIds.isEmpty
+        selectedTagIds.isEmpty || forceDisableSendButton
     }
 
     // 선택 개수 충족 검사
@@ -112,8 +113,18 @@ final class ReactionInputViewModel: ObservableObject {
         }
     }
 
+    // 제한 알럿에서 "다시 작성하기" 눌러 닫힐 때 호출
+    func handleRestrictionAlertDismiss() {
+        forceDisableSendButton = true
+    }
+
     // 텍스트 길이 제한 로직
     func updateMessage(newValue: String) {
+        // 사용자가 한단어라도 글자를 바꾸는 순간 재활성화
+        if forceDisableSendButton {
+            forceDisableSendButton = false
+        }
+        
         if newValue.count > limit {
             message = String(newValue.prefix(limit))
         } else {
