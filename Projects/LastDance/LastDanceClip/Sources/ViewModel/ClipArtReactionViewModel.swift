@@ -52,7 +52,7 @@ final class ClipArtReactionViewModel: ObservableObject {
         isLoading = true
         do {
             // 작품 상세 가져오기
-            let fetchedArtwork = try await artworkService.loadArtworkDetail(id: 25)
+            let fetchedArtwork = try await artworkService.loadArtworkDetail(id: artworkId)
             self.artwork = fetchedArtwork
 
             // 작가 정보도 있으면 가져오기

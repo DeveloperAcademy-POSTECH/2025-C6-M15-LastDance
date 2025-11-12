@@ -15,16 +15,13 @@ struct LastDanceClipApp: App {
         WindowGroup {
             ClipRootView()
                 .environmentObject(router)
-                .onAppear {
-                    // TODO: - 임시 확인을 위한 도메인 주소 지정.
-                    if router.path.isEmpty {
-                        if let url = URL(string: "https://nimble-griffin-1a0a69.netlify.app/artworkId/25?exhibitionId=9") {
-                            handle(url: url)
-                        }
-                    }
-                }
                 .onOpenURL { url in
                     handle(url: url)
+                }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+                    if let url = activity.webpageURL {
+                        handle(url: url)
+                    }
                 }
                 .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
         }
