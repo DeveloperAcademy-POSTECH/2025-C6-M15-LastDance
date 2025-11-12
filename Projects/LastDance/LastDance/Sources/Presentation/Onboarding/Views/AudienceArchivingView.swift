@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AudienceArchivingView: View {
     @StateObject private var viewModel = ArchivingViewModel()
+    @StateObject private var alarmViewModel = AlarmViewModel()
     @EnvironmentObject private var router: NavigationRouter
 
     private let gridColumns: [GridItem] = [
@@ -18,11 +19,24 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("나의 전시")
-                .font(LDFont.heading02)
-                .foregroundColor(.black)
-                .padding(.horizontal, 40)
-                .padding(.top, 20)
+            HStack {
+                Text("나의 전시")
+                    .font(LDFont.heading02)
+                    .foregroundColor(.black)
+
+                Spacer()
+
+                Button(action: {
+                    router.push(.alarmList(userType: .viewer))
+                }) {
+                    Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
+            }
+            .foregroundColor(.black)
+            .padding(.top, 20)
+            .padding(.horizontal, 24)
 
             if viewModel.isLoading {
                 ProgressView()
@@ -79,6 +93,7 @@ struct AudienceArchivingView: View {
         }
         .onAppear {
             viewModel.loadExhibitions()
+            alarmViewModel.checkNotifications()
         }
     }
 }

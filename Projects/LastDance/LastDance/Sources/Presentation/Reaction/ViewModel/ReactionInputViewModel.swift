@@ -5,6 +5,7 @@
 //  Created by 신얀 on 10/15/25.
 //
 
+import Combine
 import Moya
 import SwiftData
 import SwiftUI
@@ -20,6 +21,14 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var selectedCategoryIds: Set<Int> = []
     @Published var selectedTagIds: Set<Int> = []
     @Published var selectedTagsName: Set<String> = []
+    @Published var shouldShowConfirmAlert = false
+    @Published var shouldTriggerSend = false
+    @Published var alertType: AlertType = .confirmation
+
+    private var cancellables = Set<AnyCancellable>()
+    private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
+    private let confirmSendTapped = PassthroughSubject<Void, Never>()  // 알림창 내부 전송하기 탭 관리
+    private let throttleInterval: TimeInterval = 2.0
 
     let categoryLimit = 2
     let tagLimit = 6
@@ -36,6 +45,10 @@ final class ReactionInputViewModel: ObservableObject {
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
 
+    init() {
+        setupThrottling()
+    }
+
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
         return selectedTagIds.isEmpty
@@ -44,6 +57,39 @@ final class ReactionInputViewModel: ObservableObject {
     // 선택 개수 충족 검사
     var isFull: Bool {
         selectedTagIds.count >= tagLimit
+    }
+
+    func sendButtonAction() {
+        Log.debug("전송 버튼 탭 이벤트 발생")
+        sendButtonTapped.send()
+    }
+
+    func confirmSendAction() {
+        Log.debug("Alert 전송 버튼 탭 이벤트 발생")
+        confirmSendTapped.send()
+    }
+
+    /// Throttling 설정
+    private func setupThrottling() {
+        // BottomButton 스로틀링
+        sendButtonTapped
+            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                Log.debug("BottomButton 스로틀링 통과 - Alert 표시")
+                self?.shouldShowConfirmAlert = true
+            }
+            .store(in: &cancellables)
+
+        // Alert 전송 버튼 스로틀링
+        confirmSendTapped
+            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
+                self?.shouldTriggerSend = true
+            }
+            .store(in: &cancellables)
     }
 
     // 텍스트 길이 제한 로직
@@ -118,10 +164,87 @@ final class ReactionInputViewModel: ObservableObject {
                     }
 
                     completion(true)
+
                 case .failure(let error):
                     Log.debug("반응 저장 실패: \(error)")
                     completion(false)
                 }
+            }
+        }
+    }
+
+    /// UserDefaults, SwiftData 접근 및 검증 메서드
+    func performSendReaction(
+        artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
+    ) {
+        // UserDefaults에서 업로드된 이미지 URL 가져오기
+        let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+
+        // UserDefaults에서 저장된 visitorUUID 가져오기
+        guard
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
+        else {
+            Log.warning("visitorUUID를 찾을 수 없습니다")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // SwiftData에서 UUID로 Visitor 조회
+        let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
+        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+            Log.warning("Visitor를 찾을 수 없습니다")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // 현재 작품이 속한 전시 ID 찾기
+        let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+        guard let currentArtwork = artworks.first(where: { $0.id == artworkId }) else {
+            Log.warning("현재 Artwork을 찾을 수 없습니다. (exhibitionId 파악 불가)")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        // UserDefaults에서 visitId 가져오기
+        guard
+            let visitId = UserDefaults.standard.object(
+                forKey: UserDefaultsKey.visitId.key
+            ) as? Int
+        else {
+            Log.warning("visitId를 UserDefaults에서 찾을 수 없습니다.")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
+
+        let visitorId = visitor.id
+        let tagIds = Array(selectedTagIds)
+
+        saveReaction(
+            artworkId: artworkId,
+            visitorId: visitorId,
+            visitId: visitId,
+            imageUrl: imageUrl,
+            tagIds: tagIds
+        ) { [weak self] success in
+            guard let self = self else { return }
+
+            if success {
+                Log.debug("저장 성공, 화면 이동")
+                self.shouldShowConfirmAlert = false
+                completion(true, exhibitionId ?? 1)
+            } else {
+                Log.debug("저장 실패")
+                self.alertType = .error
+                completion(false, nil)
             }
         }
     }

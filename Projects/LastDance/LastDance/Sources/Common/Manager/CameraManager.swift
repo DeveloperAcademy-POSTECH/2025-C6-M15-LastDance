@@ -10,6 +10,9 @@ import UIKit
 
 final class CameraManager: NSObject, @unchecked Sendable {
     let session = AVCaptureSession()
+    var onFirstFrame: (() -> Void)?
+
+    private var didSendFirstFrame = false
     private let sessionQueue = DispatchQueue(label: "camera.session.queue")
     private var videoDeviceInput: AVCaptureDeviceInput?
     private let photoOutput = AVCapturePhotoOutput()
@@ -35,7 +38,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
     // MARK: - Configure (rear-only)
 
-    func configureIfNeeded() async throws {
+    func configureIfNeeded(initialZoomScale: CGFloat? = nil) async throws {
         guard !isConfigured else { return }
         guard Self.checkAuthorizationStatus() == .authorized else {
             throw CameraManagerError.unauthorized
@@ -54,6 +57,25 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
                     if self.session.canAddInput(input) { self.session.addInput(input) }
                     self.videoDeviceInput = input
+
+                    // 초기 줌 값 적용
+                    if let initialZoomScale {
+                        // UI 스케일을 디바이스 줌으로 변환
+                        let targetZoomFactor = self.deviceZoomFactor(fromUIScale: initialZoomScale)
+                        do {
+                            try device.lockForConfiguration()
+                            let clamped = max(
+                                device.minAvailableVideoZoomFactor,
+                                min(
+                                    targetZoomFactor,
+                                    device.maxAvailableVideoZoomFactor)
+                            )
+                            device.videoZoomFactor = clamped
+                            device.unlockForConfiguration()
+                        } catch {
+                            Log.error("initial zoom set failed: \(error)")
+                        }
+                    }
 
                     if self.session.canAddOutput(self.photoOutput) {
                         self.session.addOutput(self.photoOutput)
@@ -97,13 +119,11 @@ final class CameraManager: NSObject, @unchecked Sendable {
     // MARK: - Start/Stop
 
     func startRunning() {
-        sessionQueue.async { if !self.session.isRunning { self.session.startRunning() } }
-
-        // 초기 줌 배율을 1로 유지하기 위함
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
-            guard let self else { return }
-            self.setZoomScale(1.001, animated: false)
-            self.setZoomScale(1.0, animated: false)
+        sessionQueue.async {
+            if !self.session.isRunning {
+                self.didSendFirstFrame = false
+                self.session.startRunning()
+            }
         }
     }
 
@@ -239,10 +259,18 @@ private final class PhotoCaptureProcessor: NSObject, AVCapturePhotoCaptureDelega
 
 extension CameraManager: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(
-        _: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
-        from _: AVCaptureConnection
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
     ) {
         lastVideoBuffer = sampleBuffer
+
+        if !didSendFirstFrame {
+            didSendFirstFrame = true
+            DispatchQueue.main.async { [weak self] in
+                self?.onFirstFrame?()
+            }
+        }
     }
 }
 
@@ -297,6 +325,11 @@ extension CameraManager {
             if device.isRampingVideoZoom { device.cancelVideoZoomRamp() }
             device.unlockForConfiguration()
         } catch {}
+    }
+
+    /// UI 스케일을 디바이스 실제 줌팩터로 변환
+    fileprivate func deviceZoomFactor(fromUIScale uiScale: CGFloat) -> CGFloat {
+        uiScale * uiToDeviceFactor
     }
 }
 

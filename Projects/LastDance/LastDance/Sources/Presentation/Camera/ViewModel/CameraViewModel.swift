@@ -17,6 +17,7 @@ final class CameraViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var zoomScale: CGFloat = 1.0
     @Published var showSilentNotice = false
+    @Published var previewPhase: PreviewPhase = .hidden
 
     private(set) var hasShownSilentNotice = false
     private var hideNoticeTask: Task<Void, Never>?
@@ -24,10 +25,21 @@ final class CameraViewModel: ObservableObject {
     let manager = CameraManager()
 
     func setupCameraSession() async {
+        previewPhase = .hidden
         do {
             try await requestCameraAuthorization()
             try await configureCaptureSession()
-            startSession()
+
+            manager.onFirstFrame = { [weak self] in
+                guard let self else { return }
+                self.previewPhase = .blurred
+                Task {
+                    try? await Task.sleep(for: .milliseconds(400))
+                    self.previewPhase = .visible
+                }
+            }
+
+            await startSession()
 
             if !hasShownSilentNotice {
                 hasShownSilentNotice = true
@@ -39,7 +51,7 @@ final class CameraViewModel: ObservableObject {
     }
 
     /// 카메라 세션 시작
-    func startSession() {
+    func startSession() async {
         manager.startRunning()
         isRunning = true
     }
@@ -82,7 +94,7 @@ final class CameraViewModel: ObservableObject {
     /// 권한 승인 후 세션을 구성합니다.
     func configureCaptureSession() async throws {
         do {
-            try await manager.configureIfNeeded()
+            try await manager.configureIfNeeded(initialZoomScale: zoomScale)
         } catch {
             throw CameraError.configurationFailed
         }
