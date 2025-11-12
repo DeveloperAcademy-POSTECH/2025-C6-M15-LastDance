@@ -11,18 +11,18 @@ import UIKit
 struct ArtReactionView: View {
     let artwork: Artwork
     let artist: Artist?
-    
+
     @StateObject private var viewModel: ArtReactionViewModel
     @EnvironmentObject private var router: NavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
-    
+
     init(artwork: Artwork, artist: Artist?) {
         self.artwork = artwork
         self.artist = artist
         _viewModel = StateObject(wrappedValue: ArtReactionViewModel(artworkId: artwork.id))
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             // 뒤로가기 버튼
@@ -52,7 +52,8 @@ struct ArtReactionView: View {
                 VStack(spacing: 0) {
                     // 작품 이미지
                     if let imageURLString = artwork.thumbnailURL,
-                        let imageURL = URL(string: imageURLString) {
+                        let imageURL = URL(string: imageURLString)
+                    {
                         AsyncImage(url: imageURL) { image in
                             image.resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -82,7 +83,7 @@ struct ArtReactionView: View {
                                 .font(Font.custom("Pretendard", size: 20).weight(.semibold))
                                 .foregroundColor(LDColor.color1)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            
+
                             if let artistName = artist?.name {
                                 HStack {
                                     Text(artistName)
@@ -92,7 +93,7 @@ struct ArtReactionView: View {
                                         .padding(.vertical, 8)
                                         .background(LDColor.color1)
                                         .cornerRadius(20)
-                                    
+
                                     Spacer()
                                 }
                             }
@@ -100,14 +101,14 @@ struct ArtReactionView: View {
                                 .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                                 .frame(height: 0.5)
                                 .foregroundColor(LDColor.color3)
-                            
+
                             if let description = artwork.descriptionText, !description.isEmpty {
                                 Text("작품 설명")
                                     .font(Font.custom("Pretendard", size: 16))
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.bottom, -12) // Add some spacing
-                                
+                                    .padding(.bottom, -12)  // Add some spacing
+
                                 Text(description)
                                     .font(Font.custom("Pretendard", size: 16))
                                     .foregroundColor(LDColor.color2)
@@ -119,7 +120,7 @@ struct ArtReactionView: View {
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            
+
                             Spacer(minLength: 400)
                         }
                         .padding(.horizontal, 20)
@@ -137,7 +138,7 @@ struct ArtReactionView: View {
                                 Text("아직 등록된 감상이 없습니다")
                                     .font(Font.custom("Pretendard", size: 16))
                                     .foregroundColor(LDColor.color2)
-                                
+
                                 Spacer(minLength: 400)
                             }
                             .frame(maxWidth: .infinity)
@@ -151,16 +152,23 @@ struct ArtReactionView: View {
                                         if !reaction.tags.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감정 태그")
-                                                    .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                                                    .font(
+                                                        Font.custom("Pretendard", size: 18).weight(
+                                                            .semibold)
+                                                    )
                                                     .foregroundColor(LDColor.color1)
-                                                
+
                                                 ScrollView(.horizontal, showsIndicators: false) {
                                                     HStack {
-                                                        ForEach(reaction.tags, id: \.self) { tagInfo in
-                                                            ReactionTag(text: tagInfo.name, color: Color(hex: tagInfo.colorHex))
-                                                                .applyShadow(LDShadow.shadow1)
-                                                                .padding(.vertical, 10)
-                                                                .padding(.horizontal, 2)
+                                                        ForEach(reaction.tags, id: \.self) {
+                                                            tagInfo in
+                                                            ReactionTag(
+                                                                text: tagInfo.name,
+                                                                color: Color(hex: tagInfo.colorHex)
+                                                            )
+                                                            .applyShadow(LDShadow.shadow1)
+                                                            .padding(.vertical, 10)
+                                                            .padding(.horizontal, 2)
                                                         }
                                                     }
                                                 }
@@ -170,9 +178,12 @@ struct ArtReactionView: View {
                                         if let comment = reaction.comment, !comment.isEmpty {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Text("감상평")
-                                                    .font(Font.custom("Pretendard", size: 18).weight(.semibold))
+                                                    .font(
+                                                        Font.custom("Pretendard", size: 18).weight(
+                                                            .semibold)
+                                                    )
                                                     .foregroundColor(LDColor.color1)
-                                                
+
                                                 Text(comment)
                                                     .font(Font.custom("Pretendard", size: 16))
                                                     .foregroundColor(LDColor.color2)

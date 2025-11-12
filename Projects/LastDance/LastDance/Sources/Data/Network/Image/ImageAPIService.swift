@@ -9,6 +9,7 @@ import Foundation
 import Moya
 
 // MARK: - ImageAPIServiceProtocol
+
 protocol ImageAPIServiceProtocol {
     func uploadImage(
         folder: ImageFolder,
@@ -18,10 +19,13 @@ protocol ImageAPIServiceProtocol {
 }
 
 // MARK: - ImageAPIService
+
 final class ImageAPIService: ImageAPIServiceProtocol {
     private let provider: MoyaProvider<ImageAPI>
 
-    init(provider: MoyaProvider<ImageAPI> = MoyaProvider<ImageAPI>(plugins: [NetworkLoggerPlugin()])) {
+    init(
+        provider: MoyaProvider<ImageAPI> = MoyaProvider<ImageAPI>(plugins: [NetworkLoggerPlugin()])
+    ) {
         self.provider = provider
     }
 
@@ -38,7 +42,8 @@ final class ImageAPIService: ImageAPIServiceProtocol {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("이미지 업로드 성공. 응답: \(json)")
                     }
-                    let dto = try JSONDecoder().decode(UploadImageResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        UploadImageResponseDto.self, from: response.data)
                     Log.info("이미지 업로드 완료. filename=\(dto.filename), url=\(dto.url)")
                     completion(.success(dto))
                 } catch {
@@ -47,7 +52,8 @@ final class ImageAPIService: ImageAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }

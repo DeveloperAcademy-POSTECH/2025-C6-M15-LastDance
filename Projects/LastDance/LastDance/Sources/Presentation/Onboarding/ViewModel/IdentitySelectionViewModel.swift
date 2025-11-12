@@ -29,12 +29,12 @@ final class IdentitySelectionViewModel: ObservableObject {
         }
 
         saveUserType(selectedType)
-        
+
         if selectedType == .viewer {
             ensureVisitorExists()
         }
     }
-    
+
     /// 사용자 타입 저장
     private func saveUserType(_ type: UserType) {
         UserDefaults.standard.set(type.rawValue, forKey: UserDefaultsKey.userType.key)
@@ -53,11 +53,10 @@ final class IdentitySelectionViewModel: ObservableObject {
     
     /// visitor생성 API 호출
     private func createVisitorAPI(name: String? = nil) {
-
         let uuid = loadOrCreateVisitorUUID()
-        
+
         let request = VisitorCreateRequestDto(uuid: uuid, name: name)
-        
+
         visitorService.createVisitor(request: request) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -68,9 +67,10 @@ final class IdentitySelectionViewModel: ObservableObject {
                         forKey: UserDefaultsKey.visitorId.rawValue)
                     UserDefaults.standard.set(
                         dto.uuid,
-                        forKey: UserDefaultsKey.visitorUUID.rawValue)
+                        forKey: UserDefaultsKey.visitorUUID.rawValue
+                    )
                     Log.debug("Visitor created. id=\(dto.id), uuid=\(dto.uuid)")
-                    
+
                     let visitor = Visitor(
                         id: dto.id,
                         uuid: dto.uuid,
@@ -79,8 +79,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                     self.dataManager.insert(visitor)
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
-                       let data = moyaError.response?.data,
-                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let data = moyaError.response?.data,
+                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                         Log.warning("Visitor create validation error: \(messages)")
                     }
@@ -92,16 +93,17 @@ final class IdentitySelectionViewModel: ObservableObject {
 
     /// 저장된 uuid가 있으면 재사용, 없으면 새로 생성해서 저장
     private func loadOrCreateVisitorUUID() -> String {
-        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue) {
+        if let existing = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.rawValue)
+        {
             return existing
         }
         let newUUID = UUID().uuidString
         UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.rawValue)
         return newUUID
     }
-    
+
     /// 서버에 있는 모든 전시장 정보 로드 (확인용)
-    func loadAllVenues(onComplete: (() -> Void)? = nil) {
+    func loadAllVenues(onComplete _: (() -> Void)? = nil) {
         venueService.getVenues { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -110,8 +112,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                     Log.info("success. count=\(list.count)")
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
-                       let data = moyaError.response?.data,
-                       let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                        let data = moyaError.response?.data,
+                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                    {
                         let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                         Log.warning("validation: \(messages)")
                     } else {

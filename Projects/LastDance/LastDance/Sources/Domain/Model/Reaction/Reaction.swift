@@ -22,12 +22,14 @@ final class Reaction {
     var comment: String?
     var createdAt: String?
 
-    init(id: String,
-         artworkId: Int,
-         visitorId: Int,
-         tags: [ReactionTagInfo],
-         comment: String? = nil,
-         createdAt: String?) {
+    init(
+        id: String,
+        artworkId: Int,
+        visitorId: Int,
+        tags: [ReactionTagInfo],
+        comment: String? = nil,
+        createdAt: String?
+    ) {
         self.id = id
         self.artworkId = artworkId
         self.visitorId = visitorId

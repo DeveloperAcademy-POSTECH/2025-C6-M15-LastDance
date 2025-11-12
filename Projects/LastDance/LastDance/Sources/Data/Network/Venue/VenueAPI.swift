@@ -21,18 +21,18 @@ extension VenueAPI: BaseTargetType {
             return "\(APIVersion.version1)/venues/\(id)"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
         case .getVenues, .getVenue:
             return .get
         }
     }
-    
-    var queryParameters: [String : Any]? {
+
+    var queryParameters: [String: Any]? {
         return nil
     }
-    
+
     var bodyParameters: Codable? {
         return nil
     }

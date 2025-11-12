@@ -22,7 +22,7 @@ extension ReactionAPI: BaseTargetType {
             return "\(APIVersion.version1)/reactions/\(reactionId)"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
         case .createReaction:
@@ -31,8 +31,8 @@ extension ReactionAPI: BaseTargetType {
             return .get
         }
     }
-    
-    var queryParameters: [String : Any]? {
+
+    var queryParameters: [String: Any]? {
         switch self {
         case .createReaction, .getDetailReaction:
             return nil
@@ -50,7 +50,7 @@ extension ReactionAPI: BaseTargetType {
             return params.isEmpty ? nil : params
         }
     }
-    
+
     var bodyParameters: Codable? {
         switch self {
         case .createReaction(let dto):

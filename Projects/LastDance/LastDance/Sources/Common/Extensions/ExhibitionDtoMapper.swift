@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: ExhibitionDtoMappableProtocol
+
 /// Exhibition DTO를 Entity로 변환하기 위한 공통 프로토콜
 protocol ExhibitionDtoMappableProtocol {
     var id: Int { get }
@@ -22,6 +23,7 @@ protocol ExhibitionDtoMappableProtocol {
 }
 
 // MARK: ExhibitionDtoMappable
+
 extension ExhibitionDtoMappableProtocol {
     func toEntity() -> Exhibition {
         return Exhibition(

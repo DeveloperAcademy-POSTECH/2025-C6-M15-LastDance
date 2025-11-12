@@ -29,7 +29,7 @@ struct ExhibitionListTitleSection: View {
 
 struct ExhibitionListContent: View {
     @ObservedObject var viewModel: ExhibitionListViewModel
-    
+
     let exhibitions: [Exhibition]
 
     var body: some View {

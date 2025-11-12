@@ -19,14 +19,16 @@ struct ExhibitionArchiveView: View {
     }
 
     init(exhibitionId: Int) {
-        _viewModel = StateObject(wrappedValue: ExhibitionArchiveViewModel(
-            exhibitionId: exhibitionId
-        ))
+        _viewModel = StateObject(
+            wrappedValue: ExhibitionArchiveViewModel(
+                exhibitionId: exhibitionId
+            ))
 
-            // 해당 id에 맞는 Exhibition 정보만 가져옴
-        _exhibitions = Query(filter: #Predicate<Exhibition> { exhibition in
-            exhibition.id == exhibitionId
-        })
+        // 해당 id에 맞는 Exhibition 정보만 가져옴
+        _exhibitions = Query(
+            filter: #Predicate<Exhibition> { exhibition in
+                exhibition.id == exhibitionId
+            })
     }
 
     var body: some View {
@@ -44,7 +46,7 @@ struct ExhibitionArchiveView: View {
             }
             .padding(.horizontal, 5)
             .padding(.top, 20)
-            
+
             // 전시 제목
             HStack {
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
@@ -64,7 +66,7 @@ struct ExhibitionArchiveView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 4)
-            
+
             // 반응 목록
             ScrollView {
                 if viewModel.isLoading {
@@ -77,12 +79,14 @@ struct ExhibitionArchiveView: View {
                     LazyVGrid(
                         columns: [
                             GridItem(.fixed(155), spacing: 16),
-                            GridItem(.fixed(155), spacing: 16)
+                            GridItem(.fixed(155), spacing: 16),
                         ],
                         spacing: 24
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
-                            if let reaction = viewModel.reactions.first(where: { $0.artworkId == artwork.id }) {
+                            if let reaction = viewModel.reactions.first(where: {
+                                $0.artworkId == artwork.id
+                            }) {
                                 let artist = viewModel.artist(for: artwork)
                                 ReactionCardView(
                                     reaction: reaction,

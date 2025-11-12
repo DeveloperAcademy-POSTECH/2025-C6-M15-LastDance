@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ResponseView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel: ResponseViewModel // Initialize with artworkId
-    @Query private var allArtworks: [Artwork] // Keep for fetching artwork details
+    @StateObject private var viewModel: ResponseViewModel  // Initialize with artworkId
+    @Query private var allArtworks: [Artwork]  // Keep for fetching artwork details
     let artworkId: Int
 
     // Initialize viewModel with artworkId
@@ -34,7 +34,7 @@ struct ResponseView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ResponseContentView(
-                    artwork: artwork, // Pass the fetched artwork
+                    artwork: artwork,  // Pass the fetched artwork
                     viewModel: viewModel
                 )
             }
@@ -44,7 +44,7 @@ struct ResponseView: View {
         .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응" ) {
+            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응") {
                 router.popLast()
             }
         }
@@ -97,11 +97,11 @@ struct ArtworkBackgroundView: View {
                 .frame(maxHeight: 393)
                 .clipped()
 
-            //그라데이션 오버레이
+            // 그라데이션 오버레이
             LinearGradient(
                 gradient: Gradient(colors: [
                     LDColor.color5.opacity(0),
-                    LDColor.color5
+                    LDColor.color5,
                 ]),
                 startPoint: .center,
                 endPoint: .bottom
@@ -148,7 +148,7 @@ struct ReactionHeaderView: View {
 
 struct ReactionItemsView: View {
     @ObservedObject var viewModel: ResponseViewModel
-    
+
     var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.reactions.indices, id: \.self) { index in
@@ -179,7 +179,7 @@ struct BlurEffectView: View {
                 LinearGradient(
                     gradient: Gradient(colors: [
                         LDColor.color5.opacity(0),
-                        LDColor.color5
+                        LDColor.color5,
                     ]),
                     startPoint: .top,
                     endPoint: .bottom
@@ -197,7 +197,7 @@ struct BlurEffectView: View {
 struct ReactionItemView: View {
     let reaction: ReactionData
     @ObservedObject var viewModel: ResponseViewModel
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // 댓글 텍스트
@@ -205,7 +205,10 @@ struct ReactionItemView: View {
                 .font(LDFont.medium03)
                 .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
                 .lineSpacing(10)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id))
+                .animation(
+                    .easeInOut(duration: 0.3),
+                    value: viewModel.expandedReactions.contains(reaction.id)
+                )
 
             // 더보기/접기 버튼
             if reaction.comment.count > 100 {
@@ -224,9 +227,8 @@ struct ReactionItemView: View {
                 viewModel: viewModel
             )
         }
-        
-        .padding(.vertical, 8)
 
+        .padding(.vertical, 8)
     }
 }
 
@@ -237,7 +239,8 @@ struct CategoryTagsView: View {
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
-        let firstLine = viewModel.firstLineCategories(for: reaction.categories, reactionId: reaction.id)
+        let firstLine = viewModel.firstLineCategories(
+            for: reaction.categories, reactionId: reaction.id)
         let hidden = viewModel.hiddenCategories(for: reaction.categories, reactionId: reaction.id)
         let showAll = viewModel.showAllReactions[reaction.id] ?? false
 

@@ -11,10 +11,12 @@ import Moya
 protocol TagAPIServiceProtocol {
     func getTags(
         categoryId: Int?,
-        completion: @escaping (Result<[TagDetailResponseDto], Error>) -> Void)
+        completion: @escaping (Result<[TagDetailResponseDto], Error>) -> Void
+    )
     func getTag(
         id: Int,
-        completion: @escaping (Result<TagDetailResponseDto, Error>) -> Void)
+        completion: @escaping (Result<TagDetailResponseDto, Error>) -> Void
+    )
 }
 
 final class TagAPIService: TagAPIServiceProtocol {
@@ -26,7 +28,8 @@ final class TagAPIService: TagAPIServiceProtocol {
 
     func getTags(
         categoryId: Int?,
-        completion: @escaping (Result<[TagDetailResponseDto], Error>) -> Void) {
+        completion: @escaping (Result<[TagDetailResponseDto], Error>) -> Void
+    ) {
         provider.request(.getTags(categoryId: categoryId)) { result in
             switch result {
             case .success(let response):
@@ -36,7 +39,8 @@ final class TagAPIService: TagAPIServiceProtocol {
                     }
                     let list = try JSONDecoder().decode(
                         [TagDetailResponseDto].self,
-                        from: response.data)
+                        from: response.data
+                    )
                     completion(.success(list))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -44,7 +48,8 @@ final class TagAPIService: TagAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }
@@ -56,7 +61,8 @@ final class TagAPIService: TagAPIServiceProtocol {
 
     func getTag(
         id: Int,
-        completion: @escaping (Result<TagDetailResponseDto, Error>) -> Void) {
+        completion: @escaping (Result<TagDetailResponseDto, Error>) -> Void
+    ) {
         provider.request(.getTag(id: id)) { result in
             switch result {
             case .success(let response):
@@ -66,7 +72,8 @@ final class TagAPIService: TagAPIServiceProtocol {
                     }
                     let dto = try JSONDecoder().decode(
                         TagDetailResponseDto.self,
-                        from: response.data)
+                        from: response.data
+                    )
                     completion(.success(dto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
@@ -74,7 +81,8 @@ final class TagAPIService: TagAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("Validation Error: \(messages)")
                 }

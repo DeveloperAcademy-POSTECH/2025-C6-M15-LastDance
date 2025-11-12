@@ -10,7 +10,6 @@
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
-		99191EC62EA545DF00D2F71A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		997BB15E2EC1388E0052F9BA /* LastDanceClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB18C2EC14ACA0052F9BA /* Moya */; };
 		997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB4022EC50C1B0052F9BA /* Kingfisher */; };
@@ -41,11 +40,21 @@
 		};
 /* End PBXCopyFilesBuildPhase section */
 
+		D8398A852EC0F01C0009E7C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99E6F0662E91E4A9002ED9C2;
+			remoteInfo = LastDance;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
 		997BB14D2EC1388D0052F9BA /* LastDanceClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDanceClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		D8398A812EC0F01C0009E7C6 /* LastDanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LastDanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D8CD5AC12EBC49D500B9D44D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +159,9 @@
 				997BB1622EC1388E0052F9BA /* Exceptions for "LastDanceClip" folder in "LastDanceClip" target */,
 			);
 			path = LastDanceClip;
+		D8398A822EC0F01C0009E7C6 /* LastDanceTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LastDanceTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -175,6 +187,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8398A7E2EC0F01C0009E7C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -194,6 +213,7 @@
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				997BA4A02EBD6A3C0052F9BA /* LastDance */,
 				997BB14E2EC1388D0052F9BA /* LastDanceClip */,
+				D8398A822EC0F01C0009E7C6 /* LastDanceTests */,
 				963572412E980E2400B2FA79 /* Frameworks */,
 				99E6F0682E91E4A9002ED9C2 /* Products */,
 			);
@@ -204,6 +224,7 @@
 			children = (
 				99E6F0672E91E4A9002ED9C2 /* LastDance.app */,
 				997BB14D2EC1388D0052F9BA /* LastDanceClip.app */,
+				D8398A812EC0F01C0009E7C6 /* LastDanceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -263,6 +284,29 @@
 			productReference = 99E6F0672E91E4A9002ED9C2 /* LastDance.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D8398A802EC0F01C0009E7C6 /* LastDanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8398A872EC0F01C0009E7C6 /* Build configuration list for PBXNativeTarget "LastDanceTests" */;
+			buildPhases = (
+				D8398A7D2EC0F01C0009E7C6 /* Sources */,
+				D8398A7E2EC0F01C0009E7C6 /* Frameworks */,
+				D8398A7F2EC0F01C0009E7C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8398A862EC0F01C0009E7C6 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D8398A822EC0F01C0009E7C6 /* LastDanceTests */,
+			);
+			name = LastDanceTests;
+			packageProductDependencies = (
+			);
+			productName = LastDanceTests;
+			productReference = D8398A812EC0F01C0009E7C6 /* LastDanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -270,7 +314,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					997BB14C2EC1388D0052F9BA = {
@@ -278,6 +322,10 @@
 					};
 					99E6F0662E91E4A9002ED9C2 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					D8398A802EC0F01C0009E7C6 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 99E6F0662E91E4A9002ED9C2;
 					};
 				};
 			};
@@ -301,6 +349,7 @@
 			targets = (
 				99E6F0662E91E4A9002ED9C2 /* LastDance */,
 				997BB14C2EC1388D0052F9BA /* LastDanceClip */,
+				D8398A802EC0F01C0009E7C6 /* LastDanceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -314,6 +363,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		99E6F0652E91E4A9002ED9C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8398A7F2EC0F01C0009E7C6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -354,7 +410,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99191EC62EA545DF00D2F71A /* (null) in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8398A7D2EC0F01C0009E7C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,6 +427,10 @@
 			isa = PBXTargetDependency;
 			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
 			targetProxy = 997BB15C2EC1388E0052F9BA /* PBXContainerItemProxy */;
+		D8398A862EC0F01C0009E7C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
+			targetProxy = D8398A852EC0F01C0009E7C6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -664,6 +730,52 @@
 			};
 			name = Release;
 		};
+		D8398A882EC0F01C0009E7C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yanni13.LastDanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LastDance.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LastDance";
+			};
+			name = Debug;
+		};
+		D8398A892EC0F01C0009E7C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W5Z68U98HJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yanni13.LastDanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LastDance.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LastDance";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -690,6 +802,15 @@
 			buildConfigurations = (
 				99E6F0782E91E4AA002ED9C2 /* Debug */,
 				99E6F0792E91E4AA002ED9C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8398A872EC0F01C0009E7C6 /* Build configuration list for PBXNativeTarget "LastDanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8398A882EC0F01C0009E7C6 /* Debug */,
+				D8398A892EC0F01C0009E7C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

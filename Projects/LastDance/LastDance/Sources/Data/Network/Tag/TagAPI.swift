@@ -29,7 +29,7 @@ extension TagAPI: BaseTargetType {
         }
     }
 
-    var queryParameters: [String : Any]? {
+    var queryParameters: [String: Any]? {
         switch self {
         case .getTags(let categoryId):
             guard let categoryId else { return nil }

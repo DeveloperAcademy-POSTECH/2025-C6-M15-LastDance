@@ -10,29 +10,29 @@ import SwiftUI
 
 struct ArchiveView: View {
     let exhibitionId: Int
-    
+
     @StateObject private var viewModel: ArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
         _viewModel = StateObject(
             wrappedValue: ArchiveViewModel(exhibitionId: exhibitionId)
         )
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             ArchiveHeaderView {
                 router.popLast()
             }
             .padding(.bottom, 12)
-            
+
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
-            
+
             ArtworkCountView(count: viewModel.reactedArtworksCount)
                 .padding(.bottom, -2)
-          
+
             GeometryReader { geometry in
                 ZStack(alignment: .top) {
                     BackGround(geometry: geometry)
@@ -53,7 +53,7 @@ struct ArchiveView: View {
                                     router.push(.camera(exhibitionId: exhibitionId))
                                 }
                             }
-                            
+
                             Color.clear
                                 .frame(height: 600)
                         }
@@ -70,7 +70,7 @@ struct ArchiveView: View {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.5),
                             Color.black.opacity(0.2),
-                            Color.clear
+                            Color.clear,
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -98,7 +98,7 @@ struct ArchiveView: View {
 
 struct ArchiveHeaderView: View {
     let onClose: () -> Void
-    
+
     var body: some View {
         HStack {
             Button(action: onClose) {
@@ -116,7 +116,7 @@ struct ArchiveHeaderView: View {
 
 struct ExhibitionTitleView: View {
     let title: String
-    
+
     var body: some View {
         Text(title)
             .font(LDFont.heading02)
@@ -129,7 +129,7 @@ struct ExhibitionTitleView: View {
 
 struct ArtworkCountView: View {
     let count: Int
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("현재까지 촬영한 이미지")
@@ -153,7 +153,7 @@ struct ArtworkGridView: View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
+                GridItem(.flexible(), spacing: 31),
             ],
             spacing: 24
         ) {
@@ -173,12 +173,12 @@ struct ArtworkGridView: View {
 
 struct ArchiveEmptyStateView: View {
     let onAddTap: () -> Void
-    
+
     var body: some View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
+                GridItem(.flexible(), spacing: 31),
             ],
             spacing: 24
         ) {
@@ -186,7 +186,7 @@ struct ArchiveEmptyStateView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(LDColor.color6)
-                    
+
                     Image(systemName: "plus")
                         .font(.system(size: 22, weight: .light))
                         .foregroundColor(LDColor.gray8)
@@ -207,13 +207,14 @@ struct ArchiveEmptyStateView: View {
 struct CameraActionButtonView: View {
     let action: () -> Void
     @State private var showTooltip: Bool
-    
+
     init(action: @escaping () -> Void) {
         self.action = action
         // 첫 리액션 등록 전이면 툴팁 표시
-        _showTooltip = State(initialValue: !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction))
+        _showTooltip = State(
+            initialValue: !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction))
     }
-    
+
     var body: some View {
         VStack(spacing: 22) {
             // 툴팁

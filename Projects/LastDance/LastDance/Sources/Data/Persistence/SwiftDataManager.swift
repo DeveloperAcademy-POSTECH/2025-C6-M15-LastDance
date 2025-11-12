@@ -28,7 +28,7 @@ final class SwiftDataManager {
     func configure(with container: ModelContainer) {
         self.container = container
     }
-    
+
     // MARK: - CRUD
 
     /// 새 객체 추가
@@ -43,19 +43,19 @@ final class SwiftDataManager {
     }
 
     /// 모든 데이터 가져오기
-    func fetchAll<T: PersistentModel>(_ type: T.Type) -> [T] {
+    func fetchAll<T: PersistentModel>(_: T.Type) -> [T] {
         do {
             let descriptor = FetchDescriptor<T>()
-            
+
             return try context.fetch(descriptor)
         } catch {
             Log.error("Fetch 실패: \(error)")
             return []
         }
     }
-    
+
     /// 술어를 사용하여 데이터 가져오기
-    func fetch<T: PersistentModel>(_ type: T.Type, predicate: Predicate<T>) -> [T] {
+    func fetch<T: PersistentModel>(_: T.Type, predicate: Predicate<T>) -> [T] {
         do {
             let descriptor = FetchDescriptor<T>(predicate: predicate)
             return try context.fetch(descriptor)
@@ -64,9 +64,9 @@ final class SwiftDataManager {
             return []
         }
     }
-    
+
     /// 특정 id를 가진 객체 가져오기
-    func fetchById<T: PersistentModel & Identifiable>(_ type: T.Type, id: String) -> T? {
+    func fetchById<T: PersistentModel & Identifiable>(_: T.Type, id: String) -> T? {
         do {
             let predicate = #Predicate<T> { ($0 as? any HasStringId)?.id == id }
             let descriptor = FetchDescriptor<T>(predicate: predicate)
@@ -101,6 +101,7 @@ final class SwiftDataManager {
 }
 
 // MARK: - 중복 방지를 위해서 insert + update를 위한 기능
+
 extension SwiftDataManager {
     /// Venue 전체 목록 저장 - 중복 방지
     func upsertVenue(_ newValue: Venue) {
@@ -114,7 +115,7 @@ extension SwiftDataManager {
             insert(newValue)
         }
     }
-  
+
     /// Visitor 전체 목록 저장 - 중복 방지
     func upsertVisitor(_ newValue: Visitor) {
         let all = fetchAll(Visitor.self)
@@ -125,7 +126,7 @@ extension SwiftDataManager {
             insert(newValue)
         }
     }
-    
+
     /// Artist 전체 목록 저장 - 중복 방지
     func upsertArtist(_ newValue: Artist) {
         let all = fetchAll(Artist.self)
@@ -136,7 +137,7 @@ extension SwiftDataManager {
             insert(newValue)
         }
     }
-    
+
     /// Exhitibion 전체 목록 저장 - 중복 방지
     func upsertExhibition(_ newValue: Exhibition) {
         let all = fetchAll(Exhibition.self)
@@ -153,7 +154,7 @@ extension SwiftDataManager {
             insert(newValue)
         }
     }
-    
+
     /// Artwork 전체 목록 저장 - 중복 방지
     func upsertArtwork(_ newValue: Artwork) {
         let all = fetchAll(Artwork.self)
@@ -164,42 +165,42 @@ extension SwiftDataManager {
             existing.artistId = newValue.artistId
             existing.thumbnailURL = newValue.thumbnailURL
             existing.exhibition = newValue.exhibition
-            
+
         } else {
             insert(newValue)
         }
-//        printAllArtworks()
+        //        printAllArtworks()
     }
-  
+
     /// 전체 Venue 확인용 출력문
-//    func printAllVenues() {
-//        let venues = SwiftDataManager.shared.fetchAll(Venue.self)
-//        Log.debug("------ Venue Local Data ------")
-//        venues.forEach { venue in
-//            Log.debug("id=\(venue.id), uuid=\(venue.name), name=\(venue.address ?? "nil"), geoLat=\(venue.geoLat ?? 0), geoLon=\(venue.geoLon ?? 0)")
-//        }
-//        Log.debug("-------------------------------")
-//    }
-    
+    //    func printAllVenues() {
+    //        let venues = SwiftDataManager.shared.fetchAll(Venue.self)
+    //        Log.debug("------ Venue Local Data ------")
+    //        venues.forEach { venue in
+    //            Log.debug("id=\(venue.id), uuid=\(venue.name), name=\(venue.address ?? "nil"), geoLat=\(venue.geoLat ?? 0), geoLon=\(venue.geoLon ?? 0)")
+    //        }
+    //        Log.debug("-------------------------------")
+    //    }
+
     /// 전체 Visitor 확인용 출력문
-//    func printAllVisitors() {
-//        let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
-//        Log.debug("------ Visitor Local Data ------")
-//        visitors.forEach { visitor in
-//            Log.debug("id=\(visitor.id), uuid=\(visitor.uuid), name=\(visitor.name ?? "nil")")
-//        }
-//        Log.debug("-------------------------------")
-//    }
+    //    func printAllVisitors() {
+    //        let visitors = SwiftDataManager.shared.fetchAll(Visitor.self)
+    //        Log.debug("------ Visitor Local Data ------")
+    //        visitors.forEach { visitor in
+    //            Log.debug("id=\(visitor.id), uuid=\(visitor.uuid), name=\(visitor.name ?? "nil")")
+    //        }
+    //        Log.debug("-------------------------------")
+    //    }
 
     /// 전체 Artist 확인용 출력문
-//    func printAllArtworks() {
-//        let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
-//        Log.debug("------ Artist Local Data ------")
-//        artworks.forEach { artwork in
-//            Log.debug("id=\(artwork.id), exhibitionId=\(artwork.exhibitionId)")
-//        }
-//        Log.debug("-------------------------------")
-//    }
+    //    func printAllArtworks() {
+    //        let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+    //        Log.debug("------ Artist Local Data ------")
+    //        artworks.forEach { artwork in
+    //            Log.debug("id=\(artwork.id), exhibitionId=\(artwork.exhibitionId)")
+    //        }
+    //        Log.debug("-------------------------------")
+    //    }
 }
 
 /// 문자열 id를 가진 모델을 위한 프로토콜

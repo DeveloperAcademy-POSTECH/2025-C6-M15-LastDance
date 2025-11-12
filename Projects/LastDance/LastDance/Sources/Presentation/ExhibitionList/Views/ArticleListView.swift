@@ -14,25 +14,28 @@ struct ArticleListSearchTextField: View {
         TextField(
             "작가명을 선택해주세요",
             text: Binding(
-                get: { viewModel.selectedArtistName.isEmpty ? viewModel.searchText : viewModel.selectedArtistName },
+                get: {
+                    viewModel.selectedArtistName.isEmpty
+                        ? viewModel.searchText : viewModel.selectedArtistName
+                },
                 set: { viewModel.searchText = $0 }
             )
         )
-            .font(LDFont.regular01)
-            .foregroundStyle(.black)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(LDColor.color6)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .inset(by: 1)
-                    .stroke(Color.black, lineWidth: 2)
-            )
-            .padding(.bottom, 8)
-            .padding(.horizontal, 20)
+        .font(LDFont.regular01)
+        .foregroundStyle(.black)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(LDColor.color6)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .inset(by: 1)
+                .stroke(Color.black, lineWidth: 2)
+        )
+        .padding(.bottom, 8)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -80,7 +83,10 @@ struct ArticleListNextButton: View {
     var body: some View {
         BottomButton(text: "다음") {
             if let artistId = viewModel.tapNextButton() {
-                router.push(.completeArticleList(selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId))
+                router.push(
+                    .completeArticleList(
+                        selectedExhibitionId: selectedExhibitionId, selectedArtistId: artistId
+                    ))
             }
         }
     }
@@ -94,7 +100,7 @@ struct ArticleListView: View {
     let selectedExhibitionId: Int
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack(spacing: 0) {
                 PageIndicator(totalPages: 2, currentPage: 1)
 

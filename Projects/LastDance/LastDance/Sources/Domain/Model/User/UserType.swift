@@ -13,6 +13,6 @@ enum UserType: String, Codable, CaseIterable {
     case viewer = "관람객"
 
     var displayName: String {
-        return self.rawValue
+        return rawValue
     }
 }

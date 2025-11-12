@@ -18,7 +18,7 @@ struct ArtworkResponseDto: Codable {
     let updated_at: String?
     let artist: MakeArtworkDetail
     let exhibitions: [MakeExhibitionDetail]?
-    
+
     struct MakeArtworkDetail: Codable {
         let id: Int
         let uuid: String
@@ -28,7 +28,7 @@ struct ArtworkResponseDto: Codable {
         let created_at: String?
         let updated_at: String?
     }
-    
+
     // TODO: PR 병합 후 중복 응답 dto 수정 예정
     struct MakeExhibitionDetail: Codable {
         let id: Int
