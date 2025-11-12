@@ -30,8 +30,8 @@ struct ClipArtReactionView: View {
     
     var body: some View {
         // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(200, 414 - scrollOffset * 0.5)
-        let imageWidth = max(150, 305 - (414 - imageHeight) * 0.76)
+        let imageHeight = max(200, 408 - scrollOffset * 0.5)
+        let imageWidth = max(150, 305 - (408 - imageHeight) * 0.76)
         
         ZStack(alignment: .top) {
             // 데이터가 로드될 때까지는 로딩만
@@ -67,7 +67,7 @@ struct ClipArtReactionView: View {
                         
                         // 스크롤 안에 들어오는 탭바 (고정 탭바와 겹치지 않게 투명도 조정)
                         TabBarView(selectedTab: $selectedTab)
-                            .padding(.top, 24)
+                            .padding(.top, 17)
                             .opacity(viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused ? 0 : 1)
                         
                         // 탭별 콘텐츠
@@ -211,7 +211,7 @@ struct ClipArtReactionView: View {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.gray.opacity(0.06))
-                    .frame(minHeight: 128, maxHeight: 152)
+                    .frame(height: 123)
                 
                 if viewModel.message.isEmpty {
                     Text("작품에 대한 생각을 자유롭게 적어보세요.")
@@ -222,8 +222,13 @@ struct ClipArtReactionView: View {
                 
                 TextEditor(text: $viewModel.message)
                     .scrollContentBackground(.hidden)
-                    .padding(8)
-                    .frame(minHeight: 128, maxHeight: 152)
+                    .background(Color.clear)
+                    .tint(LDColor.gray5)
+                    .padding(.top, 3)
+                    .padding(.leading, 5)
+                    .padding(.trailing, 5)
+                    .padding(.bottom, 10)
+                    .frame(height: 123)
                     .onChange(of: viewModel.message) { newValue in
                         viewModel.updateMessage(newValue)
                     }

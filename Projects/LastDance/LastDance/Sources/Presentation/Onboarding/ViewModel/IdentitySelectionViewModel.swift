@@ -31,7 +31,7 @@ final class IdentitySelectionViewModel: ObservableObject {
         saveUserType(selectedType)
         
         if selectedType == .viewer {
-            createVisitorAPI()
+            ensureVisitorExists()
         }
     }
     
@@ -39,6 +39,16 @@ final class IdentitySelectionViewModel: ObservableObject {
     private func saveUserType(_ type: UserType) {
         UserDefaults.standard.set(type.rawValue, forKey: UserDefaultsKey.userType.key)
         Log.info("User type saved: \(type.rawValue)")
+    }
+    
+    /// AppClip/이전 실행에서 만든 visitor가 있는지 판단
+    private func ensureVisitorExists() {
+        if let existingId = UserDefaults.standard.object(forKey: UserDefaultsKey.visitorId.rawValue) as? Int {
+            Log.debug("existing visitorId found: \(existingId), skip createVisitorAPI()")
+            return
+        }
+        
+        createVisitorAPI()
     }
     
     /// visitor생성 API 호출
@@ -53,6 +63,9 @@ final class IdentitySelectionViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let dto):
+                    UserDefaults.standard.set(
+                        dto.id,
+                        forKey: UserDefaultsKey.visitorId.rawValue)
                     UserDefaults.standard.set(
                         dto.uuid,
                         forKey: UserDefaultsKey.visitorUUID.rawValue)

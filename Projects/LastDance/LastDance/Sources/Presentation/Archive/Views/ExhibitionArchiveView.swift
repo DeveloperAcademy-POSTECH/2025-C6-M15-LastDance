@@ -57,7 +57,7 @@ struct ExhibitionArchiveView: View {
 
             // 날짜
             HStack {
-                Text(exhibition?.createdAt ?? "")
+                Text(Date.formatShortDate(from: exhibition?.createdAt ?? ""))
                     .font(LDFont.regular03)
                     .foregroundColor(.gray)
                 Spacer()

@@ -127,7 +127,6 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                     exhibition: exhibition
                                 )
                                 SwiftDataManager.shared.upsertArtwork(artwork)
-//                                SwiftDataManager.shared.printAllArtworks()
 
                                 if !exhibition.artworks.contains(where: { $0.id == artwork.id }) {
                                     exhibition.artworks.append(artwork)
@@ -146,6 +145,21 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
             case .failure(let error):
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
+            }
+        }
+    }
+}
+
+extension ExhibitionAPIService {
+    func getExhibitionDetailAsync(id: Int) async throws -> ExhibitionResponseDto {
+        try await withCheckedThrowingContinuation { continuation in
+            self.getDetailExhibition(exhibitionId: id) { result in
+                switch result {
+                case .success(let dto):
+                    continuation.resume(returning: dto)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
             }
         }
     }
