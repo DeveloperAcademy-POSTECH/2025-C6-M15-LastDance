@@ -93,6 +93,7 @@ struct ArtworkDetailView: View {
                 if viewModel.alertType == .confirmation {
                     viewModel.confirmSendAction()
                 } else {
+                    viewModel.handleRestrictionAlertDismiss()
                     viewModel.shouldShowConfirmAlert = false
                 }
             },

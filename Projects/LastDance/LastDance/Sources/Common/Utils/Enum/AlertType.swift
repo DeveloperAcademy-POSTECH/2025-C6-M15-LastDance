@@ -7,11 +7,13 @@
 
 enum AlertType {
     case confirmation
+    case restriction
     case error
 
     var image: String {
         switch self {
         case .confirmation: return "paperplane.circle"
+        case .restriction: return "warning"
         case .error: return "warning"
         }
     }
@@ -19,6 +21,7 @@ enum AlertType {
     var title: String {
         switch self {
         case .confirmation: return "메시지를 전송하시겠어요?"
+        case .restriction: return "전송 제한"
         case .error: return "아쉬워요!"
         }
     }
@@ -26,6 +29,7 @@ enum AlertType {
     var message: String {
         switch self {
         case .confirmation: return "작가님에게 반응이 전달돼요."
+        case .restriction: return "욕설∙비속어 사용시 전송이 제한됩니다."
         case .error: return "메시지 전송에 실패했어요."
         }
     }
@@ -33,6 +37,7 @@ enum AlertType {
     var buttonText: String {
         switch self {
         case .confirmation: return "확인"
+        case .restriction: return "다시 작성하기"
         case .error: return "다시 보내기"
         }
     }
