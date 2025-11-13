@@ -24,6 +24,13 @@
 			remoteGlobalIDString = 997BB14C2EC1388D0052F9BA;
 			remoteInfo = LastDanceClip;
 		};
+		D8398A852EC0F01C0009E7C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99E6F0662E91E4A9002ED9C2;
+			remoteInfo = LastDance;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,15 +46,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
-
-		D8398A852EC0F01C0009E7C6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 99E6F0662E91E4A9002ED9C2;
-			remoteInfo = LastDance;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
@@ -124,10 +122,10 @@
 				Sources/Data/Network/Visitor/VisitorAPI.swift,
 				Sources/Domain/Mapper/ArtistMapper.swift,
 				Sources/Domain/Mapper/ArtworkMapper.swift,
-				Sources/Domain/Model/Artist.swift,
-				Sources/Domain/Model/Artwork.swift,
-				Sources/Domain/Model/Exhibition.swift,
-				Sources/Domain/Model/Reaction.swift,
+				Sources/Domain/Model/Artwork/Artwork.swift,
+				Sources/Domain/Model/Exhibition/Exhibition.swift,
+				Sources/Domain/Model/Reaction/Reaction.swift,
+				Sources/Domain/Model/User/Artist.swift,
 				Sources/Presentation/Archive/Views/ScrollViewObserver.swift,
 				Sources/Presentation/Archive/Views/TabBarView.swift,
 			);
@@ -159,6 +157,8 @@
 				997BB1622EC1388E0052F9BA /* Exceptions for "LastDanceClip" folder in "LastDanceClip" target */,
 			);
 			path = LastDanceClip;
+			sourceTree = "<group>";
+		};
 		D8398A822EC0F01C0009E7C6 /* LastDanceTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LastDanceTests;
@@ -427,6 +427,7 @@
 			isa = PBXTargetDependency;
 			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
 			targetProxy = 997BB15C2EC1388E0052F9BA /* PBXContainerItemProxy */;
+		};
 		D8398A862EC0F01C0009E7C6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
