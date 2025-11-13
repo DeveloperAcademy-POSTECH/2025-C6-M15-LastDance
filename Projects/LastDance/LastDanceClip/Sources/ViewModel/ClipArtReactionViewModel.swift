@@ -15,8 +15,13 @@ final class ClipArtReactionViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isLoaded: Bool = false
     @Published var isSending = false
+    @Published var shouldShowConfirmAlert = false
+    @Published var shouldTriggerSend = false
+    @Published var alertType: AlertType = .confirmation
+    @Published private(set) var forceDisableSendButton = false
     
-    let limit = 500
+    private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle: SendThrottle = makeThrottle()
 
     private let artworkId: Int
     private let exhibitionId: Int
@@ -24,6 +29,9 @@ final class ClipArtReactionViewModel: ObservableObject {
     private let visitorService: ClipVisitorAPIServiceProtocol
     private let visitService: ClipVisitHistoriesAPIServiceProtocol
     private let reactionService: ClipReactionAPIServiceProtocol
+
+    let limit = 500
+    let profanity = ProfanityFilter.fromBundle()
 
     init(
         artworkId: Int,
@@ -49,6 +57,11 @@ final class ClipArtReactionViewModel: ObservableObject {
         !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
+    /// 하단 전송 버튼 활성화 여부
+    var isSendButtonDisabled: Bool {
+        !hasText || isSending || forceDisableSendButton
+    }
+    
     func loadArtwork() async {
         isLoading = true
         do {
@@ -71,11 +84,32 @@ final class ClipArtReactionViewModel: ObservableObject {
     }
 
     func updateMessage(_ newValue: String) {
+        if forceDisableSendButton {
+            forceDisableSendButton = false
+        }
+        
         if newValue.count > limit {
             message = String(newValue.prefix(limit))
         } else {
             message = newValue
         }
+    }
+    
+    /// 제한 알럿에서 "다시 작성하기" 클릭 시 호출
+    func handleRestrictionAlertDismiss() {
+        forceDisableSendButton = true
+    }
+    
+    /// 하단 "전송하기" 버튼 탭
+    func sendButtonAction() {
+        Log.debug("ClipArt 전송 버튼 탭 이벤트 발생")
+        throttle.sendButtonAction()
+    }
+    
+    /// Alert 내부 "전송하기" 버튼 탭
+    func confirmSendAction() {
+        Log.debug("ClipArt Alert 전송 버튼 탭 이벤트 발생")
+        throttle.confirmSendAction()
     }
 
     func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
@@ -149,5 +183,31 @@ final class ClipArtReactionViewModel: ObservableObject {
         defaults.set(exhibitionId, forKey: SharedKeys.exhibitionId)
         if let artworkId { defaults.set(artworkId, forKey: SharedKeys.lastArtworkId) }
         defaults.set(Date().timeIntervalSince1970, forKey: SharedKeys.savedAt)
+    }
+}
+
+// MARK: - Throttle 관련 private 메서드
+private extension ClipArtReactionViewModel {
+    func makeThrottle() -> SendThrottle {
+        SendThrottle(
+            throttleInterval: throttleInterval,
+            onSendButtonAllowed: { [weak self] in
+                self?.handleSendButtonAllowed()
+            },
+            onConfirmSendAllowed: { [weak self] in
+                self?.handleConfirmSendAllowed()
+            }
+        )
+    }
+
+    func handleSendButtonAllowed() {
+        let hasProfanity = profanity.containsProfanity(in: message)
+        alertType = hasProfanity ? .restriction : .confirmation
+        shouldShowConfirmAlert = true
+    }
+
+    func handleConfirmSendAllowed() {
+        Log.debug("ClipArt Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
+        shouldTriggerSend = true
     }
 }

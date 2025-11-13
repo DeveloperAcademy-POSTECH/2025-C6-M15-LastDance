@@ -29,6 +29,10 @@ struct ClipArtReactionView: View {
     }
     
     var body: some View {
+        // 최대 이미지 크기
+        let maxImageHeight: CGFloat = 388
+        let maxImageWidth: CGFloat = 281
+        
         // 스크롤에 따라 이미지 크기 조정
         let imageHeight = max(100, 388 - scrollOffset * 1.5)
         let imageWidth = max(150, 281 - (388 - imageHeight) * 0.76)
@@ -45,7 +49,7 @@ struct ClipArtReactionView: View {
                         if let imageURLString = viewModel.artwork?.thumbnailURL {
                             CachedImage(
                                 imageURLString,
-                                targetSize: .init(width: imageWidth, height: imageHeight)
+                                targetSize: .init(width: maxImageWidth, height: maxImageHeight)
                             )
                             .aspectRatio(contentMode: .fill)
                             .frame(width: imageWidth, height: imageHeight)
@@ -108,7 +112,7 @@ struct ClipArtReactionView: View {
                     BottomButton(
                         text: "전송하기",
                         isEnabled: viewModel.hasText,
-                        action: { buttonAction() }
+                        action: { viewModel.sendButtonAction() }
                     )
                     .background(LDColor.color6)
                 }
@@ -118,29 +122,46 @@ struct ClipArtReactionView: View {
             await viewModel.loadArtwork()
         }
         .scrollDismissesKeyboard(.interactively)
-    }
-    
-    private func buttonAction() {
-        Task { @MainActor in
-            if await viewModel.sendReaction() {
-                router.push(.complete)
-            } else {
-                // TODO: - 전송 실패 알럿 띄우기 (버튼 throttle 함께 처리)
+        .onChange(of: viewModel.shouldTriggerSend) { old, newValue in
+            guard newValue else { return }
+            Task {
+                if await viewModel.sendReaction() {
+                    router.push(.complete)
+                }
+                viewModel.shouldTriggerSend = false
             }
         }
+        .customAlert(
+            isPresented: $viewModel.shouldShowConfirmAlert,
+            image: viewModel.alertType.image,
+            title: viewModel.alertType.title,
+            message: viewModel.alertType.message,
+            buttonText: viewModel.alertType.buttonText,
+            action: {
+                if viewModel.alertType == .confirmation {
+                    viewModel.confirmSendAction()
+                } else {
+                    viewModel.handleRestrictionAlertDismiss()
+                    viewModel.shouldShowConfirmAlert = false
+                }
+            },
+            cancelAction: {
+                viewModel.shouldShowConfirmAlert = false
+            }
+        )
     }
     
     // MARK: - 작품 탭
     private var artworkSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(viewModel.artwork?.title ?? "작품명")
-                .font(.system(size: 21, weight: .semibold))
+                .font(LDFont.heading03)
                 .foregroundColor(LDColor.color1)
             
             if let artistName = viewModel.artistName {
                 HStack {
                     Text(artistName)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(LDFont.medium04)
                         .foregroundColor(LDColor.color1)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
@@ -157,7 +178,7 @@ struct ClipArtReactionView: View {
             } else {
                 HStack {
                     Text("작자미상")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(LDFont.medium04)
                         .foregroundColor(LDColor.color1)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
@@ -180,23 +201,23 @@ struct ClipArtReactionView: View {
             
             if let desc = viewModel.artwork?.descriptionText, !desc.isEmpty {
                 Text("작품 설명")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .padding(.top, 12)
                 
                 Text(desc)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(LDFont.medium04)
                     .foregroundColor(LDColor.color2)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text("작품 설명이 없습니다.")
-                    .font(.system(size: 16))
+                    .font(LDFont.regular02)
                     .foregroundColor(Color.gray)
                     .padding(.top, 12)
             }
             
-            Spacer(minLength: 600)
+            Spacer(minLength: 200)
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
@@ -207,7 +228,7 @@ struct ClipArtReactionView: View {
     private var reactionInputSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("메시지")
-                .font(.system(size: 18, weight: .semibold))
+                .font(LDFont.heading04)
                 .foregroundColor(.black)
             
             ZStack(alignment: .topLeading) {
@@ -217,7 +238,7 @@ struct ClipArtReactionView: View {
                 
                 if viewModel.message.isEmpty && !isMessageFieldFocused {
                     Text("작품에 대한 생각을 자유롭게 적어보세요.")
-                        .font(.system(size: 16))
+                        .font(LDFont.regular02)
                         .foregroundColor(LDColor.color3)
                         .padding(.top, 12)
                         .padding(.leading, 14)
@@ -239,7 +260,7 @@ struct ClipArtReactionView: View {
                     HStack {
                         Spacer()
                         Text("\(viewModel.message.count)/\(viewModel.limit)")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(LDFont.medium04)
                             .foregroundColor(LDColor.color3)
                             .padding(.trailing, 14)
                             .padding(.bottom, 10)
@@ -247,7 +268,7 @@ struct ClipArtReactionView: View {
                 }
             }
             
-            Spacer(minLength: 300)
+            Spacer(minLength: 100)
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
