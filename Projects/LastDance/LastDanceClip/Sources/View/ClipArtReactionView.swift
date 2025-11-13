@@ -29,6 +29,10 @@ struct ClipArtReactionView: View {
     }
     
     var body: some View {
+        // 최대 이미지 크기
+        let maxImageHeight: CGFloat = 388
+        let maxImageWidth: CGFloat = 281
+        
         // 스크롤에 따라 이미지 크기 조정
         let imageHeight = max(100, 388 - scrollOffset * 1.5)
         let imageWidth = max(150, 281 - (388 - imageHeight) * 0.76)
@@ -45,7 +49,7 @@ struct ClipArtReactionView: View {
                         if let imageURLString = viewModel.artwork?.thumbnailURL {
                             CachedImage(
                                 imageURLString,
-                                targetSize: .init(width: imageWidth, height: imageHeight)
+                                targetSize: .init(width: maxImageWidth, height: maxImageHeight)
                             )
                             .aspectRatio(contentMode: .fill)
                             .frame(width: imageWidth, height: imageHeight)
@@ -213,7 +217,7 @@ struct ClipArtReactionView: View {
                     .padding(.top, 12)
             }
             
-            Spacer(minLength: 600)
+            Spacer(minLength: 200)
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
@@ -264,7 +268,7 @@ struct ClipArtReactionView: View {
                 }
             }
             
-            Spacer(minLength: 300)
+            Spacer(minLength: 100)
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
