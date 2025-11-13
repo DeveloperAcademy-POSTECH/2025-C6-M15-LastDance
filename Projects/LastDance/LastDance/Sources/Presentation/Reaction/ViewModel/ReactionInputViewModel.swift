@@ -80,12 +80,15 @@ final class ReactionInputViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 guard let self else { return }
-                Log.debug("BottomButton 스로틀링 통과 - Alert 표시")
-                if self.profanity.containsProfanity(in: self.message) {
+
+                let result = self.profanity.containsProfanity(in: self.message)
+
+                if result {
                     self.alertType = .restriction
                 } else {
                     self.alertType = .confirmation
                 }
+
                 self.shouldShowConfirmAlert = true
             }
             .store(in: &cancellables)
