@@ -158,4 +158,3 @@ struct BlurEffectView: View {
         }
     }
 }
-

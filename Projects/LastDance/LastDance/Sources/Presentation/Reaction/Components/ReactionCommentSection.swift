@@ -18,7 +18,9 @@ struct ReactionCommentSection: View {
                 .font(LDFont.medium03)
                 .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
                 .lineSpacing(10)
-                .animation(.easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id))
+                .animation(
+                    .easeInOut(duration: 0.3),
+                    value: viewModel.expandedReactions.contains(reaction.id))
 
             if reaction.comment.count > 100 {
                 Button(action: {
