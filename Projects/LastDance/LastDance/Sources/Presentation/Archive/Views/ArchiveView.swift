@@ -13,6 +13,7 @@ struct ArchiveView: View {
 
     @StateObject private var viewModel: ArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
+    @Query private var artists: [Artist]
 
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
@@ -23,12 +24,8 @@ struct ArchiveView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ArchiveHeaderView {
-                router.popLast()
-            }
-            .padding(.bottom, 12)
-
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
+                .padding(.top, 12)
 
             ArtworkCountView(count: viewModel.reactedArtworksCount)
                 .padding(.bottom, -2)
@@ -37,21 +34,47 @@ struct ArchiveView: View {
                 ZStack(alignment: .top) {
                     BackGround(geometry: geometry)
 
+                    LinearGradient(
+                        colors: [
+                            LDColor.color6,
+                            LDColor.color6.opacity(0),
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 100)
+
                     ScrollView {
                         VStack(spacing: 0) {
                             if viewModel.isLoading {
                                 ProgressView()
                                     .scaleEffect(1.2)
                                     .frame(maxWidth: .infinity, minHeight: 400)
-                            } else if viewModel.hasArtworks {
+                            } else {
                                 ArtworkGridView(
                                     artworks: viewModel.reactedArtworks,
-                                    getRotationAngle: viewModel.getRotationAngle
+                                    getRotationAngle: viewModel
+                                        .getRotationAngle,
+                                    onAddTap: {
+                                        router.push(
+                                            .camera(exhibitionId: exhibitionId)
+                                        )
+                                    },
+                                    onArtworkTap: { artwork in
+                                        if let artistId = artwork.artistId,
+                                            let artist = artists.first(where: {
+                                                $0.id == artistId
+                                            })
+                                        {
+                                            router.push(
+                                                .artReaction(
+                                                    artwork: artwork,
+                                                    artist: artist
+                                                )
+                                            )
+                                        }
+                                    }
                                 )
-                            } else {
-                                ArchiveEmptyStateView {
-                                    router.push(.camera(exhibitionId: exhibitionId))
-                                }
                             }
 
                             Color.clear
@@ -59,7 +82,6 @@ struct ArchiveView: View {
                         }
                         .frame(minHeight: geometry.size.height + 400)
                     }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
                 .mask(
                     LinearGradient(
@@ -70,7 +92,7 @@ struct ArchiveView: View {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.5),
                             Color.black.opacity(0.2),
-                            Color.clear,
+                            Color.clear
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -85,6 +107,12 @@ struct ArchiveView: View {
                 endPoint: .bottom
             )
         )
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomXmarkNavigationBar(title: "") {
+                router.popTo(.audienceArchiving)
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             CameraActionButtonView {
                 router.push(.camera(exhibitionId: exhibitionId))
@@ -93,24 +121,6 @@ struct ArchiveView: View {
         .onAppear {
             viewModel.loadData()
         }
-    }
-}
-
-struct ArchiveHeaderView: View {
-    let onClose: () -> Void
-
-    var body: some View {
-        HStack {
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 24, weight: .medium))
-                    .foregroundColor(.black)
-                    .frame(width: 44, height: 44)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 13)
-        .padding(.top, 20)
     }
 }
 
@@ -141,47 +151,25 @@ struct ArtworkCountView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
-        .padding(.top, 25)
+        .padding(.vertical, 24)
     }
 }
 
 struct ArtworkGridView: View {
     let artworks: [Artwork]
     let getRotationAngle: (Int) -> Double
-
-    var body: some View {
-        LazyVGrid(
-            columns: [
-                GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31),
-            ],
-            spacing: 24
-        ) {
-            ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                CachedImage(artwork.thumbnailURL)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 157, height: 213)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .rotationEffect(.degrees(getRotationAngle(index)))
-                    .applyShadow(LDShadow.shadow4)
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-    }
-}
-
-struct ArchiveEmptyStateView: View {
     let onAddTap: () -> Void
+    let onArtworkTap: (Artwork) -> Void
 
     var body: some View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31),
+                GridItem(.flexible(), spacing: 31)
             ],
             spacing: 24
         ) {
+            // 첫 번째 아이템: + 버튼 (항상 고정)
             Button(action: onAddTap) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
@@ -194,12 +182,31 @@ struct ArchiveEmptyStateView: View {
                 .frame(width: 157, height: 213)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(LDColor.gray8, style: StrokeStyle(lineWidth: 1.4, dash: [8]))
+                        .stroke(
+                            LDColor.gray8,
+                            style: StrokeStyle(lineWidth: 1.4, dash: [8])
+                        )
                 )
                 .rotationEffect(.degrees(-4))
             }
+
+            // 나머지 아이템: 작품들
+            ForEach(Array(artworks.enumerated()), id: \.element.id) {
+                index,
+                artwork in
+                Button(action: {
+                    onArtworkTap(artwork)
+                }) {
+                    CachedImage(artwork.thumbnailURL)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 157, height: 213)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .rotationEffect(.degrees(getRotationAngle(index + 1)))
+                        .applyShadow(LDShadow.shadow4)
+                }
+            }
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 20)
         .padding(.top, 20)
     }
 }

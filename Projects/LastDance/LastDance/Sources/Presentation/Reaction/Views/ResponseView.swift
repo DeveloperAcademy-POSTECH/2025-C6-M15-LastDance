@@ -10,19 +10,16 @@ import SwiftUI
 
 struct ResponseView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel: ResponseViewModel  // Initialize with artworkId
-    @Query private var allArtworks: [Artwork]  // Keep for fetching artwork details
+    @StateObject private var viewModel: ResponseViewModel
+    @Query private var allArtworks: [Artwork]
     let artworkId: Int
 
-    // Initialize viewModel with artworkId
     init(artworkId: Int) {
         self.artworkId = artworkId
         _viewModel = StateObject(wrappedValue: ResponseViewModel(artworkId: artworkId))
     }
 
     private var artwork: Artwork? {
-        // Fetch artwork from SwiftData using the artworkId
-        // This assumes the artwork has been saved to SwiftData by previous API calls
         allArtworks.first { $0.id == artworkId }
     }
 
@@ -34,7 +31,7 @@ struct ResponseView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ResponseContentView(
-                    artwork: artwork,  // Pass the fetched artwork
+                    artwork: artwork,
                     viewModel: viewModel
                 )
             }
@@ -56,24 +53,20 @@ struct ResponseView: View {
 
 struct ResponseContentView: View {
     let artwork: Artwork?
-
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
         ScrollView {
-            ZStack(alignment: .topLeading) {
-                VStack(alignment: .leading, spacing: 0) {
-                    ArtworkBackgroundView(artwork: artwork)
-                        .offset(y: -120)
-                        .ignoresSafeArea(.container, edges: .top)
-                        .padding(.bottom, -120)
+            VStack(alignment: .leading, spacing: 0) {
+                ArtworkBackgroundView(artwork: artwork)
+                    .offset(y: -120)
+                    .ignoresSafeArea(.container, edges: .top)
+                    .padding(.bottom, -120)
 
-                    ReactionListView(viewModel: viewModel)
-                        .padding(.top, 20)
-
-                    Spacer()
-                }
-
+                ReactionListView(viewModel: viewModel)
+                    .padding(.top, 20)
+            }
+            .overlay(alignment: .topLeading) {
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer().frame(height: 343 - 120 - 40)
                     ReactionHeaderView(count: viewModel.reactions.count)
@@ -81,34 +74,6 @@ struct ResponseContentView: View {
             }
         }
         .scrollToMinDistance(minDisntance: 32)
-    }
-}
-
-// MARK: - ArtworkBackgroundView
-
-struct ArtworkBackgroundView: View {
-    let artwork: Artwork?
-
-    var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            // 이미지 영역
-            CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(contentMode: .fill)
-                .frame(maxHeight: 393)
-                .clipped()
-
-            // 그라데이션 오버레이
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    LDColor.color5.opacity(0),
-                    LDColor.color5,
-                ]),
-                startPoint: .center,
-                endPoint: .bottom
-            )
-        }
-        .offset(y: -35)
-        .ignoresSafeArea(.container, edges: .top)
     }
 }
 
@@ -160,12 +125,14 @@ struct ReactionItemsView: View {
 
                 if index < viewModel.reactions.count - 1 {
                     Rectangle()
-                        .fill(LDColor.color5)
-                        .frame(maxWidth: .infinity, maxHeight: 2)
+                        .foregroundColor(.clear)
+                        .frame(height: 2)
+                        .background(Color(red: 0.94, green: 0.94, blue: 0.94))
                         .padding(.bottom, 16)
                 }
             }
         }
+        .padding(.bottom, 120)
     }
 }
 
@@ -192,124 +159,3 @@ struct BlurEffectView: View {
     }
 }
 
-// MARK: - ReactionItemView
-
-struct ReactionItemView: View {
-    let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // 댓글 텍스트
-            Text(viewModel.displayText(for: reaction))
-                .font(LDFont.medium03)
-                .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
-                .lineSpacing(10)
-                .animation(
-                    .easeInOut(duration: 0.3),
-                    value: viewModel.expandedReactions.contains(reaction.id)
-                )
-
-            // 더보기/접기 버튼
-            if reaction.comment.count > 100 {
-                Button(action: {
-                    viewModel.handleExpandToggle(for: reaction)
-                }) {
-                    Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                        .font(LDFont.medium05)
-                        .foregroundColor(.gray)
-                }
-            }
-
-            // 태그들
-            CategoryTagsView(
-                reaction: reaction,
-                viewModel: viewModel
-            )
-        }
-
-        .padding(.vertical, 8)
-    }
-}
-
-// MARK: - CategoryTagsView
-
-struct CategoryTagsView: View {
-    let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
-
-    var body: some View {
-        let firstLine = viewModel.firstLineCategories(
-            for: reaction.categories, reactionId: reaction.id)
-        let hidden = viewModel.hiddenCategories(for: reaction.categories, reactionId: reaction.id)
-        let showAll = viewModel.showAllReactions[reaction.id] ?? false
-
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                ForEach(firstLine, id: \.self) { category in
-                    CategoryTagView(text: category)
-                }
-
-                if !showAll && reaction.categories.count >= 2 {
-                    MoreCategoriesButton(
-                        count: viewModel.hiddenCount(for: reaction),
-                        action: { viewModel.toggleShowAllReactions(id: reaction.id) }
-                    )
-                }
-
-                Spacer()
-            }
-
-            if showAll && !hidden.isEmpty {
-                HStack(spacing: 8) {
-                    ForEach(hidden, id: \.self) { category in
-                        CategoryTagView(text: category)
-                    }
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-
-// MARK: - CategoryTagView
-
-struct CategoryTagView: View {
-    let text: String
-    var body: some View {
-        HStack(alignment: .center, spacing: 8) {
-            Circle()
-                .fill(Color.orange)
-                .frame(width: 6, height: 6)
-
-            Text(text)
-                .font(LDFont.medium06)
-                .foregroundColor(.primary)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(LDColor.color6)
-        .cornerRadius(42)
-        .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
-    }
-}
-
-// MARK: - MoreCategoriesButton
-
-struct MoreCategoriesButton: View {
-    let count: Int
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text("+\(count)")
-                .font(LDFont.medium06)
-                .foregroundColor(.gray)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(LDColor.color6)
-                .cornerRadius(42)
-                .shadow(color: .black.opacity(0.24), radius: 0.5, x: 0, y: 0)
-        }
-    }
-}

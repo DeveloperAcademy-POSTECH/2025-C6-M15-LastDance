@@ -158,9 +158,9 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                             Log.debug("저장 완료 (\(artworkInfos.count)개)")
                         }
                         SwiftDataManager.shared.saveContext()
-                    }
 
-                    completion(.success(exhibitionDto))
+                        completion(.success(exhibitionDto))
+                    }
                 } catch {
                     Log.fault("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))

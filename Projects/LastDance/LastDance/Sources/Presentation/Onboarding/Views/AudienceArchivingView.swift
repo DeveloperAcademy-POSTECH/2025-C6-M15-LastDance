@@ -19,25 +19,13 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("나의 전시")
-                    .font(LDFont.heading02)
-                    .foregroundColor(.black)
-
-                Spacer()
-
-                Button(action: {
-                    router.push(.alarmList(userType: .viewer))
-                }) {
-                    Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                }
-            }
-            .foregroundColor(.black)
-            .padding(.top, 20)
-            .padding(.horizontal, 24)
-
+            
+            Text("나의 전시")
+                .font(LDFont.heading02)
+                .foregroundColor(.black)
+                .padding(.horizontal, 24)
+                .padding(.top, 20)
+            
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -47,6 +35,7 @@ struct AudienceArchivingView: View {
                 ScrollView {
                     LazyVGrid(
                         columns: gridColumns,
+                        alignment: .leading,
                         spacing: 24
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) {
@@ -61,9 +50,10 @@ struct AudienceArchivingView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 24)
                     .padding(.top, 30)
                     .padding(.bottom, 100)
+    
                 }
             } else {
                 // 빈 상태

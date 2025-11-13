@@ -62,7 +62,6 @@ struct CompleteArticleListView: View {
                 viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {
@@ -94,7 +93,7 @@ struct InfoRow: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
                 .font(LDFont.regular02)
-                .foregroundStyle(.black)
+                .foregroundColor(LDColor.color2)
 
             Text(value)
                 .font(LDFont.regular01)
@@ -104,7 +103,11 @@ struct InfoRow: View {
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(LDColor.gray3)
+                        .fill(LDColor.color5)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(LDColor.gray3, lineWidth: 1)
                 )
         }
     }
