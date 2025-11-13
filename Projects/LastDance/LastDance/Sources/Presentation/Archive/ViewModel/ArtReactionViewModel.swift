@@ -18,17 +18,6 @@ final class ArtReactionViewModel: ObservableObject {
     private let artworkId: Int
     private let swiftDataManager = SwiftDataManager.shared
 
-    // MARK: - Image Size Constants
-
-    private enum ImageSize {
-        static let minWidth: CGFloat = 300
-        static let maxWidth: CGFloat = 345
-        static let minHeight: CGFloat = 400
-        static let maxHeight: CGFloat = 468
-        static let animationThreshold: CGFloat = 100
-        static let tabBarFixThreshold: CGFloat = 492
-    }
-
     // MARK: - Initialization
 
     init(artworkId: Int) {
@@ -38,23 +27,25 @@ final class ArtReactionViewModel: ObservableObject {
     // MARK: - Computed Properties
 
     func imageWidth(for scrollOffset: CGFloat) -> CGFloat {
-        guard scrollOffset < ImageSize.animationThreshold else {
-            return ImageSize.minWidth
+        guard scrollOffset < ArchiveImageConstants.animationThreshold else {
+            return ArchiveImageConstants.minWidth
         }
-        let progress = scrollOffset / ImageSize.animationThreshold
-        return ImageSize.maxWidth - (progress * (ImageSize.maxWidth - ImageSize.minWidth))
+        let progress = scrollOffset / ArchiveImageConstants.animationThreshold
+        return ArchiveImageConstants.maxWidth
+            - (progress * (ArchiveImageConstants.maxWidth - ArchiveImageConstants.minWidth))
     }
 
     func imageHeight(for scrollOffset: CGFloat) -> CGFloat {
-        guard scrollOffset < ImageSize.animationThreshold else {
-            return ImageSize.minHeight
+        guard scrollOffset < ArchiveImageConstants.animationThreshold else {
+            return ArchiveImageConstants.minHeight
         }
-        let progress = scrollOffset / ImageSize.animationThreshold
-        return ImageSize.maxHeight - (progress * (ImageSize.maxHeight - ImageSize.minHeight))
+        let progress = scrollOffset / ArchiveImageConstants.animationThreshold
+        return ArchiveImageConstants.maxHeight
+            - (progress * (ArchiveImageConstants.maxHeight - ArchiveImageConstants.minHeight))
     }
 
     func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
-        return scrollOffset > ImageSize.tabBarFixThreshold
+        return scrollOffset > ArchiveImageConstants.tabBarFixThreshold
     }
 
     // MARK: - Public Methods

@@ -28,11 +28,10 @@ final class ReactionInputViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
     private let confirmSendTapped = PassthroughSubject<Void, Never>()  // 알림창 내부 전송하기 탭 관리
-    private let throttleInterval: TimeInterval = 2.0
 
-    let categoryLimit = 2
-    let tagLimit = 6
-    let limit = 500  // texteditor 최대 글자수 제한
+    let categoryLimit = ReactionConstants.maxCategories
+    let tagLimit = ReactionConstants.maxTags
+    let limit = ReactionConstants.maxMessageLength
 
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
@@ -73,7 +72,10 @@ final class ReactionInputViewModel: ObservableObject {
     private func setupThrottling() {
         // BottomButton 스로틀링
         sendButtonTapped
-            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
+            .throttle(
+                for: .seconds(ReactionConstants.throttleInterval), scheduler: RunLoop.main,
+                latest: false
+            )
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 Log.debug("BottomButton 스로틀링 통과 - Alert 표시")
@@ -83,7 +85,10 @@ final class ReactionInputViewModel: ObservableObject {
 
         // Alert 전송 버튼 스로틀링
         confirmSendTapped
-            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
+            .throttle(
+                for: .seconds(ReactionConstants.throttleInterval), scheduler: RunLoop.main,
+                latest: false
+            )
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
@@ -105,7 +110,7 @@ final class ReactionInputViewModel: ObservableObject {
     func toggleCategory(_ category: String) {
         if selectedCategories.contains(category) {
             selectedCategories.remove(category)
-        } else if selectedCategories.count < 4 {
+        } else if selectedCategories.count < ReactionConstants.categoryDisplayLimit {
             selectedCategories.insert(category)
         }
     }

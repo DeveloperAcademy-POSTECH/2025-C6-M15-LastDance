@@ -16,7 +16,7 @@ struct ReactionFormView: View {
 
     @State private var showCategorySheet = false
 
-    private let placeholder = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
+    private let placeholder = ReactionConstants.messagePlaceholder
     private var hasSelectedEmotion: Bool {
         !viewModel.selectedCategories.isEmpty || !viewModel.selectedTagsName.isEmpty
     }
