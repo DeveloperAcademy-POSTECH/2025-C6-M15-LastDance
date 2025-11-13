@@ -59,7 +59,6 @@ struct TagSelectView: View {
                     return false
                 }
             }
-            .padding(.bottom, 10)
         }
         .background(Color(red: 0.95, green: 0.95, blue: 0.95))
         .navigationBarTitleDisplayMode(.inline)

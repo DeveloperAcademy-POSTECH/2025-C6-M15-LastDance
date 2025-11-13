@@ -27,8 +27,12 @@ extension Date {
         return formatter
     }()
 
-    private static let isoFormatter = ISO8601DateFormatter()
-
+    private static let isoFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    
     /// API 요청용 날짜 형식으로 변환 (yyyy-MM-dd)
     func toAPIDateString() -> String {
         return Date.apiDateFormatter.string(from: self)
@@ -90,5 +94,31 @@ extension Date {
             return String(isoString[range])
         }
         return isoString
+    }
+}
+
+extension Date {
+    /// 서버에서 내려주는 ISO8601 또는 yyyy-MM-dd 문자열을 Date로 변환
+    static func fromAPIServerString(_ string: String) -> Date? {
+        // ISO8601 (ex: 2025-11-12T03:25:18.123Z)
+        if let date = isoFormatter.date(from: string) {
+            return date
+        }
+
+        // yyyy-MM-dd 형식 (ex: 2025-11-12)
+        if let date = apiDateFormatter.date(from: string) {
+            return date
+        }
+
+        // 혹시 다른 형식 대비
+        let pattern = "^(\\d{4}-\\d{2}-\\d{2})"
+        if let regex = try? NSRegularExpression(pattern: pattern),
+           let match = regex.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)),
+           let range = Range(match.range(at: 1), in: string) {
+            let shortDate = String(string[range])
+            return apiDateFormatter.date(from: shortDate)
+        }
+
+        return nil
     }
 }

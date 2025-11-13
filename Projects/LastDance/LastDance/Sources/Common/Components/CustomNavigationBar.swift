@@ -42,6 +42,23 @@ struct CustomWhiteNavigationBar: ToolbarContent {
     }
 }
 
+struct CustomXmarkNavigationBar: ToolbarContent {
+    let title: String
+    let onXmarkButtonTap: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            XmarkButton(action: onXmarkButtonTap)
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+        }
+    }
+}
+
 #Preview {
     NavigationStack {
         Text("컨텐츠 영역")

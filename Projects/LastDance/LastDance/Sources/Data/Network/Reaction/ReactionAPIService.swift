@@ -22,6 +22,11 @@ protocol ReactionAPIServiceProtocol {
     func getDetailReaction(
         reactionId: Int, completion: @escaping (Result<ReactionResponseDto, Error>) -> Void
     )
+    func getReactionsAsync(
+        artworkId: Int?,
+        visitorId: Int?,
+        visitId: Int?
+    ) async throws -> [GetReactionResponseDto]
 }
 
 // MARK: ReactionAPIService
@@ -169,6 +174,29 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 }
                 Log.error("API 요청 실패: \(error)")
                 completion(.failure(error))
+            }
+        }
+    }
+}
+
+extension ReactionAPIService {
+    func getReactionsAsync(
+        artworkId: Int?,
+        visitorId: Int?,
+        visitId: Int?
+    ) async throws -> [GetReactionResponseDto] {
+        try await withCheckedThrowingContinuation { continuation in
+            self.getReactions(
+                artworkId: artworkId,
+                visitorId: visitorId,
+                visitId: visitId
+            ) { result in
+                switch result {
+                case .success(let list):
+                    continuation.resume(returning: list)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
             }
         }
     }

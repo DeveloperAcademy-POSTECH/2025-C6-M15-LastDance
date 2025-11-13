@@ -90,12 +90,15 @@ struct ArtworkDetailView: View {
             message: viewModel.alertType.message,
             buttonText: viewModel.alertType.buttonText,
             action: {
-
                 if viewModel.alertType == .confirmation {
                     viewModel.confirmSendAction()
                 } else {
+                    viewModel.handleRestrictionAlertDismiss()
                     viewModel.shouldShowConfirmAlert = false
                 }
+            },
+            cancelAction: {
+                viewModel.shouldShowConfirmAlert = false
             }
         )
     }

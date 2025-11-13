@@ -10,10 +10,20 @@
 		963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 963572422E980E2400B2FA79 /* OSLog.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		96B1CA1A2E954A5C003E7C1C /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA192E954A5C003E7C1C /* CombineMoya */; };
 		96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 96B1CA1B2E954A5C003E7C1C /* Moya */; };
+		997BB15E2EC1388E0052F9BA /* LastDanceClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB18C2EC14ACA0052F9BA /* Moya */; };
+		997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB4022EC50C1B0052F9BA /* Kingfisher */; };
 		D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D8CD5AC32EBC4BF700B9D44D /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		997BB15C2EC1388E0052F9BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 997BB14C2EC1388D0052F9BA;
+			remoteInfo = LastDanceClip;
+		};
 		D8398A852EC0F01C0009E7C6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 99E6F05F2E91E4A9002ED9C2 /* Project object */;
@@ -23,8 +33,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		997BB1632EC1388E0052F9BA /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+				997BB15E2EC1388E0052F9BA /* LastDanceClip.app in Embed App Clips */,
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		963572422E980E2400B2FA79 /* OSLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSLog.framework; path = System/Library/Frameworks/OSLog.framework; sourceTree = SDKROOT; };
+		997BB14D2EC1388D0052F9BA /* LastDanceClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDanceClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0672E91E4A9002ED9C2 /* LastDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		D8398A812EC0F01C0009E7C6 /* LastDanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LastDanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +66,78 @@
 			);
 			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
 		};
+		997BB1622EC1388E0052F9BA /* Exceptions for "LastDanceClip" folder in "LastDanceClip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
+		};
+		997BB1662EC13FCC0052F9BA /* Exceptions for "LastDance" folder in "LastDanceClip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+				"Resources/Fonts/Pretendard-Black.otf",
+				"Resources/Fonts/Pretendard-Bold.otf",
+				"Resources/Fonts/Pretendard-ExtraBold.otf",
+				"Resources/Fonts/Pretendard-ExtraLight.otf",
+				"Resources/Fonts/Pretendard-Light.otf",
+				"Resources/Fonts/Pretendard-Medium.otf",
+				"Resources/Fonts/Pretendard-Regular.otf",
+				"Resources/Fonts/Pretendard-SemiBold.otf",
+				"Resources/Fonts/Pretendard-Thin.otf",
+				Sources/Common/Components/Button/BottomButton.swift,
+				Sources/Common/Components/CachedImage.swift,
+				Sources/Common/DesignSystem/LDColor.swift,
+				Sources/Common/DesignSystem/LDFont.swift,
+				"Sources/Common/Extensions/Date+Extensions.swift",
+				Sources/Common/Extensions/Log.swift,
+				Sources/Common/Extensions/Navigation_Ext.swift,
+				Sources/Common/Extensions/TapGestureRecognizer.swift,
+				Sources/Common/Utils/Config.swift,
+				Sources/Common/Utils/Enum/AlertType.swift,
+				Sources/Common/Utils/Enum/APIVersion.swift,
+				Sources/Common/Utils/Enum/ArtReactionTab.swift,
+				Sources/Common/Utils/Enum/UserDefaultsKey.swift,
+				Sources/Data/Network/Artist/ArtistAPI.swift,
+				Sources/Data/Network/Artist/DTO/Request/ArtistCreateRequestDto.swift,
+				Sources/Data/Network/Artist/DTO/Response/ArtistDetailResponseDto.swift,
+				Sources/Data/Network/Artist/DTO/Response/ArtistListResponseDto.swift,
+				Sources/Data/Network/Artwork/ArtworkAPI.swift,
+				Sources/Data/Network/Artwork/DTO/MakeArtworkRequestDto.swift,
+				Sources/Data/Network/Base/BaseTargetType.swift,
+				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
+				Sources/Data/Network/Reaction/DTO/Response/ArtworkDetailResponseDto.swift,
+				Sources/Data/Network/Reaction/DTO/Response/GetReactionResponseDto.swift,
+				Sources/Data/Network/Reaction/DTO/Response/ReactionDetailResponseDto.swift,
+				Sources/Data/Network/Reaction/DTO/Response/ReactionResponseDto.swift,
+				Sources/Data/Network/Reaction/DTO/Response/VisitorResponseDto.swift,
+				Sources/Data/Network/Reaction/ReactionAPI.swift,
+				Sources/Data/Network/Tag/DTO/Response/TagDetailResponseDto.swift,
+				Sources/Data/Network/VisitHistories/DTO/MakeVisitHistoriesRequestDto.swift,
+				Sources/Data/Network/VisitHistories/DTO/VisitorHistoriesResponseDto.swift,
+				Sources/Data/Network/VisitHistories/VisitHistoriesAPI.swift,
+				Sources/Data/Network/Visitor/DTO/Request/VisitorCreateRequestDto.swift,
+				Sources/Data/Network/Visitor/DTO/Response/VisitorDetailResponseDto.swift,
+				Sources/Data/Network/Visitor/VisitorAPI.swift,
+				Sources/Domain/Mapper/ArtistMapper.swift,
+				Sources/Domain/Mapper/ArtworkMapper.swift,
+				Sources/Domain/Model/Artwork/Artwork.swift,
+				Sources/Domain/Model/Exhibition/Exhibition.swift,
+				Sources/Domain/Model/Reaction/Reaction.swift,
+				Sources/Domain/Model/User/Artist.swift,
+				Sources/Presentation/Archive/Views/ScrollViewObserver.swift,
+				Sources/Presentation/Archive/Views/TabBarView.swift,
+			);
+			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
+		};
+		997BB1DD2EC3D8A30052F9BA /* Exceptions for "LastDanceClip" folder in "LastDance" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Sources/Shared/SharedKeys.swift,
+			);
+			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -48,8 +145,18 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				997BA5542EBD6A3C0052F9BA /* Exceptions for "LastDance" folder in "LastDance" target */,
+				997BB1662EC13FCC0052F9BA /* Exceptions for "LastDance" folder in "LastDanceClip" target */,
 			);
 			path = LastDance;
+			sourceTree = "<group>";
+		};
+		997BB14E2EC1388D0052F9BA /* LastDanceClip */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				997BB1DD2EC3D8A30052F9BA /* Exceptions for "LastDanceClip" folder in "LastDance" target */,
+				997BB1622EC1388E0052F9BA /* Exceptions for "LastDanceClip" folder in "LastDanceClip" target */,
+			);
+			path = LastDanceClip;
 			sourceTree = "<group>";
 		};
 		D8398A822EC0F01C0009E7C6 /* LastDanceTests */ = {
@@ -60,6 +167,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		997BB14A2EC1388D0052F9BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */,
+				997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		99E6F0642E91E4A9002ED9C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -96,6 +212,7 @@
 				D8C7C08A2E9F34CC00FCB472 /* PrivacyInfo.xcprivacy */,
 				99E6F0F62E93B138002ED9C2 /* .swiftlint.yml */,
 				997BA4A02EBD6A3C0052F9BA /* LastDance */,
+				997BB14E2EC1388D0052F9BA /* LastDanceClip */,
 				D8398A822EC0F01C0009E7C6 /* LastDanceTests */,
 				963572412E980E2400B2FA79 /* Frameworks */,
 				99E6F0682E91E4A9002ED9C2 /* Products */,
@@ -106,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				99E6F0672E91E4A9002ED9C2 /* LastDance.app */,
+				997BB14D2EC1388D0052F9BA /* LastDanceClip.app */,
 				D8398A812EC0F01C0009E7C6 /* LastDanceTests.xctest */,
 			);
 			name = Products;
@@ -114,6 +232,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		997BB14C2EC1388D0052F9BA /* LastDanceClip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 997BB15F2EC1388E0052F9BA /* Build configuration list for PBXNativeTarget "LastDanceClip" */;
+			buildPhases = (
+				997BB1492EC1388D0052F9BA /* Sources */,
+				997BB14A2EC1388D0052F9BA /* Frameworks */,
+				997BB14B2EC1388D0052F9BA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				997BB14E2EC1388D0052F9BA /* LastDanceClip */,
+			);
+			name = LastDanceClip;
+			packageProductDependencies = (
+				997BB18C2EC14ACA0052F9BA /* Moya */,
+				997BB4022EC50C1B0052F9BA /* Kingfisher */,
+			);
+			productName = LastDanceClip;
+			productReference = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */;
+			productType = "com.apple.product-type.application.on-demand-install-capable";
+		};
 		99E6F0662E91E4A9002ED9C2 /* LastDance */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 99E6F0772E91E4AA002ED9C2 /* Build configuration list for PBXNativeTarget "LastDance" */;
@@ -122,10 +264,12 @@
 				99E6F0642E91E4A9002ED9C2 /* Frameworks */,
 				99E6F0652E91E4A9002ED9C2 /* Resources */,
 				99E6F0F72E93B16E002ED9C2 /* ShellScript */,
+				997BB1632EC1388E0052F9BA /* Embed App Clips */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				997BB15D2EC1388E0052F9BA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				997BA4A02EBD6A3C0052F9BA /* LastDance */,
@@ -173,6 +317,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					997BB14C2EC1388D0052F9BA = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					99E6F0662E91E4A9002ED9C2 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -201,12 +348,20 @@
 			projectRoot = "";
 			targets = (
 				99E6F0662E91E4A9002ED9C2 /* LastDance */,
+				997BB14C2EC1388D0052F9BA /* LastDanceClip */,
 				D8398A802EC0F01C0009E7C6 /* LastDanceTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		997BB14B2EC1388D0052F9BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		99E6F0652E91E4A9002ED9C2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +399,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		997BB1492EC1388D0052F9BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		99E6F0632E91E4A9002ED9C2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -261,6 +423,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		997BB15D2EC1388E0052F9BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
+			targetProxy = 997BB15C2EC1388E0052F9BA /* PBXContainerItemProxy */;
+		};
 		D8398A862EC0F01C0009E7C6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 99E6F0662E91E4A9002ED9C2 /* LastDance */;
@@ -269,6 +436,90 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		997BB1602EC1388E0052F9BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
+				CODE_SIGN_ENTITLEMENTS = LastDanceClip/LastDanceClip.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LastDanceClip/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F83F8K6223;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LastDanceClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LastDance;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance_Clip;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		997BB1612EC1388E0052F9BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BASE_URL = "";
+				CODE_SIGN_ENTITLEMENTS = LastDanceClip/LastDanceClip.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LastDanceClip/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F83F8K6223;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LastDanceClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LastDance;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Profile_LastDance_Clip;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		99E6F0752E91E4AA002ED9C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -396,6 +647,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BASE_URL = "";
+				CODE_SIGN_ENTITLEMENTS = LastDance/LastDance.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -419,7 +671,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -440,6 +692,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BASE_URL = "";
+				CODE_SIGN_ENTITLEMENTS = LastDance/LastDance.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -463,7 +716,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.LastDance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -527,6 +780,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		997BB15F2EC1388E0052F9BA /* Build configuration list for PBXNativeTarget "LastDanceClip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				997BB1602EC1388E0052F9BA /* Debug */,
+				997BB1612EC1388E0052F9BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		99E6F0622E91E4A9002ED9C2 /* Build configuration list for PBXProject "LastDance" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -585,6 +847,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		997BB18C2EC14ACA0052F9BA /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		997BB4022EC50C1B0052F9BA /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		D8CD5AC32EBC4BF700B9D44D /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -13,12 +13,12 @@ struct ExhibitionListTitleSection: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("관람하러 온 전시를 알려주세요")
                 .font(LDFont.heading02)
-                .foregroundStyle(.black)
+                .foregroundStyle(LDColor.color1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("전시명")
                 .font(LDFont.regular03)
-                .foregroundColor(LDColor.gray6)
+                .foregroundColor(LDColor.color2)
                 .padding(.top, 24)
         }
         .padding(.top, 20)

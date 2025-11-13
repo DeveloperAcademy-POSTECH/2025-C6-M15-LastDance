@@ -10,51 +10,43 @@ import SwiftUI
 
 @main
 struct LastDanceApp: App {
-    let sharedModelContainer: ModelContainer
+    
+    // ModelContainer 설정을 분리한 PersistenceController 사용
+    let persistenceController = PersistenceController()
+    
+    // 데이터 동기화 로직을 분리한 Coordinator 사용
+    let dataCoordinator: AppDataCoordinator
 
     init() {
-        do {
-            let schema = Schema([
-                Exhibition.self,
-                Artwork.self,
-                Artist.self,
-                Visitor.self,
-                Venue.self,
-                CapturedArtwork.self,
-                Reaction.self,
-                IdentificatedArtwork.self,
-            ])
+        let visitorService = VisitorAPIService()
+        let reactionService = ReactionAPIService()
+        let exhibitionService = ExhibitionAPIService()
 
-            let modelConfiguration = ModelConfiguration(
-                schema: schema,
-                isStoredInMemoryOnly: false
-            )
-
-            sharedModelContainer = try ModelContainer(
-                for: schema,
-                configurations: [modelConfiguration]
-            )
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-
-        // SwiftUI가 아닌 외부에서 사용 가능하도록 SwiftDataManager에 container 주입
-        SwiftDataManager.shared.configure(with: sharedModelContainer)
+        // 모든 의존성을 주입하여 코디네이터 생성
+        self.dataCoordinator = AppDataCoordinator(
+            visitorService: visitorService,
+            reactionService: reactionService,
+            exhibitionService: exhibitionService
+        )
     }
 
     var body: some Scene {
         WindowGroup {
             RootView()
+                .task {
+                    await dataCoordinator.startHandoffProcess()
+                }
                 .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
-            // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
-            //                .onAppear {
-            //                    #if DEBUG
-            //                    Task { @MainActor in
-            //                        MockDataLoader.seedIfNeeded(container: sharedModelContainer)
-            //                    }
-            //                    #endif
-            //                }
+            
+                // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
+                // .onAppear {
+                //     #if DEBUG
+                //     Task { @MainActor in
+                //         MockDataLoader.seedIfNeeded(container: persistenceController.sharedModelContainer)
+                //     }
+                //     #endif
+                // }
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(persistenceController.sharedModelContainer)
     }
 }

@@ -127,13 +127,14 @@ struct ExhibitionPreviewInfo: View {
     let onStartVisit: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading) {
             // 전시 정보
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color1)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.top, 10)
 
                 if !artistNames.isEmpty {
                     Text(artistNames.joined(separator: ", "))
@@ -146,20 +147,22 @@ struct ExhibitionPreviewInfo: View {
                     .font(LDFont.regular02)
                     .foregroundColor(LDColor.color3)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.bottom, 10)
 
                 Rectangle()
                     .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                     .frame(height: 0.5)
                     .foregroundColor(LDColor.color3)
+                    .padding(.bottom, 10)
+
             }
-            .padding(.top, 14)
 
             // 액션 버튼들
             ArticleButtons(
                 onSearchMore: onSearchMore,
                 onStartVisit: onStartVisit
             )
-            .padding(.bottom, 14)
         }
+        .padding(.vertical, 8)
     }
 }
