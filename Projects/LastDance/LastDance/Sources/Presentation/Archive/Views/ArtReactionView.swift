@@ -144,13 +144,19 @@ struct ArtReactionView: View {
                                                         .font(LDFont.heading04)
                                                         .foregroundColor(LDColor.color1)
 
-                                                    ScrollView(.horizontal, showsIndicators: false) {
+                                                    ScrollView(.horizontal, showsIndicators: false)
+                                                    {
                                                         HStack {
-                                                            ForEach(reaction.tags, id: \.self) { tagInfo in
-                                                                ReactionTag(text: tagInfo.name, color: Color(hex: tagInfo.colorHex))
-                                                                    .applyShadow(LDShadow.shadow1)
-                                                                    .padding(.vertical, 10)
-                                                                    .padding(.horizontal, 2)
+                                                            ForEach(reaction.tags, id: \.self) {
+                                                                tagInfo in
+                                                                ReactionTag(
+                                                                    text: tagInfo.name,
+                                                                    color: Color(
+                                                                        hex: tagInfo.colorHex)
+                                                                )
+                                                                .applyShadow(LDShadow.shadow1)
+                                                                .padding(.vertical, 10)
+                                                                .padding(.horizontal, 2)
                                                             }
                                                         }
                                                     }
@@ -166,7 +172,9 @@ struct ArtReactionView: View {
                                                         .font(LDFont.medium04)
                                                         .foregroundColor(LDColor.color2)
                                                         .lineSpacing(4)
-                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                        .frame(
+                                                            maxWidth: .infinity, alignment: .leading
+                                                        )
                                                 }
                                             }
                                         }

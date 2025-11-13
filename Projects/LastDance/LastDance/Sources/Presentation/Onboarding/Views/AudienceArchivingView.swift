@@ -19,13 +19,13 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            
+
             Text("나의 전시")
                 .font(LDFont.heading02)
                 .foregroundColor(.black)
                 .padding(.horizontal, 24)
                 .padding(.top, 20)
-            
+
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -53,7 +53,7 @@ struct AudienceArchivingView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 30)
                     .padding(.bottom, 100)
-    
+
                 }
             } else {
                 // 빈 상태
