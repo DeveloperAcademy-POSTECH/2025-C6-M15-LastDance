@@ -155,13 +155,13 @@ struct ClipArtReactionView: View {
     private var artworkSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(viewModel.artwork?.title ?? "작품명")
-                .font(.system(size: 21, weight: .semibold))
+                .font(LDFont.heading03)
                 .foregroundColor(LDColor.color1)
             
             if let artistName = viewModel.artistName {
                 HStack {
                     Text(artistName)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(LDFont.medium04)
                         .foregroundColor(LDColor.color1)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
@@ -178,7 +178,7 @@ struct ClipArtReactionView: View {
             } else {
                 HStack {
                     Text("작자미상")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(LDFont.medium04)
                         .foregroundColor(LDColor.color1)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
@@ -201,18 +201,18 @@ struct ClipArtReactionView: View {
             
             if let desc = viewModel.artwork?.descriptionText, !desc.isEmpty {
                 Text("작품 설명")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
                     .padding(.top, 12)
                 
                 Text(desc)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(LDFont.medium04)
                     .foregroundColor(LDColor.color2)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text("작품 설명이 없습니다.")
-                    .font(.system(size: 16))
+                    .font(LDFont.regular02)
                     .foregroundColor(Color.gray)
                     .padding(.top, 12)
             }
@@ -228,7 +228,7 @@ struct ClipArtReactionView: View {
     private var reactionInputSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("메시지")
-                .font(.system(size: 18, weight: .semibold))
+                .font(LDFont.heading04)
                 .foregroundColor(.black)
             
             ZStack(alignment: .topLeading) {
@@ -238,7 +238,7 @@ struct ClipArtReactionView: View {
                 
                 if viewModel.message.isEmpty && !isMessageFieldFocused {
                     Text("작품에 대한 생각을 자유롭게 적어보세요.")
-                        .font(.system(size: 16))
+                        .font(LDFont.regular02)
                         .foregroundColor(LDColor.color3)
                         .padding(.top, 12)
                         .padding(.leading, 14)
@@ -260,7 +260,7 @@ struct ClipArtReactionView: View {
                     HStack {
                         Spacer()
                         Text("\(viewModel.message.count)/\(viewModel.limit)")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(LDFont.medium04)
                             .foregroundColor(LDColor.color3)
                             .padding(.trailing, 14)
                             .padding(.bottom, 10)

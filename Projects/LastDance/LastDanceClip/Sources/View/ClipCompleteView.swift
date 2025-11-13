@@ -25,14 +25,14 @@ struct ClipCompleteView: View {
                 Spacer().frame(height: 14)
                 
                 Text("전송 완료!")
-                    .font(.system(size: 21, weight: .semibold))
+                    .font(LDFont.heading03)
                     .lineSpacing(10)
                 
                 Spacer().frame(height: 8)
                 
                 Text("작가님에게 반응을 보냈어요")
                     .foregroundColor(Color(red: 0.31, green: 0.31, blue: 0.31))
-                    .font(.system(size: 18, weight: .regular))
+                    .font(LDFont.regular01)
                 
                 Spacer(minLength: 120)
             }
