@@ -14,13 +14,14 @@ struct CustomAlert: View {
     let message: String
     let buttonText: String
     let action: () -> Void
+    let cancelAction: (() -> Void)? // 취소 버튼 액션 (옵셔널)
 
     var body: some View {
         VStack(spacing: 0) {
             Image(image)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 54, height: 53)
+                .frame(width: 40, height: 41)
                 .padding(.top, 28)
                 .padding(.horizontal, 16)
 
@@ -39,17 +40,47 @@ struct CustomAlert: View {
 
             Spacer().frame(height: 22)
 
-            Button(action: action) {
-                Text(buttonText)
-                    .font(LDFont.heading06)
-                    .foregroundColor(LDColor.color6)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 42)
-                    .background(LDColor.color1)
-                    .cornerRadius(12)
+            if let cancelAction = cancelAction {
+                // 버튼 2개 (취소 + 확인)
+                HStack(spacing: 8) {
+                    // 취소 버튼
+                    Button(action: cancelAction) {
+                        Text("취소")
+                            .font(LDFont.heading06)
+                            .foregroundColor(LDColor.color1)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 42)
+                            .background(LDColor.color4)
+                            .cornerRadius(12)
+                    }
+
+                    // 확인 버튼
+                    Button(action: action) {
+                        Text(buttonText)
+                            .font(LDFont.heading06)
+                            .foregroundColor(LDColor.color6)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 42)
+                            .background(LDColor.color1)
+                            .cornerRadius(12)
+                    }
+                }
+                .padding(.bottom, 16)
+                .padding(.horizontal, 12)
+            } else {
+                // 버튼 1개 (확인만)
+                Button(action: action) {
+                    Text(buttonText)
+                        .font(LDFont.heading06)
+                        .foregroundColor(LDColor.color6)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 42)
+                        .background(LDColor.color1)
+                        .cornerRadius(12)
+                }
+                .padding(.bottom, 16)
+                .padding(.horizontal, 12)
             }
-            .padding(.bottom, 16)
-            .padding(.horizontal, 12)
         }
         .frame(width: 293)
         .background(LDColor.color6)
@@ -65,6 +96,7 @@ struct CustomAlertModifier: ViewModifier {
     let message: String
     let buttonText: String
     let action: () -> Void
+    let cancelAction: (() -> Void)?
 
     func body(content: Content) -> some View {
         ZStack {
@@ -83,22 +115,12 @@ struct CustomAlertModifier: ViewModifier {
                         title: title,
                         message: message,
                         buttonText: buttonText,
-                        action: action
+                        action: action,
+                        cancelAction: cancelAction
                     )
                 }
                 .ignoresSafeArea(.all)
             }
         }
-    }
-}
-
-#Preview {
-    CustomAlert(
-        image: "warning",
-        title: "아쉬워요!",
-        message: "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요.",
-        buttonText: "다시 찾기"
-    ) {
-        print("Alert button tapped")
     }
 }

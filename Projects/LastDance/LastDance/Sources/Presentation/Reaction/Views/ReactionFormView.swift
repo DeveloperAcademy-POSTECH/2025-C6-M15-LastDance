@@ -50,19 +50,25 @@ struct ReactionFormView: View {
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 6) {
-                Text("감정 태그")
-                    .bold()
-                    .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
-
                 if hasSelectedEmotion {
                     Button {
                         router.push(.category)
                     } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.black.opacity(0.6))
+                        HStack(spacing: 6) {
+                            Text("감정 태그")
+                                .bold()
+                                .foregroundColor(LDColor.color1)
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.black.opacity(0.6))
+                        }
                     }
                     .buttonStyle(.plain)
+                } else {
+                    Text("감정 태그")
+                        .bold()
+                        .foregroundColor(LDColor.color1)
                 }
 
                 Spacer()
@@ -77,17 +83,17 @@ struct ReactionFormView: View {
                                 .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
-                                    LDColor.black2
+                                    LDColor.color2
                                 )
                                 .lineSpacing(5)
 
                             Spacer()
 
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.system(size: 20, weight: .semibold))
                                 .frame(width: 15, height: 20)
                                 .padding(.vertical, 4)
-                                .foregroundColor(.black.opacity(0.6))
+                                .foregroundColor(LDColor.color2)
                         }
                         .padding(12)
                         .frame(maxWidth: .infinity, alignment: .leading)

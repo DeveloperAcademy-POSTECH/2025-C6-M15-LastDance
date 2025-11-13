@@ -190,6 +190,9 @@ final class ReactionInputViewModel: ObservableObject {
                 case .success:
                     self.message = ""
                     self.selectedCategories.removeAll()
+                    self.selectedCategoryIds.removeAll()
+                    self.selectedTagIds.removeAll()
+                    self.selectedTagsName.removeAll()
                     Log.debug("반응 저장 성공")
 
                     // 첫 리액션 등록 플래그 저장

@@ -14,7 +14,8 @@ extension View {
         title: String,
         message: String,
         buttonText: String,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
+        cancelAction: (() -> Void)? = nil
     ) -> some View {
         modifier(
             CustomAlertModifier(
@@ -23,7 +24,8 @@ extension View {
                 title: title,
                 message: message,
                 buttonText: buttonText,
-                action: action
+                action: action,
+                cancelAction: cancelAction
             ))
     }
 }

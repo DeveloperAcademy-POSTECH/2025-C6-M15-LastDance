@@ -63,7 +63,7 @@ struct RootView: View {
                         .navigationBarBackButtonHidden(true)
                 case .archive(let id):
                     ArchiveView(exhibitionId: id)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 case .category:
                     CategorySelectView()
                         .navigationBarBackButtonHidden(true)
@@ -99,7 +99,9 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .exhibitionArchive(let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .background(LDColor.color6)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationBarBackButtonHidden(true)
                 case .response(let artworkId):
                     ResponseView(artworkId: artworkId)
                         .navigationBarBackButtonHidden(true)

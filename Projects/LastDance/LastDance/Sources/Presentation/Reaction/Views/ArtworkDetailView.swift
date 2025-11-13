@@ -96,6 +96,9 @@ struct ArtworkDetailView: View {
                     viewModel.handleRestrictionAlertDismiss()
                     viewModel.shouldShowConfirmAlert = false
                 }
+            },
+            cancelAction: {
+                viewModel.shouldShowConfirmAlert = false
             }
         )
     }

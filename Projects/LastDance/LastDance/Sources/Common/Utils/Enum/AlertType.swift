@@ -12,7 +12,7 @@ enum AlertType {
 
     var image: String {
         switch self {
-        case .confirmation: return "message"
+        case .confirmation: return "paperplane.circle"
         case .restriction: return "warning"
         case .error: return "warning"
         }
@@ -36,7 +36,7 @@ enum AlertType {
 
     var buttonText: String {
         switch self {
-        case .confirmation: return "전송하기"
+        case .confirmation: return "확인"
         case .restriction: return "다시 작성하기"
         case .error: return "다시 보내기"
         }

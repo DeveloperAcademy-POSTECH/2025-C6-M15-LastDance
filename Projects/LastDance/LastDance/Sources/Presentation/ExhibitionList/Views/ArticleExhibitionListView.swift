@@ -65,7 +65,6 @@ struct ArticleExhibitionListView: View {
             ArticleExhibitionListNextButton(viewModel: viewModel)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {

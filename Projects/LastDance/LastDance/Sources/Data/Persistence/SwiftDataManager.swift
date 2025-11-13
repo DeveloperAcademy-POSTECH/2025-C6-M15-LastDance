@@ -150,6 +150,7 @@ extension SwiftDataManager {
             existing.coverImageName = newValue.coverImageName
             existing.createdAt = newValue.createdAt
             existing.updatedAt = newValue.updatedAt
+            existing.artworks = newValue.artworks
         } else {
             insert(newValue)
         }
