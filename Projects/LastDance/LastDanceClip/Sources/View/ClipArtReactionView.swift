@@ -108,7 +108,7 @@ struct ClipArtReactionView: View {
                     BottomButton(
                         text: "전송하기",
                         isEnabled: viewModel.hasText,
-                        action: { buttonAction() }
+                        action: { viewModel.sendButtonAction() }
                     )
                     .background(LDColor.color6)
                 }
@@ -118,16 +118,33 @@ struct ClipArtReactionView: View {
             await viewModel.loadArtwork()
         }
         .scrollDismissesKeyboard(.interactively)
-    }
-    
-    private func buttonAction() {
-        Task { @MainActor in
-            if await viewModel.sendReaction() {
-                router.push(.complete)
-            } else {
-                // TODO: - 전송 실패 알럿 띄우기 (버튼 throttle 함께 처리)
+        .onChange(of: viewModel.shouldTriggerSend) { old, newValue in
+            guard newValue else { return }
+            Task {
+                if await viewModel.sendReaction() {
+                    router.push(.complete)
+                }
+                viewModel.shouldTriggerSend = false
             }
         }
+        .customAlert(
+            isPresented: $viewModel.shouldShowConfirmAlert,
+            image: viewModel.alertType.image,
+            title: viewModel.alertType.title,
+            message: viewModel.alertType.message,
+            buttonText: viewModel.alertType.buttonText,
+            action: {
+                if viewModel.alertType == .confirmation {
+                    viewModel.confirmSendAction()
+                } else {
+                    viewModel.handleRestrictionAlertDismiss()
+                    viewModel.shouldShowConfirmAlert = false
+                }
+            },
+            cancelAction: {
+                viewModel.shouldShowConfirmAlert = false
+            }
+        )
     }
     
     // MARK: - 작품 탭

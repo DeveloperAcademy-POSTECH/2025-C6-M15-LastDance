@@ -50,3 +50,21 @@ final class ProfanityFilter {
         return step4.lowercased()
     }
 }
+
+// MARK: - 번들에서 파일 가져오기
+extension ProfanityFilter {
+    /// 번들에서 badword_filter.txt 로드
+    static func fromBundle(filename: String = "badword_filter", ext: String = "txt") -> ProfanityFilter {
+        let filter = ProfanityFilter()
+        
+        if let url = Bundle.main.url(forResource: filename, withExtension: ext),
+           let data = try? Data(contentsOf: url) {
+            filter.load(from: data)
+            Log.info("\(filename).\(ext) 로드 완료 (\(filter.words.count)개)")
+        } else {
+            Log.warning("\(filename).\(ext) 를 번들에서 찾지 못했습니다.")
+        }
+        
+        return filter
+    }
+}

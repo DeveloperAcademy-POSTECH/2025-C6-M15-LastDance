@@ -26,16 +26,14 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var alertType: AlertType = .confirmation
     @Published private(set) var forceDisableSendButton = false
 
-    private var cancellables = Set<AnyCancellable>()
-    private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
-    private let confirmSendTapped = PassthroughSubject<Void, Never>()  // 알림창 내부 전송하기 탭 관리
     private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle: SendThrottle = makeThrottle()
 
     let categoryLimit = 2
     let tagLimit = 6
     let limit = 500  // texteditor 최대 글자수 제한
 
-    let profanity = ProfanityFilter()
+    let profanity = ProfanityFilter.fromBundle()
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
@@ -47,10 +45,7 @@ final class ReactionInputViewModel: ObservableObject {
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
 
-    init() {
-        loadBadwordsFromBundle()
-        setupThrottling()
-    }
+    init() {}
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
@@ -61,64 +56,22 @@ final class ReactionInputViewModel: ObservableObject {
     var isFull: Bool {
         selectedTagIds.count >= tagLimit
     }
-
-    func sendButtonAction() {
-        Log.debug("전송 버튼 탭 이벤트 발생")
-        sendButtonTapped.send()
-    }
-
-    func confirmSendAction() {
-        Log.debug("Alert 전송 버튼 탭 이벤트 발생")
-        confirmSendTapped.send()
-    }
-
-    /// Throttling 설정
-    private func setupThrottling() {
-        // BottomButton 스로틀링
-        sendButtonTapped
-            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self else { return }
-
-                let result = self.profanity.containsProfanity(in: self.message)
-
-                if result {
-                    self.alertType = .restriction
-                } else {
-                    self.alertType = .confirmation
-                }
-
-                self.shouldShowConfirmAlert = true
-            }
-            .store(in: &cancellables)
-
-        // Alert 전송 버튼 스로틀링
-        confirmSendTapped
-            .throttle(for: .seconds(throttleInterval), scheduler: RunLoop.main, latest: false)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self else { return }
-                Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
-                self.shouldTriggerSend = true
-            }
-            .store(in: &cancellables)
-    }
-
-    // 번들에서 badword_filter.txt 로드
-    private func loadBadwordsFromBundle() {
-        if let url = Bundle.main.url(forResource: "badword_filter", withExtension: "txt"),
-           let data = try? Data(contentsOf: url) {
-            profanity.load(from: data)
-            Log.info("badword_filter.txt 로드 완료 (\(profanity.words.count)개)")
-        } else {
-            Log.warning("badword_filter.txt 를 번들에 없음")
-        }
-    }
-
+    
     // 제한 알럿에서 "다시 작성하기" 눌러 닫힐 때 호출
     func handleRestrictionAlertDismiss() {
         forceDisableSendButton = true
+    }
+    
+    // 하단 "전송하기" 버튼 탭
+    func sendButtonAction() {
+        Log.debug("전송 버튼 탭 이벤트 발생")
+        throttle.sendButtonAction()
+    }
+
+    // Alert 내부 "전송하기" 버튼 탭
+    func confirmSendAction() {
+        Log.debug("Alert 전송 버튼 탭 이벤트 발생")
+        throttle.confirmSendAction()
     }
 
     // 텍스트 길이 제한 로직
@@ -472,5 +425,31 @@ extension ReactionInputViewModel {
             selectedTagIds.insert(tag.id)
             selectedTagsName.insert(tag.name)
         }
+    }
+}
+
+// MARK: - Throttle 관련 private 메서드
+private extension ReactionInputViewModel {
+    func makeThrottle() -> SendThrottle {
+        SendThrottle(
+            throttleInterval: throttleInterval,
+            onSendButtonAllowed: { [weak self] in
+                self?.handleSendButtonAllowed()
+            },
+            onConfirmSendAllowed: { [weak self] in
+                self?.handleConfirmSendAllowed()
+            }
+        )
+    }
+
+    func handleSendButtonAllowed() {
+        let hasProfanity = profanity.containsProfanity(in: message)
+        alertType = hasProfanity ? .restriction : .confirmation
+        shouldShowConfirmAlert = true
+    }
+
+    func handleConfirmSendAllowed() {
+        Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
+        shouldTriggerSend = true
     }
 }
