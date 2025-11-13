@@ -49,7 +49,6 @@ struct ExhibitionArchiveView: View {
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 16)
-            .border(.yellow)
 
             // 반응 목록
             ZStack(alignment: .top) {
@@ -63,7 +62,7 @@ struct ExhibitionArchiveView: View {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
-                            GridItem(.fixed(155),spacing: 31),
+                            GridItem(.fixed(155), spacing: 31),
                             GridItem(.fixed(155))
                         ],
                         alignment: .leading,
@@ -111,9 +110,6 @@ struct ExhibitionArchiveView: View {
                 .allowsHitTesting(false)
             }
         }
-        .background(LDColor.color6)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
         .toolbar {
             CustomNavigationBar(title: "") {
                 router.popLast()

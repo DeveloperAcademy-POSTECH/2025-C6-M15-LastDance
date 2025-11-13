@@ -24,12 +24,8 @@ struct ArchiveView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ArchiveHeaderView {
-                router.popLast()
-            }
-            .padding(.bottom, 12)
-
             ExhibitionTitleView(title: viewModel.exhibitionTitle)
+                .padding(.top, 12)
 
             ArtworkCountView(count: viewModel.reactedArtworksCount)
                 .padding(.bottom, -2)
@@ -96,7 +92,7 @@ struct ArchiveView: View {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.5),
                             Color.black.opacity(0.2),
-                            Color.clear,
+                            Color.clear
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -111,6 +107,12 @@ struct ArchiveView: View {
                 endPoint: .bottom
             )
         )
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CustomXmarkNavigationBar(title: "") {
+                router.popTo(.audienceArchiving)
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             CameraActionButtonView {
                 router.push(.camera(exhibitionId: exhibitionId))
@@ -119,24 +121,6 @@ struct ArchiveView: View {
         .onAppear {
             viewModel.loadData()
         }
-    }
-}
-
-struct ArchiveHeaderView: View {
-    let onClose: () -> Void
-
-    var body: some View {
-        HStack {
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 24, weight: .medium))
-                    .foregroundColor(.black)
-                    .frame(width: 44, height: 44)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 13)
-        .padding(.top, 20)
     }
 }
 
@@ -181,7 +165,7 @@ struct ArtworkGridView: View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31),
+                GridItem(.flexible(), spacing: 31)
             ],
             spacing: 24
         ) {

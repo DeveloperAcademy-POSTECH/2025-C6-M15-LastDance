@@ -24,10 +24,6 @@ struct ArtReactionView: View {
     }
 
     var body: some View {
-        // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(200, 468 - scrollOffset * 0.5)
-        let imageWidth = max(150, 356 - (468 - imageHeight) * 0.76)
-
         VStack(spacing: 0) {
             // 고정된 탭 바
             if viewModel.isTabBarFixed(for: scrollOffset) {
@@ -48,13 +44,19 @@ struct ArtReactionView: View {
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: imageWidth, height: imageHeight)
+                        .frame(
+                            width: viewModel.imageWidth(for: scrollOffset),
+                            height: viewModel.imageHeight(for: scrollOffset)
+                        )
                         .clipped()
                         .cornerRadius(24)
                     } else {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
-                            .frame(width: imageWidth, height: imageHeight)
+                            .frame(
+                                width: viewModel.imageWidth(for: scrollOffset),
+                                height: viewModel.imageHeight(for: scrollOffset)
+                            )
                             .overlay(Text("이미지 없음"))
                             .cornerRadius(24)
                     }

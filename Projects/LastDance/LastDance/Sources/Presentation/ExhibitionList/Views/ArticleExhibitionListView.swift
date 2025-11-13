@@ -45,7 +45,6 @@ struct ArticleExhibitionListNextButton: View {
     }
 }
 
-
 /// 작가 플로우에서 전시 선택 뷰
 struct ArticleExhibitionListView: View {
     @EnvironmentObject private var router: NavigationRouter

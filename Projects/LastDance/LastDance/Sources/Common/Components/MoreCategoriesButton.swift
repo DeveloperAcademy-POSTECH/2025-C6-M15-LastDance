@@ -16,7 +16,7 @@ struct MoreCategoriesButton: View {
         Button(action: action) {
             Text("+\(count)")
                 .font(LDFont.medium06)
-                .foregroundColor(.gray)
+                .foregroundColor(LDColor.color1)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
                 .background(LDColor.color6)
