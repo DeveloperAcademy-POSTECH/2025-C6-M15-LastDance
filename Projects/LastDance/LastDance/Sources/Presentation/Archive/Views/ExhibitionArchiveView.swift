@@ -41,8 +41,9 @@ struct ExhibitionArchiveView: View {
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                // 날짜
-                Text(exhibition?.createdAt ?? "")
+            // 날짜
+            HStack {
+                Text(Date.formatShortDate(from: exhibition?.createdAt ?? ""))
                     .font(LDFont.regular03)
                     .foregroundColor(LDColor.color2)
                     .frame(maxWidth: .infinity, alignment: .leading)
