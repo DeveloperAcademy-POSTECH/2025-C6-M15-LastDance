@@ -27,7 +27,7 @@ extension BaseTargetType {
         if isMultipart {
             return nil
         }
-        return ["Content-Type": "application/json"]
+        return ["Content-Type": HTTPHeaderConstants.contentTypeJSON]
     }
 
     // 파일 업로드가 없는 요청의 경우 기본값 설정

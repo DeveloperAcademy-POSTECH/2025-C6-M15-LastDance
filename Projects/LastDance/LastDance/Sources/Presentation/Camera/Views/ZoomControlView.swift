@@ -15,11 +15,9 @@ struct ZoomControlView: View {
     @GestureState private var dragTranslation: CGSize = .zero
 
     // 프리셋/활성 범위 정의
-    private let zoomRanges: [ZoomRange] = [
-        .init(label: ".5", min: 0.0, max: 0.95, preset: 0.5),
-        .init(label: "1", min: 0.95, max: 1.9, preset: 1.0),
-        .init(label: "2", min: 1.9, max: .infinity, preset: 2.0),
-    ]
+    private let zoomRanges: [ZoomRange] = CameraConstants.zoomRanges.map {
+        ZoomRange(label: $0.label, min: $0.min, max: $0.max, preset: $0.preset)
+    }
 
     var body: some View {
         HStack(spacing: Layout.indicatorSpacing) {
@@ -122,12 +120,11 @@ private struct ZoomRange {
 }
 
 // MARK: - Layout
-
 private enum Layout {
-    static let indicatorSpacing: CGFloat = 12
-    static let indicatorPadding: CGFloat = 8
-    static let indicatorBackgroundOpacity: CGFloat = 0.30
-    static let animationDuration: CGFloat = 0.30
-    static let circleInactiveDiameter: CGFloat = 34
-    static let circleActiveDiameter: CGFloat = 44
+    static let indicatorSpacing: CGFloat = CameraConstants.indicatorSpacing
+    static let indicatorPadding: CGFloat = CameraConstants.indicatorPadding
+    static let indicatorBackgroundOpacity: CGFloat = CameraConstants.indicatorBackgroundOpacity
+    static let animationDuration: CGFloat = CameraConstants.animationDuration
+    static let circleInactiveDiameter: CGFloat = CameraConstants.circleInactiveDiameter
+    static let circleActiveDiameter: CGFloat = CameraConstants.circleActiveDiameter
 }

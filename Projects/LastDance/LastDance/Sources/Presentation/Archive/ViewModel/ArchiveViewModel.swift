@@ -95,8 +95,8 @@ final class ArchiveViewModel: ObservableObject {
 
     /// 대각선 효과
     func getRotationAngle(for index: Int) -> Double {
-        let angles: [Double] = [-4, 3, 3, -4]  // 좌상, 우상, 좌하, 우하
-        return angles[index % angles.count]
+        return ArchiveLayoutConstants.rotationAngles[
+            index % ArchiveLayoutConstants.rotationAngles.count]
     }
 
     /// 현재 전시 정보 가져오기
