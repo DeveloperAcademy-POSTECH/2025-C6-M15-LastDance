@@ -8,20 +8,21 @@
 import SwiftUI
 
 // MARK: CustomBottomSheet
+
 /// 커스텀 공통 바텀 시트 틀
 public struct CustomBottomSheet<Content>: View where Content: View {
     @Binding public var isPresented: Bool
     public var height: CGFloat
     public var content: Content
-    
+
     @GestureState private var translation: CGFloat = .zero
-    
+
     public init(_ isPresented: Binding<Bool>, height: CGFloat, content: () -> Content) {
-        self._isPresented = isPresented
+        _isPresented = isPresented
         self.height = height
         self.content = content()
     }
-    
+
     public var body: some View {
         VStack(spacing: .zero) {
             RoundedRectangle(cornerRadius: 20)
@@ -36,7 +37,7 @@ public struct CustomBottomSheet<Content>: View where Content: View {
             self.content
                 .frame(height: self.height)
         }
-        .frame(height: self.height+30)
+        .frame(height: height + 30)
         .background(
             Rectangle()
                 .fill(LDColor.color6)
@@ -49,22 +50,23 @@ public struct CustomBottomSheet<Content>: View where Content: View {
         .gesture(
             DragGesture()
                 .updating($translation) { value, state, _ in
-                    if 0 <= value.translation.height {
-                        let translation = min(self.height, max(-self.height, value.translation.height))
+                    if value.translation.height >= 0 {
+                        let translation = min(
+                            self.height, max(-self.height, value.translation.height))
                         state = translation
                     }
                 }
-                .onEnded({ value in
-                    if value.translation.height >= height/3 {
+                .onEnded { value in
+                    if value.translation.height >= height / 3 {
                         self.isPresented = false
                     }
-                })
+                }
         )
-
     }
 }
 
 // MARK: RoundedCorner
+
 public struct RoundedCorner: Shape {
     public var radius: CGFloat = .infinity
     public var corners: UIRectCorner = .allCorners
@@ -73,16 +75,20 @@ public struct RoundedCorner: Shape {
         self.radius = radius
         self.corners = corners
     }
-    
+
     public func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let path = UIBezierPath(
+            roundedRect: rect, byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
         return Path(path.cgPath)
     }
 }
 
 // MARK: 해당 파일에서만 사용되는 extension
+
 extension View {
     public func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
+        clipShape(RoundedCorner(radius: radius, corners: corners))
     }
 }

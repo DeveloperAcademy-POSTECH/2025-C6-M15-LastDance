@@ -16,11 +16,13 @@ final class IdentificatedArtwork {
     var recognizedArtworkName: String
     var recognizedArtistName: String
 
-    init(id: String,
-         capturedId: String,
-         uploadedImagePath: String,
-         recognizedArtworkName: String,
-         recognizedArtistName: String) {
+    init(
+        id: String,
+        capturedId: String,
+        uploadedImagePath: String,
+        recognizedArtworkName: String,
+        recognizedArtistName: String
+    ) {
         self.id = id
         self.capturedId = capturedId
         self.uploadedImagePath = uploadedImagePath

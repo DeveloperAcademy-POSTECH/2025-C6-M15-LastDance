@@ -9,16 +9,16 @@ import SwiftData
 import SwiftUI
 
 struct ArtistReactionArchiveView: View {
-
     let exhibitionId: Int
     @StateObject private var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
-        _viewModel = StateObject(wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
+        _viewModel = StateObject(
+            wrappedValue: ArtistReactionArchiveViewModel(exhibitionId: exhibitionId))
     }
-    
+
     var body: some View {
         ArtistArtworkScrollView(viewModel: viewModel)
             .navigationBarTitleDisplayMode(.inline)
@@ -38,7 +38,7 @@ struct ArtistReactionArchiveView: View {
 private struct ArtistArtworkScrollView: View {
     @ObservedObject var viewModel: ArtistReactionArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    
+
     var body: some View {
         ScrollView {
             if viewModel.isLoading {
@@ -51,7 +51,7 @@ private struct ArtistArtworkScrollView: View {
                 LazyVGrid(
                     columns: [
                         GridItem(.fixed(155), spacing: 27),
-                        GridItem(.fixed(155), spacing: 27)
+                        GridItem(.fixed(155), spacing: 27),
                     ],
                     spacing: 28
                 ) {

@@ -6,6 +6,7 @@
 //
 
 // MARK: ArtworkDetail
+
 struct ArtworkDetailResponseDto: Codable {
     let id: Int
     let title: String

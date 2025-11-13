@@ -16,11 +16,13 @@ final class Venue {
     var geoLat: Double?
     var geoLon: Double?
 
-    init(id: Int,
-         name: String,
-         address: String? = nil,
-         geoLat: Double? = nil,
-         geoLon: Double? = nil) {
+    init(
+        id: Int,
+        name: String,
+        address: String? = nil,
+        geoLat: Double? = nil,
+        geoLon: Double? = nil
+    ) {
         self.id = id
         self.name = name
         self.address = address

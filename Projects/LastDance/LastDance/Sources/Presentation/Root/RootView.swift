@@ -22,7 +22,7 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            Group{
+            Group {
                 if let userType = userType {
                     switch userType {
                     case .artist:
@@ -51,8 +51,10 @@ struct RootView: View {
                     ExhibitionDetailView(exhibitionId: id)
                         .navigationBarBackButtonHidden(true)
                 case .artworkDetail(let id, let capturedImage, let exhibitionId):
-                    ArtworkDetailView(artworkId: id, capturedImage: capturedImage, exhibitionId: exhibitionId)
-                        .navigationBarBackButtonHidden(true)
+                    ArtworkDetailView(
+                        artworkId: id, capturedImage: capturedImage, exhibitionId: exhibitionId
+                    )
+                    .navigationBarBackButtonHidden(true)
                 case .camera(let exhibitionId):
                     CameraView(exhibitionId: exhibitionId)
                         .toolbar(.hidden, for: .navigationBar)
@@ -76,7 +78,7 @@ struct RootView: View {
                         exhibitionId: exhibitionId,
                         artistId: artistId
                     )
-                        .navigationBarBackButtonHidden(true)
+                    .navigationBarBackButtonHidden(true)
                 case .articleExhibitionList:
                     ArticleExhibitionListView()
                         .navigationBarBackButtonHidden(true)
@@ -84,8 +86,11 @@ struct RootView: View {
                     ArticleListView(selectedExhibitionId: selectedExhibitionId)
                         .navigationBarBackButtonHidden(true)
                 case .completeArticleList(let selectedExhibitionId, let selectedArtistId):
-                    CompleteArticleListView(selectedExhibitionId: selectedExhibitionId, selectedArtistId: selectedArtistId)
-                        .navigationBarBackButtonHidden(true)
+                    CompleteArticleListView(
+                        selectedExhibitionId: selectedExhibitionId,
+                        selectedArtistId: selectedArtistId
+                    )
+                    .navigationBarBackButtonHidden(true)
                 case .artistReaction:
                     ArtistReactionView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -100,6 +105,9 @@ struct RootView: View {
                         .navigationBarBackButtonHidden(true)
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
+                        .navigationBarBackButtonHidden(true)
+                case .alarmList(let userType):
+                    AlarmListView(userType: userType)
                         .navigationBarBackButtonHidden(true)
                 }
             }

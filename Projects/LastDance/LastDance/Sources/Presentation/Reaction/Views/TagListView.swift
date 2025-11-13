@@ -27,7 +27,7 @@ struct TagListView: View {
                         Circle()
                             .fill(color)
                             .frame(width: 6, height: 6)
-                        
+
                         Text(tag.name)
                             .font(.system(size: 16, weight: .medium))
                     }

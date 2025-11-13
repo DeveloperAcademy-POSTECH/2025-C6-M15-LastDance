@@ -46,7 +46,7 @@ struct ResponseView: View {
         .background(LDColor.color5)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응" ) {
+            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응") {
                 router.popLast()
             }
         }
@@ -331,7 +331,7 @@ struct ArtworkBackgroundView: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     LDColor.color5.opacity(0),
-                    LDColor.color5
+                    LDColor.color5,
                 ]),
                 startPoint: .center,
                 endPoint: .bottom

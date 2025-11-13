@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TooltipView: View {
     let text: String
-    
+
     var body: some View {
         // 캡슐 모양 툴팁
         Text(text)
@@ -27,13 +27,12 @@ struct TooltipView: View {
     }
 }
 
-
 struct RoundedCornerRectangle: Shape {
     let cornerRadius: CGFloat
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
+
         // 왼쪽 위 둥근 모서리부터 시작
         path.move(to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY))
         // 상단 직선 → 오른쪽 위 둥근 모서리
@@ -45,7 +44,7 @@ struct RoundedCornerRectangle: Shape {
             endAngle: .degrees(0),
             clockwise: false
         )
-        
+
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
         path.addArc(
             center: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY - cornerRadius),
@@ -63,7 +62,7 @@ struct RoundedCornerRectangle: Shape {
             endAngle: .degrees(270),
             clockwise: false
         )
-        
+
         path.closeSubpath()
         return path
     }

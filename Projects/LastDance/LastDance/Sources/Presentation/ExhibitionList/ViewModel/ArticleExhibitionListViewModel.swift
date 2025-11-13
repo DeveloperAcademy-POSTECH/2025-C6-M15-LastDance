@@ -13,18 +13,18 @@ final class ArticleExhibitionListViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var resultMessage: String = ""
     @Published var errorMessage: String = ""
-    
+
     private let exhibitionAPIService: ExhibitionAPIServiceProtocol
     private let artistAPIService: ArtistAPIServiceProtocol
-    
+
     init(
         exhibitionAPIService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(),
-        artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService())
-    {
+        artistAPIService: ArtistAPIServiceProtocol = ArtistAPIService()
+    ) {
         self.exhibitionAPIService = exhibitionAPIService
         self.artistAPIService = artistAPIService
     }
-    
+
     /// 전시 선택 (이미 선택된 경우 선택 취소)
     func selectExhibition(_ exhibition: Exhibition) {
         if selectedExhibitionId == exhibition.id {
@@ -42,14 +42,15 @@ final class ArticleExhibitionListViewModel: ObservableObject {
         }
         return selectedId
     }
-    
+
     /// 전시 전체 조회 api 연동
     func loadAllExhibitions(status: String? = nil, venueId: Int? = nil) {
         isLoading = true
         resultMessage = ""
         errorMessage = ""
 
-        exhibitionAPIService.getExhibitions(status: status, venueId: venueId) { [weak self] result in
+        exhibitionAPIService.getExhibitions(status: status, venueId: venueId) {
+            [weak self] result in
             guard let self else { return }
 
             DispatchQueue.main.async {
@@ -61,7 +62,8 @@ final class ArticleExhibitionListViewModel: ObservableObject {
 
                 case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self.errorMessage = "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self.errorMessage =
+                            "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self.errorMessage = "실패: \(error.localizedDescription)"
                     }
@@ -70,9 +72,9 @@ final class ArticleExhibitionListViewModel: ObservableObject {
             }
         }
     }
-    
+
     /// 서버에 있는 모든 작가 정보 로드 (확인용)
-    func loadAllArtists(onComplete: (() -> Void)? = nil) {
+    func loadAllArtists(onComplete _: (() -> Void)? = nil) {
         artistAPIService.getArtists { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -82,11 +84,12 @@ final class ArticleExhibitionListViewModel: ObservableObject {
                     Log.debug("성공. count=\(list.count)")
                 case .failure(let error):
                     if let errorDto = error as? ErrorResponseDto {
-                        self.errorMessage = "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
+                        self.errorMessage =
+                            "실패: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))"
                     } else {
                         self.errorMessage = "실패: \(error.localizedDescription)"
                     }
-                        Log.error("작가 조회 실패: \(error)")
+                    Log.error("작가 조회 실패: \(error)")
                 }
             }
         }

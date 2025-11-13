@@ -17,12 +17,12 @@ struct CustomAlert: View {
 
     var body: some View {
         VStack(spacing: 0) {
-                Image(image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 54, height: 53)
-                    .padding(.top, 28)
-                    .padding(.horizontal, 16)
+            Image(image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 54, height: 53)
+                .padding(.top, 28)
+                .padding(.horizontal, 16)
 
             Text(title)
                 .font(LDFont.heading04)
@@ -36,7 +36,7 @@ struct CustomAlert: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
-            
+
             Spacer().frame(height: 22)
 
             Button(action: action) {

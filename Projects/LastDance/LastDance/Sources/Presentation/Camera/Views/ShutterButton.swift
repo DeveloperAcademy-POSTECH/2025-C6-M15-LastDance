@@ -10,7 +10,7 @@ import SwiftUI
 /// 하단 셔터 버튼
 struct ShutterButton: View {
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             ZStack {

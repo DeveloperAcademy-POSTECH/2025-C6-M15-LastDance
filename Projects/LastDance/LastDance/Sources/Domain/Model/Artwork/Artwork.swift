@@ -19,15 +19,16 @@ final class Artwork {
 
     @Relationship(inverse: \Exhibition.artworks)
     var exhibition: Exhibition?
-    
+
     // 관계 역참조는 별도 선언 없이 exhibition.artworks로 관리
-    init(id: Int,
-         exhibitionId: Int,
-         title: String,
-         descriptionText: String? = nil,
-         artistId: Int? = nil,
-         thumbnailURL: String? = nil,
-         exhibition: Exhibition? = nil
+    init(
+        id: Int,
+        exhibitionId: Int,
+        title: String,
+        descriptionText: String? = nil,
+        artistId: Int? = nil,
+        thumbnailURL: String? = nil,
+        exhibition: Exhibition? = nil
     ) {
         self.id = id
         self.exhibitionId = exhibitionId

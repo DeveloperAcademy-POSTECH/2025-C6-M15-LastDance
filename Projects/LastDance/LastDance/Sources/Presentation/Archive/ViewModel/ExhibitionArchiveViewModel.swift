@@ -28,7 +28,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         self.exhibitionId = exhibitionId
         loadData()
     }
-    
+
     func loadData() {
         Task {
             isLoading = true
@@ -57,16 +57,18 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     /// 로컬 데이터만 로드 (API 호출 X)
     private func loadLocalData() async {
         do {
-            self.reactions = try await self.fetchReactions()
-            self.artists   = try await self.fetchArtists()
-            self.artworks = try await self.fetchArtworksForExhibition()
+            reactions = try await fetchReactions()
+            artists = try await fetchArtists()
+            artworks = try await fetchArtworksForExhibition()
 
-            Log.debug("로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
-            self.isLoading = false
+            Log.debug(
+                "로컬 데이터 로드 완료 - Reactions: \(reactions.count), Artworks: \(artworks.count), Artists: \(artists.count)"
+            )
+            isLoading = false
         } catch {
             Log.error("로컬 데이터 로드 실패: \(error)")
-            self.isLoading = false
-            self.errorMessage = "데이터를 불러오는데 실패했습니다."
+            isLoading = false
+            errorMessage = "데이터를 불러오는데 실패했습니다."
         }
     }
 
@@ -84,10 +86,12 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                     Task {
                         do {
                             self.reactions = try await self.fetchReactions()
-                            self.artists   = try await self.fetchArtists()
+                            self.artists = try await self.fetchArtists()
                             self.artworks = try await self.fetchArtworksForExhibition()
 
-                            Log.debug("로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)")
+                            Log.debug(
+                                "로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)"
+                            )
                         } catch {
                             Log.error("로컬 데이터 로드 실패: \(error)")
                         }
@@ -117,7 +121,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         guard let artistId = artwork.artistId else { return nil }
         return artists.first { $0.id == artistId }
     }
-    
+
     /// 해당 전시의 반응만 조회
     private func fetchReactions() async throws -> [Reaction] {
         guard let container = swiftDataManager.container else {
@@ -143,7 +147,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
 
         return allReactions.filter { artworkIds.contains($0.artworkId) }
     }
-    
+
     /// 해당 전시의 작품만 조회
     private func fetchArtworksForExhibition() async throws -> [Artwork] {
         guard let container = swiftDataManager.container else {
@@ -158,7 +162,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
         )
         return try context.fetch(descriptor)
     }
-    
+
     /// 작가 정보 가져오기 (artist 함수에서 못가져 올 경우를 대비)
     private func fetchArtists() async throws -> [Artist] {
         guard let container = swiftDataManager.container else {

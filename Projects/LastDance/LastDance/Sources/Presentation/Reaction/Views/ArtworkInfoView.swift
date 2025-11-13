@@ -34,7 +34,8 @@ struct ArtworkInfoView: View {
                     .frame(maxHeight: 373)
                     .clipped()
             } else if let thumbnailURLString = artwork?.thumbnailURL,
-                      let thumbnailURL = URL(string: thumbnailURLString) {
+                let thumbnailURL = URL(string: thumbnailURLString)
+            {
                 AsyncImage(url: thumbnailURL) { phase in
                     switch phase {
                     case .empty:
@@ -60,8 +61,7 @@ struct ArtworkInfoView: View {
                         EmptyView()
                     }
                 }
-            }
-            else {
+            } else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 343)

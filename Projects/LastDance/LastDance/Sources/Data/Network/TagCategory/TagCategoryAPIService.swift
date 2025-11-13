@@ -13,18 +13,24 @@ protocol TagCategoryAPIServiceProtocol {
         completion: @escaping (Result<[TagCategoryListResponseDto], Error>) -> Void)
     func getTagCategory(
         id: Int,
-        completion: @escaping (Result<TagCategoryDetailResponseDto, Error>) -> Void)
+        completion: @escaping (Result<TagCategoryDetailResponseDto, Error>) -> Void
+    )
 }
 
 final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
     private let provider: MoyaProvider<TagCategoryAPI>
 
-    init(provider: MoyaProvider<TagCategoryAPI> = MoyaProvider<TagCategoryAPI>(plugins: [NetworkLoggerPlugin()])) {
+    init(
+        provider: MoyaProvider<TagCategoryAPI> = MoyaProvider<TagCategoryAPI>(plugins: [
+            NetworkLoggerPlugin()
+        ])
+    ) {
         self.provider = provider
     }
 
     func getTagCategories(
-        completion: @escaping (Result<[TagCategoryListResponseDto], Error>) -> Void) {
+        completion: @escaping (Result<[TagCategoryListResponseDto], Error>) -> Void
+    ) {
         provider.request(.getTagCategories) { result in
             switch result {
             case .success(let response):
@@ -32,7 +38,9 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("[TagCategoryAPI] 목록 응답: \(json)")
                     }
-                    let list = try JSONDecoder().decode([TagCategoryListResponseDto].self, from: response.data)
+                    let list = try JSONDecoder().decode(
+                        [TagCategoryListResponseDto].self, from: response.data
+                    )
                     completion(.success(list))
                 } catch {
                     Log.error("[TagCategoryAPI] 디코딩 실패: \(error)")
@@ -40,7 +48,8 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("[TagCategoryAPI] Validation Error: \(messages)")
                 }
@@ -50,7 +59,9 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
         }
     }
 
-    func getTagCategory(id: Int, completion: @escaping (Result<TagCategoryDetailResponseDto, Error>) -> Void) {
+    func getTagCategory(
+        id: Int, completion: @escaping (Result<TagCategoryDetailResponseDto, Error>) -> Void
+    ) {
         provider.request(.getTagCategory(id: id)) { result in
             switch result {
             case .success(let response):
@@ -58,7 +69,8 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
                     if let json = String(data: response.data, encoding: .utf8) {
                         Log.debug("[TagCategoryAPI] 상세 응답(\(id)): \(json)")
                     }
-                    let dto = try JSONDecoder().decode(TagCategoryDetailResponseDto.self, from: response.data)
+                    let dto = try JSONDecoder().decode(
+                        TagCategoryDetailResponseDto.self, from: response.data)
                     completion(.success(dto))
                 } catch {
                     Log.error("[TagCategoryAPI] 디코딩 실패: \(error)")
@@ -66,7 +78,8 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let data = error.response?.data,
-                   let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data) {
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
                     let messages = err.detail.map { $0.msg }.joined(separator: ", ")
                     Log.warning("[TagCategoryAPI] Validation Error: \(messages)")
                 }
@@ -81,7 +94,8 @@ final class TagCategoryAPIService: TagCategoryAPIServiceProtocol {
 enum TagCategoryMapper {
     static func toCategory(
         from dto: TagCategoryListResponseDto,
-        tags: [Tag]) -> TagCategory {
+        tags: [Tag]
+    ) -> TagCategory {
         TagCategory(
             id: dto.id,
             name: dto.name,

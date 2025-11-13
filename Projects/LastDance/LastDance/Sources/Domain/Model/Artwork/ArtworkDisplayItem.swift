@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 struct ArtworkDisplayItem: Identifiable {
-    let id: Int // Artwork ID
+    let id: Int  // Artwork ID
     let artwork: Artwork
     var reactionCount: Int
 }
