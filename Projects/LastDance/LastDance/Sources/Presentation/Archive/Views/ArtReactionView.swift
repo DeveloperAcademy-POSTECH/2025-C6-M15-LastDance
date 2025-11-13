@@ -25,22 +25,6 @@ struct ArtReactionView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 뒤로가기 버튼
-            HStack {
-                Button(action: {
-                    router.popLast()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundColor(.black)
-                        .frame(width: 44, height: 44)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 12)
-            .padding(.bottom, 0)
-            .background(Color.white)
             // 고정된 탭 바
             if viewModel.isTabBarFixed(for: scrollOffset) {
                 TabBarView(selectedTab: $selectedTab)
@@ -60,13 +44,19 @@ struct ArtReactionView: View {
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: 356, height: 468)
+                        .frame(
+                            width: viewModel.imageWidth(for: scrollOffset),
+                            height: viewModel.imageHeight(for: scrollOffset)
+                        )
                         .clipped()
                         .cornerRadius(24)
                     } else {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
-                            .frame(width: 356, height: 468)
+                            .frame(
+                                width: viewModel.imageWidth(for: scrollOffset),
+                                height: viewModel.imageHeight(for: scrollOffset)
+                            )
                             .overlay(Text("이미지 없음"))
                             .cornerRadius(24)
                     }
@@ -76,8 +66,8 @@ struct ArtReactionView: View {
                             .padding(.top, 24)
                     }
                     // 탭 콘텐츠
-                    if selectedTab == .artwork {
-                        // 작품 정보
+                    ZStack {
+                        // 작품 정보 탭
                         VStack(alignment: .leading, spacing: 16) {
                             Text(artwork.title)
                                 .font(Font.custom("Pretendard", size: 20).weight(.semibold))
@@ -104,108 +94,104 @@ struct ArtReactionView: View {
 
                             if let description = artwork.descriptionText, !description.isEmpty {
                                 Text("작품 설명")
-                                    .font(Font.custom("Pretendard", size: 16))
-                                    .foregroundColor(LDColor.color2)
+                                    .font(LDFont.heading04)
+                                    .foregroundColor(LDColor.color1)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.bottom, -12)  // Add some spacing
 
                                 Text(description)
-                                    .font(Font.custom("Pretendard", size: 16))
+                                    .font(LDFont.medium04)
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .lineSpacing(4)
                             } else {
                                 Text("작품 설명이 없습니다.")
-                                    .font(Font.custom("Pretendard", size: 16))
+                                    .font(LDFont.medium04)
                                     .foregroundColor(LDColor.color2)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
-
-                            Spacer(minLength: 400)
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 24)
                         .padding(.top, 24)
-                        .padding(.bottom, 40)
-                    } else {
+                        .padding(.bottom, 44)
+                        .opacity(selectedTab == .artwork ? 1 : 0)
+
                         // 감상 탭
-                        if viewModel.isLoading {
-                            ProgressView()
-                                .scaleEffect(1.2)
-                                .frame(maxWidth: .infinity, minHeight: 200)
+                        Group {
+                            if viewModel.isLoading {
+                                ProgressView()
+                                    .scaleEffect(1.2)
+                                    .frame(maxWidth: .infinity, minHeight: 200)
+                                    .padding(.top, 24)
+                            } else if viewModel.reactions.isEmpty {
+                                VStack(spacing: 16) {
+                                    Text("아직 등록된 감상이 없습니다")
+                                        .font(Font.custom("Pretendard", size: 16))
+                                        .foregroundColor(LDColor.color2)
+
+                                    Spacer(minLength: 400)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 20)
                                 .padding(.top, 24)
-                        } else if viewModel.reactions.isEmpty {
-                            VStack(spacing: 16) {
-                                Text("아직 등록된 감상이 없습니다")
-                                    .font(Font.custom("Pretendard", size: 16))
-                                    .foregroundColor(LDColor.color2)
+                            } else {
+                                VStack(alignment: .leading, spacing: 24) {
+                                    ForEach(viewModel.reactions, id: \.id) { reaction in
+                                        VStack(alignment: .leading, spacing: 16) {
+                                            // 감정 태그 섹션
+                                            if !reaction.tags.isEmpty {
+                                                VStack(alignment: .leading, spacing: 10) {
+                                                    Text("감정 태그")
+                                                        .font(LDFont.heading04)
+                                                        .foregroundColor(LDColor.color1)
 
-                                Spacer(minLength: 400)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.horizontal, 20)
-                            .padding(.top, 24)
-                        } else {
-                            VStack(alignment: .leading, spacing: 24) {
-                                ForEach(viewModel.reactions, id: \.id) { reaction in
-                                    VStack(alignment: .leading, spacing: 16) {
-                                        // 감정 태그 섹션
-                                        if !reaction.tags.isEmpty {
-                                            VStack(alignment: .leading, spacing: 12) {
-                                                Text("감정 태그")
-                                                    .font(
-                                                        Font.custom("Pretendard", size: 18).weight(
-                                                            .semibold)
-                                                    )
-                                                    .foregroundColor(LDColor.color1)
-
-                                                ScrollView(.horizontal, showsIndicators: false) {
-                                                    HStack {
-                                                        ForEach(reaction.tags, id: \.self) {
-                                                            tagInfo in
-                                                            ReactionTag(
-                                                                text: tagInfo.name,
-                                                                color: Color(hex: tagInfo.colorHex)
-                                                            )
-                                                            .applyShadow(LDShadow.shadow1)
-                                                            .padding(.vertical, 10)
-                                                            .padding(.horizontal, 2)
+                                                    ScrollView(.horizontal, showsIndicators: false) {
+                                                        HStack {
+                                                            ForEach(reaction.tags, id: \.self) { tagInfo in
+                                                                ReactionTag(text: tagInfo.name, color: Color(hex: tagInfo.colorHex))
+                                                                    .applyShadow(LDShadow.shadow1)
+                                                                    .padding(.vertical, 10)
+                                                                    .padding(.horizontal, 2)
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
-                                        }
-                                        // 감상평 섹션
-                                        if let comment = reaction.comment, !comment.isEmpty {
-                                            VStack(alignment: .leading, spacing: 12) {
-                                                Text("감상평")
-                                                    .font(
-                                                        Font.custom("Pretendard", size: 18).weight(
-                                                            .semibold)
-                                                    )
-                                                    .foregroundColor(LDColor.color1)
-
-                                                Text(comment)
-                                                    .font(Font.custom("Pretendard", size: 16))
-                                                    .foregroundColor(LDColor.color2)
-                                                    .lineSpacing(4)
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                            // 감상평 섹션
+                                            if let comment = reaction.comment, !comment.isEmpty {
+                                                VStack(alignment: .leading, spacing: 12) {
+                                                    Text("감상평")
+                                                        .font(LDFont.heading04)
+                                                        .foregroundColor(LDColor.color1)
+                                                    Text(comment)
+                                                        .font(LDFont.medium04)
+                                                        .foregroundColor(LDColor.color2)
+                                                        .lineSpacing(4)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                .padding(.horizontal, 20)
+                                .padding(.top, 24)
+                                .padding(.bottom, 40)
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.top, 24)
-                            .padding(.bottom, 40)
                         }
+                        .opacity(selectedTab == .reaction ? 1 : 0)
                     }
                 }
             }
             .background(Color.white)
+            .toolbar {
+                CustomNavigationBar(title: "") {
+                    router.popLast()
+                }
+            }
             .onAppear {
                 viewModel.loadReactions()
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

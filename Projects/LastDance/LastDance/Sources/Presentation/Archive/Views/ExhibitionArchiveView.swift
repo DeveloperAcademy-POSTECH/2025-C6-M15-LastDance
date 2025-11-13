@@ -33,42 +33,26 @@ struct ExhibitionArchiveView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Button(action: {
-                    router.popLast()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(.black)
-                        .frame(width: 44, height: 44)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 5)
-            .padding(.top, 20)
-
-            // 전시 제목
-            HStack {
+            // 전시 정보 헤더
+            VStack(alignment: .leading, spacing: 8) {
+                // 전시 제목
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
-                    .font(LDFont.heading06)
+                    .font(LDFont.heading04)
                     .foregroundColor(.black)
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            // 날짜
-            HStack {
+                // 날짜
                 Text(exhibition?.createdAt ?? "")
                     .font(LDFont.regular03)
-                    .foregroundColor(.gray)
-                Spacer()
+                    .foregroundColor(LDColor.color2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 4)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 16)
 
             // 반응 목록
-            ScrollView {
+            ZStack(alignment: .top) {
+                ScrollView {
                 if viewModel.isLoading {
                     // 로딩 상태
                     ProgressView()
@@ -78,9 +62,10 @@ struct ExhibitionArchiveView: View {
                     // 반응 목록 그리드
                     LazyVGrid(
                         columns: [
-                            GridItem(.fixed(155), spacing: 16),
-                            GridItem(.fixed(155), spacing: 16),
+                            GridItem(.fixed(155), spacing: 31),
+                            GridItem(.fixed(155))
                         ],
+                        alignment: .leading,
                         spacing: 24
                     ) {
                         ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
@@ -99,8 +84,8 @@ struct ExhibitionArchiveView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 32)
-                    .padding(.top, 20)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 5)
                     .padding(.bottom, 40)
                 } else {
                     // 빈 상태
@@ -110,12 +95,29 @@ struct ExhibitionArchiveView: View {
                         .frame(maxWidth: .infinity, minHeight: 400)
                 }
             }
+
+                // 상단 블러 효과
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        LDColor.color6,
+                        LDColor.color6.opacity(0.8),
+                        LDColor.color6.opacity(0)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 5)
+                .allowsHitTesting(false)
+            }
         }
-        .background(LDColor.color6)
+        .toolbar {
+            CustomNavigationBar(title: "") {
+                router.popLast()
+            }
+        }
         .onAppear {
             viewModel.loadData()
         }
-        .navigationBarBackButtonHidden()
     }
 }
 
@@ -129,8 +131,8 @@ struct ReactionCardView: View {
             // 작품 이미지
             CachedImage(artwork?.thumbnailURL)
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 155, height: 219)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .frame(width: 157, height: 213)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
 
             // 작품 이름
             if let artwork = artwork {
@@ -142,7 +144,7 @@ struct ReactionCardView: View {
             if let artist = artist {
                 Text(artist.name)
                     .font(LDFont.regular02)
-                    .foregroundColor(.black)
+                    .foregroundColor(LDColor.color2)
             }
         }
     }
