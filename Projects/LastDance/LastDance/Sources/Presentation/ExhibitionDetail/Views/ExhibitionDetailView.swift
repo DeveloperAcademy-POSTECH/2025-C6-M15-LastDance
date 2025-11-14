@@ -117,7 +117,7 @@ struct ExhibitionInfoSection: View {
                 .font(LDFont.regular02)
                 .foregroundColor(LDColor.gray5)
         }
-//        .frame(maxWidth: .infinity, alignment: .leading)
+        //        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 24)
         .padding(.top, 24)
     }

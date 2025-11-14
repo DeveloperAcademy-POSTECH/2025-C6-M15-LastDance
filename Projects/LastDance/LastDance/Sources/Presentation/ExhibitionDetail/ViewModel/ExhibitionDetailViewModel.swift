@@ -39,14 +39,17 @@ final class ExhibitionDetailViewModel: ObservableObject {
 
             switch result {
             case .success(let exhibitionDto):
-                Log.debug("fetchExhibition: API로 전시 상세 조회 성공 - id: \(id), title: \(exhibitionDto.title)")
+                Log.debug(
+                    "fetchExhibition: API로 전시 상세 조회 성공 - id: \(id), title: \(exhibitionDto.title)")
 
                 // 로컬 DB에서 가져오기 (API 호출 시 이미 저장됨)
                 let allExhibitions = self.dataManager.fetchAll(Exhibition.self)
                 self.exhibition = allExhibitions.first { $0.id == id }
 
                 if let exhibition = self.exhibition {
-                    Log.debug("fetchExhibition: Found exhibition with id \(id), artworks count: \(exhibition.artworks.count)")
+                    Log.debug(
+                        "fetchExhibition: Found exhibition with id \(id), artworks count: \(exhibition.artworks.count)"
+                    )
                     self.fetchArtistNames()
 
                     // Also fetch the current artist ID when the view model loads

@@ -10,7 +10,7 @@ import Foundation
 /// 금칙어 로더 & 검사기
 final class ProfanityFilter {
     private(set) var words: [String] = []
-    
+
     /// badword_filter.txt에서 불러오기
     func load(from data: Data) {
         guard let text = String(data: data, encoding: .utf8) else {
@@ -18,7 +18,8 @@ final class ProfanityFilter {
             return
         }
 
-        let lines = text
+        let lines =
+            text
             .split(whereSeparator: \.isNewline)
             .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }

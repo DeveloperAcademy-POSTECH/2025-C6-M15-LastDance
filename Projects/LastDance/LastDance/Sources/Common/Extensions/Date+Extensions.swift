@@ -32,7 +32,7 @@ extension Date {
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter
     }()
-    
+
     /// API 요청용 날짜 형식으로 변환 (yyyy-MM-dd)
     func toAPIDateString() -> String {
         return Date.apiDateFormatter.string(from: self)
@@ -113,8 +113,10 @@ extension Date {
         // 혹시 다른 형식 대비
         let pattern = "^(\\d{4}-\\d{2}-\\d{2})"
         if let regex = try? NSRegularExpression(pattern: pattern),
-           let match = regex.firstMatch(in: string, range: NSRange(string.startIndex..., in: string)),
-           let range = Range(match.range(at: 1), in: string) {
+            let match = regex.firstMatch(
+                in: string, range: NSRange(string.startIndex..., in: string)),
+            let range = Range(match.range(at: 1), in: string)
+        {
             let shortDate = String(string[range])
             return apiDateFormatter.date(from: shortDate)
         }
