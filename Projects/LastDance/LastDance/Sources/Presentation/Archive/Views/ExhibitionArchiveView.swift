@@ -42,14 +42,14 @@ struct ExhibitionArchiveView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
-                
+
                 // 날짜
                 Text(Date.formatShortDate(from: exhibition?.createdAt ?? ""))
                     .font(LDFont.regular03)
                     .foregroundColor(LDColor.color2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
-                
+
                 // 반응 목록
                 ZStack(alignment: .top) {
                     ScrollView {
@@ -63,7 +63,7 @@ struct ExhibitionArchiveView: View {
                             LazyVGrid(
                                 columns: [
                                     GridItem(.fixed(155), spacing: 31),
-                                    GridItem(.fixed(155))
+                                    GridItem(.fixed(155)),
                                 ],
                                 alignment: .leading,
                                 spacing: 24
@@ -79,7 +79,8 @@ struct ExhibitionArchiveView: View {
                                             artist: artist
                                         )
                                         .onTapGesture {
-                                            router.push(.artReaction(artwork: artwork, artist: artist))
+                                            router.push(
+                                                .artReaction(artwork: artwork, artist: artist))
                                         }
                                     }
                                 }
@@ -95,13 +96,13 @@ struct ExhibitionArchiveView: View {
                                 .frame(maxWidth: .infinity, minHeight: 400)
                         }
                     }
-                    
+
                     // 상단 블러 효과
                     LinearGradient(
                         gradient: Gradient(colors: [
                             LDColor.color6,
                             LDColor.color6.opacity(0.8),
-                            LDColor.color6.opacity(0)
+                            LDColor.color6.opacity(0),
                         ]),
                         startPoint: .top,
                         endPoint: .bottom

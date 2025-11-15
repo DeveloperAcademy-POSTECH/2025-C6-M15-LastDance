@@ -10,10 +10,10 @@ import SwiftUI
 
 @main
 struct LastDanceApp: App {
-    
+
     // ModelContainer 설정을 분리한 PersistenceController 사용
     let persistenceController = PersistenceController()
-    
+
     // 데이터 동기화 로직을 분리한 Coordinator 사용
     let dataCoordinator: AppDataCoordinator
 
@@ -37,15 +37,15 @@ struct LastDanceApp: App {
                     await dataCoordinator.startHandoffProcess()
                 }
                 .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
-            
-                // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
-                // .onAppear {
-                //     #if DEBUG
-                //     Task { @MainActor in
-                //         MockDataLoader.seedIfNeeded(container: persistenceController.sharedModelContainer)
-                //     }
-                //     #endif
-                // }
+
+            // TODO: - 개발 시점에 목데이터 사용 여부에 따라 주석 처리
+            // .onAppear {
+            //     #if DEBUG
+            //     Task { @MainActor in
+            //         MockDataLoader.seedIfNeeded(container: persistenceController.sharedModelContainer)
+            //     }
+            //     #endif
+            // }
         }
         .modelContainer(persistenceController.sharedModelContainer)
     }
