@@ -28,29 +28,11 @@ struct ArtworkThumbnailView: View {
 
     var body: some View {
         Group {
-            if let thumbnailURLString = thumbnailURL,
-               let url = URL(string: thumbnailURLString) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        placeholderView
-                            .overlay(ProgressView())
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: width, height: height)
-                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-                    case .failure:
-                        placeholderView
-                            .overlay(
-                                Image(systemName: "photo")
-                                    .foregroundColor(.gray)
-                            )
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
+            if let thumbnailURLString = thumbnailURL {
+                CachedImage(thumbnailURLString)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: width, height: height)
+                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             } else {
                 placeholderView
                     .overlay(
