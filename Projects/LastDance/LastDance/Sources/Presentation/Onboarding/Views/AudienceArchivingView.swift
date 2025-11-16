@@ -19,12 +19,24 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("나의 전시")
+                    .font(LDFont.heading02)
+                    .foregroundColor(.black)
 
-            Text("나의 전시")
-                .font(LDFont.heading02)
-                .foregroundColor(.black)
-                .padding(.horizontal, 24)
-                .padding(.top, 20)
+                Spacer()
+
+                Button(action: {
+                    router.push(.alarmList(userType: .artist))
+                }) {
+                    Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
+            }
+            .foregroundColor(.black)
+            .padding(.top, 20)
+            .padding(.horizontal, 24)
 
             if viewModel.isLoading {
                 ProgressView()
@@ -53,7 +65,6 @@ struct AudienceArchivingView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 30)
                     .padding(.bottom, 100)
-
                 }
             } else {
                 // 빈 상태

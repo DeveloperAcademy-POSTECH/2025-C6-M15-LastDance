@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import UIKit
 
 // MARK: VisitorAPIServiceProtocol
 
@@ -114,6 +115,11 @@ final class VisitorAPIService: VisitorAPIServiceProtocol {
                     )
 
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.visitorId.rawValue)
+
+                    // visitor 생성 후 디바이스 토큰 전송
+                    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                        appDelegate.registerDeviceTokenIfNeeded()
+                    }
 
                     completion(.success(dto))
                 } catch {
