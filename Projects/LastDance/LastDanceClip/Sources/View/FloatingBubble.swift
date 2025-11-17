@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct FloatingBubble: View {
+    @State private var bob = false
+    
     let text: String
     /// 말풍선 방향 선택
     let tailSide: BubbleTailSide
@@ -15,7 +17,6 @@ struct FloatingBubble: View {
     /// 이 말풍선이 사용할 최대 가로폭 (좌/우 서로 안 겹치게 나눌 때 사용)
     let maxWidth: CGFloat
 
-    @State private var bob = false
     private let travel: CGFloat = 4
     private let duration: Double = 1.0
 

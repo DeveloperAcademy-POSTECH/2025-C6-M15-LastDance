@@ -10,7 +10,7 @@ import Foundation
 /// 금칙어 로더 & 검사기
 final class ProfanityFilter {
     private(set) var words: [String] = []
-    
+
     /// badword_filter.txt에서 불러오기
     func load(from data: Data) {
         guard let text = String(data: data, encoding: .utf8) else {
@@ -18,7 +18,8 @@ final class ProfanityFilter {
             return
         }
 
-        let lines = text
+        let lines =
+            text
             .split(whereSeparator: \.isNewline)
             .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
@@ -54,17 +55,20 @@ final class ProfanityFilter {
 // MARK: - 번들에서 파일 가져오기
 extension ProfanityFilter {
     /// 번들에서 badword_filter.txt 로드
-    static func fromBundle(filename: String = "badword_filter", ext: String = "txt") -> ProfanityFilter {
+    static func fromBundle(filename: String = "badword_filter", ext: String = "txt")
+        -> ProfanityFilter
+    {
         let filter = ProfanityFilter()
-        
+
         if let url = Bundle.main.url(forResource: filename, withExtension: ext),
-           let data = try? Data(contentsOf: url) {
+            let data = try? Data(contentsOf: url)
+        {
             filter.load(from: data)
             Log.info("\(filename).\(ext) 로드 완료 (\(filter.words.count)개)")
         } else {
             Log.warning("\(filename).\(ext) 를 번들에서 찾지 못했습니다.")
         }
-        
+
         return filter
     }
 }

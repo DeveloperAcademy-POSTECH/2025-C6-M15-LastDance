@@ -11,7 +11,7 @@ import SwiftData
 import SwiftUI
 
 @MainActor
-final class ReactionInputViewModel: ObservableObject {
+final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
@@ -25,9 +25,6 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var shouldTriggerSend = false
     @Published var alertType: AlertType = .confirmation
     @Published private(set) var forceDisableSendButton = false
-
-    private let throttleInterval: TimeInterval = 2.0
-    private lazy var throttle: SendThrottle = makeThrottle()
 
     let categoryLimit = 2
     let tagLimit = 6
@@ -45,6 +42,12 @@ final class ReactionInputViewModel: ObservableObject {
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
 
+    private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle = SendThrottle(
+        throttleInterval: throttleInterval,
+        handler: self
+    )
+
     init() {}
 
     // 하단버튼 유효성 검사
@@ -56,12 +59,12 @@ final class ReactionInputViewModel: ObservableObject {
     var isFull: Bool {
         selectedTagIds.count >= tagLimit
     }
-    
+
     // 제한 알럿에서 "다시 작성하기" 눌러 닫힐 때 호출
     func handleRestrictionAlertDismiss() {
         forceDisableSendButton = true
     }
-    
+
     // 하단 "전송하기" 버튼 탭
     func sendButtonAction() {
         Log.debug("전송 버튼 탭 이벤트 발생")
@@ -80,7 +83,7 @@ final class ReactionInputViewModel: ObservableObject {
         if forceDisableSendButton {
             forceDisableSendButton = false
         }
-        
+
         if newValue.count > limit {
             message = String(newValue.prefix(limit))
         } else {
@@ -425,31 +428,5 @@ extension ReactionInputViewModel {
             selectedTagIds.insert(tag.id)
             selectedTagsName.insert(tag.name)
         }
-    }
-}
-
-// MARK: - Throttle 관련 private 메서드
-private extension ReactionInputViewModel {
-    func makeThrottle() -> SendThrottle {
-        SendThrottle(
-            throttleInterval: throttleInterval,
-            onSendButtonAllowed: { [weak self] in
-                self?.handleSendButtonAllowed()
-            },
-            onConfirmSendAllowed: { [weak self] in
-                self?.handleConfirmSendAllowed()
-            }
-        )
-    }
-
-    func handleSendButtonAllowed() {
-        let hasProfanity = profanity.containsProfanity(in: message)
-        alertType = hasProfanity ? .restriction : .confirmation
-        shouldShowConfirmAlert = true
-    }
-
-    func handleConfirmSendAllowed() {
-        Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
-        shouldTriggerSend = true
     }
 }

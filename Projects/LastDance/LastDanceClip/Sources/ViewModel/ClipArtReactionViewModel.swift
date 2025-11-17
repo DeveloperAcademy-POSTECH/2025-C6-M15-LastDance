@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-final class ClipArtReactionViewModel: ObservableObject {
+final class ClipArtReactionViewModel: ObservableObject, SendThrottleHandler {
     @Published var artwork: Artwork?
     @Published var artist: Artist?
     @Published var message: String = ""
@@ -20,9 +20,9 @@ final class ClipArtReactionViewModel: ObservableObject {
     @Published var alertType: AlertType = .confirmation
     @Published private(set) var forceDisableSendButton = false
     
-    private let throttleInterval: TimeInterval = 2.0
-    private lazy var throttle: SendThrottle = makeThrottle()
-
+    let limit = 500
+    let profanity = ProfanityFilter.fromBundle()
+    
     private let artworkId: Int
     private let exhibitionId: Int
     private let artworkService: ClipArtworkAPIServiceProtocol
@@ -30,8 +30,11 @@ final class ClipArtReactionViewModel: ObservableObject {
     private let visitService: ClipVisitHistoriesAPIServiceProtocol
     private let reactionService: ClipReactionAPIServiceProtocol
 
-    let limit = 500
-    let profanity = ProfanityFilter.fromBundle()
+    private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle = SendThrottle(
+        throttleInterval: throttleInterval,
+        handler: self
+    )
 
     init(
         artworkId: Int,
@@ -183,31 +186,5 @@ final class ClipArtReactionViewModel: ObservableObject {
         defaults.set(exhibitionId, forKey: SharedKeys.exhibitionId)
         if let artworkId { defaults.set(artworkId, forKey: SharedKeys.lastArtworkId) }
         defaults.set(Date().timeIntervalSince1970, forKey: SharedKeys.savedAt)
-    }
-}
-
-// MARK: - Throttle 관련 private 메서드
-private extension ClipArtReactionViewModel {
-    func makeThrottle() -> SendThrottle {
-        SendThrottle(
-            throttleInterval: throttleInterval,
-            onSendButtonAllowed: { [weak self] in
-                self?.handleSendButtonAllowed()
-            },
-            onConfirmSendAllowed: { [weak self] in
-                self?.handleConfirmSendAllowed()
-            }
-        )
-    }
-
-    func handleSendButtonAllowed() {
-        let hasProfanity = profanity.containsProfanity(in: message)
-        alertType = hasProfanity ? .restriction : .confirmation
-        shouldShowConfirmAlert = true
-    }
-
-    func handleConfirmSendAllowed() {
-        Log.debug("ClipArt Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
-        shouldTriggerSend = true
     }
 }

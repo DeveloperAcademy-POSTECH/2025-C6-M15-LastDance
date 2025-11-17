@@ -21,7 +21,7 @@ struct CompleteReactionView: View {
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
-            
+
             Image("heartenvelope")
                 .resizable()
                 .frame(width: 153, height: 138)

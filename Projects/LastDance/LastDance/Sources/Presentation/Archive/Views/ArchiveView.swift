@@ -92,7 +92,7 @@ struct ArchiveView: View {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.5),
                             Color.black.opacity(0.2),
-                            Color.clear
+                            Color.clear,
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -165,7 +165,7 @@ struct ArtworkGridView: View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31)
+                GridItem(.flexible(), spacing: 31),
             ],
             spacing: 24
         ) {

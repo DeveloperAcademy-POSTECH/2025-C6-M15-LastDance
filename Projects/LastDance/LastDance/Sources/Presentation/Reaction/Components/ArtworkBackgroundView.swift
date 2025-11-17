@@ -23,7 +23,7 @@ struct ArtworkBackgroundView: View {
             LinearGradient(
                 gradient: Gradient(colors: [
                     LDColor.color5.opacity(0),
-                    LDColor.color5
+                    LDColor.color5,
                 ]),
                 startPoint: .center,
                 endPoint: .bottom

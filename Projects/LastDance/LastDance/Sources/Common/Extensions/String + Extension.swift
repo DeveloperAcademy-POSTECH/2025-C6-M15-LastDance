@@ -11,11 +11,11 @@ import Foundation
 extension String {
     func removingZeroWidth() -> String {
         let zeroWidthScalars: [UnicodeScalar] = [
-            "\u{200B}", // ZWSP
-            "\u{200C}", // ZWNJ
-            "\u{200D}", // ZWJ
-            "\u{2060}", // WJ
-            "\u{FEFF}"  // BOM
+            "\u{200B}",  // ZWSP
+            "\u{200C}",  // ZWNJ
+            "\u{200D}",  // ZWJ
+            "\u{2060}",  // WJ
+            "\u{FEFF}",  // BOM
         ]
         return String(self.unicodeScalars.filter { !zeroWidthScalars.contains($0) })
     }
@@ -62,25 +62,25 @@ extension String {
         static let LTables: [Character] = [
             "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ",
             "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ",
-            "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"
+            "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ",
         ]
-        
+
         // 중성 (V) 테이블
         static let VTables: [Character] = [
             "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ",
             "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ",
-            "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"
+            "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ",
         ]
-        
+
         // 종성 (T) 테이블 (첫 번째는 공백/받침 없음)
         static let TTables: [String] = [
             "", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ",
             "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ",
             "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ",
-            "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"
+            "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ",
         ]
     }
-    
+
     func composeHangulJamo() -> String {
         var result = ""
         var buffers: [Character] = []
@@ -99,8 +99,9 @@ extension String {
             let jong = buffers.count >= 3 ? String(buffers[2]) : ""
 
             guard let choIndex = HangulConstants.LTables.firstIndex(of: cho),
-                  let jungIndex = HangulConstants.VTables.firstIndex(of: jung),
-                  let jongIndex = HangulConstants.TTables.firstIndex(of: jong) else {
+                let jungIndex = HangulConstants.VTables.firstIndex(of: jung),
+                let jongIndex = HangulConstants.TTables.firstIndex(of: jong)
+            else {
                 result += String(buffers)
                 buffers.removeAll()
                 return
