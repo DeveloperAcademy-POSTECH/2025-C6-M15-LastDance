@@ -26,6 +26,7 @@ struct BottomButton: View {
                 HStack {
                     Text(text)
                         .foregroundStyle(isEnabled ? LDColor.color6 : LDColor.color1)
+                        .font(LDFont.heading04)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .frame(height: 54)
