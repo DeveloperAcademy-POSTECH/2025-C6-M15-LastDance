@@ -11,7 +11,7 @@ import SwiftUI
 
 /// 사용자 정체성 선택 뷰 (작가/관람객)
 struct IdentitySelectionView: View {
-    @StateObject private var viewModel = IdentitySelectionViewModel()
+    @EnvironmentObject private var viewModel: IdentitySelectionViewModel
 
     var body: some View {
         VStack(spacing: 0) {
@@ -136,7 +136,7 @@ struct IdentitySelectionNextButton: View {
             guard let selectedType = viewModel.selectedType else { return }
             switch selectedType {
             case .artist:
-                router.push(.articleArchiving)
+                router.push(.artistCodeInput)
             case .viewer:
                 router.push(.audienceArchiving)
             }

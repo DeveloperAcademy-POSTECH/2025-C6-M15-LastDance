@@ -34,6 +34,9 @@ protocol ArtistAPIServiceProtocol {
             @escaping (Result<ArtistDetailResponseDto, Error>)
             -> Void
     )
+    func artistLogin(
+        dto: ArtistCodeRequestDto,
+        completion: @escaping (Result<ArtistCodeResponseDto, Error>) -> Void)
 }
 
 // MARK: - ArtistAPIService
@@ -191,4 +194,37 @@ final class ArtistAPIService: ArtistAPIServiceProtocol {
             }
         }
     }
+
+    /// 작가 코드 인증
+    func artistLogin(
+        dto: ArtistCodeRequestDto,
+        completion: @escaping (Result<ArtistCodeResponseDto, any Error>) -> Void
+    ) {
+        provider.request(.artistLogin(dto: dto)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let json = String(data: response.data, encoding: .utf8) {
+                        Log.debug("API 요청 성공. 응답: \(json)")
+                    }
+                    let dto = try JSONDecoder().decode(
+                        ArtistCodeResponseDto.self, from: response.data)
+                    completion(.success(dto))
+                } catch {
+                    Log.error("디코딩 실패: \(error)")
+                    completion(.failure(NetworkError.decodingFailed))
+                }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("API 요청 실패: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+    }
+
 }

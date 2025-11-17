@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ArtistCodeInputView: View {
+    @EnvironmentObject private var viewModel: IdentitySelectionViewModel
+    @EnvironmentObject private var router: NavigationRouter
     @State private var codes: [String] = Array(repeating: "", count: 6)
     @FocusState private var focusedField: Int?
 
@@ -34,10 +36,11 @@ struct ArtistCodeInputView: View {
 
                 Button(
                     action: {
-
+                        if let url = URL(string: "https://open.kakao.com/o/sKFJVPYh") {
+                            UIApplication.shared.open(url)
+                        }
                     },
                     label: {
-
                         Text("코드를 잊으셨나요?")
                             .font(LDFont.regular03)
                             .foregroundStyle(LDColor.color2)
@@ -55,6 +58,16 @@ struct ArtistCodeInputView: View {
                 action: {
                     let fullcode = codes.joined()
                     Log.debug("fullcode: \(fullcode)")
+
+                    viewModel.verifyArtistCode(fullcode) { success in
+                        if success {
+                            // 네트워크 성공시 아카이빙 홈뷰로 넘어가기
+                            router.push(.articleArchiving)
+                        } else {
+                            // TODO: 예외처리 디자인 완성시 구현예정
+                            Log.warning("작가 인증 실패")
+                        }
+                    }
                 }
             )
             .buttonStyle(PlainButtonStyle())
@@ -81,10 +94,8 @@ struct CodeTextField: View {
             .font(LDFont.heading04)
             .frame(width: 48, height: 60)
             .background(
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .background(Color.white)
-                    .cornerRadius(12)
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.white)
                     .shadow(color: .black.opacity(0.6), radius: 0.5, x: 0, y: 0)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)

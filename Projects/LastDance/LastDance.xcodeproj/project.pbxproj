@@ -101,7 +101,9 @@
 				Sources/Common/Utils/Enum/ArtReactionTab.swift,
 				Sources/Common/Utils/Enum/UserDefaultsKey.swift,
 				Sources/Data/Network/Artist/ArtistAPI.swift,
+				Sources/Data/Network/Artist/DTO/Request/ArtistCodeRequestDto.swift,
 				Sources/Data/Network/Artist/DTO/Request/ArtistCreateRequestDto.swift,
+				Sources/Data/Network/Artist/DTO/Response/ArtistCodeResponseDto.swift,
 				Sources/Data/Network/Artist/DTO/Response/ArtistDetailResponseDto.swift,
 				Sources/Data/Network/Artist/DTO/Response/ArtistListResponseDto.swift,
 				Sources/Data/Network/Artwork/ArtworkAPI.swift,
@@ -127,6 +129,7 @@
 				Sources/Domain/Model/Exhibition/Exhibition.swift,
 				Sources/Domain/Model/Reaction/Reaction.swift,
 				Sources/Domain/Model/User/Artist.swift,
+				Sources/Domain/Model/User/ArtistCode.swift,
 				Sources/Presentation/Archive/Views/ScrollViewObserver.swift,
 				Sources/Presentation/Archive/Views/TabBarView.swift,
 			);

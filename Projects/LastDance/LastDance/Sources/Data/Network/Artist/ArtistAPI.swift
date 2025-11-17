@@ -2,7 +2,7 @@
 //  ArtistAPI.swift
 //  LastDance
 //
-//  Created by 배현진 on 10/18/25.
+//  Created by 배현진, 신얀 on 10/18/25.
 //
 
 import Moya
@@ -12,6 +12,7 @@ enum ArtistAPI {
     case createArtist(dto: ArtistCreateRequestDto)
     case getArtist(id: Int)
     case getArtistByUUID(uuid: String)
+    case artistLogin(dto: ArtistCodeRequestDto)
 }
 
 extension ArtistAPI: BaseTargetType {
@@ -23,6 +24,8 @@ extension ArtistAPI: BaseTargetType {
             return "\(APIVersion.version1)/artists/\(id)"
         case .getArtistByUUID(let uuid):
             return "\(APIVersion.version1)/artists/uuid/\(uuid)"
+        case .artistLogin:
+            return "\(APIVersion.version1)/artists/login"
         }
     }
 
@@ -30,7 +33,7 @@ extension ArtistAPI: BaseTargetType {
         switch self {
         case .getArtists, .getArtist, .getArtistByUUID:
             return .get
-        case .createArtist:
+        case .createArtist, .artistLogin:
             return .post
         }
     }
@@ -40,6 +43,8 @@ extension ArtistAPI: BaseTargetType {
     var bodyParameters: Codable? {
         switch self {
         case .createArtist(let dto):
+            return dto
+        case .artistLogin(let dto):
             return dto
         default:
             return nil
