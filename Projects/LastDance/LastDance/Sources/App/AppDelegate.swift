@@ -77,7 +77,7 @@ extension AppDelegate {
 
         // visitorId나 artistId가 없으면 나중에 전송
         guard visitorId != 0 || artistId != 0 else {
-            Log.debug("visitorId/artistId가 없음 -> 로그인 후 전송 예정")
+            Log.debug("visitorId/artistId가 없음 -> 온보딩 후 전송 예정")
             return
         }
 
