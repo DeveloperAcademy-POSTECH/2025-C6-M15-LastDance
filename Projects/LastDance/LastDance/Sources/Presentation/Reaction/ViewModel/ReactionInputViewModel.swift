@@ -26,9 +26,9 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     @Published var alertType: AlertType = .confirmation
     @Published private(set) var forceDisableSendButton = false
 
-    let categoryLimit = 2
-    let tagLimit = 6
-    let limit = 500  // texteditor 최대 글자수 제한
+    let categoryLimit = ReactionConstants.maxCategories
+    let tagLimit = ReactionConstants.maxTags
+    let limit = ReactionConstants.maxMessageLength
 
     let profanity = ProfanityFilter.fromBundle()
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
@@ -95,7 +95,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     func toggleCategory(_ category: String) {
         if selectedCategories.contains(category) {
             selectedCategories.remove(category)
-        } else if selectedCategories.count < 4 {
+        } else if selectedCategories.count < ReactionConstants.categoryDisplayLimit {
             selectedCategories.insert(category)
         }
     }

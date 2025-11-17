@@ -34,7 +34,7 @@ final class CameraViewModel: ObservableObject {
                 guard let self else { return }
                 self.previewPhase = .blurred
                 Task {
-                    try? await Task.sleep(for: .milliseconds(400))
+                    try? await Task.sleep(for: .milliseconds(CameraConstants.previewBlurDelay))
                     self.previewPhase = .visible
                 }
             }
@@ -110,7 +110,9 @@ final class CameraViewModel: ObservableObject {
     }
 
     // 무음촬영모드임을 알리는 애니메이션
-    private func showSilentNoticeTemporarily(visibleFor: Duration = .seconds(2)) {
+    private func showSilentNoticeTemporarily(
+        visibleFor: Duration = .seconds(CameraConstants.noticeVisibleDuration)
+    ) {
         showSilentNotice = true
         hideNoticeTask?.cancel()
 

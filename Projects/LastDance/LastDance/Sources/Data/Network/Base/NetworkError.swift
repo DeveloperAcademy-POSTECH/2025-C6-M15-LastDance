@@ -18,15 +18,15 @@ enum NetworkError: Error {
     var message: String {
         switch self {
         case .badRequest:
-            return "잘못된 요청입니다."
+            return NetworkErrorMessages.badRequest
         case .notFound:
-            return "요청한 데이터를 찾을 수 없습니다."
+            return NetworkErrorMessages.notFound
         case .decodingFailed:
-            return "데이터를 파싱에 실패했습니다."
+            return NetworkErrorMessages.decodingFailed
         case .networkFailure:
-            return "네트워크 연결을 확인해주세요."
+            return NetworkErrorMessages.networkFailure
         case .serverError:
-            return "서버 에러가 발생했습니다."
+            return NetworkErrorMessages.serverError
         }
     }
 }
