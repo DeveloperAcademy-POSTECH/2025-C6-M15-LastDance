@@ -25,9 +25,9 @@ struct PersistenceController {
                 CapturedArtwork.self,
                 Reaction.self,
                 IdentificatedArtwork.self,
-                VisitHistory.self
+                VisitHistory.self,
             ])
-            
+
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
                 isStoredInMemoryOnly: false
@@ -37,9 +37,9 @@ struct PersistenceController {
                 for: schema,
                 configurations: [modelConfiguration]
             )
-            
+
             SwiftDataManager.shared.configure(with: sharedModelContainer)
-            
+
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

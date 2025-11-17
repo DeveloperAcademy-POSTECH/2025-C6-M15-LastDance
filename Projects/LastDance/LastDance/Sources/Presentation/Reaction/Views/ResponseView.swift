@@ -104,12 +104,16 @@ struct ResponseContentView: View {
     }
 }
 
+// MARK: - ReactionListView
 // MARK: - ResponseTabBar
 
+struct ReactionListView: View {
+    @ObservedObject var viewModel: ResponseViewModel
 struct ResponseTabBar: View {
     @Binding var selectedTab: ResponseTab
 
     var body: some View {
+        ReactionItemsView(viewModel: viewModel)
         HStack(spacing: 18) {
             Button(action: {
                 selectedTab = .artwork
@@ -133,13 +137,18 @@ struct ResponseTabBar: View {
     }
 }
 
+// MARK: - ReactionHeaderView
 // MARK: - ArtworkInfoSection
 
+struct ReactionHeaderView: View {
+    let count: Int
 struct ArtworkInfoSection: View {
     let artwork: Artwork?
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
+        HStack {
+            Text("반응")
         VStack(alignment: .leading, spacing: 0) {
             // 반응 수
             Text("반응 수")
@@ -160,6 +169,13 @@ struct ArtworkInfoSection: View {
 
             Text(artwork?.title ?? "")
                 .font(LDFont.heading03)
+            Text("\(count)")
+                .font(LDFont.regular03)
+                .foregroundColor(LDColor.color6)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.black)
+                .clipShape(Circle())
                 .foregroundColor(LDColor.color1)
                 .padding(.top, 8)
 
@@ -186,30 +202,48 @@ struct ArtworkInfoSection: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
+        .padding(.vertical, 4)
     }
 }
 
+// MARK: - ReactionItemsView
 // MARK: - MessageListView
 
+struct ReactionItemsView: View {
 struct MessageListView: View {
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
+        LazyVStack(spacing: 0) {
+            ForEach(viewModel.reactions.indices, id: \.self) { index in
+                ReactionItemView(
         VStack(spacing: 0) {
             ForEach(0..<viewModel.reactions.count, id: \.self) { index in
                 MessageItemView(
                     reaction: viewModel.reactions[index],
+                    viewModel: viewModel
                     index: index,
                     viewModel: viewModel,
                     isLast: index == viewModel.reactions.count - 1
                 )
+                .padding(.horizontal, 20)
+
+                if index < viewModel.reactions.count - 1 {
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(height: 2)
+                        .background(Color(red: 0.94, green: 0.94, blue: 0.94))
+                        .padding(.bottom, 16)
+                }
             }
         }
+        .padding(.bottom, 120)
         .padding(.top, 20)
         .padding(.bottom, 100)
     }
 }
 
+// MARK: - BlurEffectView
 // MARK: - MessageItemView
 
 struct MessageItemView: View {
@@ -230,7 +264,22 @@ struct MessageItemView: View {
         mockNames[index % mockNames.count]
     }
 
+struct BlurEffectView: View {
     var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        LDColor.color5.opacity(0),
+                        LDColor.color5,
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 100 + geometry.safeAreaInsets.bottom)
+                .offset(y: geometry.safeAreaInsets.bottom)
+                .allowsHitTesting(false)
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 // 헤더 (프로필 + 이름 + 날짜)
