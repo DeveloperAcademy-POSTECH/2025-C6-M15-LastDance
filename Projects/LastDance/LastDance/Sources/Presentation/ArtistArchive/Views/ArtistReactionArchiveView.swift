@@ -21,18 +21,18 @@ struct ArtistReactionArchiveView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            ArtistArtworkScrollView(viewModel: viewModel)
-        }
-        .toolbar {
-            CustomNavigationBar(title: "\(viewModel.exhibitionTitle)") {
-                router.popLast()
+        ArtistArtworkScrollView(viewModel: viewModel)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                CustomNavigationBar(title: viewModel.exhibitionTitle) {
+                    router.popLast()
+                }
             }
-        }
-        .background(LDColor.color6)
-        .onAppear {
-            viewModel.loadArtworksAndReactions()
-        }
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .onAppear {
+                viewModel.loadArtworksAndReactions()
+            }
     }
 }
 
@@ -75,6 +75,7 @@ private struct ArtistArtworkScrollView: View {
                             Spacer().frame(height: 4)
 
                             // 작품 제목
+
                             Text(displayItem.artwork.title)
                                 .font(LDFont.heading04)
                                 .foregroundColor(.black)

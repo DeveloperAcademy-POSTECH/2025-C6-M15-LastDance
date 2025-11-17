@@ -78,6 +78,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Resources/Assets.xcassets,
+				Resources/Badword/badword_filter.txt,
 				"Resources/Fonts/Pretendard-Black.otf",
 				"Resources/Fonts/Pretendard-Bold.otf",
 				"Resources/Fonts/Pretendard-ExtraBold.otf",
@@ -89,18 +90,25 @@
 				"Resources/Fonts/Pretendard-Thin.otf",
 				Sources/Common/Components/Button/BottomButton.swift,
 				Sources/Common/Components/CachedImage.swift,
+				Sources/Common/Components/CustomAlert.swift,
 				Sources/Common/DesignSystem/LDColor.swift,
 				Sources/Common/DesignSystem/LDFont.swift,
+				Sources/Common/DesignSystem/LDShadow.swift,
 				"Sources/Common/Extensions/Date+Extensions.swift",
 				Sources/Common/Extensions/Log.swift,
 				Sources/Common/Extensions/Navigation_Ext.swift,
+				"Sources/Common/Extensions/String + Extension.swift",
 				Sources/Common/Extensions/TapGestureRecognizer.swift,
+				"Sources/Common/Extensions/View+CustomAlert.swift",
+				"Sources/Common/Extensions/View+Shadow.swift",
 				Sources/Common/Utils/Config.swift,
 				Sources/Common/Utils/Constants.swift,
 				Sources/Common/Utils/Enum/AlertType.swift,
 				Sources/Common/Utils/Enum/APIVersion.swift,
 				Sources/Common/Utils/Enum/ArtReactionTab.swift,
 				Sources/Common/Utils/Enum/UserDefaultsKey.swift,
+				Sources/Common/Utils/ProfanityFilter.swift,
+				Sources/Common/Utils/SendThrottle.swift,
 				Sources/Data/Network/Artist/ArtistAPI.swift,
 				Sources/Data/Network/Artist/DTO/Request/ArtistCreateRequestDto.swift,
 				Sources/Data/Network/Artist/DTO/Response/ArtistDetailResponseDto.swift,
@@ -458,7 +466,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDanceClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LastDance;
+				INFOPLIST_KEY_CFBundleDisplayName = "우아";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -500,7 +508,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDanceClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LastDance;
+				INFOPLIST_KEY_CFBundleDisplayName = "우아";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -664,7 +672,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDance/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "여운";
+				INFOPLIST_KEY_CFBundleDisplayName = "우아";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -709,7 +717,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastDance/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "여운";
+				INFOPLIST_KEY_CFBundleDisplayName = "우아";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSCameraUsageDescription = "작품 인식을 위해 카메라 접근 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
