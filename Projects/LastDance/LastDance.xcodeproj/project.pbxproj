@@ -13,6 +13,7 @@
 		997BB15E2EC1388E0052F9BA /* LastDanceClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 997BB14D2EC1388D0052F9BA /* LastDanceClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		997BB18D2EC14ACA0052F9BA /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB18C2EC14ACA0052F9BA /* Moya */; };
 		997BB4032EC50C1B0052F9BA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 997BB4022EC50C1B0052F9BA /* Kingfisher */; };
+		D83848FA2ECB09CF005FA4DF /* SwiftUIMasonry in Frameworks */ = {isa = PBXBuildFile; productRef = D83848F92ECB09CF005FA4DF /* SwiftUIMasonry */; };
 		D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D8CD5AC32EBC4BF700B9D44D /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -181,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D83848FA2ECB09CF005FA4DF /* SwiftUIMasonry in Frameworks */,
 				D8CD5AC42EBC4BF700B9D44D /* Kingfisher in Frameworks */,
 				963572432E980E2400B2FA79 /* OSLog.framework in Frameworks */,
 				96B1CA1C2E954A5C003E7C1C /* Moya in Frameworks */,
@@ -280,6 +282,7 @@
 				96B1CA192E954A5C003E7C1C /* CombineMoya */,
 				96B1CA1B2E954A5C003E7C1C /* Moya */,
 				D8CD5AC32EBC4BF700B9D44D /* Kingfisher */,
+				D83848F92ECB09CF005FA4DF /* SwiftUIMasonry */,
 			);
 			productName = LastDance;
 			productReference = 99E6F0672E91E4A9002ED9C2 /* LastDance.app */;
@@ -342,6 +345,7 @@
 			packageReferences = (
 				96B1CA182E954A5C003E7C1C /* XCRemoteSwiftPackageReference "Moya" */,
 				D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				D83848F82ECB09CF005FA4DF /* XCRemoteSwiftPackageReference "SwiftUIMasonry" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 99E6F0682E91E4A9002ED9C2 /* Products */;
@@ -828,6 +832,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		D83848F82ECB09CF005FA4DF /* XCRemoteSwiftPackageReference "SwiftUIMasonry" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ciaranrobrien/SwiftUIMasonry.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -858,6 +870,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D8CD5AC22EBC4BF700B9D44D /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		D83848F92ECB09CF005FA4DF /* SwiftUIMasonry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D83848F82ECB09CF005FA4DF /* XCRemoteSwiftPackageReference "SwiftUIMasonry" */;
+			productName = SwiftUIMasonry;
 		};
 		D8CD5AC32EBC4BF700B9D44D /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

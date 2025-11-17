@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import SwiftUIMasonry
 
 /// 관람객 플로우 - 내가 다녀온 전시 목록에서 전시 하나 선택했을때 보여주는 작품 목록 뷰
 struct ExhibitionArchiveView: View {
@@ -60,14 +61,7 @@ struct ExhibitionArchiveView: View {
                                 .frame(maxWidth: .infinity, minHeight: 400)
                         } else if viewModel.hasReactedArtworks() {
                             // 반응 목록 그리드
-                            LazyVGrid(
-                                columns: [
-                                    GridItem(.fixed(155), spacing: 31),
-                                    GridItem(.fixed(155)),
-                                ],
-                                alignment: .leading,
-                                spacing: 24
-                            ) {
+                            VMasonry(columns: 2, spacing: 19) {
                                 ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
                                     if let reaction = viewModel.reactions.first(where: {
                                         $0.artworkId == artwork.id
@@ -129,12 +123,14 @@ struct ReactionCardView: View {
     let artist: Artist?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 4) {
             // 작품 이미지
             CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 157, height: 213)
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            Spacer().frame(height: 4)
 
             // 작품 이름
             if let artwork = artwork {
