@@ -165,7 +165,7 @@ struct ArtworkInfoSection: View {
 
             // 작품 설명
             Text("작품 설명")
-                .font(LDFont.medium04)
+                .font(LDFont.heading04)
                 .foregroundColor(LDColor.color1)
                 .padding(.top, 36)
 
