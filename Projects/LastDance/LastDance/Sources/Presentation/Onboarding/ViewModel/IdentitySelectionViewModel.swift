@@ -13,6 +13,9 @@ final class IdentitySelectionViewModel: ObservableObject {
     @Published var selectedType: UserType?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var artistCodes: [String] = Array(
+        repeating: "", count: ArtistCodeConstants.codeLength)
+    @Published var showArtistCodeError = false
 
     private let dataManager = SwiftDataManager.shared
     private let visitorService = VisitorAPIService()
@@ -27,6 +30,11 @@ final class IdentitySelectionViewModel: ObservableObject {
     /// 작가 인증 여부 확인
     func isArtistAuthenticated() -> Bool {
         return UserDefaults.standard.object(forKey: UserDefaultsKey.artistId.rawValue) != nil
+    }
+
+    /// 작가 코드 입력 완료 여부
+    var isCodeComplete: Bool {
+        artistCodes.contains { !$0.isEmpty }
     }
 
     /// 선택 확정 및 저장
@@ -116,6 +124,7 @@ final class IdentitySelectionViewModel: ObservableObject {
     func verifyArtistCode(_ code: String, completion: @escaping (Bool) -> Void) {
         isLoading = true
         errorMessage = nil
+        showArtistCodeError = false
 
         let request = ArtistCodeRequestDto(login_code: code)
 
@@ -138,13 +147,23 @@ final class IdentitySelectionViewModel: ObservableObject {
                     completion(true)
 
                 case .failure(let error):
-                    if let moyaError = error as? MoyaError,
-                        let data = moyaError.response?.data,
-                        let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
-                    {
-                        let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                        self.errorMessage = messages
-                        Log.warning("Artist login validation error: \(messages)")
+                    if let moyaError = error as? MoyaError {
+                        // 400대 에러 처리
+                        if let statusCode = moyaError.response?.statusCode,
+                            (400..<500).contains(statusCode)
+                        {
+                            self.showArtistCodeError = true
+                        }
+
+                        if let data = moyaError.response?.data,
+                            let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                        {
+                            let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                            self.errorMessage = messages
+                            Log.warning("Artist login validation error: \(messages)")
+                        } else {
+                            self.errorMessage = "코드 인증에 실패했습니다."
+                        }
                     } else {
                         self.errorMessage = "코드 인증에 실패했습니다."
                     }

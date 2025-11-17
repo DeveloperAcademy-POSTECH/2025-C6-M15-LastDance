@@ -10,7 +10,6 @@ import SwiftUI
 struct ArtistCodeInputView: View {
     @EnvironmentObject private var viewModel: IdentitySelectionViewModel
     @EnvironmentObject private var router: NavigationRouter
-    @State private var codes: [String] = Array(repeating: "", count: 6)
     @FocusState private var focusedField: Int?
 
     var body: some View {
@@ -23,9 +22,9 @@ struct ArtistCodeInputView: View {
                 Spacer().frame(height: 48)
 
                 HStack(spacing: 8) {
-                    ForEach(0..<6, id: \.self) { index in
+                    ForEach(0..<ArtistCodeConstants.codeLength, id: \.self) { index in
                         CodeTextField(
-                            text: $codes[index],
+                            text: $viewModel.artistCodes[index],
                             focusedField: $focusedField,
                             index: index
                         )
@@ -36,7 +35,7 @@ struct ArtistCodeInputView: View {
 
                 Button(
                     action: {
-                        if let url = URL(string: "https://open.kakao.com/o/sKFJVPYh") {
+                        if let url = URL(string: ArtistCodeConstants.openChatURL) {
                             UIApplication.shared.open(url)
                         }
                     },
@@ -49,23 +48,27 @@ struct ArtistCodeInputView: View {
                 )
                 .buttonStyle(PlainButtonStyle())
 
+                Spacer().frame(height: 12)
+
+                if viewModel.showArtistCodeError {
+                    Text("사용할 수 없는 코드입니다. 다시 입력해주세요.")
+                        .font(LDFont.regular03)
+                        .foregroundStyle(LDColor.red4)
+                }
+
                 Spacer()
             }
             .padding(.leading, 24)
 
             BottomButton(
-                text: "다음", isEnabled: isCodeComplete,
+                text: "다음", isEnabled: viewModel.isCodeComplete,
                 action: {
-                    let fullcode = codes.joined()
+                    let fullcode = viewModel.artistCodes.joined()
                     Log.debug("fullcode: \(fullcode)")
 
                     viewModel.verifyArtistCode(fullcode) { success in
                         if success {
-                            // 네트워크 성공시 아카이빙 홈뷰로 넘어가기
                             router.push(.articleArchiving)
-                        } else {
-                            // TODO: 예외처리 디자인 완성시 구현예정
-                            Log.warning("작가 인증 실패")
                         }
                     }
                 }
@@ -74,12 +77,9 @@ struct ArtistCodeInputView: View {
         }
         .onAppear {
             focusedField = 0
-            Log.debug("codes: \(codes), isCodeComplete: \(isCodeComplete)")
+            Log.debug(
+                "codes: \(viewModel.artistCodes), isCodeComplete: \(viewModel.isCodeComplete)")
         }
-    }
-
-    private var isCodeComplete: Bool {
-        codes.contains { !$0.isEmpty }
     }
 }
 
@@ -93,6 +93,7 @@ struct CodeTextField: View {
         TextField("", text: $text)
             .multilineTextAlignment(.center)
             .font(LDFont.heading04)
+            .textInputAutocapitalization(.never)
             .frame(width: 48, height: 60)
             .background(
                 RoundedRectangle(cornerRadius: 12)
@@ -112,15 +113,18 @@ struct CodeTextField: View {
                 }
 
                 // 입력되면 다음 필드로 포커스 이동
-                if !text.isEmpty && index < 5 {
+                if !newValue.isEmpty && index < ArtistCodeConstants.codeLength - 1 {
                     focusedField = index + 1
+                }
+
+                // TODO: 보완 필요
+                // 삭제 시 이전 필드로 포커스 이동
+                if newValue.isEmpty && !oldValue.isEmpty && index > 0 {
+                    focusedField = index - 1
                 }
             }
             .onTapGesture {
                 focusedField = index
             }
     }
-}
-#Preview {
-    ArtistCodeInputView()
 }
