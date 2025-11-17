@@ -8,16 +8,10 @@
 import SwiftData
 import SwiftUI
 
-enum ResponseTab {
-    case artwork
-    case message
-}
-
 struct ResponseView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel: ResponseViewModel
     @Query private var allArtworks: [Artwork]
-    @State private var selectedTab: ResponseTab = .artwork
     let artworkId: Int
 
     init(artworkId: Int) {
@@ -30,7 +24,7 @@ struct ResponseView: View {
     }
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(1.2)
@@ -38,12 +32,13 @@ struct ResponseView: View {
             } else {
                 ResponseContentView(
                     artwork: artwork,
-                    viewModel: viewModel,
-                    selectedTab: $selectedTab
+                    viewModel: viewModel
                 )
             }
+            BlurEffectView()
         }
         .background(LDColor.color5)
+        .ignoresSafeArea(.container, edges: .bottom)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응") {
@@ -51,7 +46,6 @@ struct ResponseView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
-        .ignoresSafeArea(edges: .top)
     }
 }
 
@@ -60,114 +54,47 @@ struct ResponseView: View {
 struct ResponseContentView: View {
     let artwork: Artwork?
     @ObservedObject var viewModel: ResponseViewModel
-    @Binding var selectedTab: ResponseTab
 
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack(alignment: .bottomLeading) {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
                 ArtworkBackgroundView(artwork: artwork)
-                    .frame(height: 393)
-                    .clipped()
+                    .offset(y: -120)
+                    .ignoresSafeArea(.container, edges: .top)
+                    .padding(.bottom, -120)
 
-                // 탭 바를 이미지 위에 배치
-                ResponseTabBar(selectedTab: $selectedTab)
-                    .padding(.bottom, 24)
+                ReactionListView(viewModel: viewModel)
+                    .padding(.top, 20)
             }
-            .ignoresSafeArea(edges: .top)
-
-            // 콘텐츠만 스크롤 (상단 블러 포함)
-            ZStack(alignment: .top) {
-                ScrollView {
-                    if selectedTab == .artwork {
-                        ArtworkInfoSection(artwork: artwork, viewModel: viewModel)
-                    } else {
-                        MessageListView(viewModel: viewModel)
-                    }
+            .overlay(alignment: .topLeading) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer().frame(height: 343 - 120 - 40)
+                    ReactionHeaderView(count: viewModel.reactions.count)
                 }
-                .background(LDColor.color5)
-
-                // 스크롤뷰 상단 블러 효과
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        LDColor.color5,
-                        LDColor.color5.opacity(0.8),
-                        LDColor.color5.opacity(0.3),
-                        Color.clear
-                    ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 40)
-                .allowsHitTesting(false)
             }
         }
+        .scrollToMinDistance(minDisntance: 32)
     }
 }
 
 // MARK: - ReactionListView
-// MARK: - ResponseTabBar
 
 struct ReactionListView: View {
     @ObservedObject var viewModel: ResponseViewModel
-struct ResponseTabBar: View {
-    @Binding var selectedTab: ResponseTab
 
     var body: some View {
         ReactionItemsView(viewModel: viewModel)
-        HStack(spacing: 18) {
-            Button(action: {
-                selectedTab = .artwork
-            }) {
-                Text("작품")
-                    .font(LDFont.heading03)
-                    .foregroundColor(selectedTab == .artwork ? LDColor.color1 : LDColor.color2)
-            }
-
-            Button(action: {
-                selectedTab = .message
-            }) {
-                Text("메시지")
-                    .font(LDFont.heading03)
-                    .foregroundColor(selectedTab == .message ? LDColor.color1 : LDColor.color2)
-            }
-
-            Spacer()
-        }
-        .padding(.horizontal, 20)
     }
 }
 
 // MARK: - ReactionHeaderView
-// MARK: - ArtworkInfoSection
 
 struct ReactionHeaderView: View {
     let count: Int
-struct ArtworkInfoSection: View {
-    let artwork: Artwork?
-    @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
         HStack {
             Text("반응")
-        VStack(alignment: .leading, spacing: 0) {
-            // 반응 수
-            Text("반응 수")
-                .font(LDFont.heading04)
-                .foregroundColor(LDColor.color1)
-                .padding(.top, 36)
-
-            Text("\(viewModel.reactions.count)")
-                .font(LDFont.heading01)
-                .foregroundColor(LDColor.color1)
-                .padding(.top, 8)
-
-            // 작품 제목
-            Text("작품 제목")
-                .font(LDFont.heading04)
-                .foregroundColor(LDColor.color1)
-                .padding(.top, 48)
-
-            Text(artwork?.title ?? "")
                 .font(LDFont.heading03)
             Text("\(count)")
                 .font(LDFont.regular03)
@@ -176,55 +103,23 @@ struct ArtworkInfoSection: View {
                 .padding(.vertical, 4)
                 .background(Color.black)
                 .clipShape(Circle())
-                .foregroundColor(LDColor.color1)
-                .padding(.top, 8)
-
-            // 작품 설명
-            Text("작품 설명")
-                .font(LDFont.medium04)
-                .foregroundColor(LDColor.color1)
-                .padding(.top, 36)
-
-            if let description = artwork?.descriptionText, !description.isEmpty {
-                Text(description)
-                    .font(LDFont.medium03)
-                    .foregroundColor(LDColor.color2)
-                    .lineSpacing(4)
-                    .padding(.top, 8)
-            } else {
-                Text("작품 설명이 없습니다.")
-                    .font(LDFont.medium03)
-                    .foregroundColor(LDColor.color2)
-                    .padding(.top, 8)
-            }
-
-            Spacer(minLength: 100)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
         .padding(.vertical, 4)
     }
 }
 
 // MARK: - ReactionItemsView
-// MARK: - MessageListView
 
 struct ReactionItemsView: View {
-struct MessageListView: View {
     @ObservedObject var viewModel: ResponseViewModel
 
     var body: some View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.reactions.indices, id: \.self) { index in
                 ReactionItemView(
-        VStack(spacing: 0) {
-            ForEach(0..<viewModel.reactions.count, id: \.self) { index in
-                MessageItemView(
                     reaction: viewModel.reactions[index],
                     viewModel: viewModel
-                    index: index,
-                    viewModel: viewModel,
-                    isLast: index == viewModel.reactions.count - 1
                 )
                 .padding(.horizontal, 20)
 
@@ -238,31 +133,10 @@ struct MessageListView: View {
             }
         }
         .padding(.bottom, 120)
-        .padding(.top, 20)
-        .padding(.bottom, 100)
     }
 }
 
 // MARK: - BlurEffectView
-// MARK: - MessageItemView
-
-struct MessageItemView: View {
-    let reaction: ReactionData
-    let index: Int
-    @ObservedObject var viewModel: ResponseViewModel
-    let isLast: Bool
-
-    // 목업 데이터
-    private let mockEmojis = ["🎨", "🖼️", "✨", "🌟", "💫"]
-    private let mockNames = ["쪼미", "쫑미", "미술관객", "예술가", "관람자"]
-
-    private var mockEmoji: String {
-        mockEmojis[index % mockEmojis.count]
-    }
-
-    private var mockName: String {
-        mockNames[index % mockNames.count]
-    }
 
 struct BlurEffectView: View {
     var body: some View {
@@ -280,111 +154,7 @@ struct BlurEffectView: View {
                 .frame(height: 100 + geometry.safeAreaInsets.bottom)
                 .offset(y: geometry.safeAreaInsets.bottom)
                 .allowsHitTesting(false)
-        VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                // 헤더 (프로필 + 이름 + 날짜)
-                HStack(spacing: 0) {
-                    // TODO: 실제 프로필 이미지로 교체
-                    Circle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 40, height: 40)
-                        .overlay(
-                            Text(mockEmoji)
-                                .font(.system(size: 20))
-                        )
-
-                    // TODO: 실제 사용자 이름으로 교체
-                    Text(mockName)
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color1)
-                        .padding(.leading, 12)
-
-                    Spacer()
-
-                    // TODO: reaction 데이터에 날짜 필드 추가하여 실제 날짜로 교체
-                    Text("2025.11.08")
-                        .font(LDFont.medium05)
-                        .foregroundColor(LDColor.color3)
-                }
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
-                .padding(.bottom, 8)
-
-                // 댓글 텍스트
-                if !reaction.comment.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text(viewModel.displayText(for: reaction))
-                            .font(LDFont.medium03)
-                            .foregroundColor(LDColor.color1)
-                            .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
-                            .lineSpacing(6)
-                            .animation(.easeInOut(duration: 0.3), value: viewModel.expandedReactions.contains(reaction.id))
-
-                        if reaction.comment.count > 80 {
-                            Button(action: {
-                                viewModel.handleExpandToggle(for: reaction)
-                            }) {
-                                Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                                    .font(LDFont.medium05)
-                                    .foregroundColor(LDColor.color3)
-                            }
-                        }
-                    }
-                    .padding(.leading, 72)
-                    .padding(.trailing, 20)
-                    .padding(.bottom, 12)
-                }
-
-                // 하트 + 공유 버튼
-                HStack(spacing: 16) {
-                    Button(action: {}) {
-                        Image(systemName: "heart")
-                            .font(.system(size: 24))
-                            .foregroundColor(LDColor.color2)
-                    }
-
-                    Button(action: {}) {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: 24))
-                            .foregroundColor(LDColor.color2)
-                    }
-
-                    Spacer()
-                }
-                .padding(.leading, 72)
-                .padding(.trailing, 20)
             }
-            .padding(.top, 20)
-            .padding(.bottom, 20)
-
-            if !isLast {
-                Rectangle()
-                    .fill(LDColor.gray8)
-                    .frame(height: 1)
-            }
-        }
-    }
-}
-
-// MARK: - ArtworkBackgroundView
-
-struct ArtworkBackgroundView: View {
-    let artwork: Artwork?
-
-    var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(contentMode: .fill)
-                .clipped()
-
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    LDColor.color5.opacity(0),
-                    LDColor.color5,
-                ]),
-                startPoint: .center,
-                endPoint: .bottom
-            )
         }
     }
 }
