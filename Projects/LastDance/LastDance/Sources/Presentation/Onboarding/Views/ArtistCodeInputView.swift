@@ -74,6 +74,7 @@ struct ArtistCodeInputView: View {
         }
         .onAppear {
             focusedField = 0
+            Log.debug("codes: \(codes), isCodeComplete: \(isCodeComplete)")
         }
     }
 
