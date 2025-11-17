@@ -96,8 +96,8 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .artistReactionArchiveView(let exhibitionId):
                     ArtistReactionArchiveView(exhibitionId: exhibitionId)
-                        .toolbar(.hidden, for: .navigationBar)
-                case .exhibitionArchive(let exhibitionId):
+                        .navigationBarBackButtonHidden(true)
+                case .exhibitionArchive(exhibitionId: let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .background(LDColor.color6)
                         .navigationBarTitleDisplayMode(.inline)
