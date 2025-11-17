@@ -27,7 +27,12 @@ struct RootView: View {
                 if let userType = userType {
                     switch userType {
                     case .artist:
-                        ArticleArchivingView()
+                        // 작가 인증 여부 확인
+                        if identitySelectionViewModel.isArtistAuthenticated() {
+                            ArticleArchivingView()
+                        } else {
+                            ArtistCodeInputView()
+                        }
                     case .viewer:
                         AudienceArchivingView()
                     }

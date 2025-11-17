@@ -24,6 +24,11 @@ final class IdentitySelectionViewModel: ObservableObject {
         selectedType = type
     }
 
+    /// 작가 인증 여부 확인
+    func isArtistAuthenticated() -> Bool {
+        return UserDefaults.standard.object(forKey: UserDefaultsKey.artistId.rawValue) != nil
+    }
+
     /// 선택 확정 및 저장
     func confirmSelection() {
         guard let selectedType = selectedType else {
