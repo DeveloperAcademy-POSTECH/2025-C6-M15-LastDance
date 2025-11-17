@@ -9,10 +9,10 @@ import SwiftUI
 
 /// 4개 모서리에 L-자 모양 코너 마크를 그려주는 오버레이
 private struct PreviewCornerMarks: View {
-    var length: CGFloat = 22  // 각 코너의 선 길이
-    var lineWidth: CGFloat = 3  // 선 두께
+    var length: CGFloat = CameraConstants.cornerMarkLength  // 각 코너의 선 길이
+    var lineWidth: CGFloat = CameraConstants.cornerMarkLineWidth  // 선 두께
     var color: Color = LDColor.color6  // 선 색
-    var inset: CGFloat = 6  // 프리뷰 테두리로부터 안쪽 여백
+    var inset: CGFloat = CameraConstants.cornerMarkInset  // 프리뷰 테두리로부터 안쪽 여백
 
     var body: some View {
         GeometryReader { proxy in
@@ -56,10 +56,10 @@ private struct PreviewCornerMarks: View {
 extension View {
     /// 뷰파인더 코너 마크 오버레이
     func viewfinderCorners(
-        length: CGFloat = 22,
-        lineWidth: CGFloat = 3,
+        length: CGFloat = CameraConstants.cornerMarkLength,
+        lineWidth: CGFloat = CameraConstants.cornerMarkLineWidth,
         color: Color = LDColor.color6,
-        inset: CGFloat = 6
+        inset: CGFloat = CameraConstants.cornerMarkInset
     ) -> some View {
         overlay(
             PreviewCornerMarks(

@@ -8,22 +8,33 @@
 import SwiftUI
 
 @MainActor
-final class ClipArtReactionViewModel: ObservableObject {
+final class ClipArtReactionViewModel: ObservableObject, SendThrottleHandler {
     @Published var artwork: Artwork?
     @Published var artist: Artist?
     @Published var message: String = ""
     @Published var isLoading: Bool = false
     @Published var isLoaded: Bool = false
     @Published var isSending = false
+    @Published var shouldShowConfirmAlert = false
+    @Published var shouldTriggerSend = false
+    @Published var alertType: AlertType = .confirmation
+    @Published private(set) var forceDisableSendButton = false
     
     let limit = 500
-
+    let profanity = ProfanityFilter.fromBundle()
+    
     private let artworkId: Int
     private let exhibitionId: Int
     private let artworkService: ClipArtworkAPIServiceProtocol
     private let visitorService: ClipVisitorAPIServiceProtocol
     private let visitService: ClipVisitHistoriesAPIServiceProtocol
     private let reactionService: ClipReactionAPIServiceProtocol
+
+    private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle = SendThrottle(
+        throttleInterval: throttleInterval,
+        handler: self
+    )
 
     init(
         artworkId: Int,
@@ -49,6 +60,11 @@ final class ClipArtReactionViewModel: ObservableObject {
         !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
+    /// 하단 전송 버튼 활성화 여부
+    var isSendButtonDisabled: Bool {
+        !hasText || isSending || forceDisableSendButton
+    }
+    
     func loadArtwork() async {
         isLoading = true
         do {
@@ -71,11 +87,32 @@ final class ClipArtReactionViewModel: ObservableObject {
     }
 
     func updateMessage(_ newValue: String) {
+        if forceDisableSendButton {
+            forceDisableSendButton = false
+        }
+        
         if newValue.count > limit {
             message = String(newValue.prefix(limit))
         } else {
             message = newValue
         }
+    }
+    
+    /// 제한 알럿에서 "다시 작성하기" 클릭 시 호출
+    func handleRestrictionAlertDismiss() {
+        forceDisableSendButton = true
+    }
+    
+    /// 하단 "전송하기" 버튼 탭
+    func sendButtonAction() {
+        Log.debug("ClipArt 전송 버튼 탭 이벤트 발생")
+        throttle.sendButtonAction()
+    }
+    
+    /// Alert 내부 "전송하기" 버튼 탭
+    func confirmSendAction() {
+        Log.debug("ClipArt Alert 전송 버튼 탭 이벤트 발생")
+        throttle.confirmSendAction()
     }
 
     func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
