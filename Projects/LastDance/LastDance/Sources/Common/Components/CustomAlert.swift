@@ -14,7 +14,7 @@ struct CustomAlert: View {
     let message: String
     let buttonText: String
     let action: () -> Void
-    let cancelAction: (() -> Void)? // 취소 버튼 액션 (옵셔널)
+    let cancelAction: (() -> Void)?  // 취소 버튼 액션 (옵셔널)
 
     var body: some View {
         VStack(spacing: 0) {

@@ -113,7 +113,8 @@ final class ReactionInputViewModel: ObservableObject {
     // 번들에서 badword_filter.txt 로드
     private func loadBadwordsFromBundle() {
         if let url = Bundle.main.url(forResource: "badword_filter", withExtension: "txt"),
-           let data = try? Data(contentsOf: url) {
+            let data = try? Data(contentsOf: url)
+        {
             profanity.load(from: data)
             Log.info("badword_filter.txt 로드 완료 (\(profanity.words.count)개)")
         } else {
@@ -132,7 +133,7 @@ final class ReactionInputViewModel: ObservableObject {
         if forceDisableSendButton {
             forceDisableSendButton = false
         }
-        
+
         if newValue.count > limit {
             message = String(newValue.prefix(limit))
         } else {
