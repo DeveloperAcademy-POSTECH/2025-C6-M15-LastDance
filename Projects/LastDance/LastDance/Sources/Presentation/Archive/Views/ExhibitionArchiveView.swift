@@ -5,9 +5,9 @@
 //  Created by 광로 on 10/14/25.
 //
 
+import MasonryStack
 import SwiftData
 import SwiftUI
-import SwiftUIMasonry
 
 /// 관람객 플로우 - 내가 다녀온 전시 목록에서 전시 하나 선택했을때 보여주는 작품 목록 뷰
 struct ExhibitionArchiveView: View {
@@ -61,7 +61,7 @@ struct ExhibitionArchiveView: View {
                                 .frame(maxWidth: .infinity, minHeight: 400)
                         } else if viewModel.hasReactedArtworks() {
                             // 반응 목록 그리드
-                            VMasonry(columns: 2, spacing: 19) {
+                            MasonryVStack(columns: 2, spacing: 19) {
                                 ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
                                     if let reaction = viewModel.reactions.first(where: {
                                         $0.artworkId == artwork.id

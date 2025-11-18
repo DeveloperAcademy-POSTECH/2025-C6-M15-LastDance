@@ -64,7 +64,7 @@ extension ArtReactionView {
 
                 // 스크롤 안에 들어오는 탭바
                 TabBarView(selectedTab: $selectedTab)
-                    .opacity(viewModel.isTabBarFixed(for: scrollOffset) ? 0 : 1)
+                    .opacity(isTabBarFixed ? 0 : 1)
 
                 ZStack {
                     // 작품 정보 탭
