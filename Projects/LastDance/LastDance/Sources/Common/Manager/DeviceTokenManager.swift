@@ -22,15 +22,11 @@ final class DeviceTokenManager {
 
     /// 디바이스 토큰이 있고 visitorId/artistId가 있으면 서버로 전송
     func registerDeviceTokenIfNeeded() {
-        Log.debug("registerDeviceTokenIfNeeded 호출됨")
-
         // UserDefaults에서 저장된 디바이스 토큰 가져오기
         guard let token = UserDefaults.standard.string(forKey: "deviceToken") else {
             Log.debug("저장된 디바이스 토큰이 없음 → 전송 생략")
             return
         }
-
-        Log.debug("디바이스 토큰 확인: \(token)")
 
         let visitorId = UserDefaults.standard.integer(forKey: UserDefaultsKey.visitorId.rawValue)
         let artistId = UserDefaults.standard.integer(forKey: UserDefaultsKey.artistId.rawValue)
@@ -51,8 +47,6 @@ final class DeviceTokenManager {
             Log.debug("이미 업로드된 토큰 → 서버 전송 생략")
             return
         }
-
-        Log.debug("디바이스 토큰 서버 전송 시작")
         sendDeviceTokenToServer(visitorId: visitorId, artistId: artistId, token: token)
     }
 
@@ -63,14 +57,13 @@ final class DeviceTokenManager {
             artistId: artistId == 0 ? nil : artistId,
             deviceToken: token
         )
-
         notificationService.registerDeviceToken(dto: dto) { result in
             switch result {
             case .success:
-                Log.debug("✅ 서버에 디바이스 토큰 등록 성공")
+                Log.debug("서버에 디바이스 토큰 등록 성공")
                 UserDefaults.standard.set(true, forKey: "hasUploadedDeviceToken")
             case .failure(let error):
-                Log.error("❌ 서버에 디바이스 토큰 전송 실패: \(error.localizedDescription)")
+                Log.error("서버에 디바이스 토큰 전송 실패: \(error.localizedDescription)")
             }
         }
     }
