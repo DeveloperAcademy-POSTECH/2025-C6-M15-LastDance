@@ -63,6 +63,7 @@ struct CaptureConfirmView: View {
                                         .frame(width: 82, height: 82)
                                         .background(LDColor.color1, in: Circle())
                                 }
+                                .disabled(viewModel.isMatching)
 
                                 Button {
                                     router.popLast()
@@ -108,14 +109,14 @@ struct CaptureConfirmView: View {
                 threshold: 0.4
             )
         }
-        .alert("오류", isPresented: .constant(viewModel.errorMessage != nil)) {
-            Button("확인") {
-                viewModel.errorMessage = nil
-            }
-        } message: {
-            if let error = viewModel.errorMessage {
-                Text(error)
-            }
+        .customAlert(
+            isPresented: $viewModel.showFailAlert,
+            image: "warning",
+            title: "인식 실패",
+            message: "작품을 찾을 수 없습니다.",
+            buttonText: "다시 촬영하기"
+        ) {
+            router.popLast()
         }
         .toolbar {
             CustomNavigationBar(title: "") {

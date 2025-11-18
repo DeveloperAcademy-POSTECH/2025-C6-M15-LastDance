@@ -16,6 +16,7 @@ final class CaptureConfirmViewModel: ObservableObject {
     @Published var matchedArtworkImage: UIImage?
     @Published var uploadedImageUrl: String?
     @Published var errorMessage: String?
+    @Published var showFailAlert: Bool = false
 
     private let imageService: ImageAPIServiceProtocol
     private let artworkService: ArtworkAPIServiceProtocol
@@ -77,6 +78,8 @@ final class CaptureConfirmViewModel: ObservableObject {
         errorMessage = nil
         matchResponse = nil
         topCandidate = nil
+        matchedArtworkImage = nil
+        showFailAlert = false
 
         artworkService.matchArtwork(request: request) { [weak self] result in
             guard let self = self else { return }
@@ -101,6 +104,8 @@ final class CaptureConfirmViewModel: ObservableObject {
                     guard let best = filtered.sorted(by: { $0.similarity > $1.similarity }).first
                     else {
                         self.errorMessage = "일치하는 작품을 찾지 못했어요."
+                        self.isMatching = false
+                        self.showFailAlert = true
                         return
                     }
 
@@ -121,6 +126,8 @@ final class CaptureConfirmViewModel: ObservableObject {
                     }
 
                 case .failure(let error):
+                    self.isMatching = false
+                    self.showFailAlert = true
                     self.errorMessage = "작품 매칭 실패: \(error.localizedDescription)"
                     Log.error("작품 매칭 실패: \(error)")
                 }
