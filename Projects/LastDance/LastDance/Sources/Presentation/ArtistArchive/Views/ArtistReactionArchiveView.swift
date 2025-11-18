@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import SwiftUIMasonry
 
 struct ArtistReactionArchiveView: View {
     let exhibitionId: Int
@@ -48,34 +49,41 @@ private struct ArtistArtworkScrollView: View {
                     .frame(maxWidth: .infinity, minHeight: 400)
             } else {
                 // 작품 목록 그리드
-                LazyVGrid(
-                    columns: [
-                        GridItem(.fixed(155), spacing: 27),
-                        GridItem(.fixed(155), spacing: 27),
-                    ],
-                    spacing: 28
-                ) {
+                VMasonry(columns: 2, spacing: 19) {
                     ForEach(viewModel.artworks) { displayItem in
-                        VStack(alignment: .leading, spacing: 12) {
-                            ArtworkThumbnailView(
-                                thumbnailURL: displayItem.artwork.thumbnailURL,
-                                width: 155,
-                                height: 219,
-                                cornerRadius: 0
-                            )
+                        VStack(alignment: .leading, spacing: 4) {
+                            // 작품 카드 이미지
+                            ZStack(alignment: .bottomLeading) {
+                                CachedImage(displayItem.artwork.thumbnailURL)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: .infinity)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
+
+                            Spacer().frame(height: 4)
+
+                            // 작품 제목
 
                             Text(displayItem.artwork.title)
-                                .font(LDFont.heading06)
+                                .font(LDFont.heading04)
                                 .foregroundColor(.black)
-                                .frame(width: 155, alignment: .leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            // 작가 이름
+                            if let artist = viewModel.artist(for: displayItem.artwork) {
+                                Text(artist.name)
+                                    .font(LDFont.regular02)
+                                    .foregroundColor(LDColor.color2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                         .onTapGesture {
                             router.push(.response(artworkId: displayItem.artwork.id))
                         }
                     }
                 }
-                .padding(.horizontal, 32)
-                .padding(.top, 30)
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
                 .padding(.bottom, 40)
             }
         }

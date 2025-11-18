@@ -24,6 +24,15 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
     private let reactionAPIService: ReactionAPIServiceProtocol
     private let artworkAPIService: ArtworkAPIServiceProtocol  // Added dependency
 
+    /// 아티스트 ID를 가져와 artist name을 반환하도록 하는 함수
+    func artist(for artwork: Artwork) -> Artist? {
+        guard let artistId = artwork.artistId else { return nil }
+        let descriptor = FetchDescriptor<Artist>(
+            predicate: #Predicate { $0.id == artistId }
+        )
+        return try? swiftDataManager.container?.mainContext.fetch(descriptor).first
+    }
+
     init(
         exhibitionId: Int,
         reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService(),

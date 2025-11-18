@@ -64,6 +64,13 @@ enum ArchiveLayoutConstants {
     static let rotationAngles: [Double] = [-4, 3, 3, -4]
 }
 
+// MARK: ExhibitionCardConstants
+/// 전시 카드 관련 상수
+enum ExhibitionCardConstants {
+    static let cardWidth: CGFloat = 365
+    static let cardHeight: CGFloat = 468
+}
+
 // MARK: HTTPHeaderConstants
 /// HTTP 헤더 상수
 enum HTTPHeaderConstants {

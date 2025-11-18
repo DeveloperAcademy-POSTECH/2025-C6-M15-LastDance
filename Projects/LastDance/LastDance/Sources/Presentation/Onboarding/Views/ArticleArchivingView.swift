@@ -13,44 +13,13 @@ struct ArtistExhibitionCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .bottomLeading) {
-                if let coverImageURLString = displayItem.exhibition
-                    .coverImageName,
-                    let coverImageURL = URL(string: coverImageURLString)
-                {
-                    AsyncImage(url: coverImageURL) { phase in
-                        switch phase {
-                        case .empty:
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.gray.opacity(0.2))
-                                .frame(width: 155, height: 219)
-                                .overlay(ProgressView())
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 155, height: 219)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        case .failure:
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.gray.opacity(0.2))
-                                .frame(width: 155, height: 219)
-                                .overlay(
-                                    Image(systemName: "photo")
-                                        .foregroundColor(.gray)
-                                )
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
-                } else {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(width: 155, height: 219)
-                        .overlay(
-                            Text("이미지 없음")
-                                .foregroundColor(.gray)
-                        )
-                }
+                CachedImage(
+                    displayItem.exhibition.coverImageName,
+                    targetSize: CGSize(width: 155, height: 219)  // targetSize는 이미지 로딩 최적화를 위함
+                )
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 155, height: 219)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 Circle()
                     .fill(Color.black)
