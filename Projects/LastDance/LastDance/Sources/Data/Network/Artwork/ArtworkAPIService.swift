@@ -21,7 +21,12 @@ protocol ArtworkAPIServiceProtocol {
     )
     func makeArtwork(
         dto: MakeArtworkRequestDto,
+        thumbnailData: Data,
         completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
+    )
+    func matchArtwork(
+        request: ArtworkMatchRequestDto,
+        completion: @escaping (Result<ArtworkMatchResponseDto, Error>) -> Void
     )
 }
 
@@ -133,11 +138,12 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     /// 작품 생성하기 함수
     func makeArtwork(
         dto: MakeArtworkRequestDto,
+        thumbnailData: Data,
         completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
     ) {
         Log.debug("작품 생성 - title: \(dto.title), artistId: \(dto.artist_id)")
 
-        provider.request(.makeArtwork(dto: dto)) { result in
+        provider.request(.makeArtwork(dto: dto, thumbnailData: thumbnailData)) { result in
             switch result {
             case .success(let response):
                 do {
@@ -145,7 +151,9 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                         Log.debug("작품 생성 응답: \(jsonString)")
                     }
                     let artwork = try JSONDecoder().decode(
-                        ArtworkDetailResponseDto.self, from: response.data)
+                        ArtworkDetailResponseDto.self,
+                        from: response.data
+                    )
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -170,6 +178,39 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 생성 API 요청 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func matchArtwork(
+        request: ArtworkMatchRequestDto,
+        completion: @escaping (Result<ArtworkMatchResponseDto, Error>) -> Void
+    ) {
+        provider.request(.matchArtwork(dto: request)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("작품 매칭 응답: \(jsonString)")
+                    }
+                    let dto = try JSONDecoder().decode(
+                        ArtworkMatchResponseDto.self,
+                        from: response.data
+                    )
+                    completion(.success(dto))
+                } catch {
+                    Log.error("작품 매칭 JSON 디코딩 실패: \(error)")
+                    completion(.failure(NetworkError.decodingFailed))
+                }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("작품 매칭 API 요청 실패: \(error.localizedDescription)")
                 completion(.failure(error))
             }
         }
