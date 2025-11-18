@@ -45,6 +45,7 @@ final class ReactionInputViewModel: ObservableObject {
     private let artistAPIService = ArtistAPIService()
     private let categoryService = TagCategoryAPIService()
     private let tagAPIService = TagAPIService()
+    private let notificationService = NotificationAPIService()
 
     init() {
         loadBadwordsFromBundle()
@@ -193,7 +194,7 @@ final class ReactionInputViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 switch result {
-                case .success:
+                case .success(let response):
                     self.message = ""
                     self.selectedCategories.removeAll()
                     self.selectedCategoryIds.removeAll()
@@ -205,6 +206,9 @@ final class ReactionInputViewModel: ObservableObject {
                     if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
+
+                    // 작가에게 푸시알림 전송
+                    self.sendPushNotificationToArtist(reactionResponse: response.data)
 
                     completion(true)
 
@@ -477,6 +481,40 @@ extension ReactionInputViewModel {
         } else if selectedTagIds.count < tagLimit {
             selectedTagIds.insert(tag.id)
             selectedTagsName.insert(tag.name)
+        }
+    }
+}
+
+// MARK: - Push Notification
+
+extension ReactionInputViewModel {
+    /// 작가에게 푸시알림 전송
+    private func sendPushNotificationToArtist(reactionResponse: ReactionDetailResponseDto) {
+        let artistId = reactionResponse.artwork.artist_id
+        let visitorId = UserDefaults.standard.integer(forKey: UserDefaultsKey.visitorId.rawValue)
+
+        Log.debug("작가(\(artistId))에게 푸시알림 전송 시작 - visitorId: \(visitorId)")
+
+        let pushDto = SendNotificationRequestDto(
+            visitor_id: visitorId != 0 ? visitorId : nil,
+            artist_id: artistId,
+            device_token: nil,
+            title: "내 작품에 새로운 메시지가 있어요",
+            body: "어떤 메시지인지 확인해보세요!",
+            data: nil,
+            badge: 1,
+            use_sandbox: true  // TODO: 배포 시 false로 변경
+        )
+
+        notificationService.sendNotification(dto: pushDto) { result in
+            switch result {
+            case .success(let response):
+                Log.debug(
+                    "푸시알림 전송 성공 - success: \(response.success_count), failed: \(response.failed_count)"
+                )
+            case .failure(let error):
+                Log.error("푸시알림 전송 실패: \(error.localizedDescription)")
+            }
         }
     }
 }

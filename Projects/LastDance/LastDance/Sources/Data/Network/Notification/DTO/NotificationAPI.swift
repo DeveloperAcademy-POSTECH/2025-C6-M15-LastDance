@@ -9,6 +9,7 @@ import Moya
 
 enum NotificationAPI {
     case registerDeviceToken(dto: RegisterDeviceTokenRequestDto)
+    case sendNotification(dto: SendNotificationRequestDto)
 }
 
 extension NotificationAPI: BaseTargetType {
@@ -16,12 +17,14 @@ extension NotificationAPI: BaseTargetType {
         switch self {
         case .registerDeviceToken:
             return "\(APIVersion.version1)/devices/register-token"
+        case .sendNotification:
+            return "\(APIVersion.version1)/devices/send-notification"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .registerDeviceToken:
+        case .registerDeviceToken, .sendNotification:
             return .post
         }
     }
@@ -33,6 +36,8 @@ extension NotificationAPI: BaseTargetType {
     var bodyParameters: Codable? {
         switch self {
         case .registerDeviceToken(let dto):
+            return dto
+        case .sendNotification(let dto):
             return dto
         }
     }

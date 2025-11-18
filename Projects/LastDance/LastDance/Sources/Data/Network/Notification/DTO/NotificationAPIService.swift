@@ -15,6 +15,11 @@ protocol NotificationAPIServiceProtocol {
         dto: RegisterDeviceTokenRequestDto,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+
+    func sendNotification(
+        dto: SendNotificationRequestDto,
+        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
+    )
 }
 
 // MARK: NotificationAPIService
@@ -43,10 +48,10 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("서버 응답: \(jsonString)")
                     }
-                    Log.debug("✅ 디바이스 토큰 등록 성공")
+                    Log.debug("디바이스 토큰 등록 성공")
                     completion(.success(()))
                 } catch {
-                    Log.error("❌ 디바이스 토큰 등록 실패: status code \(response.statusCode)")
+                    Log.error("디바이스 토큰 등록 실패: status code \(response.statusCode)")
                     completion(.failure(error))
                 }
             case .failure(let error):
@@ -61,4 +66,41 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
             }
         }
     }
+
+    func sendNotification(
+        dto: SendNotificationRequestDto,
+        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
+    ) {
+        provider.request(.sendNotification(dto: dto)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("sendNotification 응답: \(jsonString)")
+                    }
+                    let responseDto = try JSONDecoder().decode(
+                        SendNotificationResponseDto.self,
+                        from: response.data
+                    )
+                    Log.debug(
+                        "푸시알림 전송 성공 - success: \(responseDto.success_count), failed: \(responseDto.failed_count)"
+                    )
+                    completion(.success(responseDto))
+                } catch {
+                    Log.error("디코딩 실패: \(error)")
+                    completion(.failure(NetworkError.decodingFailed))
+                }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("API 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
 }

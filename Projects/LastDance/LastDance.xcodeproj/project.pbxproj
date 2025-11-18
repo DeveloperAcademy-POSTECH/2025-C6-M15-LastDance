@@ -107,6 +107,7 @@
 				Sources/Data/Network/Artwork/ArtworkAPI.swift,
 				Sources/Data/Network/Artwork/DTO/Request/MakeArtworkRequestDto.swift,
 				Sources/Data/Network/Base/BaseTargetType.swift,
+				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/ArtworkDetailResponseDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/GetReactionResponseDto.swift,
