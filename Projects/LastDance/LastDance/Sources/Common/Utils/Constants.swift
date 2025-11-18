@@ -50,12 +50,12 @@ enum CameraConstants {
 // MARK: ArchiveImageConstants
 /// 아카이브 이미지 크기 관련 상수
 enum ArchiveImageConstants {
-    static let minWidth: CGFloat = 300
-    static let maxWidth: CGFloat = 345
-    static let minHeight: CGFloat = 400
-    static let maxHeight: CGFloat = 468
-    static let animationThreshold: CGFloat = 100
-    static let tabBarFixThreshold: CGFloat = 492
+    static let minWidth: CGFloat = 150
+    static let maxWidth: CGFloat = 281
+    static let minHeight: CGFloat = 100
+    static let maxHeight: CGFloat = 388
+    static let animationThreshold: CGFloat = 120
+    static let tabBarFixThreshold: CGFloat = 100
 }
 
 // MARK: ArchiveLayoutConstants
