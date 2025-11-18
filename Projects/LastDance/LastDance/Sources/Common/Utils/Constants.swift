@@ -85,3 +85,10 @@ enum NetworkErrorMessages {
     static let networkFailure = "네트워크 연결을 확인해주세요."
     static let serverError = "서버 에러가 발생했습니다."
 }
+
+// MARK: ArtistCodeConstants
+/// 작가 코드 관련 상수
+enum ArtistCodeConstants {
+    static let codeLength: Int = 6
+    static let openChatURL: String = "https://open.kakao.com/o/sKFJVPYh"
+}

@@ -2,7 +2,7 @@
 //  IdentitySelectionViewModel.swift
 //  LastDance
 //
-//  Created by donghee on 10/13/25.
+//  Created by donghee, 신얀 on 10/13/25.
 //
 
 import Moya
@@ -11,14 +11,30 @@ import SwiftUI
 @MainActor
 final class IdentitySelectionViewModel: ObservableObject {
     @Published var selectedType: UserType?
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+    @Published var artistCodes: [String] = Array(
+        repeating: "", count: ArtistCodeConstants.codeLength)
+    @Published var showArtistCodeError = false
 
     private let dataManager = SwiftDataManager.shared
     private let visitorService = VisitorAPIService()
     private let venueService = VenueAPIService()
+    private let artistService = ArtistAPIService()
 
     /// 사용자 타입 선택
     func selectUserType(_ type: UserType) {
         selectedType = type
+    }
+
+    /// 작가 인증 여부 확인
+    func isArtistAuthenticated() -> Bool {
+        return UserDefaults.standard.object(forKey: UserDefaultsKey.artistId.rawValue) != nil
+    }
+
+    /// 작가 코드 입력 완료 여부
+    var isCodeComplete: Bool {
+        artistCodes.contains { !$0.isEmpty }
     }
 
     /// 선택 확정 및 저장
@@ -102,6 +118,60 @@ final class IdentitySelectionViewModel: ObservableObject {
         let newUUID = UUID().uuidString
         UserDefaults.standard.set(newUUID, forKey: UserDefaultsKey.visitorUUID.rawValue)
         return newUUID
+    }
+
+    /// 작가 코드 인증
+    func verifyArtistCode(_ code: String, completion: @escaping (Bool) -> Void) {
+        isLoading = true
+        errorMessage = nil
+        showArtistCodeError = false
+
+        let request = ArtistCodeRequestDto(login_code: code)
+
+        artistService.artistLogin(dto: request) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.isLoading = false
+
+                switch result {
+                case .success(let dto):
+                    // 작가 정보 저장
+                    UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
+                    UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
+
+                    Log.debug("Artist login successful. id=\(dto.id), uuid=\(dto.uuid)")
+
+                    let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
+                    self.dataManager.insert(artistCode)
+
+                    completion(true)
+
+                case .failure(let error):
+                    if let moyaError = error as? MoyaError {
+                        // 400대 에러 처리
+                        if let statusCode = moyaError.response?.statusCode,
+                            (400..<500).contains(statusCode)
+                        {
+                            self.showArtistCodeError = true
+                        }
+
+                        if let data = moyaError.response?.data,
+                            let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                        {
+                            let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                            self.errorMessage = messages
+                            Log.warning("Artist login validation error: \(messages)")
+                        } else {
+                            self.errorMessage = "코드 인증에 실패했습니다."
+                        }
+                    } else {
+                        self.errorMessage = "코드 인증에 실패했습니다."
+                    }
+                    Log.error("Artist login failed: \(error)")
+                    completion(false)
+                }
+            }
+        }
     }
 
     /// 서버에 있는 모든 전시장 정보 로드 (확인용)

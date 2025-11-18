@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
     @StateObject private var reactionInputViewModel = ReactionInputViewModel()
+    @StateObject private var identitySelectionViewModel = IdentitySelectionViewModel()
     @State private var userType: UserType?
 
     init() {
@@ -26,7 +27,12 @@ struct RootView: View {
                 if let userType = userType {
                     switch userType {
                     case .artist:
-                        ArticleArchivingView()
+                        // 작가 인증 여부 확인
+                        if identitySelectionViewModel.isArtistAuthenticated() {
+                            ArticleArchivingView()
+                        } else {
+                            ArtistCodeInputView()
+                        }
                     case .viewer:
                         AudienceArchivingView()
                     }
@@ -38,6 +44,9 @@ struct RootView: View {
                 switch route {
                 case .identitySelection:
                     IdentitySelectionView()
+                case .artistCodeInput:
+                    ArtistCodeInputView()
+                        .navigationBarBackButtonHidden(true)
                 case .audienceArchiving:
                     AudienceArchivingView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -97,7 +106,7 @@ struct RootView: View {
                 case .artistReactionArchiveView(let exhibitionId):
                     ArtistReactionArchiveView(exhibitionId: exhibitionId)
                         .navigationBarBackButtonHidden(true)
-                case .exhibitionArchive(exhibitionId: let exhibitionId):
+                case .exhibitionArchive(let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .background(LDColor.color6)
                         .navigationBarTitleDisplayMode(.inline)
@@ -116,5 +125,6 @@ struct RootView: View {
         }
         .environmentObject(router)
         .environmentObject(reactionInputViewModel)
+        .environmentObject(identitySelectionViewModel)
     }
 }
