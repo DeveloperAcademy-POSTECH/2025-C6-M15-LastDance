@@ -121,7 +121,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
 
     /// 작품 반응을 저장하는 함수
     func saveReaction(
-        artworkId: Int, visitorId: Int, visitId: Int, imageUrl: String?, tagIds: [Int],
+        artworkId: Int, visitorId: Int, visitId: Int, imageData: Data, tagIds: [Int],
         completion: @escaping (Bool) -> Void
     ) {
         guard !tagIds.isEmpty else {
@@ -134,7 +134,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
             visitorId: visitorId,
             visitId: visitId,
             comment: message.isEmpty ? nil : message,
-            imageUrl: imageUrl,
+            imageData: imageData,
             tagIds: tagIds
         )
 
@@ -170,8 +170,17 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     func performSendReaction(
         artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
     ) {
-        // UserDefaults에서 업로드된 이미지 URL 가져오기
-        let imageUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.uploadedImageUrl.key)
+        // 사진(UIImage) → Data 변환
+        guard
+            let image = capturedImage,
+            let imageData = image.jpegData(compressionQuality: 0.8)
+        else {
+            Log.warning("capturedImage가 없거나 Data 변환에 실패했습니다.")
+            alertType = .error
+            shouldShowConfirmAlert = true
+            completion(false, nil)
+            return
+        }
 
         // UserDefaults에서 저장된 visitorUUID 가져오기
         guard
@@ -225,7 +234,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
             artworkId: artworkId,
             visitorId: visitorId,
             visitId: visitId,
-            imageUrl: imageUrl,
+            imageData: imageData,
             tagIds: tagIds
         ) { [weak self] success in
             guard let self = self else { return }

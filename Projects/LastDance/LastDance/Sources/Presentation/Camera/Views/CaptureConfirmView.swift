@@ -9,14 +9,14 @@ import SwiftUI
 
 struct CaptureConfirmView: View {
     @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = CaptureConfirmViewModel()
+
     let imageData: Data
     let exhibitionId: Int
 
     private var image: UIImage? {
         UIImage(data: imageData)
     }
-
-    @StateObject private var viewModel = CaptureConfirmViewModel()
 
     var body: some View {
         // 버튼 높이를 계산하기 위한 GeometryReader
@@ -33,17 +33,28 @@ struct CaptureConfirmView: View {
                     // 화면 비율의 유연성을 위한 ScrollView 추가
                     ScrollView(.vertical, showsIndicators: true) {
                         VStack(spacing: 0) {
+
+                            Spacer(minLength: 45)
+
                             // 이미지 영역
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
+                            matchedImageView
                                 .frame(width: geo.size.width)
                                 .clipped()
-                                .padding(.top, 45)
+
+                            Spacer(minLength: 34)
 
                             ZStack {
                                 Button {
                                     viewModel.uploadImage(image)
+
+                                    let displayImage = viewModel.matchedArtworkImage ?? image
+
+                                    // TODO: - 연결 플로우 변경
+                                    router.push(
+                                        .inputArtworkInfo(
+                                            image: displayImage, exhibitionId: exhibitionId,
+                                            artistId: nil)
+                                    )
                                 } label: {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 24, weight: .bold))
@@ -65,8 +76,6 @@ struct CaptureConfirmView: View {
                                 }
                                 .offset(x: 100)
                             }
-                            .padding(.top, 24)
-                            .padding(.bottom, 24)
 
                             Color.clear.frame(height: safeBottom)
                         }
@@ -78,15 +87,28 @@ struct CaptureConfirmView: View {
                     Text("이미지를 불러올 수 없습니다.")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+
+                // 매칭 중일때 보여줄 내용
+                // TODO: - 디자인팀 의견 나오면 반영
+                if viewModel.isMatching {
+                    ProgressView()
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.systemBackground))
+                        )
+                }
             }
         }
-        .onChange(of: viewModel.uploadedImageUrl) { _, newUrl in
-            if newUrl != nil, let image = image {
-                router.push(
-                    .inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
-            }
+        .onAppear {
+            // 화면 진입 시점에 바로 서버 이미지 매칭 시작
+            viewModel.matchArtwork(
+                imageData: imageData,
+                exhibitionIdFilter: exhibitionId,
+                threshold: 0.4
+            )
         }
-        .alert("업로드 실패", isPresented: .constant(viewModel.errorMessage != nil)) {
+        .alert("오류", isPresented: .constant(viewModel.errorMessage != nil)) {
             Button("확인") {
                 viewModel.errorMessage = nil
             }
@@ -99,6 +121,26 @@ struct CaptureConfirmView: View {
             CustomNavigationBar(title: "") {
                 router.popLast()
             }
+        }
+    }
+
+    @ViewBuilder
+    private var matchedImageView: some View {
+        if let artworkImage = viewModel.matchedArtworkImage {
+            Image(uiImage: artworkImage)
+                .resizable()
+                .scaledToFit()
+        } else if let candidate = viewModel.topCandidate,
+            let urlString = candidate.thumbnail_url
+        {
+            CachedImage(urlString)
+                .scaledToFit()
+        } else if let image = image {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
+        } else {
+            Color.black
         }
     }
 }
