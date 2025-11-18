@@ -148,8 +148,8 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                     id: artworkInfo.id,
                                     exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
-                                    descriptionText: artworkInfo.description,
-                                    artistId: artworkInfo.artist_id,
+                                    descriptionText: nil,
+                                    artistId: nil,
                                     thumbnailURL: artworkInfo.thumbnail_url,
                                     exhibition: exhibition
                                 )
