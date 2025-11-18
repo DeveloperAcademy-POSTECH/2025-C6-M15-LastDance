@@ -25,6 +25,12 @@ struct ArtReactionView: View {
         )
     }
 
+    // MARK: - Computed Properties
+
+    private var isTabBarFixed: Bool {
+        scrollOffset > ArchiveImageConstants.tabBarFixThreshold
+    }
+
     var body: some View {
         ZStack(alignment: .top) {
             // 스크롤 가능한 콘텐츠
@@ -33,7 +39,7 @@ struct ArtReactionView: View {
             // 최상단 고정 탭바
             TabBarView(selectedTab: $selectedTab)
                 .background(Color.white)
-                .opacity(viewModel.isTabBarFixed(for: scrollOffset) ? 1 : 0)
+                .opacity(isTabBarFixed ? 1 : 0)
         }
         .background(Color.white)
         .toolbar {

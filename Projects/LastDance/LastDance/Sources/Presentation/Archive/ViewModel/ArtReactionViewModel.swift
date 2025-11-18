@@ -24,12 +24,6 @@ final class ArtReactionViewModel: ObservableObject {
         self.artworkId = artworkId
     }
 
-    // MARK: - Computed Properties
-
-    func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
-        return scrollOffset > ArchiveImageConstants.tabBarFixThreshold
-    }
-
     // MARK: - Public Methods
 
     func loadReactions() {
