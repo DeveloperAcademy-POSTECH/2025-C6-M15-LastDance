@@ -58,18 +58,6 @@ private struct ArtistArtworkScrollView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxWidth: .infinity)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
-
-                                // 반응 카운터 배지
-                                Circle()
-                                    .fill(Color.black)
-                                    .frame(width: 28, height: 28)
-                                    .overlay(
-                                        Text("\(displayItem.reactionCount)")
-                                            .font(LDFont.regular03)
-                                            .foregroundColor(LDColor.color6)
-                                    )
-                                    .padding(.leading, 12)
-                                    .padding(.bottom, 12)
                             }
 
                             Spacer().frame(height: 4)

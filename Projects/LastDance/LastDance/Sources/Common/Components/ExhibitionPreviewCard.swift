@@ -42,18 +42,27 @@ struct ExhibitionPreviewImage: View {
     let imageName: String?
 
     var body: some View {
-        CachedImage(imageName, targetSize: CGSize(width: 365, height: 468))
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 365, height: 468)
-            .clipped()
-            .clipShape(
-                UnevenRoundedRectangle(
-                    topLeadingRadius: 12,
-                    bottomLeadingRadius: 0,
-                    bottomTrailingRadius: 0,
-                    topTrailingRadius: 12
-                )
+        CachedImage(
+            imageName,
+            targetSize: CGSize(
+                width: ExhibitionCardConstants.cardWidth,
+                height: ExhibitionCardConstants.cardHeight
             )
+        )
+        .aspectRatio(contentMode: .fill)
+        .frame(
+            width: ExhibitionCardConstants.cardWidth,
+            height: ExhibitionCardConstants.cardHeight
+        )
+        .clipped()
+        .clipShape(
+            UnevenRoundedRectangle(
+                topLeadingRadius: 12,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 12
+            )
+        )
     }
 }
 
