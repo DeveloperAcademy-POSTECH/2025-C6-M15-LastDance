@@ -72,6 +72,9 @@ struct ArtworkDetailView: View {
             }
         }
         .environmentObject(viewModel)
+        .onAppear {
+            viewModel.capturedImage = capturedImage
+        }
         .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
             if shouldTrigger {
                 viewModel.performSendReaction(artworkId: artworkId, exhibitionId: exhibitionId) {

@@ -20,185 +20,229 @@ struct ArtReactionView: View {
     init(artwork: Artwork, artist: Artist?) {
         self.artwork = artwork
         self.artist = artist
-        _viewModel = StateObject(wrappedValue: ArtReactionViewModel(artworkId: artwork.id))
+        _viewModel = StateObject(
+            wrappedValue: ArtReactionViewModel(artworkId: artwork.id)
+        )
+    }
+
+    // MARK: - Computed Properties
+
+    private var isTabBarFixed: Bool {
+        scrollOffset > ArchiveImageConstants.tabBarFixThreshold
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            // 고정된 탭 바
-            if viewModel.isTabBarFixed(for: scrollOffset) {
-                TabBarView(selectedTab: $selectedTab)
-                    .background(Color.white)
-                    .padding(.top, 0)
-            }
+        ZStack(alignment: .top) {
             // 스크롤 가능한 콘텐츠
-            ScrollViewObserver(scrollOffset: $scrollOffset) {
-                VStack(spacing: 0) {
-                    // 작품 이미지
-                    if let imageURLString = artwork.thumbnailURL,
-                        let imageURL = URL(string: imageURLString)
-                    {
-                        AsyncImage(url: imageURL) { image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(
-                            width: viewModel.imageWidth(for: scrollOffset),
-                            height: viewModel.imageHeight(for: scrollOffset)
-                        )
-                        .clipped()
-                        .cornerRadius(24)
-                    } else {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(
-                                width: viewModel.imageWidth(for: scrollOffset),
-                                height: viewModel.imageHeight(for: scrollOffset)
-                            )
-                            .overlay(Text("이미지 없음"))
-                            .cornerRadius(24)
-                    }
-                    // 탭 바
-                    if !viewModel.isTabBarFixed(for: scrollOffset) {
-                        TabBarView(selectedTab: $selectedTab)
-                            .padding(.top, 24)
-                    }
-                    // 탭 콘텐츠
-                    ZStack {
-                        // 작품 정보 탭
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text(artwork.title)
-                                .font(Font.custom("Pretendard", size: 20).weight(.semibold))
-                                .foregroundColor(LDColor.color1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+            scrollContent
 
-                            if let artistName = artist?.name {
-                                HStack {
-                                    Text(artistName)
-                                        .font(Font.custom("Pretendard", size: 16).weight(.medium))
-                                        .foregroundColor(LDColor.color6)
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 8)
-                                        .background(LDColor.color1)
-                                        .cornerRadius(20)
+            // 최상단 고정 탭바
+            TabBarView(selectedTab: $selectedTab)
+                .background(Color.white)
+                .opacity(isTabBarFixed ? 1 : 0)
+        }
+        .background(Color.white)
+        .toolbar {
+            CustomNavigationBar(title: "") {
+                router.popLast()
+            }
+        }
+        .onAppear {
+            viewModel.loadReactions()
+        }
+    }
+}
 
-                                    Spacer()
-                                }
-                            }
-                            Rectangle()
-                                .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
-                                .frame(height: 0.5)
-                                .foregroundColor(LDColor.color3)
+// MARK: - Scroll Content
+extension ArtReactionView {
+    fileprivate var scrollContent: some View {
+        ScrollViewObserver(scrollOffset: $scrollOffset) {
+            VStack(spacing: 0) {
+                // 작품 이미지
+                headerImage
+                    .padding(.vertical, 24)
 
-                            if let description = artwork.descriptionText, !description.isEmpty {
-                                Text("작품 설명")
-                                    .font(LDFont.heading04)
-                                    .foregroundColor(LDColor.color1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                // 스크롤 안에 들어오는 탭바
+                TabBarView(selectedTab: $selectedTab)
+                    .opacity(viewModel.isTabBarFixed(for: scrollOffset) ? 0 : 1)
 
-                                Text(description)
-                                    .font(LDFont.medium04)
-                                    .foregroundColor(LDColor.color2)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .lineSpacing(4)
-                            } else {
-                                Text("작품 설명이 없습니다.")
-                                    .font(LDFont.medium04)
-                                    .foregroundColor(LDColor.color2)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                        }
-                        .padding(.horizontal, 24)
-                        .padding(.top, 24)
-                        .padding(.bottom, 44)
+                ZStack {
+                    // 작품 정보 탭
+                    artworkTabSection
                         .opacity(selectedTab == .artwork ? 1 : 0)
 
-                        // 감상 탭
-                        Group {
-                            if viewModel.isLoading {
-                                ProgressView()
-                                    .scaleEffect(1.2)
-                                    .frame(maxWidth: .infinity, minHeight: 200)
-                                    .padding(.top, 24)
-                            } else if viewModel.reactions.isEmpty {
-                                VStack(spacing: 16) {
-                                    Text("아직 등록된 감상이 없습니다")
-                                        .font(Font.custom("Pretendard", size: 16))
-                                        .foregroundColor(LDColor.color2)
+                    // 감상 탭
+                    reactionTabSection
+                        .opacity(selectedTab == .reaction ? 1 : 0)
+                }
+            }
+        }
+    }
 
-                                    Spacer(minLength: 400)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 20)
-                                .padding(.top, 24)
-                            } else {
-                                VStack(alignment: .leading, spacing: 24) {
-                                    ForEach(viewModel.reactions, id: \.id) { reaction in
-                                        VStack(alignment: .leading, spacing: 16) {
-                                            // 감정 태그 섹션
-                                            if !reaction.tags.isEmpty {
-                                                VStack(alignment: .leading, spacing: 10) {
-                                                    Text("감정 태그")
-                                                        .font(LDFont.heading04)
-                                                        .foregroundColor(LDColor.color1)
+    fileprivate var headerImage: some View {
+        // 스크롤에 따라 이미지 크기 조정
+        let imageHeight = max(
+            ArchiveImageConstants.minHeight,
+            ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+        )
+        let imageWidth = max(
+            ArchiveImageConstants.minWidth,
+            ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+        )
 
-                                                    ScrollView(.horizontal, showsIndicators: false)
-                                                    {
-                                                        HStack {
-                                                            ForEach(reaction.tags, id: \.self) {
-                                                                tagInfo in
-                                                                ReactionTag(
-                                                                    text: tagInfo.name,
-                                                                    color: Color(
-                                                                        hex: tagInfo.colorHex)
-                                                                )
-                                                                .applyShadow(LDShadow.shadow1)
-                                                                .padding(.vertical, 10)
-                                                                .padding(.horizontal, 2)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            // 감상평 섹션
-                                            if let comment = reaction.comment, !comment.isEmpty {
-                                                VStack(alignment: .leading, spacing: 12) {
-                                                    Text("감상평")
-                                                        .font(LDFont.heading04)
-                                                        .foregroundColor(LDColor.color1)
-                                                    Text(comment)
-                                                        .font(LDFont.medium04)
-                                                        .foregroundColor(LDColor.color2)
-                                                        .lineSpacing(4)
-                                                        .frame(
-                                                            maxWidth: .infinity, alignment: .leading
-                                                        )
-                                                }
+        return Group {
+            if let imageURLString = artwork.thumbnailURL {
+                CachedImage(
+                    imageURLString,
+                    targetSize: .init(
+                        width: ArchiveImageConstants.maxWidth,
+                        height: ArchiveImageConstants.maxHeight
+                    )
+                )
+                .aspectRatio(contentMode: .fill)
+                .frame(width: imageWidth, height: imageHeight)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(LDColor.color5, lineWidth: 10)
+                )
+                .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.15))
+                    .frame(width: imageWidth, height: imageHeight)
+                    .cornerRadius(24)
+                    .overlay(Text("이미지 없음").foregroundColor(.gray))
+            }
+        }
+    }
+}
+
+// MARK: - 작품 탭 뷰
+extension ArtReactionView {
+    fileprivate var artworkTabSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(artwork.title)
+                .font(LDFont.heading03)
+                .foregroundColor(LDColor.color1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let artistName = artist?.name {
+                HStack {
+                    Text(artistName)
+                        .font(LDFont.medium04)
+                        .foregroundColor(LDColor.color6)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(LDColor.color1)
+                        .cornerRadius(20)
+                    Spacer()
+                }
+            }
+
+            Rectangle()
+                .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
+                .frame(height: 0.5)
+                .foregroundColor(LDColor.color3)
+
+            if let description = artwork.descriptionText, !description.isEmpty {
+                Text("작품 설명")
+                    .font(LDFont.heading04)
+                    .foregroundColor(LDColor.color1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text(description)
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineSpacing(4)
+            } else {
+                Text("작품 설명이 없습니다.")
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Spacer(minLength: ArchiveImageConstants.animationThreshold)
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 24)
+        .padding(.bottom, 44)
+    }
+}
+
+// MARK: - 감상 탭
+extension ArtReactionView {
+    fileprivate var reactionTabSection: some View {
+        Group {
+            if viewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.2)
+                    .frame(maxWidth: .infinity, minHeight: 200)
+                    .padding(.top, 24)
+
+            } else if viewModel.reactions.isEmpty {
+                VStack(spacing: 16) {
+                    Text("아직 등록된 감상이 없습니다")
+                        .font(Font.custom("Pretendard", size: 16))
+                        .foregroundColor(LDColor.color2)
+
+                    Spacer(minLength: 400)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+
+            } else {
+                VStack(alignment: .leading, spacing: 24) {
+                    ForEach(viewModel.reactions, id: \.id) { reaction in
+                        VStack(alignment: .leading, spacing: 16) {
+                            // 감정 태그 섹션
+                            if !reaction.tags.isEmpty {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text("감정 태그")
+                                        .font(LDFont.heading04)
+                                        .foregroundColor(LDColor.color1)
+
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(reaction.tags, id: \.self) { tagInfo in
+                                                ReactionTag(
+                                                    text: tagInfo.name,
+                                                    color: Color(hex: tagInfo.colorHex)
+                                                )
+                                                .applyShadow(LDShadow.shadow1)
+                                                .padding(.vertical, 10)
+                                                .padding(.horizontal, 2)
                                             }
                                         }
                                     }
                                 }
-                                .padding(.horizontal, 20)
-                                .padding(.top, 24)
-                                .padding(.bottom, 40)
+                            }
+
+                            // 감상평 섹션
+                            if let comment = reaction.comment, !comment.isEmpty {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("감상평")
+                                        .font(LDFont.heading04)
+                                        .foregroundColor(LDColor.color1)
+
+                                    Text(comment)
+                                        .font(LDFont.medium04)
+                                        .foregroundColor(LDColor.color2)
+                                        .lineSpacing(4)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
                             }
                         }
-                        .opacity(selectedTab == .reaction ? 1 : 0)
                     }
+
+                    Spacer(minLength: ArchiveImageConstants.animationThreshold)
                 }
-            }
-            .background(Color.white)
-            .toolbar {
-                CustomNavigationBar(title: "") {
-                    router.popLast()
-                }
-            }
-            .onAppear {
-                viewModel.loadReactions()
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+                .padding(.bottom, 40)
             }
         }
-        .navigationBarBackButtonHidden()
     }
 }

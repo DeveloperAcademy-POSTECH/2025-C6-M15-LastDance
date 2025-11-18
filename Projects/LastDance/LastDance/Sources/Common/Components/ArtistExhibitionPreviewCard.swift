@@ -45,13 +45,19 @@ struct ArtistExhibitionPreviewImage: View {
                 case .empty:
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(width: 365, height: 468)
+                        .frame(
+                            width: ExhibitionCardConstants.cardWidth,
+                            height: ExhibitionCardConstants.cardHeight
+                        )
                         .overlay(ProgressView())
                 case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 365, height: 468)
+                        .frame(
+                            width: ExhibitionCardConstants.cardWidth,
+                            height: ExhibitionCardConstants.cardHeight
+                        )
                         .clipped()
                         .clipShape(
                             UnevenRoundedRectangle(
@@ -64,7 +70,10 @@ struct ArtistExhibitionPreviewImage: View {
                 case .failure:
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(width: 365, height: 468)
+                        .frame(
+                            width: ExhibitionCardConstants.cardWidth,
+                            height: ExhibitionCardConstants.cardHeight
+                        )
                         .clipShape(
                             UnevenRoundedRectangle(
                                 topLeadingRadius: 12,
@@ -91,7 +100,10 @@ struct ArtistExhibitionPreviewImage: View {
             // Fallback if imageName is nil or not a valid URL
             Rectangle()
                 .fill(Color.gray.opacity(0.3))
-                .frame(width: 365, height: 468)
+                .frame(
+                    width: ExhibitionCardConstants.cardWidth,
+                    height: ExhibitionCardConstants.cardHeight
+                )
                 .clipShape(
                     UnevenRoundedRectangle(
                         topLeadingRadius: 12,

@@ -22,21 +22,15 @@ struct CachedImage: View {
     }
 
     var body: some View {
-        if let targetSize = targetSize {
-            contentView(size: targetSize)
-        } else {
-            GeometryReader { geometry in
-                contentView(size: geometry.size)
-            }
-        }
+        contentView()
     }
 
     @ViewBuilder
-    private func contentView(size: CGSize) -> some View {
+    private func contentView() -> some View {
         Group {
             if let imageURL = imageURL, imageURL.hasPrefix("http") {
                 // 실제 URL인 경우 - Kingfisher가 자동으로 캐시 우선 처리
-                KFImage(URL(string: imageURL))
+                let kfImage = KFImage(URL(string: imageURL))
                     .placeholder {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
@@ -45,7 +39,6 @@ struct CachedImage: View {
                                     .scaleEffect(0.8)
                             )
                     }
-                    .setProcessor(createProcessor(for: size))
                     .onFailure { error in
                         Log.fault("❌ Image loading failed: \(error.localizedDescription)")
                     }
@@ -57,7 +50,16 @@ struct CachedImage: View {
                     .memoryCacheExpiration(.seconds(300))  // 5분간 메모리 캐시
                     .loadDiskFileSynchronously()  // 디스크 캐시 동기 로딩으로 빠른 표시
                     .fade(duration: 0.25)
-                    .resizable()
+
+                // 원본 사진 비율에 맞춰 다운샘플링 적용
+                if let targetSize = targetSize {
+                    kfImage
+                        .setProcessor(createProcessor(for: targetSize))
+                        .resizable()
+                } else {
+                    kfImage
+                        .resizable()
+                }
 
             } else if let imageName = imageURL {
                 // Mock 데이터 또는 로컬 이미지

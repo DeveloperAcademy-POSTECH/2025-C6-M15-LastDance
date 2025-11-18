@@ -1,5 +1,5 @@
 {
-  "originHash" : "b328197f7bffee8eb68223827679c0534b6b84f49c83d6f8791f1a9a07c270e4",
+  "originHash" : "6b5e9f5a06f31b18800486dbb1970620a933c9b40caeddc30e868719ac3f3311",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "5dd1907d64f0d36f158f61a466bab75067224893",
         "version" : "6.9.0"
+      }
+    },
+    {
+      "identity" : "swiftuimasonry",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ciaranrobrien/SwiftUIMasonry.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "09487c808d8c68b034371276cf6c153bebca7913"
       }
     }
   ],

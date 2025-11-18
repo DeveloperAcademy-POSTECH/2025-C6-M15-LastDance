@@ -16,4 +16,8 @@ struct ArtworkDetailResponseDto: Codable {
     let thumbnail_url: String?
     let created_at: String
     let updated_at: String?
+
+    // 편의 필드
+    let artist_name: String?
+    let reaction_count: Int?
 }
