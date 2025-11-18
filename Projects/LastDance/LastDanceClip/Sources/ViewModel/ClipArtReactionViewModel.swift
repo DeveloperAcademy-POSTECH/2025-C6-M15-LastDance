@@ -149,7 +149,7 @@ final class ClipArtReactionViewModel: ObservableObject, SendThrottleHandler {
                 visitorId: visitorId,
                 visitId: visitId,
                 comment: message.isEmpty ? nil : message,
-                imageUrl: nil,
+                imageData: nil,
                 tagIds: nil
             )
             

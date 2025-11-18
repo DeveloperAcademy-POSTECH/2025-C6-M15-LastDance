@@ -5,6 +5,7 @@
 //  Created by 신얀 on 10/8/25.
 //
 
+import Foundation
 import Moya
 
 enum ReactionAPI {
@@ -53,9 +54,61 @@ extension ReactionAPI: BaseTargetType {
 
     var bodyParameters: Codable? {
         switch self {
+        case .createReaction, .getReactions, .getDetailReaction:
+            return nil
+        }
+    }
+
+    var isMultipart: Bool {
+        switch self {
+        case .createReaction:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var multipartData: [Moya.MultipartFormData]? {
+        switch self {
         case .createReaction(let dto):
-            return dto
-        case .getReactions, .getDetailReaction:
+            var parts: [Moya.MultipartFormData] = []
+
+            func addText(_ name: String, _ value: String) {
+                if let data = value.data(using: .utf8) {
+                    parts.append(.init(provider: .data(data), name: name))
+                }
+            }
+
+            addText("visitor_id", String(dto.visitorId))
+            addText("artwork_id", String(dto.artworkId))
+            addText("visit_id", String(dto.visitId))
+
+            if let comment = dto.comment, !comment.isEmpty {
+                addText("comment", comment)
+            }
+
+            if let tagIds = dto.tagIds,
+                let jsonData = try? JSONEncoder().encode(tagIds),
+                let jsonString = String(data: jsonData, encoding: .utf8)
+            {
+                addText("tag_ids", jsonString)
+            }
+
+            if let imageData = dto.imageData {
+                let part = Moya.MultipartFormData(
+                    provider: .data(imageData),
+                    name: "image",
+                    fileName: "reaction.jpg",
+                    mimeType: "image/jpeg"
+                )
+                parts.append(part)
+            } else {
+                fatalError("🚨 ReactionRequestDto.imageData cannot be nil for createReaction API.")
+            }
+
+            return parts
+
+        default:
             return nil
         }
     }

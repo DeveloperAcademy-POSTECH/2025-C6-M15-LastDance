@@ -99,7 +99,7 @@ enum TagMapper {
         Tag(
             id: dto.id,
             name: dto.name,
-            categoryId: dto.category_id
+            categoryId: dto.category.id
         )
     }
 }
