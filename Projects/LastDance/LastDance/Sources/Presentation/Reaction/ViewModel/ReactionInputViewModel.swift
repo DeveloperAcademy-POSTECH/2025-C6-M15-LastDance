@@ -11,7 +11,7 @@ import SwiftData
 import SwiftUI
 
 @MainActor
-final class ReactionInputViewModel: ObservableObject {
+final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var selectedCategories: Set<String> = []
     @Published var selectedArtworkTitle: String = ""  // 선택한 작품 제목
@@ -26,15 +26,11 @@ final class ReactionInputViewModel: ObservableObject {
     @Published var alertType: AlertType = .confirmation
     @Published private(set) var forceDisableSendButton = false
 
-    private var cancellables = Set<AnyCancellable>()
-    private let sendButtonTapped = PassthroughSubject<Void, Never>()  // 하단 버튼 전송하기 탭 관리
-    private let confirmSendTapped = PassthroughSubject<Void, Never>()  // 알림창 내부 전송하기 탭 관리
-
     let categoryLimit = ReactionConstants.maxCategories
     let tagLimit = ReactionConstants.maxTags
     let limit = ReactionConstants.maxMessageLength
 
-    let profanity = ProfanityFilter()
+    let profanity = ProfanityFilter.fromBundle()
     var selectedArtworkId: Int?  // 선택한 작품 ID (내부 저장용)
     var selectedArtistId: Int?  // 선택한 작가 ID (내부 저장용)
 
@@ -47,10 +43,13 @@ final class ReactionInputViewModel: ObservableObject {
     private let tagAPIService = TagAPIService()
     private let notificationService = NotificationAPIService()
 
-    init() {
-        loadBadwordsFromBundle()
-        setupThrottling()
-    }
+    private let throttleInterval: TimeInterval = 2.0
+    private lazy var throttle = SendThrottle(
+        throttleInterval: throttleInterval,
+        handler: self
+    )
+
+    init() {}
 
     // 하단버튼 유효성 검사
     var isSendButtonDisabled: Bool {
@@ -62,70 +61,21 @@ final class ReactionInputViewModel: ObservableObject {
         selectedTagIds.count >= tagLimit
     }
 
-    func sendButtonAction() {
-        Log.debug("전송 버튼 탭 이벤트 발생")
-        sendButtonTapped.send()
-    }
-
-    func confirmSendAction() {
-        Log.debug("Alert 전송 버튼 탭 이벤트 발생")
-        confirmSendTapped.send()
-    }
-
-    /// Throttling 설정
-    private func setupThrottling() {
-        // BottomButton 스로틀링
-        sendButtonTapped
-            .throttle(
-                for: .seconds(ReactionConstants.throttleInterval), scheduler: RunLoop.main,
-                latest: false
-            )
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self else { return }
-
-                let result = self.profanity.containsProfanity(in: self.message)
-
-                if result {
-                    self.alertType = .restriction
-                } else {
-                    self.alertType = .confirmation
-                }
-
-                self.shouldShowConfirmAlert = true
-            }
-            .store(in: &cancellables)
-
-        // Alert 전송 버튼 스로틀링
-        confirmSendTapped
-            .throttle(
-                for: .seconds(ReactionConstants.throttleInterval), scheduler: RunLoop.main,
-                latest: false
-            )
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self else { return }
-                Log.debug("Alert 전송 버튼 스로틀링 통과 - 실제 전송 트리거")
-                self.shouldTriggerSend = true
-            }
-            .store(in: &cancellables)
-    }
-
-    // 번들에서 badword_filter.txt 로드
-    private func loadBadwordsFromBundle() {
-        if let url = Bundle.main.url(forResource: "badword_filter", withExtension: "txt"),
-            let data = try? Data(contentsOf: url)
-        {
-            profanity.load(from: data)
-            Log.info("badword_filter.txt 로드 완료 (\(profanity.words.count)개)")
-        } else {
-            Log.warning("badword_filter.txt 를 번들에 없음")
-        }
-    }
-
     // 제한 알럿에서 "다시 작성하기" 눌러 닫힐 때 호출
     func handleRestrictionAlertDismiss() {
         forceDisableSendButton = true
+    }
+
+    // 하단 "전송하기" 버튼 탭
+    func sendButtonAction() {
+        Log.debug("전송 버튼 탭 이벤트 발생")
+        throttle.sendButtonAction()
+    }
+
+    // Alert 내부 "전송하기" 버튼 탭
+    func confirmSendAction() {
+        Log.debug("Alert 전송 버튼 탭 이벤트 발생")
+        throttle.confirmSendAction()
     }
 
     // 텍스트 길이 제한 로직
