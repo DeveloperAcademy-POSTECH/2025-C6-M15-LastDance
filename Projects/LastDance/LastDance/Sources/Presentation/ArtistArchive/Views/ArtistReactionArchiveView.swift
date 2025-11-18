@@ -7,7 +7,7 @@
 
 import SwiftData
 import SwiftUI
-import SwiftUIMasonry
+import MasonryStack
 
 struct ArtistReactionArchiveView: View {
     let exhibitionId: Int
@@ -49,7 +49,7 @@ private struct ArtistArtworkScrollView: View {
                     .frame(maxWidth: .infinity, minHeight: 400)
             } else {
                 // 작품 목록 그리드
-                VMasonry(columns: 2, spacing: 19) {
+                MasonryVStack(columns: 2, spacing: 19) {
                     ForEach(viewModel.artworks) { displayItem in
                         VStack(alignment: .leading, spacing: 4) {
                             // 작품 카드 이미지
