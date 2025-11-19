@@ -57,10 +57,15 @@ final class ArtworkReactionViewModel: ObservableObject {
                         switch detailResult {
                         case .success(let reactionResponseDto):
                             let reactionDetailDto = reactionResponseDto.data
+
+                            // 현재 로그인한 작가의 이모지 찾기
+                            let artistEmoji = reactionDetailDto.artist_emojis?.first?.emoji_type
+
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
-                                categories: reactionDetailDto.tags.map { $0.name }
+                                categories: reactionDetailDto.tags?.map { $0.name } ?? [],
+                                artistEmoji: artistEmoji
                             )
                             lock.lock()
                             fetchedReactionData.append(reactionData)
@@ -75,6 +80,16 @@ final class ArtworkReactionViewModel: ObservableObject {
 
                 dispatchGroup.notify(queue: .main) {
                     self.reactions = fetchedReactionData.sorted { $0.id < $1.id }
+
+                    // API 응답으로부터 selectedEmojis 초기화
+                    var emojis: [String: String] = [:]
+                    for reaction in self.reactions {
+                        if let emoji = reaction.artistEmoji {
+                            emojis[reaction.id] = emoji
+                        }
+                    }
+                    self.selectedEmojis = emojis
+
                     self.isLoading = false
                     Log.debug(
                         "All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)"

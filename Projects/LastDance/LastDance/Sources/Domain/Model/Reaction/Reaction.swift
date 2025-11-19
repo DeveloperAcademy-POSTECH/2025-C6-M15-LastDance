@@ -18,17 +18,13 @@ final class Reaction {
     var id: String
     var artworkId: Int
     var visitorId: Int
-    var tags: [ReactionTagInfo]
+    var tags: [ReactionTagInfo]?
     var comment: String?
     var createdAt: String?
 
     init(
-        id: String,
-        artworkId: Int,
-        visitorId: Int,
-        tags: [ReactionTagInfo],
-        comment: String? = nil,
-        createdAt: String?
+        id: String, artworkId: Int, visitorId: Int, tags: [ReactionTagInfo]? = nil,
+        comment: String? = nil, createdAt: String? = nil
     ) {
         self.id = id
         self.artworkId = artworkId
