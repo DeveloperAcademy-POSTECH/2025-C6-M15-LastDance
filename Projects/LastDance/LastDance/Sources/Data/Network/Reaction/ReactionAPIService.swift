@@ -22,6 +22,12 @@ protocol ReactionAPIServiceProtocol {
     func getDetailReaction(
         reactionId: Int, completion: @escaping (Result<ReactionResponseDto, Error>) -> Void
     )
+    func createEmojiReaction(
+        reactionId: Int,
+        artistUUID: String,
+        dto: EmojiReactionRequestDto,
+        completion: @escaping (Result<EmojiReactionResponseDto, Error>) -> Void
+    )
     func getReactionsAsync(
         artworkId: Int?,
         visitorId: Int?,
@@ -157,6 +163,53 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     }
 
                     completion(.success(responseDto))
+                } catch {
+                    Log.error("JSON 디코딩 실패: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                // ValidationError 처리
+                if let response = error.response,
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
+                {
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
+                    Log.warning("Validation Error: \(errorMessages)")
+                }
+                Log.error("API 요청 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// 이모지 반응 전송하기 함수
+    func createEmojiReaction(
+        reactionId: Int,
+        artistUUID: String,
+        dto: EmojiReactionRequestDto,
+        completion: @escaping (Result<EmojiReactionResponseDto, Error>) -> Void
+    ) {
+        Log.debug(
+            "요청 파라미터 - reactionId: \(reactionId), artistUUID: \(artistUUID), emoji_type: \(dto.emoji_type)"
+        )
+
+        provider.request(
+            .createEmojiReaction(reactionId: reactionId, artistUUID: artistUUID, dto: dto)
+        ) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("이모지 반응 전송 응답: \(jsonString)")
+                    }
+                    let emojiReaction = try JSONDecoder().decode(
+                        EmojiReactionResponseDto.self, from: response.data
+                    )
+
+                    Log.debug("이모지 반응 전송 완료 - ID: \(emojiReaction.id)")
+                    completion(.success(emojiReaction))
                 } catch {
                     Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))

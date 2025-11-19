@@ -1,23 +1,27 @@
 //
-//  ResponseView.swift
+//  ArtworkReactionView.swift
 //  LastDance
 //
-//  Created by donghee on 10/19/25.
+//  Created by donghee, 신얀 on 10/19/25.
 //
 
 import SwiftData
 import SwiftUI
 
-fileprivate enum ResponseTab {
+// MARK: ArtworkReactionTab
+
+private enum ArtworkReactionTab {
     case artwork
     case message
 }
 
-struct ResponseView: View {
+// MARK: ArtworkReactionView
+
+struct ArtworkReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel: ResponseViewModel
     @Query private var allArtworks: [Artwork]
-    @State fileprivate var selectedTab: ResponseTab = .artwork
+    @State fileprivate var selectedTab: ArtworkReactionTab = .artwork
     let artworkId: Int
 
     init(artworkId: Int) {
@@ -60,7 +64,7 @@ struct ResponseView: View {
 struct ResponseContentView: View {
     let artwork: Artwork?
     @ObservedObject var viewModel: ResponseViewModel
-    @Binding fileprivate var selectedTab: ResponseTab
+    @Binding fileprivate var selectedTab: ArtworkReactionTab
 
     var body: some View {
         VStack(spacing: 0) {
@@ -92,7 +96,7 @@ struct ResponseContentView: View {
                         LDColor.color5,
                         LDColor.color5.opacity(0.8),
                         LDColor.color5.opacity(0.3),
-                        Color.clear
+                        Color.clear,
                     ]),
                     startPoint: .top,
                     endPoint: .bottom
@@ -107,7 +111,7 @@ struct ResponseContentView: View {
 // MARK: - ResponseTabBar
 
 struct ResponseTabBar: View {
-    @Binding fileprivate var selectedTab: ResponseTab
+    @Binding fileprivate var selectedTab: ArtworkReactionTab
 
     var body: some View {
         HStack(spacing: 18) {
@@ -219,35 +223,13 @@ struct MessageItemView: View {
     let isLast: Bool
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                // 헤더 (프로필 + 이름 + 날짜)
-                HStack(spacing: 0) {
-                    // TODO: 실제 프로필 이미지로 교체
-                    Circle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 40, height: 40)
-                        .overlay(
-                            Text(viewModel.getMockEmoji(for: index))
-                                .font(.system(size: 20))
-                        )
+                Text(viewModel.getMockDate())
+                    .font(LDFont.medium05)
+                    .foregroundColor(LDColor.color3)
 
-                    // TODO: 실제 사용자 이름으로 교체
-                    Text(viewModel.getMockName(for: index))
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color1)
-                        .padding(.leading, 12)
-
-                    Spacer()
-
-                    // TODO: reaction 데이터에 날짜 필드 추가하여 실제 날짜로 교체
-                    Text(viewModel.getMockDate())
-                        .font(LDFont.medium05)
-                        .foregroundColor(LDColor.color3)
-                }
-                .padding(.leading, 20)
-                .padding(.trailing, 20)
-                .padding(.bottom, 8)
+                Spacer().frame(height: 8)
 
                 // 댓글 텍스트
                 if !reaction.comment.isEmpty {
@@ -262,14 +244,14 @@ struct MessageItemView: View {
                             Button(action: {
                                 viewModel.handleExpandToggle(for: reaction)
                             }) {
-                                Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                                    .font(LDFont.medium05)
-                                    .foregroundColor(LDColor.color3)
+                                Text(
+                                    viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기"
+                                )
+                                .font(LDFont.medium05)
+                                .foregroundColor(LDColor.color3)
                             }
                         }
                     }
-                    .padding(.leading, 72)
-                    .padding(.trailing, 20)
                     .padding(.bottom, 12)
                 }
 
@@ -289,11 +271,10 @@ struct MessageItemView: View {
 
                     Spacer()
                 }
-                .padding(.leading, 72)
-                .padding(.trailing, 20)
             }
-            .padding(.top, 20)
+            .padding(.top, 12)
             .padding(.bottom, 20)
+            .padding(.horizontal, 24)
 
             if !isLast {
                 Rectangle()
@@ -303,4 +284,3 @@ struct MessageItemView: View {
         }
     }
 }
-
