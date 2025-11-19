@@ -9,7 +9,7 @@
 struct EmojiReactionResponseDto: Codable {
     let id: Int
     let artist_id: Int
-    let artist: [ArtistDetail]?
+    let artist: ArtistDetail?
     let reaction_id: Int
     let emoji_type: String
     let created_at: String

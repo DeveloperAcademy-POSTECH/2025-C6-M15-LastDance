@@ -211,6 +211,9 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     Log.debug("이모지 반응 전송 완료 - ID: \(emojiReaction.id)")
                     completion(.success(emojiReaction))
                 } catch {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.error("디코딩 실패한 JSON: \(jsonString)")
+                    }
                     Log.error("JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
                 }

@@ -174,55 +174,33 @@ final class ArtworkReactionViewModel: ObservableObject {
         return []
     }
 
-    // MARK: - Mock Data (TODO: 실제 데이터로 교체 필요)
-
-    /// 목업 프로필 이모지를 반환합니다
-    /// - Parameter index: 반응 인덱스
-    /// - Returns: 프로필 이모지
-    func getMockEmoji(for index: Int) -> String {
-        let mockEmojis = ["🎨", "🖼️", "✨", "🌟", "💫"]
-        return mockEmojis[index % mockEmojis.count]
-    }
-
-    /// 목업 사용자 이름을 반환합니다
-    /// - Parameter index: 반응 인덱스
-    /// - Returns: 사용자 이름
-    func getMockName(for index: Int) -> String {
-        let mockNames = ["쪼미", "쫑미", "미술관객", "예술가", "관람자"]
-        return mockNames[index % mockNames.count]
-    }
-
-    /// 목업 날짜를 반환합니다
-    /// - Returns: 날짜 문자열 (TODO: 실제 reaction 데이터에 날짜 필드 추가 필요)
+    //TODO: 실제 날짜로 수정필요
     func getMockDate() -> String {
         return "2025.11.08"
     }
 
-    /// 선택된 이모지를 서버로 전송합니다
-    /// - Parameter emoji: 선택된 이모지 asset 이름 (예: "emoji_heart", "emoji_like", "emoji_surprise", "emoji_sad", "emoji_laugh")
+    /// 선택된 이모지를 서버로 전송하는 함수
+    /// - Parameter emoji: 선택된 이모지 asset 이름
     func sendEmoji(_ emoji: String) {
         guard let reactionIdString = selectedReactionId,
             let reactionId = Int(reactionIdString)
         else {
-            Log.error("No reaction selected for emoji or invalid reaction ID")
+            Log.error("이모지를 보낼 수 없음")
             return
         }
 
         // artistUUID 가져오기
         guard
             let artistUUID = UserDefaults.standard.string(
-                forKey: UserDefaultsKey.artistUUID.rawValue)
+                forKey: UserDefaultsKey.artistUUID.rawValue),
+            !artistUUID.isEmpty
         else {
-            Log.error("Artist UUID not found in UserDefaults")
+            Log.error("Artist UUID 를 찾지 못함")
             selectedReactionId = nil
             return
         }
 
-        // emoji asset 이름을 그대로 emoji_type으로 사용
         let dto = EmojiReactionRequestDto(emoji_type: emoji)
-
-        Log.debug(
-            "Sending emoji \(emoji) for reaction \(reactionId) with artistUUID: \(artistUUID)")
 
         reactionAPIService.createEmojiReaction(
             reactionId: reactionId,
@@ -234,13 +212,11 @@ final class ArtworkReactionViewModel: ObservableObject {
             switch result {
             case .success(let response):
                 Log.debug("이모지 반응 전송 성공 - ID: \(response.id)")
-                // 성공 시 선택 상태 초기화
                 DispatchQueue.main.async {
                     self.selectedReactionId = nil
                 }
             case .failure(let error):
                 Log.error("이모지 반응 전송 실패: \(error.localizedDescription)")
-                // 실패 시에도 선택 상태 초기화
                 DispatchQueue.main.async {
                     self.selectedReactionId = nil
                 }

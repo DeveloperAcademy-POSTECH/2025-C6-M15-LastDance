@@ -136,10 +136,21 @@ final class IdentitySelectionViewModel: ObservableObject {
                 switch result {
                 case .success(let dto):
                     // 작가 정보 저장
+                    Log.debug(
+                        "Artist login response - id: \(dto.id), uuid: '\(dto.uuid)' (length: \(dto.uuid.count))"
+                    )
+
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
                     UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
 
-                    Log.debug("Artist login successful. id=\(dto.id), uuid=\(dto.uuid)")
+                    // 저장 직후 확인
+                    if let savedUUID = UserDefaults.standard.string(
+                        forKey: UserDefaultsKey.artistUUID.rawValue)
+                    {
+                        Log.debug("Verification: artistUUID saved correctly: '\(savedUUID)'")
+                    } else {
+                        Log.error("Verification failed: artistUUID not saved!")
+                    }
 
                     let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
                     self.dataManager.insert(artistCode)

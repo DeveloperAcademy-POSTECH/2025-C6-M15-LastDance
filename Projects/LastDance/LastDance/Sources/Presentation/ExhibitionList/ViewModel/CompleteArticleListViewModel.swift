@@ -34,7 +34,6 @@ final class CompleteArticleListViewModel: ObservableObject {
         }
         UserDefaults.standard.set(artist.id, forKey: UserDefaultsKey.artistId.key)
         UserDefaults.standard.set(artist.name, forKey: UserDefaultsKey.artistName.key)
-        UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
         Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id))")
     }
 
