@@ -10,7 +10,7 @@ import SwiftUI
 /// 반응의 카테고리 태그 섹션
 struct CategoryTagsView: View {
     let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
+    @ObservedObject var viewModel: ArtworkReactionViewModel
 
     var body: some View {
         let showAll = viewModel.showAllReactions[reaction.id] ?? false

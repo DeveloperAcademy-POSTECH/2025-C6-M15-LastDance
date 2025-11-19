@@ -10,7 +10,7 @@ import SwiftUI
 /// 반응의 댓글 섹션
 struct ReactionCommentSection: View {
     let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
+    @ObservedObject var viewModel: ArtworkReactionViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
