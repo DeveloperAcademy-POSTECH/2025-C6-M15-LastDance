@@ -143,7 +143,7 @@ struct ResponseContentView: View {
                     }
                     .zIndex(20)
 
-                MessagePopupView(showMessagePopup: $showMessagePopup)
+                MessagePopupView(showMessagePopup: $showMessagePopup, viewModel: viewModel)
                     .transition(.opacity.combined(with: .scale))
                     .zIndex(21)
             }
@@ -339,6 +339,7 @@ struct MessageItemView: View {
                     .frame(width: 26, height: 27)
 
                     Button(action: {
+                        viewModel.selectedReactionId = reaction.id
                         showMessagePopup = true
                     }) {
                         Image("bubbleOff")
@@ -392,6 +393,7 @@ private struct EMojiPopupView: View {
 // MARK: 작가 반응 확인뷰에서만 사용되는 반응 전송 팝업
 private struct MessagePopupView: View {
     @Binding var showMessagePopup: Bool
+    @ObservedObject var viewModel: ArtworkReactionViewModel
     @State private var messageText: String = ""
     @FocusState private var isTextFieldFocused: Bool
 
@@ -420,35 +422,34 @@ private struct MessagePopupView: View {
                 )
                 .focused($isTextFieldFocused)
                 .padding(.horizontal, 12)
+                .onChange(of: messageText) { newValue in
+                    if newValue.count > 10 {
+                        messageText = String(newValue.prefix(10))
+                    }
+                }
 
             Spacer().frame(height: 10)
 
             HStack(spacing: 9) {
-                Button(
+                PopupButton(
+                    title: "취소",
+                    foregroundColor: LDColor.color1,
+                    backgroundColor: LDColor.color4,
                     action: {
                         showMessagePopup = false
-                    },
-                    label: {
-                        Text("취소")
-                            .font(LDFont.heading06)
-                            .foregroundStyle(LDColor.black1)
-                            .frame(maxWidth: .infinity, minHeight: 42)
-                            .background(LDColor.color4)
-                            .cornerRadius(12)
                     })
 
-                Button(
+                PopupButton(
+                    title: "확인",
+                    foregroundColor: .white,
+                    backgroundColor: LDColor.color1,
                     action: {
-                        // TODO: 메시지 전송 로직
-                        showMessagePopup = false
-                    },
-                    label: {
-                        Text("확인")
-                            .font(LDFont.heading06)
-                            .foregroundStyle(Color.white)
-                            .frame(maxWidth: .infinity, minHeight: 42)
-                            .background(LDColor.black1)
-                            .cornerRadius(12)
+                        viewModel.sendMessage(messageText) { success in
+                            if success {
+                                messageText = ""
+                                showMessagePopup = false
+                            }
+                        }
                     })
             }
             .padding(.horizontal, 12)
@@ -458,5 +459,25 @@ private struct MessagePopupView: View {
         .padding(.bottom, 27)
         .background(LDColor.color5)
         .cornerRadius(14)
+    }
+}
+
+private struct PopupButton: View {
+    let title: String
+    let foregroundColor: Color
+    let backgroundColor: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(
+            action: action,
+            label: {
+                Text(title)
+                    .font(LDFont.heading06)
+                    .foregroundStyle(foregroundColor)
+                    .frame(maxWidth: .infinity, minHeight: 42)
+                    .background(backgroundColor)
+                    .cornerRadius(12)
+            })
     }
 }

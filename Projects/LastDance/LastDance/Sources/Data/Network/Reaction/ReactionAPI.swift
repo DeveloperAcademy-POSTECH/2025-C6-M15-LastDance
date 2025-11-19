@@ -13,6 +13,7 @@ enum ReactionAPI {
     case getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?)
     case getDetailReaction(reactionId: Int)
     case createEmojiReaction(reactionId: Int, artistUUID: String, dto: EmojiReactionRequestDto)
+    case createMessageReaction(reactionId: Int, artistUUID: String, dto: MessageReactionRequestDto)
 }
 
 extension ReactionAPI: BaseTargetType {
@@ -24,12 +25,15 @@ extension ReactionAPI: BaseTargetType {
             return "\(APIVersion.version1)/reactions/\(reactionId)"
         case .createEmojiReaction(let reactionId, _, _):
             return "\(APIVersion.version1)/reactions/\(reactionId)/artist-emoji"
+        case .createMessageReaction(let reactionId, _, _):
+            return "\(APIVersion.version1)/reactions/\(reactionId)/artist-messages"
+
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .createReaction, .createEmojiReaction:
+        case .createReaction, .createEmojiReaction, .createMessageReaction:
             return .post
         case .getReactions, .getDetailReaction:
             return .get
@@ -38,7 +42,8 @@ extension ReactionAPI: BaseTargetType {
 
     var headers: [String: String]? {
         switch self {
-        case .createEmojiReaction(_, let artistUUID, _):
+        case .createEmojiReaction(_, let artistUUID, _),
+            .createMessageReaction(_, let artistUUID, _):
             return [
                 "Content-Type": HTTPHeaderConstants.contentTypeJSON,
                 "X-Artist-UUID": artistUUID,
@@ -53,7 +58,7 @@ extension ReactionAPI: BaseTargetType {
 
     var queryParameters: [String: Any]? {
         switch self {
-        case .createReaction, .getDetailReaction, .createEmojiReaction:
+        case .createReaction, .getDetailReaction, .createEmojiReaction, .createMessageReaction:
             return nil
         case .getReactions(let artworkId, let visitorId, let visitId):
             var params: [String: Any] = [:]
@@ -75,6 +80,8 @@ extension ReactionAPI: BaseTargetType {
         case .createReaction, .getReactions, .getDetailReaction:
             return nil
         case .createEmojiReaction(_, _, let dto):
+            return dto
+        case .createMessageReaction(_, _, let dto):
             return dto
         }
     }

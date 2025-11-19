@@ -19,6 +19,7 @@ final class ArtworkReactionViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var selectedReactionId: String?  // 이모지 팝업 중 클릭한 반응의 ID 임시 저장
     @Published var selectedEmojis: [String: String] = [:]  // 실제 선택된 이모지 저장
+    @Published var message: String = ""
 
     private let artworkId: Int
     private let reactionAPIService: ReactionAPIServiceProtocol
@@ -242,5 +243,54 @@ final class ArtworkReactionViewModel: ObservableObject {
     /// - Returns: 선택된 이모지 asset 이름, 없으면 nil
     func getSelectedEmoji(for reactionId: String) -> String? {
         return selectedEmojis[reactionId]
+    }
+
+    /// 작가 메세지를 관람객에게 전달하는 함수
+    /// - Parameters:
+    ///   - message: 전송할 메시지 (10자 이내)
+    ///   - completion: 전송 완료 후 실행될 클로저
+    func sendMessage(_ message: String, completion: @escaping (Bool) -> Void) {
+        guard let reactionIdString = selectedReactionId,
+            let reactionId = Int(reactionIdString)
+        else {
+            Log.error("반응 ID가 없어서 메시지를 보낼 수 없음")
+            completion(false)
+            return
+        }
+
+        guard
+            let artistUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.artistUUID.rawValue),
+            !artistUUID.isEmpty
+        else {
+            Log.error("Artist UUID 를 찾지 못함")
+            completion(false)
+            return
+        }
+
+        let dto = MessageReactionRequestDto(message: message)
+
+        reactionAPIService.createMessageReaction(
+            reactionId: reactionId,
+            artistUUID: artistUUID,
+            dto: dto
+        ) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                Log.debug("메시지 반응 전송 성공 - ID: \(response.id)")
+                DispatchQueue.main.async {
+                    self.message = ""
+                    self.selectedReactionId = nil
+                    completion(true)
+                }
+            case .failure(let error):
+                Log.error("메시지 반응 전송 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
     }
 }
