@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-fileprivate enum ResponseTab {
+private enum ResponseTab {
     case artwork
     case message
 }
@@ -92,7 +92,7 @@ struct ResponseContentView: View {
                         LDColor.color5,
                         LDColor.color5.opacity(0.8),
                         LDColor.color5.opacity(0.3),
-                        Color.clear
+                        Color.clear,
                     ]),
                     startPoint: .top,
                     endPoint: .bottom
@@ -262,9 +262,11 @@ struct MessageItemView: View {
                             Button(action: {
                                 viewModel.handleExpandToggle(for: reaction)
                             }) {
-                                Text(viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기")
-                                    .font(LDFont.medium05)
-                                    .foregroundColor(LDColor.color3)
+                                Text(
+                                    viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기"
+                                )
+                                .font(LDFont.medium05)
+                                .foregroundColor(LDColor.color3)
                             }
                         }
                     }
@@ -303,4 +305,3 @@ struct MessageItemView: View {
         }
     }
 }
-

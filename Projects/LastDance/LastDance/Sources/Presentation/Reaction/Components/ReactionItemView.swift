@@ -21,12 +21,6 @@ struct ReactionItemView: View {
                     viewModel: viewModel
                 )
             }
-
-            // 태그 섹션
-            ReactionTagSection(
-                reaction: reaction,
-                viewModel: viewModel
-            )
         }
         .padding(.vertical, 8)
     }

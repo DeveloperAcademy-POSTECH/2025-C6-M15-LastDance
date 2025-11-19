@@ -10,12 +10,8 @@ import Foundation
 // MARK: ReactionConstants
 /// 반응(Reaction) 관련 상수
 enum ReactionConstants {
-    static let maxCategories: Int = 2
-    static let maxTags: Int = 6
     static let maxMessageLength: Int = 500
     static let throttleInterval: TimeInterval = 2.0
-    /// 카테고리 표시 제한 (토글 전)
-    static let categoryDisplayLimit: Int = 4
     static let messagePlaceholder: String = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
 }
 
