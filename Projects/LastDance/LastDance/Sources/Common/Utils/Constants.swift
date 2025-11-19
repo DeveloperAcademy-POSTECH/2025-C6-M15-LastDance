@@ -17,6 +17,14 @@ enum ReactionConstants {
     /// 카테고리 표시 제한 (토글 전)
     static let categoryDisplayLimit: Int = 4
     static let messagePlaceholder: String = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
+    /// 이모지 asset 이름 목록
+    static let emojiAssets: [String] = [
+        "emoji_heart",
+        "emoji_like",
+        "emoji_surprise",
+        "emoji_sad",
+        "emoji_laugh",
+    ]
 }
 
 // MARK: CameraConstants

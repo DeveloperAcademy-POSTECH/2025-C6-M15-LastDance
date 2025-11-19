@@ -17,7 +17,8 @@ final class ArtworkReactionViewModel: ObservableObject {
     @Published var showAllReactions: [String: Bool] = [:]
     @Published var reactions: [ReactionData] = []
     @Published var isLoading = false
-    @Published var selectedReactionId: String?
+    @Published var selectedReactionId: String?  // 이모지 팝업 중 클릭한 반응의 ID 임시 저장
+    @Published var selectedEmojis: [String: String] = [:]  // 실제 선택된 이모지 저장
 
     private let artworkId: Int
     private let reactionAPIService: ReactionAPIServiceProtocol
@@ -213,6 +214,7 @@ final class ArtworkReactionViewModel: ObservableObject {
             case .success(let response):
                 Log.debug("이모지 반응 전송 성공 - ID: \(response.id)")
                 DispatchQueue.main.async {
+                    self.selectedEmojis[reactionIdString] = emoji
                     self.selectedReactionId = nil
                 }
             case .failure(let error):
@@ -222,5 +224,12 @@ final class ArtworkReactionViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    /// 특정 반응에 선택된 이모지를 반환
+    /// - Parameter reactionId: 반응 ID
+    /// - Returns: 선택된 이모지 asset 이름, 없으면 nil
+    func getSelectedEmoji(for reactionId: String) -> String? {
+        return selectedEmojis[reactionId]
     }
 }

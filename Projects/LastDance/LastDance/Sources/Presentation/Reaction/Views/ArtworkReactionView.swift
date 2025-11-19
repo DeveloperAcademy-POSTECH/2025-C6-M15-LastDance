@@ -290,18 +290,30 @@ struct MessageItemView: View {
                 HStack(spacing: 18) {
                     GeometryReader { proxy in
                         Button(action: {
-                            viewModel.selectedReactionId = reaction.id
-                            emojiPopupPosition = proxy.frame(in: .global)
-                            showEmojiPopup = true
+                            // 이미지 리스트에서 클릭된 이모지가 없다면 -> defaultImage
+                            if viewModel.getSelectedEmoji(for: reaction.id) == nil {
+                                viewModel.selectedReactionId = reaction.id
+                                emojiPopupPosition = proxy.frame(in: .global)
+                                showEmojiPopup = true
+                            }
                         }) {
-                            Image(
-                                viewModel.selectedReactionId == reaction.id
-                                    ? "defaultImageFill" : "defaultImage"
-                            )
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 26, height: 27)
+                            // 선택된 이미지가 존재한다면 그걸로 표시
+                            if let selectedEmoji = viewModel.getSelectedEmoji(for: reaction.id) {
+                                Image(selectedEmoji)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 26, height: 27)
+                            } else {
+                                Image(
+                                    viewModel.selectedReactionId == reaction.id
+                                        ? "defaultImageFill" : "defaultImage"
+                                )
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 26, height: 27)
+                            }
                         }
+                        .disabled(viewModel.getSelectedEmoji(for: reaction.id) != nil)
                     }
                     .frame(width: 26, height: 27)
 
@@ -330,17 +342,10 @@ struct MessageItemView: View {
 
 struct EMojiPopupView: View {
     let onSelect: (String) -> Void
-    private let emojiAssets = [
-        "emoji_heart",
-        "emoji_like",
-        "emoji_surprise",
-        "emoji_sad",
-        "emoji_laugh",
-    ]
 
     var body: some View {
         HStack(spacing: 12) {
-            ForEach(emojiAssets, id: \.self) { assetName in
+            ForEach(ReactionConstants.emojiAssets, id: \.self) { assetName in
                 Button(action: {
                     onSelect(assetName)
                 }) {
