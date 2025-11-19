@@ -450,12 +450,11 @@ extension ReactionInputViewModel {
     /// 작가에게 푸시알림 전송
     private func sendPushNotificationToArtist(reactionResponse: ReactionDetailResponseDto) {
         let artistId = reactionResponse.artwork.artist_id
-        let visitorId = UserDefaults.standard.integer(forKey: UserDefaultsKey.visitorId.rawValue)
 
-        Log.debug("작가(\(artistId))에게 푸시알림 전송 시작 - visitorId: \(visitorId)")
+        Log.debug("작가(\(artistId))에게 푸시알림 전송 시작")
 
         let pushDto = SendNotificationRequestDto(
-            visitor_id: visitorId != 0 ? visitorId : nil,
+            visitor_id: nil,  // 작가에게만 알림 전송
             artist_id: artistId,
             device_token: nil,
             title: "내 작품에 새로운 메시지가 있어요",

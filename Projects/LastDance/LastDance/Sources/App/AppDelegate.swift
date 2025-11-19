@@ -66,11 +66,7 @@ extension AppDelegate {
         let token = deviceToken.map { String(format: "%02x", $0) }.joined()
         Log.debug("📲 APNs 토큰 수신: \(token)")
 
-        // DeviceTokenManager를 통해 토큰 저장
         DeviceTokenManager.shared.saveDeviceToken(token)
-
-        // visitorId or artistId가 있으면 DeviceTokenManager를 통해 서버 전송 시도
-        DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
     }
 
     func application(
