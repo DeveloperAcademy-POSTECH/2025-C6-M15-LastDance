@@ -68,6 +68,7 @@ struct ResponseContentView: View {
 
     @State private var emojiPopupPosition: CGRect = .zero
     @State private var showEmojiPopup: Bool = false
+    @State private var showMessagePopup: Bool = false
 
     var body: some View {
         ZStack {
@@ -92,7 +93,8 @@ struct ResponseContentView: View {
                             MessageListView(
                                 viewModel: viewModel,
                                 showEmojiPopup: $showEmojiPopup,
-                                emojiPopupPosition: $emojiPopupPosition
+                                emojiPopupPosition: $emojiPopupPosition,
+                                showMessagePopup: $showMessagePopup
                             )
                         }
                     }
@@ -128,6 +130,22 @@ struct ResponseContentView: View {
                 )
                 .transition(AnyTransition.scale.combined(with: .opacity))
                 .zIndex(10)
+            }
+
+            // 메시지 팝업을 최상위 레이어에 배치
+            if showMessagePopup {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            showMessagePopup = false
+                        }
+                    }
+                    .zIndex(20)
+
+                MessagePopupView(showMessagePopup: $showMessagePopup)
+                    .transition(.opacity.combined(with: .scale))
+                    .zIndex(21)
             }
         }
     }
@@ -224,6 +242,7 @@ struct MessageListView: View {
     @ObservedObject var viewModel: ArtworkReactionViewModel
     @Binding var showEmojiPopup: Bool
     @Binding var emojiPopupPosition: CGRect
+    @Binding var showMessagePopup: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -234,7 +253,8 @@ struct MessageListView: View {
                     viewModel: viewModel,
                     isLast: index == viewModel.reactions.count - 1,
                     showEmojiPopup: $showEmojiPopup,
-                    emojiPopupPosition: $emojiPopupPosition
+                    emojiPopupPosition: $emojiPopupPosition,
+                    showMessagePopup: $showMessagePopup
                 )
             }
         }
@@ -252,6 +272,7 @@ struct MessageItemView: View {
     let isLast: Bool
     @Binding var showEmojiPopup: Bool
     @Binding var emojiPopupPosition: CGRect
+    @Binding var showMessagePopup: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -317,7 +338,9 @@ struct MessageItemView: View {
                     }
                     .frame(width: 26, height: 27)
 
-                    Button(action: {}) {
+                    Button(action: {
+                        showMessagePopup = true
+                    }) {
                         Image("bubbleOff")
                             .resizable()
                             .scaledToFill()
@@ -339,7 +362,8 @@ struct MessageItemView: View {
     }
 }
 
-struct EMojiPopupView: View {
+// MARK: 작가 반응 확인뷰에서만 사용되는 이모지 팝업
+private struct EMojiPopupView: View {
     let onSelect: (String) -> Void
 
     var body: some View {
@@ -362,5 +386,77 @@ struct EMojiPopupView: View {
         .background(.white)
         .cornerRadius(40)
         .shadow(color: .black.opacity(0.25), radius: 6, x: 1, y: 3)
+    }
+}
+
+// MARK: 작가 반응 확인뷰에서만 사용되는 반응 전송 팝업
+private struct MessagePopupView: View {
+    @Binding var showMessagePopup: Bool
+    @State private var messageText: String = ""
+    @FocusState private var isTextFieldFocused: Bool
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image("bubbleOff")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 27, height: 25)
+
+            Text("메시지에 반응해보세요")
+                .font(LDFont.heading04)
+                .foregroundStyle(LDColor.color1)
+                .lineSpacing(5)
+
+            TextField("10자 이내로 입력해주세요", text: $messageText)
+                .font(LDFont.medium03)
+                .foregroundStyle(LDColor.color1)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 9)
+                .background(Color.white)
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(LDColor.color4, lineWidth: 1)
+                )
+                .focused($isTextFieldFocused)
+                .padding(.horizontal, 12)
+
+            Spacer().frame(height: 10)
+
+            HStack(spacing: 9) {
+                Button(
+                    action: {
+                        showMessagePopup = false
+                    },
+                    label: {
+                        Text("취소")
+                            .font(LDFont.heading06)
+                            .foregroundStyle(LDColor.black1)
+                            .frame(maxWidth: .infinity, minHeight: 42)
+                            .background(LDColor.color4)
+                            .cornerRadius(12)
+                    })
+
+                Button(
+                    action: {
+                        // TODO: 메시지 전송 로직
+                        showMessagePopup = false
+                    },
+                    label: {
+                        Text("확인")
+                            .font(LDFont.heading06)
+                            .foregroundStyle(Color.white)
+                            .frame(maxWidth: .infinity, minHeight: 42)
+                            .background(LDColor.black1)
+                            .cornerRadius(12)
+                    })
+            }
+            .padding(.horizontal, 12)
+        }
+        .frame(width: 293)
+        .padding(.top, 28)
+        .padding(.bottom, 27)
+        .background(LDColor.color5)
+        .cornerRadius(14)
     }
 }
