@@ -65,7 +65,8 @@ final class ArtworkReactionViewModel: ObservableObject {
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
                                 categories: reactionDetailDto.tags?.map { $0.name } ?? [],
-                                artistEmoji: artistEmoji
+                                artistEmoji: artistEmoji,
+                                createdAt: reactionDetailDto.created_at
                             )
                             lock.lock()
                             fetchedReactionData.append(reactionData)
@@ -188,11 +189,6 @@ final class ArtworkReactionViewModel: ObservableObject {
             return Array(categories.dropFirst(2))
         }
         return []
-    }
-
-    //TODO: 실제 날짜로 수정필요
-    func getMockDate() -> String {
-        return "2025.11.08"
     }
 
     /// 선택된 이모지를 서버로 전송하는 함수

@@ -98,7 +98,7 @@
 				Sources/Common/DesignSystem/LDShadow.swift,
 				"Sources/Common/Extensions/Date+Extensions.swift",
 				Sources/Common/Extensions/Log.swift,
-				Sources/Common/Extensions/Navigation_Ext.swift,
+				"Sources/Common/Extensions/Navigation+Extension.swift",
 				"Sources/Common/Extensions/String + Extension.swift",
 				Sources/Common/Extensions/TapGestureRecognizer.swift,
 				"Sources/Common/Extensions/View+CustomAlert.swift",

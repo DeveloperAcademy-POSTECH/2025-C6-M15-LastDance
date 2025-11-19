@@ -256,7 +256,7 @@ struct MessageItemView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                Text(viewModel.getMockDate())
+                Text(Date.formatShortDate(from: reaction.createdAt))
                     .font(LDFont.medium05)
                     .foregroundColor(LDColor.color3)
 
@@ -302,7 +302,7 @@ struct MessageItemView: View {
                                 Image(selectedEmoji)
                                     .resizable()
                                     .scaledToFill()
-                                    .frame(width: 26, height: 27)
+                                    .frame(width: 29, height: 27)
                             } else {
                                 Image(
                                     viewModel.selectedReactionId == reaction.id
@@ -323,7 +323,6 @@ struct MessageItemView: View {
                             .scaledToFill()
                             .frame(width: 26, height: 25)
                     }
-
                     Spacer()
                 }
             }
