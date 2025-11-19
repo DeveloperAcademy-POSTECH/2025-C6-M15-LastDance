@@ -10,23 +10,23 @@ import SwiftUI
 
 struct CameraPreviewView: UIViewRepresentable {
     let session: AVCaptureSession
-    
-    let currentScaleProvider: () -> CGFloat          // 현재 UI 스케일(예: viewModel.zoomScale)
-        let applyScale: (_ newScale: CGFloat, _ animated: Bool) -> Void
-        let endInteraction: () -> Void
-    
-    func makeUIView(context: Context) -> PreviewUIView {
+
+    let currentScaleProvider: () -> CGFloat  // 현재 UI 스케일(예: viewModel.zoomScale)
+    let applyScale: (_ newScale: CGFloat, _ animated: Bool) -> Void
+    let endInteraction: () -> Void
+
+    func makeUIView(context _: Context) -> PreviewUIView {
         let view = PreviewUIView()
         view.videoPreviewLayer.session = session
-        
+
         view.currentScaleProvider = currentScaleProvider
         view.applyScale = applyScale
         view.endInteraction = endInteraction
-        
+
         return view
     }
 
-    func updateUIView(_ uiView: PreviewUIView, context: Context) {
+    func updateUIView(_ uiView: PreviewUIView, context _: Context) {
         // SwiftUI가 레이아웃을 갱신할 때마다 layer의 frame을 갱신
         uiView.videoPreviewLayer.frame = uiView.bounds
         uiView.currentScaleProvider = currentScaleProvider
@@ -55,12 +55,14 @@ final class PreviewUIView: UIView {
         videoPreviewLayer.videoGravity = .resizeAspectFill
 
         // ✅ 핀치 제스처 등록
-        let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+        let pinchRecognizer = UIPinchGestureRecognizer(
+            target: self, action: #selector(handlePinch(_:)))
         pinchRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(pinchRecognizer)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -68,7 +70,7 @@ final class PreviewUIView: UIView {
         super.layoutSubviews()
         videoPreviewLayer.frame = bounds
     }
-    
+
     @objc private func handlePinch(_ recognizer: UIPinchGestureRecognizer) {
         switch recognizer.state {
         case .began:
@@ -77,9 +79,9 @@ final class PreviewUIView: UIView {
         case .changed:
             // 누적 배율 → 시작스케일 × 핀치배율
             let nextScale = pinchStartScale * recognizer.scale
-            applyScale?(nextScale, true) // animated=true로 부드럽게
+            applyScale?(nextScale, true)  // animated=true로 부드럽게
         case .ended, .cancelled, .failed:
-            endInteraction?()            // 램프 정리 등
+            endInteraction?()  // 램프 정리 등
         default:
             break
         }

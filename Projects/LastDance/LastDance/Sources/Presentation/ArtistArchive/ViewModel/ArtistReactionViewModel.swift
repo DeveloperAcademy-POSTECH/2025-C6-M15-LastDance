@@ -12,7 +12,7 @@ import SwiftUI
 final class ArtistReactionViewModel: ObservableObject {
     @Published var exhibitions: [ArtistExhibitionDisplayItem] = []
     @Published var isLoading = false
-    
+
     private let swiftDataManager = SwiftDataManager.shared
     private let exhibitionAPIService: ExhibitionAPIServiceProtocol
     private let reactionAPIService: ReactionAPIServiceProtocol
@@ -37,13 +37,15 @@ final class ArtistReactionViewModel: ObservableObject {
 
         if filteredExhibitions.isEmpty {
             Log.debug("No selected exhibitions to display")
-            self.isLoading = false
+            isLoading = false
             return
         }
 
         calculateReactionCounts(for: filteredExhibitions) { [weak self] updatedExhibitions in
             guard let self = self else { return }
-            self.exhibitions = updatedExhibitions.sorted { $0.exhibition.startDate > $1.exhibition.startDate }
+            self.exhibitions = updatedExhibitions.sorted {
+                $0.exhibition.startDate > $1.exhibition.startDate
+            }
             Log.debug("Final exhibitions count: \(self.exhibitions.count)")
             self.isLoading = false
         }
@@ -51,25 +53,27 @@ final class ArtistReactionViewModel: ObservableObject {
 
     private func calculateReactionCounts(
         for exhibitions: [Exhibition],
-        completion: @escaping ([ArtistExhibitionDisplayItem]) -> Void) {
+        completion: @escaping ([ArtistExhibitionDisplayItem]) -> Void
+    ) {
         let group = DispatchGroup()
         var displayItems: [ArtistExhibitionDisplayItem] = []
-        let lock = NSLock() // To protect displayItems from concurrent access
+        let lock = NSLock()  // To protect displayItems from concurrent access
 
         for exhibition in exhibitions {
             group.enter()
             let artworksInExhibition =
-            swiftDataManager.fetchAll(Artwork.self).filter { $0.exhibitionId == exhibition.id }
+                swiftDataManager.fetchAll(Artwork.self).filter { $0.exhibitionId == exhibition.id }
             let artworkIdsInExhibition = artworksInExhibition.map { $0.id }
             Log.debug("Exhibition \(exhibition.id) has \(artworksInExhibition.count) artworks.")
 
             if artworkIdsInExhibition.isEmpty {
                 lock.lock()
-                displayItems.append(ArtistExhibitionDisplayItem(
-                    id: exhibition.id,
-                    exhibition: exhibition,
-                    reactionCount: 0
-                ))
+                displayItems.append(
+                    ArtistExhibitionDisplayItem(
+                        id: exhibition.id,
+                        exhibition: exhibition,
+                        reactionCount: 0
+                    ))
                 lock.unlock()
                 group.leave()
                 continue
@@ -97,9 +101,13 @@ final class ArtistReactionViewModel: ObservableObject {
 
             innerGroup.notify(queue: .main) {
                 lock.lock()
-                displayItems.append(ArtistExhibitionDisplayItem(id: exhibition.id, exhibition: exhibition, reactionCount: totalReactionCount))
+                displayItems.append(
+                    ArtistExhibitionDisplayItem(
+                        id: exhibition.id, exhibition: exhibition, reactionCount: totalReactionCount
+                    ))
                 lock.unlock()
-                Log.debug("Calculated \(totalReactionCount) reactions for exhibition \(exhibition.id).")
+                Log.debug(
+                    "Calculated \(totalReactionCount) reactions for exhibition \(exhibition.id).")
                 group.leave()
             }
         }

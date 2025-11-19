@@ -5,15 +5,15 @@
 //  Created by donghee on 10/20/25.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct ExhibitionPreviewCard: View {
     let exhibition: Exhibition
     let artistNames: [String]
     let onSearchMore: () -> Void
     let onStartVisit: () -> Void
-    
+
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             // 전시 이미지
@@ -22,12 +22,12 @@ struct ExhibitionPreviewCard: View {
             ExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
+                dateRange: Date.formatShortDateRange(
+                    start: exhibition.startDate, end: exhibition.endDate),
                 onSearchMore: onSearchMore,
                 onStartVisit: onStartVisit
             )
             .padding(.horizontal, 12)
-            
         }
         .frame(maxWidth: .infinity)
         .background(.white)
@@ -37,9 +37,10 @@ struct ExhibitionPreviewCard: View {
 }
 
 // MARK: - ExhibitionPreviewImage
+
 struct ExhibitionPreviewImage: View {
     let imageName: String?
-    
+
     var body: some View {
         if let imageName = imageName, let url = URL(string: imageName) {
             AsyncImage(url: url) { phase in
@@ -124,15 +125,16 @@ struct ExhibitionPreviewInfo: View {
     let dateRange: String
     let onSearchMore: () -> Void
     let onStartVisit: () -> Void
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading) {
             // 전시 정보
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color1)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.top, 10)
 
                 if !artistNames.isEmpty {
                     Text(artistNames.joined(separator: ", "))
@@ -145,20 +147,22 @@ struct ExhibitionPreviewInfo: View {
                     .font(LDFont.regular02)
                     .foregroundColor(LDColor.color3)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.bottom, 10)
 
                 Rectangle()
                     .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                     .frame(height: 0.5)
                     .foregroundColor(LDColor.color3)
+                    .padding(.bottom, 10)
+
             }
-            .padding(.top, 14)
-            
+
             // 액션 버튼들
             ArticleButtons(
                 onSearchMore: onSearchMore,
                 onStartVisit: onStartVisit
             )
-            .padding(.bottom, 14)
         }
+        .padding(.vertical, 8)
     }
 }

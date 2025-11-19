@@ -26,7 +26,7 @@ final class CompleteArticleListViewModel: ObservableObject {
 
         Log.debug("로컬 DB 조회 - 전시: \(exhibition?.title ?? "없음"), 작가: \(artist?.name ?? "없음")")
     }
-    
+
     func saveCurrentArtistAsUser() {
         guard let artist = artist else {
             Log.warning("저장할 작가 정보가 없습니다.")
@@ -37,26 +37,31 @@ final class CompleteArticleListViewModel: ObservableObject {
         UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
         Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id))")
     }
-    
+
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
     func findExhibitionIdByCurrentFields() -> Int? {
         let allExhibitions = dataManager.fetchAll(Exhibition.self)
         let allArtists = dataManager.fetchAll(Artist.self)
 
         let artistName = (artist?.name ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let exhibitionTitle = (exhibition?.title ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let exhibitionTitle = (exhibition?.title ?? "").trimmingCharacters(
+            in: .whitespacesAndNewlines)
 
         guard !exhibitionTitle.isEmpty, !artistName.isEmpty else { return nil }
 
         // 전시명으로 찾기
-        func norm(_ str: String) -> String { str.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+        func norm(_ str: String) -> String {
+            str.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
         let titleKey = norm(exhibitionTitle)
 
         let candidates = allExhibitions.filter { norm($0.title) == titleKey }
         guard !candidates.isEmpty else { return nil }
 
         // 작가명으로 작가 찾고, 그 작가가 가진 exhibitions(id 리스트)와 교집합
-        guard let theArtist = allArtists.first(where: { norm($0.name) == norm(artistName) }) else { return nil }
+        guard let theArtist = allArtists.first(where: { norm($0.name) == norm(artistName) }) else {
+            return nil
+        }
         let artistExhibitionIdSet = Set(theArtist.exhibitions)
 
         // candidates 중에서 artist.exhibitions에 포함된 id만 남김

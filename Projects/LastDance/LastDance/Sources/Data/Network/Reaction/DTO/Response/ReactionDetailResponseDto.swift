@@ -6,6 +6,7 @@
 //
 
 // MARK: ReactionDetailResponseDto
+
 struct ReactionDetailResponseDto: Codable {
     let id: Int
     let artwork_id: Int

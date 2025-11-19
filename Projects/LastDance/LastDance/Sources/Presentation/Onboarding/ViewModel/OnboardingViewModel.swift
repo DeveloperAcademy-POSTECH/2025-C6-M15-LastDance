@@ -7,6 +7,4 @@
 
 import SwiftUI
 
-final class OnboardingViewModel: ObservableObject {
-    
-}
+final class OnboardingViewModel: ObservableObject {}

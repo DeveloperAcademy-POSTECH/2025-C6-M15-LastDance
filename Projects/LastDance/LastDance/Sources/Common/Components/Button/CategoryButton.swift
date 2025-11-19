@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-// TODO: 하이파이 완성시 UI 수정 필요
 struct CategoryButton: View {
     let category: String
     let isSelected: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             Text(category)

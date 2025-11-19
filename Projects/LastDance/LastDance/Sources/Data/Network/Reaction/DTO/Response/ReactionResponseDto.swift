@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: ReactionResponseDto
+
 struct ReactionResponseDto: Codable {
     let code: Int
     let data: ReactionDetailResponseDto

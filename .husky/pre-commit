@@ -1,0 +1,4 @@
+#!/bin/sh
+# swift-format (Apple 버전) 사용
+/opt/homebrew/bin/swift-format format --in-place --configuration .swift-format --recursive Projects/LastDance/LastDance/Sources/
+git add Projects/LastDance/LastDance/Sources/

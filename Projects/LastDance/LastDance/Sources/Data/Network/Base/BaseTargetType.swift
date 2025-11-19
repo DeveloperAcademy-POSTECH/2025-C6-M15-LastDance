@@ -12,7 +12,7 @@ protocol BaseTargetType: TargetType {
     var queryParameters: [String: Any]? { get }
     var bodyParameters: Codable? { get }
     var isMultipart: Bool { get }
-    var multipartData: [Moya.MultipartFormData]? { get }  //파일 업로드를 위한 속성
+    var multipartData: [Moya.MultipartFormData]? { get }  // 파일 업로드를 위한 속성
 }
 
 extension BaseTargetType {
@@ -27,7 +27,7 @@ extension BaseTargetType {
         if isMultipart {
             return nil
         }
-        return ["Content-Type": "application/json"]
+        return ["Content-Type": HTTPHeaderConstants.contentTypeJSON]
     }
 
     // 파일 업로드가 없는 요청의 경우 기본값 설정

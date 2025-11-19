@@ -35,7 +35,7 @@ extension VisitorAPI: BaseTargetType {
         }
     }
 
-    var queryParameters: [String : Any]? {
+    var queryParameters: [String: Any]? {
         return nil
     }
 

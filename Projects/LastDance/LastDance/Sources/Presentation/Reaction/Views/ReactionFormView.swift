@@ -16,11 +16,11 @@ struct ReactionFormView: View {
 
     @State private var showCategorySheet = false
 
-    private let placeholder = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
+    private let placeholder = ReactionConstants.messagePlaceholder
     private var hasSelectedEmotion: Bool {
         !viewModel.selectedCategories.isEmpty || !viewModel.selectedTagsName.isEmpty
     }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("반응 남기기")
@@ -50,19 +50,25 @@ struct ReactionFormView: View {
     private var CategoryTag: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 6) {
-                Text("감정 태그")
-                    .bold()
-                    .foregroundColor(Color(red: 0.16, green: 0.16, blue: 0.16))
-
                 if hasSelectedEmotion {
                     Button {
                         router.push(.category)
                     } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.black.opacity(0.6))
+                        HStack(spacing: 6) {
+                            Text("감정 태그")
+                                .bold()
+                                .foregroundColor(LDColor.color1)
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.black.opacity(0.6))
+                        }
                     }
                     .buttonStyle(.plain)
+                } else {
+                    Text("감정 태그")
+                        .bold()
+                        .foregroundColor(LDColor.color1)
                 }
 
                 Spacer()
@@ -77,17 +83,17 @@ struct ReactionFormView: View {
                                 .font(LDFont.regular02)
                                 .multilineTextAlignment(.leading)
                                 .foregroundColor(
-                                    LDColor.black2
+                                    LDColor.color2
                                 )
                                 .lineSpacing(5)
 
                             Spacer()
 
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.system(size: 20, weight: .semibold))
                                 .frame(width: 15, height: 20)
                                 .padding(.vertical, 4)
-                                .foregroundColor(.black.opacity(0.6))
+                                .foregroundColor(LDColor.color2)
                         }
                         .padding(12)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -100,8 +106,11 @@ struct ReactionFormView: View {
                     if !viewModel.selectedCategories.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedCategories).sorted(), id: \.self) { categoryName in
-                                    let category = viewModel.categories.first { $0.name == categoryName }
+                                ForEach(Array(viewModel.selectedCategories).sorted(), id: \.self) {
+                                    categoryName in
+                                    let category = viewModel.categories.first {
+                                        $0.name == categoryName
+                                    }
                                     ReactionTag(
                                         text: categoryName,
                                         color: Color(hex: category?.colorHex ?? "#FFFFFF")
@@ -114,7 +123,8 @@ struct ReactionFormView: View {
                     if !viewModel.selectedTagsName.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedTagsName).sorted(), id: \.self) { tagName in
+                                ForEach(Array(viewModel.selectedTagsName).sorted(), id: \.self) {
+                                    tagName in
                                     ReactionTag(
                                         text: tagName,
                                         color: viewModel.findColorForTag(tagName: tagName)
@@ -128,7 +138,6 @@ struct ReactionFormView: View {
         }
     }
 
-
     @ViewBuilder
     private var MessageEditor: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -137,7 +146,6 @@ struct ReactionFormView: View {
 
             VStack(alignment: .trailing, spacing: 8) {
                 ZStack(alignment: .topLeading) {
-
                     Rectangle()
                         .fill(LDColor.color6)
                         .frame(minHeight: 100, maxHeight: 152)
@@ -183,7 +191,6 @@ struct ReactionFormView: View {
                         .foregroundStyle(.gray)
                 }
             }
-
         }
     }
 }

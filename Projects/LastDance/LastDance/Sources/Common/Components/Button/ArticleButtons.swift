@@ -50,6 +50,7 @@ struct ArticleButtons: View {
                 .cornerRadius(12)
             }
         }
+        .padding(.bottom, 8)
     }
 }
 
@@ -58,11 +59,11 @@ struct ArticleButtons: View {
 /// 작가용 전시 확인 버튼들 (전시중 표시 + 내 전시가 맞아요)
 struct ArtistConfirmationButtons: View {
     let onConfirm: () -> Void
-    
+
     var body: some View {
         HStack(spacing: 8) {
             // 전시중 표시
-            HStack{
+            HStack {
                 Image(systemName: "staroflife.fill")
                     .font(LDFont.regular02)
                     .foregroundColor(LDColor.gray5)
@@ -71,8 +72,7 @@ struct ArtistConfirmationButtons: View {
                     .font(LDFont.regular02)
                     .foregroundColor(LDColor.gray5)
             }
-            .padding(.bottom, 16)
-        Spacer()
+            Spacer()
             // 내 전시가 맞아요 버튼
             Button(action: onConfirm) {
                 HStack(alignment: .center, spacing: 8) {
@@ -86,10 +86,10 @@ struct ArtistConfirmationButtons: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .frame(maxWidth: 160)
                 .background(LDColor.color1)
                 .cornerRadius(12)
             }
         }
+        .padding(.bottom, 8)
     }
 }

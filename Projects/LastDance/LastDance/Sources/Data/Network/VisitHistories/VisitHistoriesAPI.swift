@@ -22,7 +22,7 @@ extension VisitHistoriesAPI: BaseTargetType {
             return "\(APIVersion.version1)/visit-histories/{visit_id}"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
         case .makeVisitHistories:
@@ -31,19 +31,19 @@ extension VisitHistoriesAPI: BaseTargetType {
             return .get
         }
     }
-    
-    var queryParameters: [String : Any]? {
+
+    var queryParameters: [String: Any]? {
         switch self {
         case .getVisitHistories(let visitorId, let exhibitionId):
             return [
                 "visitor_id": visitorId,
-                "exhibition_id": exhibitionId
+                "exhibition_id": exhibitionId,
             ]
         case .makeVisitHistories, .getVisitHistory:
             return nil
         }
     }
-    
+
     var bodyParameters: (any Codable)? {
         switch self {
         case .makeVisitHistories(let dto):
@@ -53,4 +53,3 @@ extension VisitHistoriesAPI: BaseTargetType {
         }
     }
 }
-

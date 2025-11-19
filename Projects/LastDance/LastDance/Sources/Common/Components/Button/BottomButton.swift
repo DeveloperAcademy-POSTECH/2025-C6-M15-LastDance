@@ -18,9 +18,10 @@ struct BottomButton: View {
         self.isEnabled = isEnabled
         self.action = action
     }
-    
+
     var body: some View {
-        Button(action: action,
+        Button(
+            action: action,
             label: {
                 HStack {
                     Text(text)

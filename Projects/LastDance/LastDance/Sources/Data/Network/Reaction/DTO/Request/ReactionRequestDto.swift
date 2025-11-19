@@ -19,7 +19,7 @@ struct ReactionRequestDto: Codable {
         case artworkId = "artwork_id"
         case visitorId = "visitor_id"
         case visitId = "visit_id"
-        case comment = "comment"
+        case comment
         case imageUrl = "image_url"
         case tagIds = "tag_ids"
     }

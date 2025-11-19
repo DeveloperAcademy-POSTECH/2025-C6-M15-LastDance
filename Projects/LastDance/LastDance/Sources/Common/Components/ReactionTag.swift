@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ReactionTag: View {
-    let text: String // 카테고리 태그 제목
-    let color: Color // 카테고리 태그 색상
+    let text: String  // 카테고리 태그 제목
+    let color: Color  // 카테고리 태그 색상
 
     var body: some View {
         HStack(spacing: 8) {

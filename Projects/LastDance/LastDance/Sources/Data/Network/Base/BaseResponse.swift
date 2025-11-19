@@ -13,7 +13,7 @@ struct BaseResponse<T: Decodable>: Decodable {
     let success: Bool
     let message: String?
     let data: T?
-    
+
     enum CodingKeys: String, CodingKey {
         case success
         case message
@@ -22,4 +22,4 @@ struct BaseResponse<T: Decodable>: Decodable {
 }
 
 /// 데이터가 없는 응답
-struct EmptyResponse: Decodable { }
+struct EmptyResponse: Decodable {}

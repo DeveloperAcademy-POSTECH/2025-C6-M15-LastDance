@@ -9,10 +9,10 @@ import Foundation
 import Moya
 
 enum ImageFolder: String {
-    case images = "images"
-    case artworks = "artworks"
-    case exhibitions = "exhibitions"
-    case reactions = "reactions"
+    case images
+    case artworks
+    case exhibitions
+    case reactions
 }
 
 enum ImageAPI {
@@ -31,7 +31,7 @@ extension ImageAPI: BaseTargetType {
         }
     }
 
-    var queryParameters: [String : Any]? {
+    var queryParameters: [String: Any]? {
         switch self {
         case .uploadImage(let folder, _):
             return ["folder": folder.rawValue]
@@ -62,5 +62,3 @@ extension ImageAPI: BaseTargetType {
         }
     }
 }
-
-

@@ -9,12 +9,12 @@ import UIKit
 
 /// Custom Navigation 사용으로 인해 사라진 뒤로가기 제스처 사용을 위한 Extension
 extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
 
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }
 }

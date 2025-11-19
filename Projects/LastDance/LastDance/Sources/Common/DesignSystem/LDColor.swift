@@ -22,14 +22,14 @@ enum LDColor {
     static let color5 = Color.color5
     /// #FFFFFF - Color(.white)
     static let color6 = Color.color6
-    
+
     /// #636363 - Color(red: 0.39, green: 0.39, blue: 0.39)
     static let gray1 = Color.gray1
     /// #C5C5C5 - Color(red: 0.77, green: 0.77, blue: 0.77)
     static let gray2 = Color.gray2
     /// #F3F3F3 - Color(red: 0.95, green: 0.95, blue: 0.95)
     static let gray3 = Color.gray3
-    ///#505050 - Color(red: 0.31, green: 0.31, blue: 0.31)
+    /// #505050 - Color(red: 0.31, green: 0.31, blue: 0.31)
     static let gray4 = Color.gray4
     /// #595959 - Color(red: 0.35, green: 0.35, blue: 0.35)
     static let gray5 = Color.gray5
@@ -41,7 +41,7 @@ enum LDColor {
     static let gray8 = Color.gray8
     /// #A8A8A8 - Color(red: 0.66, green: 0.66, blue: 0.66)
     static let gray9 = Color.gray9
-    
+
     /// #282828 - Color(red: 0.16, green: 0.16, blue: 0.16)
     static let black1 = Color.black1
     /// #2D2D2D - Color(red: 0.45, green: 0.45, blue: 0.45)

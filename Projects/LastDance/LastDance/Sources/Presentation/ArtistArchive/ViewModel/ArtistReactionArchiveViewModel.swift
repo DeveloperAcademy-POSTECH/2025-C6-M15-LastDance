@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 final class ArtistReactionArchiveViewModel: ObservableObject {
-    @Published var artworks: [ArtworkDisplayItem] = [] // Changed type
+    @Published var artworks: [ArtworkDisplayItem] = []  // Changed type
     @Published var isLoading = false
 
     private let exhibitionId: Int
@@ -22,7 +22,7 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
 
     private var exhibition: Exhibition?
     private let reactionAPIService: ReactionAPIServiceProtocol
-    private let artworkAPIService: ArtworkAPIServiceProtocol // Added dependency
+    private let artworkAPIService: ArtworkAPIServiceProtocol  // Added dependency
 
     init(
         exhibitionId: Int,
@@ -33,27 +33,29 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
         self.reactionAPIService = reactionAPIService
         self.artworkAPIService = artworkAPIService
     }
-    
+
     func loadArtworksAndReactions() {
         isLoading = true
         artworks = []
-        
+
         let exhibitionDescriptor = FetchDescriptor<Exhibition>(
             predicate: #Predicate { $0.id == exhibitionId }
         )
         do {
-            exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor).first
+            exhibition = try swiftDataManager.container?.mainContext.fetch(exhibitionDescriptor)
+                .first
         } catch {
             Log.error("Failed SwiftData: \(error.localizedDescription)")
         }
-        
+
         guard let currentExhibition = exhibition else {
             Log.warning("Exhibition not found for id: \(exhibitionId)")
             isLoading = false
             return
         }
-        
-        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) { [weak self] result in
+
+        artworkAPIService.getArtworks(artistId: nil, exhibitionId: exhibitionId) {
+            [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let artworkDtos):
@@ -71,20 +73,29 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
 
                 for artworkDto in artworkDtos {
                     group.enter()
-                    let artworkModel = ArtworkMapper.mapDtoToModel(artworkDto, exhibitionId: exhibitionId)
+                    let artworkModel = ArtworkMapper.mapDtoToModel(
+                        artworkDto, exhibitionId: exhibitionId)
                     self.swiftDataManager.upsertArtwork(artworkModel)
-                    self.reactionAPIService.getReactions(artworkId: artworkDto.id, visitorId: nil, visitId: nil) { reactionResult in
+                    self.reactionAPIService.getReactions(
+                        artworkId: artworkDto.id, visitorId: nil, visitId: nil
+                    ) { reactionResult in
                         var reactionCount = 0
                         switch reactionResult {
                         case .success(let reactions):
                             reactionCount = reactions.count
                             Log.debug("Artwork \(artworkDto.id) has \(reactionCount) reactions.")
                         case .failure(let error):
-                            Log.error("Failed to fetch reactions for artwork \(artworkDto.id): \(error.localizedDescription)")
+                            Log.error(
+                                "Failed to fetch reactions for artwork \(artworkDto.id): \(error.localizedDescription)"
+                            )
                         }
-                        
+
                         lock.lock()
-                        fetchedArtworkDisplayItems.append(ArtworkDisplayItem(id: artworkDto.id, artwork: artworkModel, reactionCount: reactionCount))
+                        fetchedArtworkDisplayItems.append(
+                            ArtworkDisplayItem(
+                                id: artworkDto.id, artwork: artworkModel,
+                                reactionCount: reactionCount
+                            ))
                         lock.unlock()
                         group.leave()
                     }
@@ -99,7 +110,9 @@ final class ArtistReactionArchiveViewModel: ObservableObject {
                 }
 
             case .failure(let error):
-                Log.error("Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)")
+                Log.error(
+                    "Failed to fetch artworks for exhibition \(exhibitionId): \(error.localizedDescription)"
+                )
                 self.isLoading = false
             }
         }

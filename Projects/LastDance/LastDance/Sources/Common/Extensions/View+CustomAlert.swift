@@ -14,15 +14,18 @@ extension View {
         title: String,
         message: String,
         buttonText: String,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
+        cancelAction: (() -> Void)? = nil
     ) -> some View {
-        modifier(CustomAlertModifier(
-            isPresented: isPresented,
-            image: image,
-            title: title,
-            message: message,
-            buttonText: buttonText,
-            action: action
-        ))
+        modifier(
+            CustomAlertModifier(
+                isPresented: isPresented,
+                image: image,
+                title: title,
+                message: message,
+                buttonText: buttonText,
+                action: action,
+                cancelAction: cancelAction
+            ))
     }
 }

@@ -11,7 +11,7 @@ struct CaptureConfirmView: View {
     @EnvironmentObject private var router: NavigationRouter
     let imageData: Data
     let exhibitionId: Int
-    
+
     private var image: UIImage? {
         UIImage(data: imageData)
     }
@@ -22,7 +22,7 @@ struct CaptureConfirmView: View {
         // 버튼 높이를 계산하기 위한 GeometryReader
         GeometryReader { geo in
             let safeBottom = geo.safeAreaInsets.bottom
-            
+
             // 버튼 높이 계산
             let buttonsBlockHeight: CGFloat = 82 + 24 + safeBottom
 
@@ -40,7 +40,7 @@ struct CaptureConfirmView: View {
                                 .frame(width: geo.size.width)
                                 .clipped()
                                 .padding(.top, 45)
-                                
+
                             ZStack {
                                 Button {
                                     viewModel.uploadImage(image)
@@ -67,13 +67,13 @@ struct CaptureConfirmView: View {
                             }
                             .padding(.top, 24)
                             .padding(.bottom, 24)
-                            
+
                             Color.clear.frame(height: safeBottom)
                         }
                         .frame(maxWidth: .infinity)
                     }
                     .ignoresSafeArea(.all, edges: .bottom)
-                    
+
                 } else {
                     Text("이미지를 불러올 수 없습니다.")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -82,7 +82,8 @@ struct CaptureConfirmView: View {
         }
         .onChange(of: viewModel.uploadedImageUrl) { _, newUrl in
             if newUrl != nil, let image = image {
-                router.push(.inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
+                router.push(
+                    .inputArtworkInfo(image: image, exhibitionId: exhibitionId, artistId: nil))
             }
         }
         .alert("업로드 실패", isPresented: .constant(viewModel.errorMessage != nil)) {

@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: TotalExhibitionResponseDto
+
 struct TotalExhibitionResponseDto: Codable, ExhibitionDtoMappableProtocol {
     let id: Int
     let title: String

@@ -27,9 +27,11 @@ struct TagSelectView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    ForEach(viewModel.categories.filter {
-                        viewModel.selectedCategoryIds.contains($0.id)
-                    }) { category in
+                    ForEach(
+                        viewModel.categories.filter {
+                            viewModel.selectedCategoryIds.contains($0.id)
+                        }
+                    ) { category in
                         HStack(spacing: 8) {
                             CheckCircleCategoryView(isSelected: true, category: category)
                         }
@@ -57,7 +59,6 @@ struct TagSelectView: View {
                     return false
                 }
             }
-            .padding(.bottom, 10)
         }
         .background(Color(red: 0.95, green: 0.95, blue: 0.95))
         .navigationBarTitleDisplayMode(.inline)

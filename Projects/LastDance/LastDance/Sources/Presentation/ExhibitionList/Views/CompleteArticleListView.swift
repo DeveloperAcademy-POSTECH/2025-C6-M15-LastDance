@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-//MARK: - CompleteArticleListInfoView
+// MARK: - CompleteArticleListInfoView
+
 struct CompleteArticleListInfoView: View {
-    @ObservedObject var viewModel: CompleteArticleListViewModel       // 주입받음
+    @ObservedObject var viewModel: CompleteArticleListViewModel  // 주입받음
 
     var body: some View {
         VStack(spacing: 28) {
@@ -40,7 +41,7 @@ struct CompleteArticleListFindButtonView: View {
 
 struct CompleteArticleListView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel = CompleteArticleListViewModel() //최상위 위치
+    @StateObject private var viewModel = CompleteArticleListViewModel()  // 최상위 위치
     @State private var showNotFoundAlert = false
 
     let selectedExhibitionId: Int
@@ -52,15 +53,15 @@ struct CompleteArticleListView: View {
 
             TitleSection(title: "어떤 작가님이신가요?", subtitle: nil)
 
-            CompleteArticleListInfoView(viewModel: viewModel)   //실제 주입
+            CompleteArticleListInfoView(viewModel: viewModel)  // 실제 주입
                 .padding(.top, 14)
 
             Spacer()
 
-            CompleteArticleListFindButtonView(viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
+            CompleteArticleListFindButtonView(
+                viewModel: viewModel, showNotFoundAlert: $showNotFoundAlert)
         }
         .padding(.top, 18)
-        .padding(.bottom, 34)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomNavigationBar(title: "전시찾기") {
@@ -92,7 +93,7 @@ struct InfoRow: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
                 .font(LDFont.regular02)
-                .foregroundStyle(.black)
+                .foregroundColor(LDColor.color2)
 
             Text(value)
                 .font(LDFont.regular01)
@@ -102,7 +103,11 @@ struct InfoRow: View {
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(LDColor.gray3)
+                        .fill(LDColor.color5)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(LDColor.gray3, lineWidth: 1)
                 )
         }
     }

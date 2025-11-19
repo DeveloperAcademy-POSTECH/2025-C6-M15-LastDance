@@ -1,5 +1,5 @@
 //
-//  MockDataSeeder.swift
+//  MockDataLoader.swift
 //  LastDance
 //
 //  Created by 배현진 on 10/9/25.
@@ -13,89 +13,109 @@ enum MockDataLoader {
     /// 필요 시점에 한번만 시드 추가
     static func seedIfNeeded(container: ModelContainer) {
         #if DEBUG
-        guard UserDefaults.standard.bool(forKey: .seed) == false else { return }
-        let context = container.mainContext
+            guard UserDefaults.standard.bool(forKey: .seed) == false else { return }
+            let context = container.mainContext
 
-        let venue = createVenue()
-        let artists = createArtists()
-        let exhibitions = createExhibition(venueId: venue.id)
-        let artworks = createArtworks(exhibitionId: exhibitions[0].id, artists: artists)
-        let visitor = Visitor(id: 0, uuid: "aaaaa")
-        let (capture, reaction) = createCaptureAndReaction(artworkId: artworks[0].id, visitorId: visitor.id)
+            let venue = createVenue()
+            let artists = createArtists()
+            let exhibitions = createExhibition(venueId: venue.id)
+            let artworks = createArtworks(exhibitionId: exhibitions[0].id, artists: artists)
+            let visitor = Visitor(id: 0, uuid: "aaaaa")
+            let (capture, reaction) = createCaptureAndReaction(
+                artworkId: artworks[0].id, visitorId: visitor.id
+            )
 
-        // 샘플 Artworks
-        let artwork1 = Artwork(
-            id: 11,
-            exhibitionId: exhibitions[0].id,
-            title: "Light #1",
-            artistId: artists[0].id,
-            thumbnailURL: "mock_artworkImage_01"
-        )
-        let artwork2 = Artwork(
-            id: 12,
-            exhibitionId: exhibitions[0].id,
-            title: "Light #2",
-            artistId: artists[0].id,
-            thumbnailURL: "mock_artworkImage_02"
-        )
-        exhibitions[0].artworks = [artwork1, artwork2]
+            // 샘플 Artworks
+            let artwork1 = Artwork(
+                id: 11,
+                exhibitionId: exhibitions[0].id,
+                title: "Light #1",
+                artistId: artists[0].id,
+                thumbnailURL: "mock_artworkImage_01"
+            )
+            let artwork2 = Artwork(
+                id: 12,
+                exhibitionId: exhibitions[0].id,
+                title: "Light #2",
+                artistId: artists[0].id,
+                thumbnailURL: "mock_artworkImage_02"
+            )
+            exhibitions[0].artworks = [artwork1, artwork2]
 
-        // 임시 캡처/반응 (6개의 캡처 생성)
-        let capture1 = CapturedArtwork(
-            id: 2,
-            artworkId: artwork1.id,
-            localImagePath: "file:///tmp/mock1.jpg",
-            createdAt: .now.addingTimeInterval(-300)
-        )
-        let capture2 = CapturedArtwork(
-            id: 3,
-            artworkId: artwork1.id,
-            localImagePath: "mock_artworkImage_01",
-            createdAt: .now.addingTimeInterval(-200)
-        )
-        let capture3 = CapturedArtwork(
-            id: 4,
-            artworkId: artwork2.id,
-            localImagePath: "mock_artworkImage_02",
-            createdAt: .now.addingTimeInterval(-100)
-        )
-        context.insert(artwork1); context.insert(artwork2)
-        context.insert(capture1)
-        context.insert(capture2)
-        context.insert(capture3)
-        
-        setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
-        insertAllData(context: context, venue: venue, artists: artists, exhibitions: exhibitions,
-                     artworks: artworks, visitor: visitor, capture: capture, reaction: reaction)
+            // 임시 캡처/반응 (6개의 캡처 생성)
+            let capture1 = CapturedArtwork(
+                id: 2,
+                artworkId: artwork1.id,
+                localImagePath: "file:///tmp/mock1.jpg",
+                createdAt: .now.addingTimeInterval(-300)
+            )
+            let capture2 = CapturedArtwork(
+                id: 3,
+                artworkId: artwork1.id,
+                localImagePath: "mock_artworkImage_01",
+                createdAt: .now.addingTimeInterval(-200)
+            )
+            let capture3 = CapturedArtwork(
+                id: 4,
+                artworkId: artwork2.id,
+                localImagePath: "mock_artworkImage_02",
+                createdAt: .now.addingTimeInterval(-100)
+            )
+            context.insert(artwork1)
+            context.insert(artwork2)
+            context.insert(capture1)
+            context.insert(capture2)
+            context.insert(capture3)
 
-        do {
-            try context.save()
-            UserDefaults.standard.set(true, forKey: .seed)
-            Log.debug("DEV seed completed.")
-        } catch {
-            Log.debug("DEV seed failed: \(error)")
-        }
+            setupRelationships(visitor: visitor, reaction: reaction, artist: artists[0])
+            insertAllData(
+                context: context, venue: venue, artists: artists, exhibitions: exhibitions,
+                artworks: artworks, visitor: visitor, capture: capture, reaction: reaction
+            )
+
+            do {
+                try context.save()
+                UserDefaults.standard.set(true, forKey: .seed)
+                Log.debug("DEV seed completed.")
+            } catch {
+                Log.debug("DEV seed failed: \(error)")
+            }
         #endif
     }
 
     private static func createVenue() -> Venue {
-        Venue(id: 1, name: "Seoul Museum", address: "Seoul",
-              geoLat: 37.5665, geoLon: 126.9780)
+        Venue(
+            id: 1, name: "Seoul Museum", address: "Seoul",
+            geoLat: 37.5665, geoLon: 126.9780
+        )
     }
 
     static func createArtists() -> [Artist] {
         [
-            Artist(id: 1, uuid: UUID().uuidString, name: "김민준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 2, uuid: UUID().uuidString, name: "박서연", exhibitions: [3], receivedReactions: []),
-            Artist(id: 3, uuid: UUID().uuidString, name: "이도윤", exhibitions: [3], receivedReactions: []),
-            Artist(id: 4, uuid: UUID().uuidString, name: "공지우", exhibitions: [3], receivedReactions: []),
-            Artist(id: 5, uuid: UUID().uuidString, name: "서예준", exhibitions: [3], receivedReactions: []),
-            Artist(id: 6, uuid: UUID().uuidString, name: "최하은", exhibitions: [3], receivedReactions: []),
-            Artist(id: 7, uuid: UUID().uuidString, name: "정우진", exhibitions: [3], receivedReactions: [])
+            Artist(
+                id: 1, uuid: UUID().uuidString, name: "김민준", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 2, uuid: UUID().uuidString, name: "박서연", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 3, uuid: UUID().uuidString, name: "이도윤", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 4, uuid: UUID().uuidString, name: "공지우", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 5, uuid: UUID().uuidString, name: "서예준", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 6, uuid: UUID().uuidString, name: "최하은", exhibitions: [3], receivedReactions: []
+            ),
+            Artist(
+                id: 7, uuid: UUID().uuidString, name: "정우진", exhibitions: [3], receivedReactions: []
+            ),
         ]
     }
 
-    
     private static func createExhibition(venueId: Int) -> [Exhibition] {
         let isoFormatter = ISO8601DateFormatter()
 
@@ -143,10 +163,9 @@ enum MockDataLoader {
                 coverImageName: "mock_artworkImage_01",
                 createdAt: isoFormatter.string(from: Date()),
                 updatedAt: nil
-            )
+            ),
         ]
     }
-
 
     private static func createArtworks(exhibitionId: Int, artists: [Artist]) -> [Artwork] {
         let artworkData: [(Int, String, Int)] = [
@@ -159,21 +178,30 @@ enum MockDataLoader {
             (7, "기억의 잔향", artists[5].id),
             (8, "침묵의 시", artists[6].id),
             (9, "꿈의 여정", artists[0].id),
-            (10, "빛나는 그림자", artists[1].id)
+            (10, "빛나는 그림자", artists[1].id),
         ]
 
         return artworkData.map { data in
-            Artwork(id: data.0, exhibitionId: exhibitionId, title: data.1,
-                   artistId: data.2, thumbnailURL: "mock_artworkImage_\(String(format: "%02d", data.0))")
+            Artwork(
+                id: data.0, exhibitionId: exhibitionId, title: data.1,
+                artistId: data.2,
+                thumbnailURL: "mock_artworkImage_\(String(format: "%02d", data.0))"
+            )
         }
     }
 
     private static func createCaptureAndReaction(artworkId: Int, visitorId: Int)
-        -> (CapturedArtwork, Reaction) {
-        let capture = CapturedArtwork(id: 200, artworkId: artworkId,
-                                     localImagePath: "file:///tmp/mock1.jpg", createdAt: .now)
-        let reaction = Reaction(id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
-                               tags: [ReactionTagInfo(name: "좋아요", colorHex: "#FF0000")], comment: "빛이 멋져요", createdAt: "")
+        -> (CapturedArtwork, Reaction)
+    {
+        let capture = CapturedArtwork(
+            id: 200, artworkId: artworkId,
+            localImagePath: "file:///tmp/mock1.jpg", createdAt: .now
+        )
+        let reaction = Reaction(
+            id: UUID().uuidString, artworkId: artworkId, visitorId: visitorId,
+            tags: [ReactionTagInfo(name: "좋아요", colorHex: "#FF0000")], comment: "빛이 멋져요",
+            createdAt: ""
+        )
         return (capture, reaction)
     }
 
@@ -182,9 +210,11 @@ enum MockDataLoader {
         artist.receivedReactions.append(reaction)
     }
 
-    private static func insertAllData(context: ModelContext, venue: Venue, artists: [Artist],
-                                     exhibitions: [Exhibition], artworks: [Artwork], visitor: Visitor,
-                                     capture: CapturedArtwork, reaction: Reaction) {
+    private static func insertAllData(
+        context: ModelContext, venue: Venue, artists: [Artist],
+        exhibitions: [Exhibition], artworks: [Artwork], visitor: Visitor,
+        capture: CapturedArtwork, reaction: Reaction
+    ) {
         context.insert(venue)
         artists.forEach { context.insert($0) }
         exhibitions.forEach { context.insert($0) }
@@ -192,7 +222,7 @@ enum MockDataLoader {
         context.insert(visitor)
         context.insert(capture)
         context.insert(reaction)
-        
+
         do {
             try context.save()
             UserDefaults.standard.set(true, forKey: .seed)
@@ -205,25 +235,25 @@ enum MockDataLoader {
     /// 초기화가 필요할 때 전체 삭제 (개발용)
     static func wipeAll(container: ModelContainer) {
         #if DEBUG
-        let ctx = container.mainContext
-        _ = try? ctx.delete(model: Exhibition.self)
-        _ = try? ctx.delete(model: Artwork.self)
-        _ = try? ctx.delete(model: Artist.self)
-        _ = try? ctx.delete(model: Venue.self)
-        _ = try? ctx.delete(model: Visitor.self)
-        _ = try? ctx.delete(model: CapturedArtwork.self)
-        _ = try? ctx.delete(model: Reaction.self)
-        _ = try? ctx.delete(model: IdentificatedArtwork.self)
-        try? ctx.save()
-        UserDefaults.standard.set(false, forKey: .seed)
-        Log.debug("🧹 wiped all & seed flag reset")
+            let ctx = container.mainContext
+            _ = try? ctx.delete(model: Exhibition.self)
+            _ = try? ctx.delete(model: Artwork.self)
+            _ = try? ctx.delete(model: Artist.self)
+            _ = try? ctx.delete(model: Venue.self)
+            _ = try? ctx.delete(model: Visitor.self)
+            _ = try? ctx.delete(model: CapturedArtwork.self)
+            _ = try? ctx.delete(model: Reaction.self)
+            _ = try? ctx.delete(model: IdentificatedArtwork.self)
+            try? ctx.save()
+            UserDefaults.standard.set(false, forKey: .seed)
+            Log.debug("🧹 wiped all & seed flag reset")
         #endif
     }
 }
 
-private extension ModelContext {
+extension ModelContext {
     /// 모든 레코드 삭제 유틸 (개발용)
-    func delete<T: PersistentModel>(model: T.Type) throws -> Int {
+    fileprivate func delete<T: PersistentModel>(model _: T.Type) throws -> Int {
         let items = try fetch(FetchDescriptor<T>())
         items.forEach { delete($0) }
         try save()

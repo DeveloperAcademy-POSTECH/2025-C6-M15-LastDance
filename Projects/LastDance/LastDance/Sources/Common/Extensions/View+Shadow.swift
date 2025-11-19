@@ -13,6 +13,7 @@ extension View {
             color: shadow.color,
             radius: shadow.radius,
             x: shadow.positionX,
-            y: shadow.positionY)
+            y: shadow.positionY
+        )
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Logger.swift
+//  Log.swift
 //  CodePlay
 //
 //  Created by 아우신얀 on 8/11/25.
@@ -8,14 +8,14 @@
 import Foundation
 import os.log
 
-struct Log {
+enum Log {
     /// # Level
     /// - debug : 디버깅 로그
     /// - info : 시스템 상태 파악 로그
     /// - warning: 경고에 대한 정보 기록
     /// - fault : 실행 중 발생하는 버그
     /// - error :  심각한 오류
-    
+
     enum Level {
         case debug
         case info
@@ -54,36 +54,37 @@ struct Log {
         }
     }
 
-    static private func log(
+    private static func log(
         _ message: Any,
         level: Level,
         file: String,
         function: String
     ) {
         #if DEBUG
-        let logger = Logger(
-            subsystem: OSLog.subsystem,
-            category: level.category
-        )
+            let logger = Logger(
+                subsystem: OSLog.subsystem,
+                category: level.category
+            )
 
-        let logMessage = "\(level.category): [\(file)] \(function) -> \(message)"
-        switch level {
-        case .debug:
-            logger.debug("\(logMessage, privacy: .public)")
-        case .info:
-            logger.info("\(logMessage, privacy: .public)")
-        case .warning:
-            logger.warning("\(logMessage, privacy: .private)")
-        case .fault:
-            logger.log("\(logMessage, privacy: .private)")
-        case .error:
-            logger.error("\(logMessage, privacy: .private)")
-        }
+            let logMessage = "\(level.category): [\(file)] \(function) -> \(message)"
+            switch level {
+            case .debug:
+                logger.debug("\(logMessage, privacy: .public)")
+            case .info:
+                logger.info("\(logMessage, privacy: .public)")
+            case .warning:
+                logger.warning("\(logMessage, privacy: .private)")
+            case .fault:
+                logger.log("\(logMessage, privacy: .private)")
+            case .error:
+                logger.error("\(logMessage, privacy: .private)")
+            }
         #endif
     }
 }
 
 // MARK: - extension
+
 extension OSLog {
     static let subsystem = Bundle.main.bundleIdentifier!
     static let fault = OSLog(subsystem: subsystem, category: "Fault")

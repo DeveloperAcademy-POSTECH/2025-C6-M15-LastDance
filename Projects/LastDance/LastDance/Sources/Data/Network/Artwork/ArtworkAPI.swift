@@ -22,7 +22,7 @@ extension ArtworkAPI: BaseTargetType {
             return "\(APIVersion.version1)/artworks/\(artworkId)"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
         case .getArtworks, .getArtworkDetail:
@@ -31,8 +31,8 @@ extension ArtworkAPI: BaseTargetType {
             return .post
         }
     }
-    
-    var queryParameters: [String : Any]? {
+
+    var queryParameters: [String: Any]? {
         switch self {
         case .getArtworks(let artistId, let exhibitionId):
             var params: [String: Any] = [:]
@@ -47,7 +47,7 @@ extension ArtworkAPI: BaseTargetType {
             return nil
         }
     }
-    
+
     var bodyParameters: Codable? {
         switch self {
         case .getArtworks, .getArtworkDetail:
@@ -57,5 +57,3 @@ extension ArtworkAPI: BaseTargetType {
         }
     }
 }
-
-

@@ -10,13 +10,23 @@ import Moya
 import SwiftData
 
 // MARK: ArtworkAPIServiceProtocol
+
 protocol ArtworkAPIServiceProtocol {
-    func getArtworks(artistId: Int?, exhibitionId: Int?, completion: @escaping (Result<[ArtworkDetailResponseDto], Error>) -> Void)
-    func getArtworkDetail(artworkId: Int, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void)
-    func makeArtwork(dto: MakeArtworkRequestDto, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void)
+    func getArtworks(
+        artistId: Int?, exhibitionId: Int?,
+        completion: @escaping (Result<[ArtworkDetailResponseDto], Error>) -> Void
+    )
+    func getArtworkDetail(
+        artworkId: Int, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
+    )
+    func makeArtwork(
+        dto: MakeArtworkRequestDto,
+        completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
+    )
 }
 
 // MARK: ArtworkAPIService
+
 final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     private let provider: MoyaProvider<ArtworkAPI>
 
@@ -25,8 +35,13 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     }
 
     /// 작품 목록 조회하기 함수
-    func getArtworks(artistId: Int?, exhibitionId: Int?, completion: @escaping (Result<[ArtworkDetailResponseDto], Error>) -> Void) {
-        Log.debug("요청 파라미터 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))")
+    func getArtworks(
+        artistId: Int?, exhibitionId: Int?,
+        completion: @escaping (Result<[ArtworkDetailResponseDto], Error>) -> Void
+    ) {
+        Log.debug(
+            "요청 파라미터 - artistId: \(String(describing: artistId)), exhibitionId: \(String(describing: exhibitionId))"
+        )
 
         provider.request(.getArtworks(artistId: artistId, exhibitionId: exhibitionId)) { result in
             switch result {
@@ -35,16 +50,19 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("서버 응답: \(jsonString)")
                     }
-                    let artworks = try JSONDecoder().decode([ArtworkDetailResponseDto].self, from: response.data)
+                    let artworks = try JSONDecoder().decode(
+                        [ArtworkDetailResponseDto].self, from: response.data
+                    )
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
-                        artworks.forEach { dto in
-                        let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
-                        SwiftDataManager.shared.insert(artwork)
-                    }
-                    SwiftDataManager.shared.saveContext() // 명시적으로 저장
-                    Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
+                        for dto in artworks {
+                            let artwork = ArtworkMapper.mapDtoToModel(
+                                dto, exhibitionId: exhibitionId)
+                            SwiftDataManager.shared.insert(artwork)
+                        }
+                        SwiftDataManager.shared.saveContext()  // 명시적으로 저장
+                        Log.debug("로컬 저장 완료 - \(artworks.count)개 작품")
                     }
 
                     completion(.success(artworks))
@@ -54,8 +72,12 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
+                {
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("API 요청 실패: \(error)")
@@ -65,7 +87,9 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     }
 
     /// 작품 상세 조회하기 함수
-    func getArtworkDetail(artworkId: Int, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void) {
+    func getArtworkDetail(
+        artworkId: Int, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
+    ) {
         Log.debug("작품 상세 조회 - artworkId: \(artworkId)")
 
         provider.request(.getArtworkDetail(artworkId: artworkId)) { result in
@@ -75,7 +99,8 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("작품 상세 조회 응답: \(jsonString)")
                     }
-                    let artwork = try JSONDecoder().decode(ArtworkDetailResponseDto.self, from: response.data)
+                    let artwork = try JSONDecoder().decode(
+                        ArtworkDetailResponseDto.self, from: response.data)
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -91,8 +116,12 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
+                {
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 상세 조회 API 요청 실패: \(error)")
@@ -102,7 +131,10 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
     }
 
     /// 작품 생성하기 함수
-    func makeArtwork(dto: MakeArtworkRequestDto, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void) {
+    func makeArtwork(
+        dto: MakeArtworkRequestDto,
+        completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
+    ) {
         Log.debug("작품 생성 - title: \(dto.title), artistId: \(dto.artist_id)")
 
         provider.request(.makeArtwork(dto: dto)) { result in
@@ -112,7 +144,8 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("작품 생성 응답: \(jsonString)")
                     }
-                    let artwork = try JSONDecoder().decode(ArtworkDetailResponseDto.self, from: response.data)
+                    let artwork = try JSONDecoder().decode(
+                        ArtworkDetailResponseDto.self, from: response.data)
 
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
@@ -128,8 +161,12 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                 }
             case .failure(let error):
                 if let response = error.response,
-                   let validationError = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(separator: ", ")
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
+                {
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 생성 API 요청 실패: \(error)")

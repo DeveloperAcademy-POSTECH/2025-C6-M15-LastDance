@@ -5,8 +5,8 @@
 //  Created by donghee on 10/21/25.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct ArtistExhibitionPreviewCard: View {
     let exhibition: Exhibition
@@ -21,13 +21,12 @@ struct ArtistExhibitionPreviewCard: View {
             ArtistExhibitionPreviewInfo(
                 title: exhibition.title,
                 artistNames: artistNames,
-                dateRange: Date.formatShortDateRange(start: exhibition.startDate, end: exhibition.endDate),
+                dateRange: Date.formatShortDateRange(
+                    start: exhibition.startDate, end: exhibition.endDate),
                 onConfirm: onConfirm
             )
             .padding(.horizontal, 12)
-
         }
-        .frame(maxWidth: .infinity)
         .background(.white)
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 0)
@@ -35,6 +34,7 @@ struct ArtistExhibitionPreviewCard: View {
 }
 
 // MARK: - ArtistExhibitionPreviewImage
+
 struct ArtistExhibitionPreviewImage: View {
     let imageName: String?
 
@@ -79,8 +79,8 @@ struct ArtistExhibitionPreviewImage: View {
                                     .font(.system(size: 40))
                                     .foregroundColor(.gray)
                                 Text("이미지 없음")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
+                                    .font(LDFont.medium05)
+                                    .foregroundColor(LDColor.color2)
                             }
                         )
                 @unknown default:
@@ -124,37 +124,35 @@ struct ArtistExhibitionPreviewInfo: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            // 전시 정보
-            VStack(alignment: .leading, spacing: 8) {
-                Text(title)
-                    .font(LDFont.heading04)
-                    .foregroundColor(LDColor.color1)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            exhibitionInfoSection
+            ArtistConfirmationButtons(onConfirm: onConfirm)
+        }
+        .padding(.vertical, 14)
+    }
 
-                if !artistNames.isEmpty {
-                    Text(artistNames.joined(separator: ", "))
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.gray4)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
+    private var exhibitionInfoSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
 
-                Text(dateRange)
+            if !artistNames.isEmpty {
+                Text(artistNames.joined(separator: ", "))
                     .font(LDFont.regular02)
-                    .foregroundColor(LDColor.gray4)
+                    .foregroundColor(LDColor.color3)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                Rectangle()
-                    .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
-                    .frame(height: 0.5)
-                    .foregroundColor(LDColor.gray3)
             }
-            .padding(.top, 14)
 
-            // 액션 버튼들
-            ArtistConfirmationButtons(
-                onConfirm: onConfirm
-            )
-            .padding(.bottom, 14)
+            Text(dateRange)
+                .font(LDFont.regular02)
+                .foregroundColor(LDColor.color3)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+
+            Rectangle()
+                .stroke(style: StrokeStyle(lineWidth: 0.5, dash: [4]))
+                .frame(height: 0.5)
+                .foregroundColor(LDColor.gray3)
         }
     }
 }
