@@ -36,7 +36,7 @@ struct ArticleListSearchTextField: View {
             // 엔터를 눌렀을 때 필터링된 작가 중 첫 번째 항목 선택
             if let firstArtist = viewModel.filteredArtists.first {
                 viewModel.selectArtist(firstArtist)
-                viewModel.searchText = firstArtist.name
+                // searchText는 여기서 설정하지 않고, 선택 후에 자동으로 업데이트되도록 함
                 isFocused = false
             }
         }
@@ -44,10 +44,17 @@ struct ArticleListSearchTextField: View {
             if !newValue.isEmpty {
                 isFocused = true
             }
-            // 텍스트가 변경되면 선택된 작가 초기화
-            if viewModel.selectedArtistName != newValue {
+            // 사용자가 직접 텍스트를 수정하는 경우에만 선택 초기화
+            // 이미 선택된 작가명과 다를 때만 초기화
+            if !viewModel.selectedArtistName.isEmpty && viewModel.selectedArtistName != newValue {
                 viewModel.selectedArtistId = nil
                 viewModel.selectedArtistName = ""
+            }
+        }
+        .onChange(of: viewModel.selectedArtistName) { newName in
+            // 작가가 선택되면 searchText를 작가 이름으로 설정
+            if !newName.isEmpty {
+                viewModel.searchText = newName
             }
         }
     }
