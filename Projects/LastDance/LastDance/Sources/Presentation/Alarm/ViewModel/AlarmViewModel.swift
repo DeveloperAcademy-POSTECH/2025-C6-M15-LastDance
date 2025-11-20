@@ -10,6 +10,7 @@ import SwiftUI
 @MainActor
 final class AlarmViewModel: ObservableObject {
     @Published var notifications: [NotificationItem] = []
+    @Published var unreadCount: Int = 0
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -20,7 +21,7 @@ final class AlarmViewModel: ObservableObject {
     }
 
     var hasNotifications: Bool {
-        return !notifications.isEmpty
+        return unreadCount > 0
     }
 
     /// 알림 목록 조회
@@ -47,6 +48,23 @@ final class AlarmViewModel: ObservableObject {
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     Log.error("알림 목록 로드 실패: \(error)")
+                }
+            }
+        }
+    }
+
+    /// 읽지 않은 알림 개수 조회
+    func loadUnreadCount(uuid: String) {
+        apiService.getUnreadNotificationCount(uuid: uuid) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let responseDto):
+                    self.unreadCount = responseDto.count
+                    Log.debug("읽지 않은 알림 개수: \(responseDto.count)개")
+                case .failure(let error):
+                    Log.error("읽지 않은 알림 개수 조회 실패: \(error)")
                 }
             }
         }

@@ -56,7 +56,8 @@ struct NavigationHeader: View {
                 return
             }
 
-            alarmViewModel.loadNotifications(uuid: uuid, userType: userType)
+            // 읽지 않은 알림 개수 조회
+            alarmViewModel.loadUnreadCount(uuid: uuid)
         }
     }
 }
