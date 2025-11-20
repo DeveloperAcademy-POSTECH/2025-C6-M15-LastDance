@@ -150,7 +150,7 @@ final class ClipArtReactionViewModel: ObservableObject, SendThrottleHandler {
                 visitId: visitId,
                 comment: message.isEmpty ? nil : message,
                 imageData: nil,
-                tagIds: nil
+                tagIds: []
             )
             
             try await reactionService.createReaction(dto: dto)

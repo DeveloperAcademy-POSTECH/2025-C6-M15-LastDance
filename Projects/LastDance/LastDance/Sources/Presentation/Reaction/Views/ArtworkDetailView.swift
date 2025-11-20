@@ -58,10 +58,6 @@ struct ArtworkDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButton {
-                    viewModel.selectedCategories = []
-                    viewModel.selectedCategoryIds = []
-                    viewModel.selectedTagIds = []
-                    viewModel.selectedTagsName = []
                     router.popLast()
                 }
             }
