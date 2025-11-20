@@ -96,6 +96,7 @@ struct ResponseContentView: View {
                             )
                         }
                     }
+                    .disabled(showEmojiPopup)
                     .background(LDColor.color5)
 
                     // 스크롤뷰 상단 블러 효과

@@ -173,6 +173,43 @@ extension SwiftDataManager {
         //        printAllArtworks()
     }
 
+    /// Invitation 저장 - 중복 방지
+    func upsertInvitation(_ newValue: Invitation) {
+        let all = fetchAll(Invitation.self)
+        if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.exhibitionId = newValue.exhibitionId
+            existing.exhibitionTitle = newValue.exhibitionTitle
+            existing.artistName = newValue.artistName
+            existing.venueName = newValue.venueName
+            existing.venueAddress = newValue.venueAddress
+            existing.startDate = newValue.startDate
+            existing.endDate = newValue.endDate
+            existing.coverImageName = newValue.coverImageName
+            existing.invitationMessage = newValue.invitationMessage
+            existing.visitorCount = newValue.visitorCount
+            existing.createdAt = newValue.createdAt
+            existing.deepLink = newValue.deepLink
+            existing.appStoreLink = newValue.appStoreLink
+            Log.debug("기존 초대장 업데이트 - id: \(newValue.id)")
+        } else {
+            insert(newValue)
+            Log.debug("새 초대장 추가 - id: \(newValue.id)")
+        }
+        saveContext()
+        Log.debug("초대장 저장 완료 - 현재 총 \(fetchAll(Invitation.self).count)개")
+    }
+
+    /// Invitation 삭제
+    func deleteInvitation(id: Int) {
+        let invitations = fetchAll(Invitation.self)
+        if let invitation = invitations.first(where: { $0.id == id }) {
+            delete(invitation)
+            Log.debug("초대장 삭제 완료 - id: \(id)")
+        } else {
+            Log.error("초대장을 찾을 수 없음 - id: \(id)")
+        }
+    }
+
     /// 전체 Venue 확인용 출력문
     //    func printAllVenues() {
     //        let venues = SwiftDataManager.shared.fetchAll(Venue.self)

@@ -12,6 +12,7 @@ struct RootView: View {
     @StateObject private var reactionInputViewModel = ReactionInputViewModel()
     @StateObject private var identitySelectionViewModel = IdentitySelectionViewModel()
     @State private var userType: UserType?
+    @State private var showLaunchScreen: Bool = true
 
     init() {
         var initialUserType: UserType?
@@ -22,6 +23,31 @@ struct RootView: View {
     }
 
     var body: some View {
+        ZStack {
+            // 메인 뷰 플로우
+            mainContent
+                .opacity(showLaunchScreen ? 0 : 1)
+
+            // 런치스크린
+            if showLaunchScreen {
+                LaunchScreenView()
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                withAnimation(.easeOut(duration: 0.4)) {
+                    showLaunchScreen = false
+                }
+            }
+        }
+        .environmentObject(router)
+        .environmentObject(reactionInputViewModel)
+        .environmentObject(identitySelectionViewModel)
+    }
+
+    private var mainContent: some View {
         NavigationStack(path: $router.path) {
             Group {
                 if let userType = userType {
@@ -120,11 +146,30 @@ struct RootView: View {
                 case .alarmList(let userType):
                     AlarmListView(userType: userType)
                         .navigationBarBackButtonHidden(true)
+                case .createInvitation:
+                    CreateInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .selectExhibitionForInvitation:
+                    SelectExhibitionForInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .invitationDetail(let exhibition):
+                    InvitationDetailView(exhibition: exhibition)
+                        .navigationBarBackButtonHidden(true)
+                case .invitationShare(let invitation):
+                    CreatedInvitationView(invitation: invitation)
+                        .navigationBarBackButtonHidden(true)
+                case .receivedInvitation(let invitationCode):
+                    ReceivedInvitationView(invitationCode: invitationCode)
+                        .navigationBarBackButtonHidden(false)
                 }
             }
         }
         .environmentObject(router)
         .environmentObject(reactionInputViewModel)
         .environmentObject(identitySelectionViewModel)
+        .onOpenURL { url in
+            Log.debug("딥링크 수신: \(url.absoluteString)")
+            router.handleDeepLink(url)
+        }
     }
 }

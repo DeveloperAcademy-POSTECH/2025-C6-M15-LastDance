@@ -95,6 +95,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                         name: dto.name
                     )
                     self.dataManager.insert(visitor)
+
+                    // visitor 생성 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
                         let data = moyaError.response?.data,
@@ -141,19 +144,28 @@ final class IdentitySelectionViewModel: ObservableObject {
                     )
 
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
-                    UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
 
-                    // 저장 직후 확인
-                    if let savedUUID = UserDefaults.standard.string(
-                        forKey: UserDefaultsKey.artistUUID.rawValue)
-                    {
-                        Log.debug("Verification: artistUUID saved correctly: '\(savedUUID)'")
+                    // UUID가 비어있지 않을 때만 저장
+                    if !dto.uuid.isEmpty {
+                        UserDefaults.standard.set(
+                            dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
+                        Log.debug(
+                            "Artist login successful. id=\(dto.id), uuid=\(dto.uuid), name=\(dto.name)"
+                        )
                     } else {
-                        Log.error("Verification failed: artistUUID not saved!")
+                        Log.error("⚠️ 서버에서 받은 artistUUID가 비어있습니다! dto.uuid: '\(dto.uuid)'")
+                        self.errorMessage = "작가 UUID가 유효하지 않습니다. 관리자에게 문의하세요."
+                        completion(false)
+                        return
                     }
+
+                    UserDefaults.standard.set(dto.name, forKey: UserDefaultsKey.artistName.rawValue)
 
                     let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
                     self.dataManager.insert(artistCode)
+
+                    // 작가 인증 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
 
                     completion(true)
 

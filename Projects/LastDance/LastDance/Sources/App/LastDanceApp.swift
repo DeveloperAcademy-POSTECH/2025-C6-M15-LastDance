@@ -10,6 +10,7 @@ import SwiftUI
 
 @main
 struct LastDanceApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     // ModelContainer 설정을 분리한 PersistenceController 사용
     let persistenceController = PersistenceController()
