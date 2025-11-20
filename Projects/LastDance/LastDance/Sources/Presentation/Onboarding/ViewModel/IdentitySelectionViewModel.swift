@@ -142,21 +142,16 @@ final class IdentitySelectionViewModel: ObservableObject {
                     Log.debug(
                         "Artist login response - id: \(dto.id), uuid: '\(dto.uuid)' (length: \(dto.uuid.count))"
                     )
-
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
+                    UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
 
-                    // UUID가 비어있지 않을 때만 저장
-                    if !dto.uuid.isEmpty {
-                        UserDefaults.standard.set(
-                            dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
-                        Log.debug(
-                            "Artist login successful. id=\(dto.id), uuid=\(dto.uuid), name=\(dto.name)"
-                        )
+                    // 저장 직후 확인
+                    if let savedUUID = UserDefaults.standard.string(
+                        forKey: UserDefaultsKey.artistUUID.rawValue)
+                    {
+                        Log.debug("Verification: artistUUID saved correctly: '\(savedUUID)'")
                     } else {
-                        Log.error("⚠️ 서버에서 받은 artistUUID가 비어있습니다! dto.uuid: '\(dto.uuid)'")
-                        self.errorMessage = "작가 UUID가 유효하지 않습니다. 관리자에게 문의하세요."
-                        completion(false)
-                        return
+                        Log.error("Verification failed: artistUUID not saved!")
                     }
 
                     UserDefaults.standard.set(dto.name, forKey: UserDefaultsKey.artistName.rawValue)

@@ -35,6 +35,7 @@ struct ReactionDetailResponseDto: Codable {
     struct ArtistEmojiDto: Codable {
         let id: Int
         let artist_id: Int
+        let artist_name: String
         let emoji_type: String
         let created_at: String
     }
@@ -42,6 +43,7 @@ struct ReactionDetailResponseDto: Codable {
     struct ArtistMessageDto: Codable {
         let id: Int
         let artist_id: Int
+        let artist_name: String
         let message: String
         let created_at: String
     }

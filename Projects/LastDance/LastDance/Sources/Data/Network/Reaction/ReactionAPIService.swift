@@ -28,6 +28,12 @@ protocol ReactionAPIServiceProtocol {
         dto: EmojiReactionRequestDto,
         completion: @escaping (Result<EmojiReactionResponseDto, Error>) -> Void
     )
+    func createMessageReaction(
+        reactionId: Int,
+        artistUUID: String,
+        dto: MessageReactionRequestDto,
+        completion: @escaping (Result<MessageReactionResponseDto, Error>) -> Void
+    )
     func getReactionsAsync(
         artworkId: Int?,
         visitorId: Int?,
@@ -219,6 +225,51 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                 }
             case .failure(let error):
                 // ValidationError 처리
+                if let response = error.response,
+                    let validationError = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data
+                    )
+                {
+                    let errorMessages = validationError.detail.map { $0.msg }.joined(
+                        separator: ", ")
+                    Log.warning("Validation Error: \(errorMessages)")
+                }
+                Log.error("API 요청 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// 메시지 반응 전송하기 함수
+    func createMessageReaction(
+        reactionId: Int,
+        artistUUID: String,
+        dto: MessageReactionRequestDto,
+        completion: @escaping (Result<MessageReactionResponseDto, Error>) -> Void
+    ) {
+        provider.request(
+            .createMessageReaction(reactionId: reactionId, artistUUID: artistUUID, dto: dto)
+        ) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("메시지 반응 전송 응답: \(jsonString)")
+                    }
+                    let messageReaction = try JSONDecoder().decode(
+                        MessageReactionResponseDto.self, from: response.data
+                    )
+
+                    Log.debug("메시지 반응 전송 완료 - ID: \(messageReaction.id)")
+                    completion(.success(messageReaction))
+                } catch {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.error("디코딩 실패한 JSON: \(jsonString)")
+                    }
+                    Log.error("JSON 디코딩 실패: \(error)")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
                 if let response = error.response,
                     let validationError = try? JSONDecoder().decode(
                         ErrorResponseDto.self, from: response.data

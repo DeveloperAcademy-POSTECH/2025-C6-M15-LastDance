@@ -19,6 +19,7 @@ final class ArtworkReactionViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var selectedReactionId: String?  // 이모지 팝업 중 클릭한 반응의 ID 임시 저장
     @Published var selectedEmojis: [String: String] = [:]  // 실제 선택된 이모지 저장
+    @Published var message: String = ""
 
     private let artworkId: Int
     private let reactionAPIService: ReactionAPIServiceProtocol
@@ -61,11 +62,30 @@ final class ArtworkReactionViewModel: ObservableObject {
                             // 현재 로그인한 작가의 이모지 찾기
                             let artistEmoji = reactionDetailDto.artist_emojis?.first?.emoji_type
 
+                            // 작가 메시지 매핑
+                            let artistMessages =
+                                reactionDetailDto.artist_messages?.map {
+                                    ReactionData.ArtistMessage(
+                                        id: $0.id,
+                                        artistName: $0.artist_name,
+                                        message: $0.message,
+                                        createdAt: $0.created_at
+                                    )
+                                } ?? []
+
+                            Log.debug(
+                                "Reaction ID \(reactionDetailDto.id): artist_messages count = \(artistMessages.count)"
+                            )
+                            if !artistMessages.isEmpty {
+                                Log.debug("Artist messages: \(artistMessages.map { $0.message })")
+                            }
+
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
                                 categories: reactionDetailDto.tags?.map { $0.name } ?? [],
                                 artistEmoji: artistEmoji,
+                                artistMessages: artistMessages,
                                 createdAt: reactionDetailDto.created_at
                             )
                             lock.lock()
@@ -242,5 +262,84 @@ final class ArtworkReactionViewModel: ObservableObject {
     /// - Returns: 선택된 이모지 asset 이름, 없으면 nil
     func getSelectedEmoji(for reactionId: String) -> String? {
         return selectedEmojis[reactionId]
+    }
+
+    /// 작가 메세지를 관람객에게 전달하는 함수
+    /// - Parameters:
+    ///   - reactionIdString: 반응 ID (String)
+    ///   - message: 전송할 메시지 (10자 이내)
+    ///   - completion: 전송 완료 후 실행될 클로저
+    func sendMessage(
+        _ reactionIdString: String, _ message: String, completion: @escaping (Bool) -> Void
+    ) {
+        guard let reactionId = Int(reactionIdString) else {
+            Log.error("반응 ID 변환 실패")
+            completion(false)
+            return
+        }
+
+        guard
+            let artistUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.artistUUID.rawValue),
+            !artistUUID.isEmpty
+        else {
+            Log.error("Artist UUID 를 찾지 못함")
+            completion(false)
+            return
+        }
+
+        let dto = MessageReactionRequestDto(message: message)
+
+        reactionAPIService.createMessageReaction(
+            reactionId: reactionId,
+            artistUUID: artistUUID,
+            dto: dto
+        ) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                Log.debug("메시지 반응 전송 성공 - ID: \(response.id)")
+                self.handleMessageCreated(reactionIdString: reactionIdString, response: response)
+                DispatchQueue.main.async {
+                    self.message = ""
+                    completion(true)
+                }
+            case .failure(let error):
+                Log.error("메시지 반응 전송 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
+    }
+
+    /// 메시지 생성 후 반응 데이터 업데이트
+    private func handleMessageCreated(
+        reactionIdString: String, response: MessageReactionResponseDto
+    ) {
+        guard let reactionIndex = reactions.firstIndex(where: { $0.id == reactionIdString }) else {
+            Log.warning("반응 ID \(reactionIdString)를 찾을 수 없음")
+            return
+        }
+
+        let newMessage = mapToArtistMessage(from: response)
+        let updatedReaction = reactions[reactionIndex].addingMessage(newMessage)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.reactions[reactionIndex] = updatedReaction
+        }
+    }
+
+    /// MessageReactionResponseDto를 ArtistMessage로 변환
+    private func mapToArtistMessage(from dto: MessageReactionResponseDto)
+        -> ReactionData.ArtistMessage
+    {
+        return ReactionData.ArtistMessage(
+            id: dto.id,
+            artistName: dto.artist.name,
+            message: dto.message,
+            createdAt: dto.created_at
+        )
     }
 }

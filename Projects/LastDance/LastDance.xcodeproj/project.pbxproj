@@ -123,6 +123,7 @@
 				Sources/Data/Network/Base/BaseTargetType.swift,
 				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/EmojiReactionRequestDto.swift,
+				Sources/Data/Network/Reaction/DTO/Request/MessageReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/ArtworkDetailResponseDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/EmojiReactionResponseDto.swift,
@@ -760,6 +761,7 @@
 		D8398A882EC0F01C0009E7C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BASE_URL = "";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -784,6 +786,7 @@
 		D8398A892EC0F01C0009E7C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BASE_URL = "";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

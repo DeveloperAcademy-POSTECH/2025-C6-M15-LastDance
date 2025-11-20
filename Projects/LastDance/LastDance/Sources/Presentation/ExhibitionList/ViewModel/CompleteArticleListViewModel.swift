@@ -34,7 +34,7 @@ final class CompleteArticleListViewModel: ObservableObject {
         }
         UserDefaults.standard.set(artist.id, forKey: UserDefaultsKey.artistId.key)
         UserDefaults.standard.set(artist.name, forKey: UserDefaultsKey.artistName.key)
-        UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
+        //        UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
     }
 
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
