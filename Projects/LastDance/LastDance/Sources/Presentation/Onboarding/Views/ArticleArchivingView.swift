@@ -69,7 +69,6 @@ private struct ArtistExhibitionGridView: View {
 struct ArticleArchivingView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArtistReactionViewModel()
-    @StateObject private var alarmViewModel = AlarmViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -142,7 +141,6 @@ struct ArticleArchivingView: View {
         .onAppear {
             Log.debug("📱 ArticleArchivingView appeared")
             viewModel.loadArtistExhibitions()
-            alarmViewModel.checkNotifications()
         }
         .onChange(of: viewModel.isLoading) { newValue in
             Log.debug("🔄 isLoading 변경됨: \(newValue)")

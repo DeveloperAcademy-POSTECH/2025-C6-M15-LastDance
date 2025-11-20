@@ -25,7 +25,7 @@ struct IdentitySelectionView: View {
 
             IdentitySelectionNextButton(viewModel: viewModel)
         }
-        .background(LDColor.color5)
+        .background(LDColor.color6)
         .onAppear {
             // TODO: - 전시장소 데이터 가져오기 확인용 (이후 제거 필요)
             viewModel.loadAllVenues()
