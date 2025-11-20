@@ -14,7 +14,7 @@ struct DeepLinkHandler {
     static func parse(_ url: URL) -> DeepLinkType {
         Log.debug("딥링크 파싱 시작: \(url.absoluteString)")
 
-        guard url.scheme == "lastdance" else {
+        guard url.scheme == PushDeepLinkConstants.scheme else {
             Log.error("잘못된 URL Scheme: \(url.scheme ?? "nil")")
             return .unknown
         }
@@ -25,9 +25,18 @@ struct DeepLinkHandler {
         Log.debug("Host: \(host ?? "nil"), Path: \(pathComponents)")
 
         // lastdance://invitation/{uuid}
-        if host == "invitation", let uuid = pathComponents.first {
+        if host == PushDeepLinkConstants.invitationHost, let uuid = pathComponents.first {
             Log.debug("초대장 딥링크 인식 - UUID: \(uuid)")
             return .invitation(uuid: uuid)
+        }
+
+        // lastdance://artworkReaction/{artworkId}
+        if host == PushDeepLinkConstants.artworkReactionHost,
+            let artworkIdString = pathComponents.first,
+            let artworkId = Int(artworkIdString)
+        {
+            Log.debug("작품 반응 딥링크 인식 - artworkId: \(artworkId)")
+            return .artworkReaction(artworkId: artworkId)
         }
 
         Log.error("알 수 없는 딥링크 형식")

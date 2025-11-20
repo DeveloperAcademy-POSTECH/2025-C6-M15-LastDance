@@ -256,7 +256,8 @@ final class ArtworkReactionViewModel: ObservableObject {
                     {
                         NotificationManager.shared.sendPushNotificationToViewer(
                             visitorId: reaction.visitorId,
-                            artistName: artistName
+                            artistName: artistName,
+                            artworkId: self.artworkId
                         )
                     }
                 }
@@ -323,7 +324,8 @@ final class ArtworkReactionViewModel: ObservableObject {
                     {
                         NotificationManager.shared.sendPushNotificationToViewer(
                             visitorId: reaction.visitorId,
-                            artistName: artistName
+                            artistName: artistName,
+                            artworkId: self.artworkId
                         )
                     }
 

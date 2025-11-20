@@ -48,7 +48,7 @@ final class NotificationManager {
     }
 
     /// 관람객에게 푸시알림 전송
-    func sendPushNotificationToViewer(visitorId: Int, artistName: String) {
+    func sendPushNotificationToViewer(visitorId: Int, artistName: String, artworkId: Int) {
         Log.debug("관람객(\(visitorId))에게 푸시알림 전송 시작")
 
         #if DEBUG
@@ -63,7 +63,7 @@ final class NotificationManager {
             device_token: nil,
             title: "\(artistName) 작가님이 내 메시지에 반응했어요",
             body: "어떤 반응인지 확인해보세요!",
-            data: nil,
+            data: ["artworkId": "\(artworkId)", "type": "artworkReaction"],
             badge: 1,
             use_sandbox: useSandbox
         )

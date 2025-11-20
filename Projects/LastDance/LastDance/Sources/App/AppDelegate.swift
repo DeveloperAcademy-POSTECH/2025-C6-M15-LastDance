@@ -32,6 +32,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         }
     }
 
+    /// 앱이 포그라운드에 수신하면 푸시 알람 보내도록
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -44,6 +45,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         completionHandler([.banner, .sound, .badge])
     }
 
+    /// 푸시 알람 받았을때 딥링크 처리 로직
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -52,6 +54,22 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let userInfo = response.notification.request.content.userInfo
         Log.debug("푸시 탭 userInfo: \(userInfo)")
 
+        if let type = userInfo["type"] as? String,
+            let artworkId = userInfo["artwork_id"] as? Int,
+            type == "artist_reply"
+        {
+            let deepLinkURL = URL(
+                string:
+                    "\(PushDeepLinkConstants.scheme)://\(PushDeepLinkConstants.artworkReactionHost)/\(artworkId)"
+            )!
+            Log.debug("딥링크 URL 생성: \(deepLinkURL.absoluteString)")
+
+            NotificationCenter.default.post(
+                name: NSNotification.Name("HandleDeepLink"),
+                object: nil,
+                userInfo: ["url": deepLinkURL]
+            )
+        }
         completionHandler()
     }
 }

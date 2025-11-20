@@ -376,7 +376,7 @@ struct MessageItemView: View {
                 if !reaction.artistMessages.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(reaction.artistMessages) { artistMessage in
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 10) {
                                 HStack(spacing: 10) {
                                     Image("reactionLine")
                                         .resizable()
@@ -392,6 +392,7 @@ struct MessageItemView: View {
                                     .font(LDFont.medium03)
                                     .foregroundColor(LDColor.color1)
                                     .lineSpacing(4)
+                                    .padding(.bottom, 12)
                             }
                         }
                     }
