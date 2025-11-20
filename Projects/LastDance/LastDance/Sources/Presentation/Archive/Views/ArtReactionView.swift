@@ -16,6 +16,7 @@ struct ArtReactionView: View {
     @EnvironmentObject private var router: NavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
+    @State private var didSnap: Bool = false
 
     init(artwork: Artwork, artist: Artist?) {
         self.artwork = artwork
@@ -174,52 +175,97 @@ extension ArtReactionView {
 // MARK: - 감상 탭
 extension ArtReactionView {
     fileprivate var reactionTabSection: some View {
-        Group {
+        VStack(alignment: .leading, spacing: 36) {
+            // 작가가 남긴 메시지
+            artistMessageSection
+
+            // 나의 감상
+            myReactionSection
+
+            Spacer(minLength: ArchiveImageConstants.animationThreshold)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 24)
+        .padding(.bottom, 40)
+    }
+
+    // 작가 메시지 영역
+    private var artistMessageSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("작가가 남긴 메시지")
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+
+            HStack {
+                Text("아직 이모지가 없습니다.")
+                    .font(LDFont.regular03)
+                    .foregroundColor(LDColor.color2)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 24)
+                            .fill(LDColor.color4)
+                    )
+
+                Spacer()
+            }
+
+            HStack(alignment: .top, spacing: 12) {
+                Image("quote_left")
+                    .renderingMode(.template)
+                    .foregroundColor(LDColor.color3)
+                    .frame(width: 24, height: 24)
+                    .offset(y: -4)
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("아직 메시지가 없습니다.")
+                        .font(LDFont.regular02)
+                        .foregroundColor(LDColor.color3)
+                }
+
+                Image("quote_right")
+                    .renderingMode(.template)
+                    .foregroundColor(LDColor.color3)
+                    .frame(width: 24, height: 24)
+                    .offset(y: -4)
+            }
+            .padding(12)
+        }
+    }
+    // 나의 감상 영역
+    private var myReactionSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("나의 감상")
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+
             if viewModel.isLoading {
                 ProgressView()
-                    .scaleEffect(1.2)
-                    .frame(maxWidth: .infinity, minHeight: 200)
-                    .padding(.top, 24)
+                    .scaleEffect(1.0)
+                    .frame(maxWidth: .infinity, minHeight: 80, alignment: .center)
+                    .padding(.top, 8)
 
             } else if viewModel.reactions.isEmpty {
-                VStack(spacing: 16) {
-                    Text("아직 등록된 감상이 없습니다")
-                        .font(Font.custom("Pretendard", size: 16))
-                        .foregroundColor(LDColor.color2)
-
-                    Spacer(minLength: 400)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
+                Text("아직 등록된 감상이 없습니다")
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color2)
+                    .padding(.top, 4)
 
             } else {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("나의 감상")
-                        .font(LDFont.heading04)
-                        .foregroundColor(LDColor.color1)
-
-                    ForEach(viewModel.reactions, id: \.id) { reaction in
-                        // 감상평 섹션
-                        if let comment = reaction.comment, !comment.isEmpty {
-                            Text(comment)
-                                .padding(12)
-                                .font(LDFont.medium04)
-                                .foregroundColor(LDColor.color1)
-                                .lineSpacing(4)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(LDColor.color5)
-                                )
-                        }
+                ForEach(viewModel.reactions, id: \.id) { reaction in
+                    if let comment = reaction.comment, !comment.isEmpty {
+                        Text(comment)
+                            .padding(12)
+                            .font(LDFont.medium04)
+                            .foregroundColor(LDColor.color1)
+                            .lineSpacing(4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(LDColor.color5)
+                            )
                     }
-
-                    Spacer(minLength: ArchiveImageConstants.animationThreshold)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 40)
             }
         }
     }
