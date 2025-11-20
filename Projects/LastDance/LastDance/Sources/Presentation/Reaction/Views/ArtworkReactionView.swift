@@ -69,6 +69,7 @@ struct ResponseContentView: View {
     @State private var emojiPopupPosition: CGRect = .zero
     @State private var showEmojiPopup: Bool = false
     @State private var showMessagePopup: Bool = false
+    @State private var selectedReactionForMessage: ReactionData?
 
     var body: some View {
         ZStack {
@@ -94,7 +95,8 @@ struct ResponseContentView: View {
                                 viewModel: viewModel,
                                 showEmojiPopup: $showEmojiPopup,
                                 emojiPopupPosition: $emojiPopupPosition,
-                                showMessagePopup: $showMessagePopup
+                                showMessagePopup: $showMessagePopup,
+                                selectedReactionForMessage: $selectedReactionForMessage
                             )
                         }
                     }
@@ -143,9 +145,13 @@ struct ResponseContentView: View {
                     }
                     .zIndex(20)
 
-                MessagePopupView(showMessagePopup: $showMessagePopup, viewModel: viewModel)
-                    .transition(.opacity.combined(with: .scale))
-                    .zIndex(21)
+                MessagePopupView(
+                    showMessagePopup: $showMessagePopup,
+                    viewModel: viewModel,
+                    reaction: selectedReactionForMessage
+                )
+                .transition(.opacity.combined(with: .scale))
+                .zIndex(21)
             }
         }
     }
@@ -165,6 +171,7 @@ struct ResponseTabBar: View {
                     .font(LDFont.heading03)
                     .foregroundColor(selectedTab == .artwork ? LDColor.color1 : LDColor.color2)
             }
+            .buttonStyle(PlainButtonStyle())
 
             Button(action: {
                 selectedTab = .message
@@ -173,6 +180,7 @@ struct ResponseTabBar: View {
                     .font(LDFont.heading03)
                     .foregroundColor(selectedTab == .message ? LDColor.color1 : LDColor.color2)
             }
+            .buttonStyle(PlainButtonStyle())
 
             Spacer()
         }
@@ -243,6 +251,7 @@ struct MessageListView: View {
     @Binding var showEmojiPopup: Bool
     @Binding var emojiPopupPosition: CGRect
     @Binding var showMessagePopup: Bool
+    @Binding var selectedReactionForMessage: ReactionData?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -254,7 +263,8 @@ struct MessageListView: View {
                     isLast: index == viewModel.reactions.count - 1,
                     showEmojiPopup: $showEmojiPopup,
                     emojiPopupPosition: $emojiPopupPosition,
-                    showMessagePopup: $showMessagePopup
+                    showMessagePopup: $showMessagePopup,
+                    selectedReactionForMessage: $selectedReactionForMessage
                 )
             }
         }
@@ -273,6 +283,7 @@ struct MessageItemView: View {
     @Binding var showEmojiPopup: Bool
     @Binding var emojiPopupPosition: CGRect
     @Binding var showMessagePopup: Bool
+    @Binding var selectedReactionForMessage: ReactionData?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -311,11 +322,18 @@ struct MessageItemView: View {
                 HStack(spacing: 18) {
                     GeometryReader { proxy in
                         Button(action: {
-                            // 이미지 리스트에서 클릭된 이모지가 없다면 -> defaultImage
+                            // 이미지 리스트에서 클릭된 이모지가 없다면 토글 가능
                             if viewModel.getSelectedEmoji(for: reaction.id) == nil {
-                                viewModel.selectedReactionId = reaction.id
-                                emojiPopupPosition = proxy.frame(in: .global)
-                                showEmojiPopup = true
+                                if viewModel.selectedReactionId == reaction.id && showEmojiPopup {
+                                    // 이미 팝업이 열려있으면 닫기
+                                    showEmojiPopup = false
+                                    viewModel.selectedReactionId = nil
+                                } else {
+                                    // 팝업 열기
+                                    viewModel.selectedReactionId = reaction.id
+                                    emojiPopupPosition = proxy.frame(in: .global)
+                                    showEmojiPopup = true
+                                }
                             }
                         }) {
                             // 선택된 이미지가 존재한다면 그걸로 표시
@@ -323,10 +341,12 @@ struct MessageItemView: View {
                                 Image(selectedEmoji)
                                     .resizable()
                                     .scaledToFill()
-                                    .frame(width: 29, height: 27)
+                                    .frame(width: 31, height: 29)
+                                    .border(.black)
+
                             } else {
                                 Image(
-                                    viewModel.selectedReactionId == reaction.id
+                                    viewModel.selectedReactionId == reaction.id && showEmojiPopup
                                         ? "defaultImageFill" : "defaultImage"
                                 )
                                 .resizable()
@@ -339,19 +359,47 @@ struct MessageItemView: View {
                     .frame(width: 26, height: 27)
 
                     Button(action: {
-                        viewModel.selectedReactionId = reaction.id
+                        selectedReactionForMessage = reaction
                         showMessagePopup = true
                     }) {
-                        Image("bubbleOff")
+                        Image(reaction.artistMessages.isEmpty ? "bubbleOff" : "bubbleOn")
                             .resizable()
                             .scaledToFill()
                             .frame(width: 26, height: 25)
                     }
+                    .buttonStyle(PlainButtonStyle())
+
                     Spacer()
+                }
+
+                // 작가가 남긴 답글들
+                if !reaction.artistMessages.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(reaction.artistMessages) { artistMessage in
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(spacing: 10) {
+                                    Image("reactionLine")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 14, height: 12)
+
+                                    Text("내 답글")
+                                        .font(LDFont.medium05)
+                                        .foregroundColor(LDColor.color2)
+                                }
+
+                                Text(artistMessage.message)
+                                    .font(LDFont.medium03)
+                                    .foregroundColor(LDColor.color1)
+                                    .lineSpacing(4)
+                            }
+                        }
+                    }
+                    .padding(.top, 24)
                 }
             }
             .padding(.top, 12)
-            .padding(.bottom, 20)
+            .padding(.bottom, 12)
             .padding(.horizontal, 24)
 
             if !isLast {
@@ -364,6 +412,7 @@ struct MessageItemView: View {
 }
 
 // MARK: 작가 반응 확인뷰에서만 사용되는 이모지 팝업
+
 private struct EMojiPopupView: View {
     let onSelect: (String) -> Void
 
@@ -379,6 +428,7 @@ private struct EMojiPopupView: View {
                         .frame(width: 36, height: 36)
                         .padding(1)
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 0)
         }
@@ -391,9 +441,11 @@ private struct EMojiPopupView: View {
 }
 
 // MARK: 작가 반응 확인뷰에서만 사용되는 반응 전송 팝업
+
 private struct MessagePopupView: View {
     @Binding var showMessagePopup: Bool
     @ObservedObject var viewModel: ArtworkReactionViewModel
+    let reaction: ReactionData?
     @State private var messageText: String = ""
     @FocusState private var isTextFieldFocused: Bool
 
@@ -437,20 +489,23 @@ private struct MessagePopupView: View {
                     backgroundColor: LDColor.color4,
                     action: {
                         showMessagePopup = false
-                    })
+                    }
+                )
 
                 PopupButton(
                     title: "확인",
                     foregroundColor: .white,
                     backgroundColor: LDColor.color1,
                     action: {
-                        viewModel.sendMessage(messageText) { success in
+                        guard let reaction = reaction else { return }
+                        viewModel.sendMessage(reaction.id, messageText) { success in
                             if success {
                                 messageText = ""
                                 showMessagePopup = false
                             }
                         }
-                    })
+                    }
+                )
             }
             .padding(.horizontal, 12)
         }
@@ -478,6 +533,8 @@ private struct PopupButton: View {
                     .frame(maxWidth: .infinity, minHeight: 42)
                     .background(backgroundColor)
                     .cornerRadius(12)
-            })
+            }
+        )
+        .buttonStyle(PlainButtonStyle())
     }
 }

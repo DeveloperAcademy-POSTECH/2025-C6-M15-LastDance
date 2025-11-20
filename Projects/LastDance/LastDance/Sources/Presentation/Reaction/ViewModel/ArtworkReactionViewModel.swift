@@ -62,11 +62,30 @@ final class ArtworkReactionViewModel: ObservableObject {
                             // 현재 로그인한 작가의 이모지 찾기
                             let artistEmoji = reactionDetailDto.artist_emojis?.first?.emoji_type
 
+                            // 작가 메시지 매핑
+                            let artistMessages =
+                                reactionDetailDto.artist_messages?.map {
+                                    ReactionData.ArtistMessage(
+                                        id: $0.id,
+                                        artistName: $0.artist_name,
+                                        message: $0.message,
+                                        createdAt: $0.created_at
+                                    )
+                                } ?? []
+
+                            Log.debug(
+                                "Reaction ID \(reactionDetailDto.id): artist_messages count = \(artistMessages.count)"
+                            )
+                            if !artistMessages.isEmpty {
+                                Log.debug("Artist messages: \(artistMessages.map { $0.message })")
+                            }
+
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
                                 categories: reactionDetailDto.tags?.map { $0.name } ?? [],
                                 artistEmoji: artistEmoji,
+                                artistMessages: artistMessages,
                                 createdAt: reactionDetailDto.created_at
                             )
                             lock.lock()
@@ -247,13 +266,14 @@ final class ArtworkReactionViewModel: ObservableObject {
 
     /// 작가 메세지를 관람객에게 전달하는 함수
     /// - Parameters:
+    ///   - reactionIdString: 반응 ID (String)
     ///   - message: 전송할 메시지 (10자 이내)
     ///   - completion: 전송 완료 후 실행될 클로저
-    func sendMessage(_ message: String, completion: @escaping (Bool) -> Void) {
-        guard let reactionIdString = selectedReactionId,
-            let reactionId = Int(reactionIdString)
-        else {
-            Log.error("반응 ID가 없어서 메시지를 보낼 수 없음")
+    func sendMessage(
+        _ reactionIdString: String, _ message: String, completion: @escaping (Bool) -> Void
+    ) {
+        guard let reactionId = Int(reactionIdString) else {
+            Log.error("반응 ID 변환 실패")
             completion(false)
             return
         }
@@ -280,9 +300,9 @@ final class ArtworkReactionViewModel: ObservableObject {
             switch result {
             case .success(let response):
                 Log.debug("메시지 반응 전송 성공 - ID: \(response.id)")
+                self.handleMessageCreated(reactionIdString: reactionIdString, response: response)
                 DispatchQueue.main.async {
                     self.message = ""
-                    self.selectedReactionId = nil
                     completion(true)
                 }
             case .failure(let error):
@@ -292,5 +312,34 @@ final class ArtworkReactionViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    /// 메시지 생성 후 반응 데이터 업데이트
+    private func handleMessageCreated(
+        reactionIdString: String, response: MessageReactionResponseDto
+    ) {
+        guard let reactionIndex = reactions.firstIndex(where: { $0.id == reactionIdString }) else {
+            Log.warning("반응 ID \(reactionIdString)를 찾을 수 없음")
+            return
+        }
+
+        let newMessage = mapToArtistMessage(from: response)
+        let updatedReaction = reactions[reactionIndex].addingMessage(newMessage)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.reactions[reactionIndex] = updatedReaction
+        }
+    }
+
+    /// MessageReactionResponseDto를 ArtistMessage로 변환
+    private func mapToArtistMessage(from dto: MessageReactionResponseDto)
+        -> ReactionData.ArtistMessage
+    {
+        return ReactionData.ArtistMessage(
+            id: dto.id,
+            artistName: dto.artist.name,
+            message: dto.message,
+            createdAt: dto.created_at
+        )
     }
 }
