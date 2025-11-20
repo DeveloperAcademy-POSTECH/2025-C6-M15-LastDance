@@ -86,7 +86,8 @@ final class ArtworkReactionViewModel: ObservableObject {
                                 categories: reactionDetailDto.tags?.map { $0.name } ?? [],
                                 artistEmoji: artistEmoji,
                                 artistMessages: artistMessages,
-                                createdAt: reactionDetailDto.created_at
+                                createdAt: reactionDetailDto.created_at,
+                                visitorId: reactionDetailDto.visitor_id
                             )
                             lock.lock()
                             fetchedReactionData.append(reactionData)
@@ -247,6 +248,17 @@ final class ArtworkReactionViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.selectedEmojis[reactionIdString] = emoji
                     self.selectedReactionId = nil
+
+                    // 관람객에게 푸시알림 전송
+                    if let reaction = self.reactions.first(where: { $0.id == reactionIdString }),
+                        let artistName = UserDefaults.standard.string(
+                            forKey: UserDefaultsKey.artistName.rawValue)
+                    {
+                        NotificationManager.shared.sendPushNotificationToViewer(
+                            visitorId: reaction.visitorId,
+                            artistName: artistName
+                        )
+                    }
                 }
             case .failure(let error):
                 Log.error("이모지 반응 전송 실패: \(error.localizedDescription)")
@@ -303,6 +315,18 @@ final class ArtworkReactionViewModel: ObservableObject {
                 self.handleMessageCreated(reactionIdString: reactionIdString, response: response)
                 DispatchQueue.main.async {
                     self.message = ""
+
+                    // 관람객에게 푸시알림 전송
+                    if let reaction = self.reactions.first(where: { $0.id == reactionIdString }),
+                        let artistName = UserDefaults.standard.string(
+                            forKey: UserDefaultsKey.artistName.rawValue)
+                    {
+                        NotificationManager.shared.sendPushNotificationToViewer(
+                            visitorId: reaction.visitorId,
+                            artistName: artistName
+                        )
+                    }
+
                     completion(true)
                 }
             case .failure(let error):
