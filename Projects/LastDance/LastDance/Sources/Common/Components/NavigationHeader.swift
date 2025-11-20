@@ -42,7 +42,21 @@ struct NavigationHeader: View {
         .padding(.top, 20)
         .padding(.horizontal, 24)
         .onAppear {
-            alarmViewModel.checkNotifications()
+            // UserDefaults에서 UUID 가져오기
+            let uuid: String
+            switch userType {
+            case .artist:
+                uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.key) ?? ""
+            case .viewer:
+                uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.key) ?? ""
+            }
+
+            guard !uuid.isEmpty else {
+                Log.error("UUID가 없습니다.")
+                return
+            }
+
+            alarmViewModel.loadNotifications(uuid: uuid, userType: userType)
         }
     }
 }

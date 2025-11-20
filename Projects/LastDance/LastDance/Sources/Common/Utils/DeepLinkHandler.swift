@@ -2,7 +2,7 @@
 //  DeepLinkHandler.swift
 //  LastDance
 //
-//  Created by donghee on 11/19/25.
+//  Created by donghee, 신얀 on 11/19/25.
 //
 
 import Foundation
@@ -30,12 +30,24 @@ struct DeepLinkHandler {
             return .invitation(uuid: uuid)
         }
 
-        // lastdance://artworkReaction/{artworkId}
+        // 푸시알람을 눌렀을때 딥링크 처리
         if host == PushDeepLinkConstants.artworkReactionHost,
             let artworkIdString = pathComponents.first,
             let artworkId = Int(artworkIdString)
         {
             Log.debug("작품 반응 딥링크 인식 - artworkId: \(artworkId)")
+            return .artworkReaction(artworkId: artworkId)
+        }
+
+        // 알람 리스트에서 해당 알람 선택 후 딥링크 처리
+        if host == "visit",
+            pathComponents.count >= 4,
+            pathComponents.indices.contains(1),
+            pathComponents.indices.contains(2),
+            pathComponents[1] == "artwork",
+            let artworkId = Int(pathComponents[2])
+        {
+            Log.debug("알림 딥링크 인식 - artworkId: \(artworkId)")
             return .artworkReaction(artworkId: artworkId)
         }
 
