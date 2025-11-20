@@ -34,6 +34,12 @@ enum UserDefaultsKey: String {
     /// 첫 리액션 등록 여부
     case hasRegisteredFirstReaction
 
+    /// 디바이스 토큰
+    case deviceToken
+
+    /// 디바이스 토큰 등록 여부
+    case hasRegisteredDeviceToken
+
     var key: String {
         return rawValue
     }

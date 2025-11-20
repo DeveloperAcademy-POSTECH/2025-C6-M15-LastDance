@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AudienceArchivingView: View {
     @StateObject private var viewModel = ArchivingViewModel()
-    @StateObject private var alarmViewModel = AlarmViewModel()
     @EnvironmentObject private var router: NavigationRouter
     @State private var isBottomButtonVisible: Bool = true
 
@@ -20,11 +19,7 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("나의 전시")
-                .font(LDFont.heading02)
-                .foregroundColor(.black)
-                .padding(.horizontal, 24)
-                .padding(.top, 20)
+            NavigationHeader()
 
             if viewModel.isLoading {
                 ProgressView()
@@ -53,7 +48,6 @@ struct AudienceArchivingView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 30)
                     .padding(.bottom, 100)
-
                 }
                 .onScrollGeometryChange(for: CGFloat.self) { geometry in
                     geometry.contentOffset.y
@@ -106,7 +100,6 @@ struct AudienceArchivingView: View {
         }
         .onAppear {
             viewModel.loadExhibitions()
-            alarmViewModel.checkNotifications()
         }
     }
 }

@@ -121,6 +121,7 @@
 				Sources/Data/Network/Artwork/DTO/Request/ArtworkMatchRequestDto.swift,
 				Sources/Data/Network/Artwork/DTO/Request/MakeArtworkRequestDto.swift,
 				Sources/Data/Network/Base/BaseTargetType.swift,
+				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/ArtworkDetailResponseDto.swift,
 				Sources/Data/Network/Reaction/DTO/Response/GetReactionResponseDto.swift,
@@ -671,7 +672,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BASE_URL = "";
-				CODE_SIGN_ENTITLEMENTS = LastDance/LastDance.entitlements;
+				CODE_SIGN_ENTITLEMENTS = LastDance/LastDanceDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
