@@ -19,4 +19,12 @@ struct TotalExhibitionResponseDto: Codable, ExhibitionDtoMappableProtocol {
     let cover_image_url: String?
     let created_at: String
     let updated_at: String?
+    let artists: [ExhibitionArtistInfo]?
+}
+
+// MARK: - ExhibitionArtistInfo
+
+struct ExhibitionArtistInfo: Codable {
+    let id: Int
+    let name: String
 }

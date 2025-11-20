@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
     @StateObject private var router = NavigationRouter()
     @StateObject private var reactionInputViewModel = ReactionInputViewModel()
+    @StateObject private var identitySelectionViewModel = IdentitySelectionViewModel()
     @State private var userType: UserType?
 
     init() {
@@ -26,7 +27,12 @@ struct RootView: View {
                 if let userType = userType {
                     switch userType {
                     case .artist:
-                        ArticleArchivingView()
+                        // 작가 인증 여부 확인
+                        if identitySelectionViewModel.isArtistAuthenticated() {
+                            ArticleArchivingView()
+                        } else {
+                            ArtistCodeInputView()
+                        }
                     case .viewer:
                         AudienceArchivingView()
                     }
@@ -38,6 +44,9 @@ struct RootView: View {
                 switch route {
                 case .identitySelection:
                     IdentitySelectionView()
+                case .artistCodeInput:
+                    ArtistCodeInputView()
+                        .navigationBarBackButtonHidden(true)
                 case .audienceArchiving:
                     AudienceArchivingView()
                         .toolbar(.hidden, for: .navigationBar)
@@ -96,7 +105,7 @@ struct RootView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 case .artistReactionArchiveView(let exhibitionId):
                     ArtistReactionArchiveView(exhibitionId: exhibitionId)
-                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationBarBackButtonHidden(true)
                 case .exhibitionArchive(let exhibitionId):
                     ExhibitionArchiveView(exhibitionId: exhibitionId)
                         .background(LDColor.color6)
@@ -111,10 +120,30 @@ struct RootView: View {
                 case .alarmList(let userType):
                     AlarmListView(userType: userType)
                         .navigationBarBackButtonHidden(true)
+                case .createInvitation:
+                    CreateInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .selectExhibitionForInvitation:
+                    SelectExhibitionForInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .invitationDetail(let exhibition):
+                    InvitationDetailView(exhibition: exhibition)
+                        .navigationBarBackButtonHidden(true)
+                case .createdInvitation(let invitation):
+                    CreatedInvitationView(invitation: invitation)
+                        .navigationBarBackButtonHidden(true)
+                case .receivedInvitation(let invitationCode):
+                    ReceivedInvitationView(invitationCode: invitationCode)
+                        .navigationBarBackButtonHidden(false)
                 }
             }
         }
         .environmentObject(router)
         .environmentObject(reactionInputViewModel)
+        .environmentObject(identitySelectionViewModel)
+        .onOpenURL { url in
+            Log.debug("딥링크 수신: \(url.absoluteString)")
+            router.handleDeepLink(url)
+        }
     }
 }

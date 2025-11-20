@@ -59,14 +59,44 @@ struct CustomXmarkNavigationBar: ToolbarContent {
     }
 }
 
+struct CustomNavigationBarWithAction: ToolbarContent {
+    let title: String
+    let actionTitle: String
+    let isActionEnabled: Bool
+    let onBackButtonTap: () -> Void
+    let onActionTap: () -> Void
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            BackButton(action: onBackButtonTap)
+        }
+
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(action: onActionTap) {
+                Text(actionTitle)
+                    .font(LDFont.medium04)
+                    .foregroundColor(isActionEnabled ? LDColor.color1 : LDColor.color3)
+            }
+            .disabled(!isActionEnabled)
+        }
+    }
+}
+
 #Preview {
     NavigationStack {
         Text("컨텐츠 영역")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                CustomNavigationBar(title: "전시정보") {
+                CustomWhiteNavigationBar(title: "전시정보") {
                     print("Back button tapped")
                 }
             }
+            .preferredColorScheme(.dark)
     }
 }

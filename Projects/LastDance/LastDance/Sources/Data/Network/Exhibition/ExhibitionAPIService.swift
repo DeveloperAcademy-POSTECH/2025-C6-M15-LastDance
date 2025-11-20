@@ -67,8 +67,23 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                         for exhibitionDto in exhibitions {
                             let exhibition = exhibitionDto.toEntity()
                             SwiftDataManager.shared.upsertExhibition(exhibition)
+
+                            // 전시에 포함된 작가 정보도 로컬에 저장
+                            if let artists = exhibitionDto.artists {
+                                for artistInfo in artists {
+                                    // UUID는 서버에서 제공하지 않으므로 임시로 빈 문자열 사용
+                                    // 실제 작가 상세 정보는 ArtistAPI를 통해 가져와야 함
+                                    let artist = Artist(
+                                        id: artistInfo.id,
+                                        uuid: "",  // 전시 목록 API에서는 UUID를 제공하지 않음
+                                        name: artistInfo.name
+                                    )
+                                    SwiftDataManager.shared.upsertArtist(artist)
+                                }
+                                Log.debug("전시 \(exhibition.title)의 작가 \(artists.count)명 저장")
+                            }
                         }
-                        Log.debug("로컬 저장 완료: \(exhibitions.count)개")
+                        Log.debug("전시 로컬 저장 완료: \(exhibitions.count)개")
                     }
 
                     completion(.success(exhibitions))

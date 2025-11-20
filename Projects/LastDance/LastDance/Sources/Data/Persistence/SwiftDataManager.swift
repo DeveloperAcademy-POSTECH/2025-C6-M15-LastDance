@@ -131,7 +131,10 @@ extension SwiftDataManager {
     func upsertArtist(_ newValue: Artist) {
         let all = fetchAll(Artist.self)
         if let existing = all.first(where: { $0.id == newValue.id }) {
-            existing.uuid = newValue.uuid
+            // UUID가 비어있지 않은 경우에만 업데이트 (전시 API에서 온 데이터는 UUID가 없음)
+            if !newValue.uuid.isEmpty {
+                existing.uuid = newValue.uuid
+            }
             existing.name = newValue.name
         } else {
             insert(newValue)
@@ -171,6 +174,43 @@ extension SwiftDataManager {
             insert(newValue)
         }
         //        printAllArtworks()
+    }
+
+    /// Invitation 저장 - 중복 방지
+    func upsertInvitation(_ newValue: Invitation) {
+        let all = fetchAll(Invitation.self)
+        if let existing = all.first(where: { $0.id == newValue.id }) {
+            existing.exhibitionId = newValue.exhibitionId
+            existing.exhibitionTitle = newValue.exhibitionTitle
+            existing.artistName = newValue.artistName
+            existing.venueName = newValue.venueName
+            existing.venueAddress = newValue.venueAddress
+            existing.startDate = newValue.startDate
+            existing.endDate = newValue.endDate
+            existing.coverImageName = newValue.coverImageName
+            existing.invitationMessage = newValue.invitationMessage
+            existing.visitorCount = newValue.visitorCount
+            existing.createdAt = newValue.createdAt
+            existing.deepLink = newValue.deepLink
+            existing.appStoreLink = newValue.appStoreLink
+            Log.debug("기존 초대장 업데이트 - id: \(newValue.id)")
+        } else {
+            insert(newValue)
+            Log.debug("새 초대장 추가 - id: \(newValue.id)")
+        }
+        saveContext()
+        Log.debug("초대장 저장 완료 - 현재 총 \(fetchAll(Invitation.self).count)개")
+    }
+
+    /// Invitation 삭제
+    func deleteInvitation(id: Int) {
+        let invitations = fetchAll(Invitation.self)
+        if let invitation = invitations.first(where: { $0.id == id }) {
+            delete(invitation)
+            Log.debug("초대장 삭제 완료 - id: \(id)")
+        } else {
+            Log.error("초대장을 찾을 수 없음 - id: \(id)")
+        }
     }
 
     /// 전체 Venue 확인용 출력문

@@ -79,7 +79,9 @@ struct ExhibitionDetailView: View {
     /// 작가 - 내 전시가 맞아요 버튼 처리
     private func handleArtistConfirm() {
         viewModel.selectExhibitionAsUserExhibition()
-        router.push(.artistReaction)
+        SwiftDataManager.shared.saveContext()
+        Log.debug("작가 전시 선택 및 저장 완료")
+        router.push(.articleArchiving)
     }
 
     /// 관람객 - 관람 시작하기 버튼 처리

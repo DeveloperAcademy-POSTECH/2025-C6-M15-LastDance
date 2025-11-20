@@ -11,6 +11,7 @@ import UIKit
 /// 앱의 모든 화면 경로를 정의한 enum
 enum Route: Hashable {
     case identitySelection
+    case artistCodeInput
     case audienceArchiving
     case articleArchiving
     case exhibitionList
@@ -32,4 +33,9 @@ enum Route: Hashable {
     case artistReactionArchiveView(exhibitionId: Int)
     case artReaction(artwork: Artwork, artist: Artist?)
     case alarmList(userType: UserType)
+    case createInvitation
+    case selectExhibitionForInvitation
+    case invitationDetail(exhibition: Exhibition)
+    case createdInvitation(invitation: Invitation)
+    case receivedInvitation(invitationCode: String)
 }

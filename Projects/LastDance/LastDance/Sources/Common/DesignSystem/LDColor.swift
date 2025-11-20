@@ -46,4 +46,7 @@ enum LDColor {
     static let black1 = Color.black1
     /// #2D2D2D - Color(red: 0.45, green: 0.45, blue: 0.45)
     static let black2 = Color.black2
+
+    /// #FF684D - Color(red: 1, green: 0.41, blue: 0.3)
+    static let red4 = Color.red4
 }
