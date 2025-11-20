@@ -49,6 +49,7 @@ struct CustomXmarkNavigationBar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             XmarkButton(action: onXmarkButtonTap)
+                .padding(.leading, 12)
         }
 
         ToolbarItem(placement: .principal) {

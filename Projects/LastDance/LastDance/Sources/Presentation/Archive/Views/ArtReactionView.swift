@@ -194,21 +194,24 @@ extension ArtReactionView {
                 .padding(.top, 24)
 
             } else {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("나의 감상")
+                        .font(LDFont.heading04)
+                        .foregroundColor(LDColor.color1)
+
                     ForEach(viewModel.reactions, id: \.id) { reaction in
                         // 감상평 섹션
                         if let comment = reaction.comment, !comment.isEmpty {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("감상평")
-                                    .font(LDFont.heading04)
-                                    .foregroundColor(LDColor.color1)
-
-                                Text(comment)
-                                    .font(LDFont.medium04)
-                                    .foregroundColor(LDColor.color2)
-                                    .lineSpacing(4)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
+                            Text(comment)
+                                .padding(12)
+                                .font(LDFont.medium04)
+                                .foregroundColor(LDColor.color1)
+                                .lineSpacing(4)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(LDColor.color5)
+                                )
                         }
                     }
 
