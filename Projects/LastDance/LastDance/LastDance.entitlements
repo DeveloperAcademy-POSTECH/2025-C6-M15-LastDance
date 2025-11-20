@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:nimble-griffin-1a0a69.netlify.app</string>
-		<string>appclips:nimble-griffin-1a0a69.netlify.app</string>
+		<string>applinks:appwoa.netlify.app</string>
+		<string>appclips:appwoa.netlify.app</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
