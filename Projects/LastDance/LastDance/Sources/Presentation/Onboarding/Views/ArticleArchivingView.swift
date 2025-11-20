@@ -20,17 +20,6 @@ struct ArtistExhibitionCardView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 155, height: 219)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-
-                Circle()
-                    .fill(Color.black)
-                    .frame(width: 28, height: 28)
-                    .overlay(
-                        Text("\(displayItem.reactionCount)")
-                            .font(LDFont.heading07)
-                            .foregroundColor(.white)
-                    )
-                    .padding(.leading, 12)
-                    .padding(.bottom, 12)
             }
 
             Text(displayItem.exhibition.title)
@@ -69,7 +58,7 @@ private struct ArtistExhibitionGridView: View {
                     }
                 }
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 20)
             .padding(.top, 30)
             .padding(.bottom, 100)
         }
@@ -80,7 +69,6 @@ private struct ArtistExhibitionGridView: View {
 struct ArticleArchivingView: View {
     @EnvironmentObject private var router: NavigationRouter
     @StateObject private var viewModel = ArtistReactionViewModel()
-    @StateObject private var alarmViewModel = AlarmViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -91,12 +79,26 @@ struct ArticleArchivingView: View {
 
                 Spacer()
 
-                Button(action: {
-                    router.push(.alarmList(userType: .artist))
-                }) {
-                    Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
-                        .resizable()
-                        .frame(width: 24, height: 24)
+                // 전시가 있을 때만 알림과 초대장 버튼 표시
+                if !viewModel.isLoading && !viewModel.exhibitions.isEmpty {
+                    Button(action: {
+                        router.push(.alarmList(userType: .artist))
+                    }) {
+                        Image("bell")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                    .padding(.leading, 14)
+
+                    Button(action: {
+                        router.push(.createInvitation)
+                    }) {
+                        Image(systemName: "envelope")
+                            .resizable()
+                            .frame(width: 28, height: 23)
+                            .foregroundColor(.black)
+                    }
+                    .padding(.leading, 14)
                 }
             }
             .foregroundColor(.black)
@@ -137,8 +139,14 @@ struct ArticleArchivingView: View {
             }
         }
         .onAppear {
+            Log.debug("📱 ArticleArchivingView appeared")
             viewModel.loadArtistExhibitions()
-            alarmViewModel.checkNotifications()
+        }
+        .onChange(of: viewModel.isLoading) { newValue in
+            Log.debug("🔄 isLoading 변경됨: \(newValue)")
+            if !newValue {
+                Log.debug("🔄 로딩 완료 후 exhibitions.count: \(viewModel.exhibitions.count)")
+            }
         }
         .navigationBarBackButtonHidden(true)
     }

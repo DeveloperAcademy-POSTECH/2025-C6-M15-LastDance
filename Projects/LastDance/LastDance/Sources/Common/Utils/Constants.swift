@@ -107,3 +107,10 @@ enum ArtistCodeConstants {
     static let codeLength: Int = 6
     static let openChatURL: String = "https://open.kakao.com/o/sKFJVPYh"
 }
+
+// MARK: InvitationConstants
+/// 초대장 관련 상수
+enum InvitationConstants {
+    static let shareMessageHeader: String = "🎨 전시 초대장이 도착했습니다!\n\n"
+    static let appStoreURL: String = "https://apps.apple.com/kr/app/%EC%97%AC%EC%9A%B4/id6754415794"
+}

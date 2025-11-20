@@ -22,7 +22,6 @@ struct ReactionDetailResponseDto: Codable {
     let artist_messages: [ArtistMessageDto]?
     let created_at: String
     let updated_at: String?
-
     let visitor_name: String?
     let artwork_title: String?
 

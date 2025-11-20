@@ -27,7 +27,6 @@ extension ReactionAPI: BaseTargetType {
             return "\(APIVersion.version1)/reactions/\(reactionId)/artist-emoji"
         case .createMessageReaction(let reactionId, _, _):
             return "\(APIVersion.version1)/reactions/\(reactionId)/artist-messages"
-
         }
     }
 

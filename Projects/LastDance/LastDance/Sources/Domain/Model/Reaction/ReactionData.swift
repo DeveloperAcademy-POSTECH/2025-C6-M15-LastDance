@@ -2,7 +2,7 @@
 //  ReactionData.swift
 //  LastDance
 //
-//  Created by donghee on 10/20/25.
+//  Created by donghee, 신얀 on 10/20/25.
 //
 
 import Foundation

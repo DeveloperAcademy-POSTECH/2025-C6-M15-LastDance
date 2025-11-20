@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-// MARK: - ResponseViewModel
+// MARK: - ArtworkReactionViewModel
 
 @MainActor
 final class ArtworkReactionViewModel: ObservableObject {

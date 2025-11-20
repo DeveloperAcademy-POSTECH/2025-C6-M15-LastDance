@@ -95,6 +95,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                         name: dto.name
                     )
                     self.dataManager.insert(visitor)
+
+                    // visitor 생성 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
                         let data = moyaError.response?.data,
@@ -139,7 +142,6 @@ final class IdentitySelectionViewModel: ObservableObject {
                     Log.debug(
                         "Artist login response - id: \(dto.id), uuid: '\(dto.uuid)' (length: \(dto.uuid.count))"
                     )
-
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
                     UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
 
@@ -152,8 +154,13 @@ final class IdentitySelectionViewModel: ObservableObject {
                         Log.error("Verification failed: artistUUID not saved!")
                     }
 
+                    UserDefaults.standard.set(dto.name, forKey: UserDefaultsKey.artistName.rawValue)
+
                     let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
                     self.dataManager.insert(artistCode)
+
+                    // 작가 인증 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
 
                     completion(true)
 

@@ -18,32 +18,42 @@ struct CustomAlert: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Image(image)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 41)
-                .padding(.top, 28)
-                .padding(.horizontal, 16)
+
+            // 이미지가 있을 때만 보여주기
+            if !image.isEmpty {
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 41)
+                    .padding(.top, 28)
+                    .padding(.horizontal, 16)
+            }
 
             Text(title)
                 .font(LDFont.heading04)
                 .foregroundColor(.black)
-                .padding(.top, 8)
+                .padding(.top, image.isEmpty ? 28 : 8)  // 이미지 없으면 위 여백 보정
                 .padding(.horizontal, 16)
 
-            Text(message)
-                .font(LDFont.regular03)
-                .foregroundColor(LDColor.gray1)
-                .multilineTextAlignment(.center)
-                .padding(.top, 8)
-                .padding(.horizontal, 16)
+            // 메시지가 있을 때만 보여주기
+            if !message.isEmpty {
+                Text(message)
+                    .font(LDFont.regular03)
+                    .foregroundColor(LDColor.gray1)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 8)
+                    .padding(.horizontal, 16)
+            }
 
-            Spacer().frame(height: 22)
+            // 메시지가 있을 때만 아래 spacer 유지
+            if !message.isEmpty {
+                Spacer().frame(height: 22)
+            } else {
+                Spacer().frame(height: 22)  // 타이틀-only 버전용 약간의 여백 조정
+            }
 
             if let cancelAction = cancelAction {
-                // 버튼 2개 (취소 + 확인)
                 HStack(spacing: 8) {
-                    // 취소 버튼
                     Button(action: cancelAction) {
                         Text("취소")
                             .font(LDFont.heading06)
@@ -54,7 +64,6 @@ struct CustomAlert: View {
                             .cornerRadius(12)
                     }
 
-                    // 확인 버튼
                     Button(action: action) {
                         Text(buttonText)
                             .font(LDFont.heading06)
@@ -68,7 +77,6 @@ struct CustomAlert: View {
                 .padding(.bottom, 16)
                 .padding(.horizontal, 12)
             } else {
-                // 버튼 1개 (확인만)
                 Button(action: action) {
                     Text(buttonText)
                         .font(LDFont.heading06)
@@ -123,4 +131,16 @@ struct CustomAlertModifier: ViewModifier {
             }
         }
     }
+}
+#Preview {
+    CustomAlert(
+        image: "",  // 아무 이미지 안 보임
+        title: "정말 삭제하시겠습니까?",
+        message: "",  // 메시지 안 보임
+        buttonText: "확인",
+        action: {},
+        cancelAction: {}
+    )
+    .padding()
+    .previewLayout(.sizeThatFits)
 }
