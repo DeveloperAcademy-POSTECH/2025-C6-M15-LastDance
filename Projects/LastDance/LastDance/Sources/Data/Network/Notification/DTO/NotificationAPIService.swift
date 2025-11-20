@@ -44,16 +44,11 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
             switch result {
             case .success(let response):
                 // 빈 응답 처리 (status code만 확인)
-                do {
-                    if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("서버 응답: \(jsonString)")
-                    }
-                    Log.debug("디바이스 토큰 등록 성공")
-                    completion(.success(()))
-                } catch {
-                    Log.error("디바이스 토큰 등록 실패: status code \(response.statusCode)")
-                    completion(.failure(error))
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                    Log.debug("서버 응답: \(jsonString)")
                 }
+                Log.debug("디바이스 토큰 등록 성공")
+                completion(.success(()))
             case .failure(let error):
                 if let data = error.response?.data,
                     let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
@@ -67,6 +62,7 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
         }
     }
 
+    /// 푸시알람 전송 함수
     func sendNotification(
         dto: SendNotificationRequestDto,
         completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
