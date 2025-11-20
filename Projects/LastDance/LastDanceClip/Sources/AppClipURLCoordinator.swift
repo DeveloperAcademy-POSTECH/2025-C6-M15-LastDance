@@ -29,7 +29,7 @@ class AppClipURLCoordinator {
 
         let exhibitionId: Int = {
             comps?.queryItems?
-                .first(where: { $0.name == "exhibitionId" })?
+                .first(where: { $0.name == "p" })?
                 .value
                 .flatMap(Int.init) ?? 0
         }()
