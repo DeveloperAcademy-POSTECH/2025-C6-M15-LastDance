@@ -54,7 +54,6 @@ final class SelectExhibitionViewModel: ObservableObject {
                     // DTO를 Exhibition 모델로 변환
                     let exhibitions = myExhibitions.map { $0.toEntity() }
                     self?.exhibitions = exhibitions
-                    Log.debug("작가 ID \(artistId)의 전시 \(exhibitions.count)개 로드 완료")
                 case .failure(let error):
                     Log.error("전시 조회 실패: \(error)")
                     self?.exhibitions = []

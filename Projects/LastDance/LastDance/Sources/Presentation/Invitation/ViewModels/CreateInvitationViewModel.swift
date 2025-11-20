@@ -24,7 +24,6 @@ final class CreateInvitationViewModel: ObservableObject {
     func loadInvitationsFromLocal() {
         let localInvitations = SwiftDataManager.shared.fetchAll(Invitation.self)
         self.invitations = localInvitations.sorted { $0.id > $1.id }
-        Log.debug("로컬에서 초대장 \(localInvitations.count)개 로드됨")
     }
 
     /// 최신 초대장 정보 가져오기
@@ -45,10 +44,9 @@ final class CreateInvitationViewModel: ObservableObject {
                 self.isLoading = false
 
                 switch result {
-                case .success(let invitationDtos):
+                case .success:
                     // 로컬에서 다시 로드 (upsert 되어 있음)
                     self.loadInvitationsFromLocal()
-                    Log.debug("서버에서 초대장 \(invitationDtos.count)개 로드됨")
                 case .failure(let error):
                     Log.error("초대장 목록 조회 실패: \(error)")
                 }

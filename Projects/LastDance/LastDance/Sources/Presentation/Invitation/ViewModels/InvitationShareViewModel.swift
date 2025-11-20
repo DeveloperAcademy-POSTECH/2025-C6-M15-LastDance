@@ -63,9 +63,6 @@ final class InvitationShareViewModel: ObservableObject {
                     if let updatedInvitation = invitations.first(where: {
                         $0.id == self.invitation.id
                     }) {
-                        Log.info(updatedInvitation.deep_link ?? "nil")
-                        Log.info(updatedInvitation.app_store_link ?? "nil")
-
                         // 링크 업데이트
                         self.invitation.deepLink = updatedInvitation.deep_link
                         self.invitation.appStoreLink = updatedInvitation.app_store_link
@@ -88,13 +85,10 @@ final class InvitationShareViewModel: ObservableObject {
     }
 
     func confirmDelete(completion: @escaping (Bool) -> Void) {
-        Log.debug("초대장 삭제 시작 - ID: \(invitation.id)")
-
         apiService.deleteInvitation(invitationId: invitation.id) { result in
             Task {
                 switch result {
                 case .success:
-                    Log.debug("초대장 삭제 성공 - ID: \(self.invitation.id)")
                     completion(true)
                 case .failure(let error):
                     Log.error("초대장 삭제 실패 - ID: \(self.invitation.id), Error: \(error)")

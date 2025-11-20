@@ -33,7 +33,6 @@ final class ReceivedInvitationViewModel: ObservableObject {
 
                 switch result {
                 case .success(let invitationDto):
-                    Log.debug("초대장 로드 성공: \(invitationDto.id)")
                     self.invitation = InvitationMapper.toModel(from: invitationDto)
 
                 case .failure(let error):
@@ -58,9 +57,7 @@ final class ReceivedInvitationViewModel: ObservableObject {
                 self.isProcessingInterest = false
 
                 switch result {
-                case .success(let interest):
-                    Log.debug("관심 표현 성공 - interest_id: \(interest.id)")
-                    Log.debug("방문자 카운트 증가 완료")
+                case .success:
                     completion(true)
 
                 case .failure(let error):

@@ -78,25 +78,12 @@ final class InvitationDetailViewModel: ObservableObject {
     }
 
     private func createInvitation() {
-        // UserDefaults 값 확인
-        let artistId =
-            UserDefaults.standard.object(forKey: UserDefaultsKey.artistId.rawValue) as? Int
         let artistUUID = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.rawValue)
-        let artistName = UserDefaults.standard.string(forKey: UserDefaultsKey.artistName.rawValue)
-
-        Log.debug("===== 초대장 생성 시작 =====")
-        Log.debug("artistId: \(artistId?.description ?? "nil")")
-        Log.debug("artistUUID: \(artistUUID ?? "nil")")
-        Log.debug("artistName: \(artistName ?? "nil")")
-        Log.debug("exhibition_id: \(exhibition.id)")
-        Log.debug("invitation_message: \(invitationMessage)")
-        Log.debug("========================")
 
         // UUID가 비어있으면 에러 처리
         if let uuid = artistUUID, uuid.isEmpty {
             Log.error("⚠️ artistUUID가 빈 문자열입니다. UserDefaults에서 삭제하고 작가 인증 코드로 다시 로그인하세요.")
             UserDefaults.standard.removeObject(forKey: UserDefaultsKey.artistUUID.rawValue)
-            Log.debug("빈 artistUUID를 UserDefaults에서 삭제했습니다. 앱을 재시작하고 작가 인증 코드로 로그인하세요.")
             return
         }
 
@@ -110,9 +97,6 @@ final class InvitationDetailViewModel: ObservableObject {
                 switch result {
                 case .success(let invitationDto):
                     // 로컬에 자동 저장됨 (APIService에서 처리)
-                    Log.info(invitationDto.deep_link ?? "nil")
-                    Log.info(invitationDto.app_store_link ?? "nil")
-
                     // 딥링크와 앱스토어 링크 저장
                     if let deepLink = invitationDto.deep_link,
                         let appStoreLink = invitationDto.app_store_link
@@ -167,13 +151,10 @@ final class InvitationDetailViewModel: ObservableObject {
             return
         }
 
-        Log.debug("초대장 삭제 시작 - ID: \(invitationId)")
-
         apiService.deleteInvitation(invitationId: invitationId) { result in
             Task { @MainActor in
                 switch result {
                 case .success:
-                    Log.debug("초대장 삭제 성공 - ID: \(invitationId)")
                     completion(true)
                 case .failure(let error):
                     Log.error("초대장 삭제 실패 - ID: \(invitationId), Error: \(error)")

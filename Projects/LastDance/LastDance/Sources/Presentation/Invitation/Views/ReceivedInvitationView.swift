@@ -121,8 +121,6 @@ struct ReceivedInvitationView: View {
             Button("네") {
                 viewModel.handleGoToExhibition { success in
                     if success {
-                        Log.debug(
-                            "전시 보러가기 - exhibitionId: \(viewModel.invitation?.exhibitionId ?? 0)")
                         // TODO: 전시 상세 화면으로 네비게이션
                         // router.push(.exhibitionDetail(id: invitation.exhibitionId))
                     }
