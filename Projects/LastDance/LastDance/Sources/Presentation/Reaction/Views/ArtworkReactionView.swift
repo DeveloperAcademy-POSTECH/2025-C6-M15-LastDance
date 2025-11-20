@@ -342,7 +342,6 @@ struct MessageItemView: View {
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 31, height: 29)
-                                    .border(.black)
 
                             } else {
                                 Image(
