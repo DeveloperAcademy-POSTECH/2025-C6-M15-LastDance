@@ -41,4 +41,19 @@ final class NavigationRouter: ObservableObject {
         guard let lastIndex = path.lastIndex(where: predicate) else { return }
         path.removeSubrange((lastIndex + 1)...)
     }
+
+    /// 딥링크 처리
+    func handleDeepLink(_ url: URL) {
+        let deepLinkType = DeepLinkHandler.parse(url)
+
+        switch deepLinkType {
+        case .invitation(let uuid):
+            Log.debug("초대장 딥링크 처리 - UUID: \(uuid)")
+            // 초대장 화면으로 이동
+            push(.receivedInvitation(invitationCode: uuid))
+
+        case .unknown:
+            Log.error("알 수 없는 딥링크")
+        }
+    }
 }

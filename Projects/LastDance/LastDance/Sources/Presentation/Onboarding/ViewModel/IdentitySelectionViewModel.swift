@@ -140,9 +140,22 @@ final class IdentitySelectionViewModel: ObservableObject {
                 case .success(let dto):
                     // 작가 정보 저장
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
-                    UserDefaults.standard.set(dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
 
-                    Log.debug("Artist login successful. id=\(dto.id), uuid=\(dto.uuid)")
+                    // UUID가 비어있지 않을 때만 저장
+                    if !dto.uuid.isEmpty {
+                        UserDefaults.standard.set(
+                            dto.uuid, forKey: UserDefaultsKey.artistUUID.rawValue)
+                        Log.debug(
+                            "Artist login successful. id=\(dto.id), uuid=\(dto.uuid), name=\(dto.name)"
+                        )
+                    } else {
+                        Log.error("⚠️ 서버에서 받은 artistUUID가 비어있습니다! dto.uuid: '\(dto.uuid)'")
+                        self.errorMessage = "작가 UUID가 유효하지 않습니다. 관리자에게 문의하세요."
+                        completion(false)
+                        return
+                    }
+
+                    UserDefaults.standard.set(dto.name, forKey: UserDefaultsKey.artistName.rawValue)
 
                     let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
                     self.dataManager.insert(artistCode)
