@@ -21,6 +21,9 @@
 		<string>Pretendard-SemiBold.otf</string>
 		<string>Pretendard-Thin.otf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

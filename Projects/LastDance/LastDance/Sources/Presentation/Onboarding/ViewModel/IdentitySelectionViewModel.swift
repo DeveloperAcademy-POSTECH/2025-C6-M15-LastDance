@@ -95,6 +95,9 @@ final class IdentitySelectionViewModel: ObservableObject {
                         name: dto.name
                     )
                     self.dataManager.insert(visitor)
+
+                    // visitor 생성 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
                 case .failure(let error):
                     if let moyaError = error as? MoyaError,
                         let data = moyaError.response?.data,
@@ -156,6 +159,9 @@ final class IdentitySelectionViewModel: ObservableObject {
 
                     let artistCode = ArtistMapper.toArtistCodeModel(from: dto)
                     self.dataManager.insert(artistCode)
+
+                    // 작가 인증 성공 후 디바이스 토큰 전송
+                    DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
 
                     completion(true)
 
