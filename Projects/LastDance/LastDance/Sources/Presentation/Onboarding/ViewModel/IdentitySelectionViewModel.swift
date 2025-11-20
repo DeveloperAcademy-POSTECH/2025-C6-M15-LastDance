@@ -139,6 +139,10 @@ final class IdentitySelectionViewModel: ObservableObject {
                 switch result {
                 case .success(let dto):
                     // 작가 정보 저장
+                    Log.debug(
+                        "Artist login response - id: \(dto.id), uuid: '\(dto.uuid)' (length: \(dto.uuid.count))"
+                    )
+
                     UserDefaults.standard.set(dto.id, forKey: UserDefaultsKey.artistId.rawValue)
 
                     // UUID가 비어있지 않을 때만 저장

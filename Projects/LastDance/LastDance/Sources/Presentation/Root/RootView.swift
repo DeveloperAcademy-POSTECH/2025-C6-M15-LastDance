@@ -138,7 +138,7 @@ struct RootView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationBarBackButtonHidden(true)
                 case .response(let artworkId):
-                    ResponseView(artworkId: artworkId)
+                    ArtworkReactionView(artworkId: artworkId)
                         .navigationBarBackButtonHidden(true)
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)

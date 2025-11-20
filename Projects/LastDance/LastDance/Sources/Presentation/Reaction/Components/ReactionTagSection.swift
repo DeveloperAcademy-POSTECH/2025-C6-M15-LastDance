@@ -10,7 +10,7 @@ import SwiftUI
 /// 반응의 태그 섹션 (카테고리 태그)
 struct ReactionTagSection: View {
     let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
+    @ObservedObject var viewModel: ArtworkReactionViewModel
 
     var body: some View {
         if !reaction.categories.isEmpty {

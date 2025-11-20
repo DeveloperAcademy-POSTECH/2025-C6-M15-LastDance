@@ -1,5 +1,5 @@
 //
-//  ResponseViewModel.swift
+//  ArtworkReactionViewModel.swift
 //  LastDance
 //
 //  Created by donghee on 10/20/25.
@@ -9,29 +9,30 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-// MARK: - ResponseViewModel
+// MARK: - ArtworkReactionViewModel
 
 @MainActor
-final class ResponseViewModel: ObservableObject {
+final class ArtworkReactionViewModel: ObservableObject {
     @Published var expandedReactions: Set<String> = []
     @Published var showAllReactions: [String: Bool] = [:]
     @Published var reactions: [ReactionData] = []
-    @Published var isLoading = false  // Added isLoading property
+    @Published var isLoading = false
+    @Published var selectedReactionId: String?  // 이모지 팝업 중 클릭한 반응의 ID 임시 저장
+    @Published var selectedEmojis: [String: String] = [:]  // 실제 선택된 이모지 저장
 
-    private let artworkId: Int  // Added artworkId property
-    private let reactionAPIService: ReactionAPIServiceProtocol  // Added dependency
-    private let swiftDataManager = SwiftDataManager.shared  // To fetch Artwork for display
-
+    private let artworkId: Int
+    private let reactionAPIService: ReactionAPIServiceProtocol
+    private let swiftDataManager = SwiftDataManager.shared
     init(artworkId: Int, reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService()) {
         self.artworkId = artworkId
         self.reactionAPIService = reactionAPIService
-        fetchReactions()  // Automatically fetch reactions on init
+        fetchReactions()
     }
 
     /// API를 통해 실제 반응 데이터를 불러오는 로직 구현
     func fetchReactions() {
         isLoading = true
-        reactions = []  // Clear previous data
+        reactions = []
 
         reactionAPIService.getReactions(artworkId: artworkId, visitorId: nil, visitId: nil) {
             [weak self] result in
@@ -45,7 +46,7 @@ final class ResponseViewModel: ObservableObject {
 
                 let dispatchGroup = DispatchGroup()
                 var fetchedReactionData: [ReactionData] = []
-                let lock = NSLock()  // To protect fetchedReactionData during concurrent access
+                let lock = NSLock()
 
                 for getReactionDto in getReactionDtos {
                     dispatchGroup.enter()
@@ -55,11 +56,17 @@ final class ResponseViewModel: ObservableObject {
 
                         switch detailResult {
                         case .success(let reactionResponseDto):
-                            let reactionDetailDto = reactionResponseDto.data  // This is ReactionDetailResponseDto
+                            let reactionDetailDto = reactionResponseDto.data
+
+                            // 현재 로그인한 작가의 이모지 찾기
+                            let artistEmoji = reactionDetailDto.artist_emojis?.first?.emoji_type
+
                             let reactionData = ReactionData(
                                 id: String(reactionDetailDto.id),
                                 comment: reactionDetailDto.comment ?? "",
-                                categories: reactionDetailDto.tags.map { $0.name }
+                                categories: reactionDetailDto.tags?.map { $0.name } ?? [],
+                                artistEmoji: artistEmoji,
+                                createdAt: reactionDetailDto.created_at
                             )
                             lock.lock()
                             fetchedReactionData.append(reactionData)
@@ -73,7 +80,17 @@ final class ResponseViewModel: ObservableObject {
                 }
 
                 dispatchGroup.notify(queue: .main) {
-                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id }  // Sort to maintain order
+                    self.reactions = fetchedReactionData.sorted { $0.id < $1.id }
+
+                    // API 응답으로부터 selectedEmojis 초기화
+                    var emojis: [String: String] = [:]
+                    for reaction in self.reactions {
+                        if let emoji = reaction.artistEmoji {
+                            emojis[reaction.id] = emoji
+                        }
+                    }
+                    self.selectedEmojis = emojis
+
                     self.isLoading = false
                     Log.debug(
                         "All reaction details fetched and mapped for artwork \(self.artworkId). Total: \(self.reactions.count)"
@@ -174,27 +191,56 @@ final class ResponseViewModel: ObservableObject {
         return []
     }
 
-    // MARK: - Mock Data (TODO: 실제 데이터로 교체 필요)
+    /// 선택된 이모지를 서버로 전송하는 함수
+    /// - Parameter emoji: 선택된 이모지 asset 이름
+    func sendEmoji(_ emoji: String) {
+        guard let reactionIdString = selectedReactionId,
+            let reactionId = Int(reactionIdString)
+        else {
+            Log.error("이모지를 보낼 수 없음")
+            return
+        }
 
-    /// 목업 프로필 이모지를 반환합니다
-    /// - Parameter index: 반응 인덱스
-    /// - Returns: 프로필 이모지
-    func getMockEmoji(for index: Int) -> String {
-        let mockEmojis = ["🎨", "🖼️", "✨", "🌟", "💫"]
-        return mockEmojis[index % mockEmojis.count]
+        // artistUUID 가져오기
+        guard
+            let artistUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.artistUUID.rawValue),
+            !artistUUID.isEmpty
+        else {
+            Log.error("Artist UUID 를 찾지 못함")
+            selectedReactionId = nil
+            return
+        }
+
+        let dto = EmojiReactionRequestDto(emoji_type: emoji)
+
+        reactionAPIService.createEmojiReaction(
+            reactionId: reactionId,
+            artistUUID: artistUUID,
+            dto: dto
+        ) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                Log.debug("이모지 반응 전송 성공 - ID: \(response.id)")
+                DispatchQueue.main.async {
+                    self.selectedEmojis[reactionIdString] = emoji
+                    self.selectedReactionId = nil
+                }
+            case .failure(let error):
+                Log.error("이모지 반응 전송 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.selectedReactionId = nil
+                }
+            }
+        }
     }
 
-    /// 목업 사용자 이름을 반환합니다
-    /// - Parameter index: 반응 인덱스
-    /// - Returns: 사용자 이름
-    func getMockName(for index: Int) -> String {
-        let mockNames = ["쪼미", "쫑미", "미술관객", "예술가", "관람자"]
-        return mockNames[index % mockNames.count]
-    }
-
-    /// 목업 날짜를 반환합니다
-    /// - Returns: 날짜 문자열 (TODO: 실제 reaction 데이터에 날짜 필드 추가 필요)
-    func getMockDate() -> String {
-        return "2025.11.08"
+    /// 특정 반응에 선택된 이모지를 반환
+    /// - Parameter reactionId: 반응 ID
+    /// - Returns: 선택된 이모지 asset 이름, 없으면 nil
+    func getSelectedEmoji(for reactionId: String) -> String? {
+        return selectedEmojis[reactionId]
     }
 }

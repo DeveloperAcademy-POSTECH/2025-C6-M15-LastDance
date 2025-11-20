@@ -197,28 +197,28 @@ extension ArtReactionView {
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(viewModel.reactions, id: \.id) { reaction in
                         VStack(alignment: .leading, spacing: 16) {
-                            // 감정 태그 섹션
-                            if !reaction.tags.isEmpty {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("감정 태그")
-                                        .font(LDFont.heading04)
-                                        .foregroundColor(LDColor.color1)
-
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(reaction.tags, id: \.self) { tagInfo in
-                                                ReactionTag(
-                                                    text: tagInfo.name,
-                                                    color: Color(hex: tagInfo.colorHex)
-                                                )
-                                                .applyShadow(LDShadow.shadow1)
-                                                .padding(.vertical, 10)
-                                                .padding(.horizontal, 2)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            //                            // 감정 태그 섹션
+                            //                            if !reaction.tags.isEmpty {
+                            //                                VStack(alignment: .leading, spacing: 10) {
+                            //                                    Text("감정 태그")
+                            //                                        .font(LDFont.heading04)
+                            //                                        .foregroundColor(LDColor.color1)
+                            //
+                            //                                    ScrollView(.horizontal, showsIndicators: false) {
+                            //                                        HStack {
+                            //                                            ForEach(reaction.tags, id: \.self) { tagInfo in
+                            //                                                ReactionTag(
+                            //                                                    text: tagInfo.name,
+                            //                                                    color: Color(hex: tagInfo.colorHex)
+                            //                                                )
+                            //                                                .applyShadow(LDShadow.shadow1)
+                            //                                                .padding(.vertical, 10)
+                            //                                                .padding(.horizontal, 2)
+                            //                                            }
+                            //                                        }
+                            //                                    }
+                            //                                }
+                            //                            }
 
                             // 감상평 섹션
                             if let comment = reaction.comment, !comment.isEmpty {

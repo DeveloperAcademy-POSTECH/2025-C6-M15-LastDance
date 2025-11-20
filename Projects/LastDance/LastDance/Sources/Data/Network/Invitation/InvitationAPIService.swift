@@ -123,9 +123,12 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
             case .failure(let moyaError):
                 if let response = moyaError.response {
                     // ErrorResponseDto로 먼저 디코딩 시도
-                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                    if let errorDto = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data)
+                    {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                        Log.error(
+                            "에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
                     } else if let responseString = String(data: response.data, encoding: .utf8) {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
                         Log.error("서버 응답 내용: \(responseString)")
@@ -198,9 +201,12 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
             case .failure(let moyaError):
                 if let response = moyaError.response {
                     // ErrorResponseDto로 먼저 디코딩 시도
-                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                    if let errorDto = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data)
+                    {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                        Log.error(
+                            "에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
                     } else if let responseString = String(data: response.data, encoding: .utf8) {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
                         Log.error("서버 응답 내용: \(responseString)")
@@ -245,9 +251,12 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
             case .failure(let moyaError):
                 if let response = moyaError.response {
                     // ErrorResponseDto로 먼저 디코딩 시도
-                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                    if let errorDto = try? JSONDecoder().decode(
+                        ErrorResponseDto.self, from: response.data)
+                    {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                        Log.error(
+                            "에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
                     } else if let responseString = String(data: response.data, encoding: .utf8) {
                         Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
                         Log.error("서버 응답 내용: \(responseString)")

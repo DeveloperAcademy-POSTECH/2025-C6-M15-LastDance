@@ -11,4 +11,6 @@ struct ReactionData: Identifiable {
     let id: String
     let comment: String
     let categories: [String]
+    let artistEmoji: String?  // 작가가 선택한 이모지 (emoji_type)
+    let createdAt: String
 }

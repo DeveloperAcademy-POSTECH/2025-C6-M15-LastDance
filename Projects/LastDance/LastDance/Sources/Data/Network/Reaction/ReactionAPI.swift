@@ -12,6 +12,7 @@ enum ReactionAPI {
     case createReaction(dto: ReactionRequestDto)
     case getReactions(artworkId: Int?, visitorId: Int?, visitId: Int?)
     case getDetailReaction(reactionId: Int)
+    case createEmojiReaction(reactionId: Int, artistUUID: String, dto: EmojiReactionRequestDto)
 }
 
 extension ReactionAPI: BaseTargetType {
@@ -21,21 +22,38 @@ extension ReactionAPI: BaseTargetType {
             return "\(APIVersion.version1)/reactions"
         case .getDetailReaction(let reactionId):
             return "\(APIVersion.version1)/reactions/\(reactionId)"
+        case .createEmojiReaction(let reactionId, _, _):
+            return "\(APIVersion.version1)/reactions/\(reactionId)/artist-emoji"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .createReaction:
+        case .createReaction, .createEmojiReaction:
             return .post
         case .getReactions, .getDetailReaction:
             return .get
         }
     }
 
+    var headers: [String: String]? {
+        switch self {
+        case .createEmojiReaction(_, let artistUUID, _):
+            return [
+                "Content-Type": HTTPHeaderConstants.contentTypeJSON,
+                "X-Artist-UUID": artistUUID,
+            ]
+        default:
+            if isMultipart {
+                return nil
+            }
+            return ["Content-Type": HTTPHeaderConstants.contentTypeJSON]
+        }
+    }
+
     var queryParameters: [String: Any]? {
         switch self {
-        case .createReaction, .getDetailReaction:
+        case .createReaction, .getDetailReaction, .createEmojiReaction:
             return nil
         case .getReactions(let artworkId, let visitorId, let visitId):
             var params: [String: Any] = [:]
@@ -56,6 +74,8 @@ extension ReactionAPI: BaseTargetType {
         switch self {
         case .createReaction, .getReactions, .getDetailReaction:
             return nil
+        case .createEmojiReaction(_, _, let dto):
+            return dto
         }
     }
 
