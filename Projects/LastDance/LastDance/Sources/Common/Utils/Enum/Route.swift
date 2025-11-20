@@ -31,4 +31,9 @@ enum Route: Hashable {
     case artistReactionArchiveView(exhibitionId: Int)
     case artReaction(artwork: Artwork, artist: Artist?)
     case alarmList(userType: UserType)
+    case createInvitation
+    case selectExhibitionForInvitation
+    case invitationDetail(exhibition: Exhibition)
+    case invitationShare(invitation: Invitation)
+    case receivedInvitation(invitationCode: String)
 }

@@ -79,7 +79,7 @@ struct ExhibitionDetailView: View {
     /// 작가 - 내 전시가 맞아요 버튼 처리
     private func handleArtistConfirm() {
         viewModel.selectExhibitionAsUserExhibition()
-        router.push(.artistReaction)
+        router.push(.articleArchiving)
     }
 
     /// 관람객 - 관람 시작하기 버튼 처리
@@ -87,7 +87,6 @@ struct ExhibitionDetailView: View {
         viewModel.createVisitHistory { success in
             if success {
                 viewModel.selectExhibitionAsUserExhibition()
-                SwiftDataManager.shared.saveContext()
                 router.push(.archive(id: exhibitionId))
             } else {
                 Log.error("Failed to create visit history.")

@@ -26,6 +26,7 @@ struct PersistenceController {
                 Reaction.self,
                 IdentificatedArtwork.self,
                 VisitHistory.self,
+                Invitation.self,
             ])
 
             let modelConfiguration = ModelConfiguration(

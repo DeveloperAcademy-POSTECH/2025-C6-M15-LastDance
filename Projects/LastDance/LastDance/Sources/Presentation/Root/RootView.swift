@@ -132,7 +132,7 @@ struct RootView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationBarBackButtonHidden(true)
                 case .response(let artworkId):
-                    ResponseView(artworkId: artworkId)
+                    ArtworkReactionView(artworkId: artworkId)
                         .navigationBarBackButtonHidden(true)
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
@@ -140,8 +140,30 @@ struct RootView: View {
                 case .alarmList(let userType):
                     AlarmListView(userType: userType)
                         .navigationBarBackButtonHidden(true)
+                case .createInvitation:
+                    CreateInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .selectExhibitionForInvitation:
+                    SelectExhibitionForInvitationView()
+                        .navigationBarBackButtonHidden(true)
+                case .invitationDetail(let exhibition):
+                    InvitationDetailView(exhibition: exhibition)
+                        .navigationBarBackButtonHidden(true)
+                case .invitationShare(let invitation):
+                    CreatedInvitationView(invitation: invitation)
+                        .navigationBarBackButtonHidden(true)
+                case .receivedInvitation(let invitationCode):
+                    ReceivedInvitationView(invitationCode: invitationCode)
+                        .navigationBarBackButtonHidden(false)
                 }
             }
+        }
+        .environmentObject(router)
+        .environmentObject(reactionInputViewModel)
+        .environmentObject(identitySelectionViewModel)
+        .onOpenURL { url in
+            Log.debug("딥링크 수신: \(url.absoluteString)")
+            router.handleDeepLink(url)
         }
     }
 }

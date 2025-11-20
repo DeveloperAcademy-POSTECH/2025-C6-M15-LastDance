@@ -10,7 +10,7 @@ import SwiftUI
 /// 개별 반응 아이템 뷰
 struct ReactionItemView: View {
     let reaction: ReactionData
-    @ObservedObject var viewModel: ResponseViewModel
+    @ObservedObject var viewModel: ArtworkReactionViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

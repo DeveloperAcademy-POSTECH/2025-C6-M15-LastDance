@@ -169,6 +169,7 @@ final class ExhibitionDetailViewModel: ObservableObject {
         }
 
         Log.debug("ExhibitionDetailViewModel: Staged changes for exhibition '\(exhibition.title)'.")
+        dataManager.saveContext()
     }
 
     /// 방문 기록 생성 API 함수
