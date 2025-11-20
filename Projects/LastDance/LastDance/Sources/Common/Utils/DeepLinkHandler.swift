@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum DeepLinkType {
-    case invitation(uuid: String)
-    case unknown
-}
-
 struct DeepLinkHandler {
     /// URL을 파싱하여 DeepLinkType 반환
     /// - Parameter url: lastdance://invitation/{uuid} 형식의 URL

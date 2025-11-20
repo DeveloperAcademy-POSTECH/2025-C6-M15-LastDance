@@ -97,7 +97,7 @@ struct CreateInvitationView: View {
                                             viewModel.getLatestInvitation(
                                                 invitationId: invitation.id) ?? invitation
                                         router.push(
-                                            .createdInvitation(invitation: latestInvitation))
+                                            .invitationShare(invitation: latestInvitation))
                                     }
                             }
                         }

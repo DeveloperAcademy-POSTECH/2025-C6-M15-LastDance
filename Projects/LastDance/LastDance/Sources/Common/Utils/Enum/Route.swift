@@ -36,6 +36,6 @@ enum Route: Hashable {
     case createInvitation
     case selectExhibitionForInvitation
     case invitationDetail(exhibition: Exhibition)
-    case createdInvitation(invitation: Invitation)
+    case invitationShare(invitation: Invitation)
     case receivedInvitation(invitationCode: String)
 }

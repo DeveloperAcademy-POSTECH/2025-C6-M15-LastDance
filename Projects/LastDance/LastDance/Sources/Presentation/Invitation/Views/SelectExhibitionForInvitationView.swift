@@ -42,7 +42,6 @@ struct SelectExhibitionForInvitationView: View {
         .onAppear {
             viewModel.loadActiveExhibitions()
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 

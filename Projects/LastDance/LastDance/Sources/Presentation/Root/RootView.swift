@@ -129,7 +129,7 @@ struct RootView: View {
                 case .invitationDetail(let exhibition):
                     InvitationDetailView(exhibition: exhibition)
                         .navigationBarBackButtonHidden(true)
-                case .createdInvitation(let invitation):
+                case .invitationShare(let invitation):
                     CreatedInvitationView(invitation: invitation)
                         .navigationBarBackButtonHidden(true)
                 case .receivedInvitation(let invitationCode):

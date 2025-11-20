@@ -75,7 +75,6 @@ struct CreatedInvitationView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
-        .navigationBarBackButtonHidden(true)
         .customAlert(
             isPresented: $viewModel.showDeleteAlert,
             image: "",
