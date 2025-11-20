@@ -13,6 +13,5 @@ struct ExhibitionRequestDto: Codable {
     let start_date: String
     let end_date: String?
     let venue_id: Int
-    let cover_image_url: String?
     let artwork_ids: [Int]?
 }

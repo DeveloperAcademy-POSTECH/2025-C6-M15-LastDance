@@ -173,4 +173,28 @@ final class ResponseViewModel: ObservableObject {
         }
         return []
     }
+
+    // MARK: - Mock Data (TODO: 실제 데이터로 교체 필요)
+
+    /// 목업 프로필 이모지를 반환합니다
+    /// - Parameter index: 반응 인덱스
+    /// - Returns: 프로필 이모지
+    func getMockEmoji(for index: Int) -> String {
+        let mockEmojis = ["🎨", "🖼️", "✨", "🌟", "💫"]
+        return mockEmojis[index % mockEmojis.count]
+    }
+
+    /// 목업 사용자 이름을 반환합니다
+    /// - Parameter index: 반응 인덱스
+    /// - Returns: 사용자 이름
+    func getMockName(for index: Int) -> String {
+        let mockNames = ["쪼미", "쫑미", "미술관객", "예술가", "관람자"]
+        return mockNames[index % mockNames.count]
+    }
+
+    /// 목업 날짜를 반환합니다
+    /// - Returns: 날짜 문자열 (TODO: 실제 reaction 데이터에 날짜 필드 추가 필요)
+    func getMockDate() -> String {
+        return "2025.11.08"
+    }
 }

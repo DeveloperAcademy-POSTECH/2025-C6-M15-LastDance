@@ -20,6 +20,10 @@ struct ExhibitionResponseDto: Codable, ExhibitionDtoMappableProtocol {
     let venue: VenueInfo
     let artworks: [ArtworkInfo]?
 
+    // 편의 필드
+    let venue_name: String?
+    let artists: [ExhibitionArtistSummary]?
+
     struct VenueInfo: Codable {
         let id: Int
         let name: String
@@ -33,11 +37,15 @@ struct ExhibitionResponseDto: Codable, ExhibitionDtoMappableProtocol {
     struct ArtworkInfo: Codable {
         let id: Int
         let title: String
-        let artist_id: Int
-        let description: String?
+        let artist_name: String
         let year: Int?
         let thumbnail_url: String?
-        let created_at: String
+        let created_at: String?
         let updated_at: String?
+    }
+
+    struct ExhibitionArtistSummary: Codable {
+        let id: Int
+        let name: String
     }
 }

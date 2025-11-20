@@ -19,7 +19,6 @@ struct AudienceArchivingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
             Text("나의 전시")
                 .font(LDFont.heading02)
                 .foregroundColor(.black)

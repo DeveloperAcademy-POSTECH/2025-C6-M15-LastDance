@@ -7,10 +7,9 @@
 
 import Foundation
 
-struct MakeArtworkRequestDto: Codable {
+struct MakeArtworkRequestDto {
     let title: String
     let artist_id: Int
     let description: String?
     let year: Int?
-    let thumbnail_url: String?
 }

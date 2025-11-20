@@ -19,4 +19,8 @@ struct ReactionDetailResponseDto: Codable {
     let artwork: ArtworkDetailResponseDto
     let visitor: VisitorResponseDto
     let tags: [TagDetailResponseDto]
+
+    // 편의 필드
+    let visitor_name: String?
+    let artwork_title: String?
 }

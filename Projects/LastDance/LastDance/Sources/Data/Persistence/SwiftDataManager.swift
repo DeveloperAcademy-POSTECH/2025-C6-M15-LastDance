@@ -131,10 +131,7 @@ extension SwiftDataManager {
     func upsertArtist(_ newValue: Artist) {
         let all = fetchAll(Artist.self)
         if let existing = all.first(where: { $0.id == newValue.id }) {
-            // UUID가 비어있지 않은 경우에만 업데이트 (전시 API에서 온 데이터는 UUID가 없음)
-            if !newValue.uuid.isEmpty {
-                existing.uuid = newValue.uuid
-            }
+            existing.uuid = newValue.uuid
             existing.name = newValue.name
         } else {
             insert(newValue)

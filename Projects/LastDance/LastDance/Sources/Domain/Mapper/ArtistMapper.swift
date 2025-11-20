@@ -10,7 +10,7 @@ import Foundation
 enum ArtistMapper {
     /// 작가 dto를 Model로 변환
     static func toModel(from dto: ArtistListItemDto) -> Artist {
-        Artist(id: dto.id, uuid: dto.uuid, name: dto.name)
+        Artist(id: dto.id, uuid: "", name: dto.name)
     }
 
     /// 작가 코드 dto를 Model로 변환

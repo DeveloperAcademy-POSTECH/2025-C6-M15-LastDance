@@ -18,6 +18,7 @@ protocol ExhibitionAPIServiceProtocol {
     )
     func makeExhibition(
         dto: ExhibitionRequestDto,
+        coverImageData: Data?,
         completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void
     )
     func getDetailExhibition(
@@ -101,9 +102,10 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
     /// 전시 생성 api
     func makeExhibition(
         dto: ExhibitionRequestDto,
+        coverImageData: Data?,
         completion: @escaping (Result<ExhibitionResponseDto, Error>) -> Void
     ) {
-        provider.request(.makeExhibition(dto: dto)) { result in
+        provider.request(.makeExhibition(dto: dto, coverImageData: coverImageData)) { result in
             switch result {
             case .success(let response):
                 do {
@@ -113,7 +115,9 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                     }
 
                     let exhibition = try JSONDecoder().decode(
-                        ExhibitionResponseDto.self, from: response.data)
+                        ExhibitionResponseDto.self,
+                        from: response.data
+                    )
                     Log.debug("전시 생성 성공: \(exhibition.title)")
                     completion(.success(exhibition))
                 } catch {
@@ -159,8 +163,8 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                                     id: artworkInfo.id,
                                     exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
-                                    descriptionText: artworkInfo.description,
-                                    artistId: artworkInfo.artist_id,
+                                    descriptionText: nil,
+                                    artistId: nil,
                                     thumbnailURL: artworkInfo.thumbnail_url,
                                     exhibition: exhibition
                                 )

@@ -24,30 +24,6 @@ final class ArtReactionViewModel: ObservableObject {
         self.artworkId = artworkId
     }
 
-    // MARK: - Computed Properties
-
-    func imageWidth(for scrollOffset: CGFloat) -> CGFloat {
-        guard scrollOffset < ArchiveImageConstants.animationThreshold else {
-            return ArchiveImageConstants.minWidth
-        }
-        let progress = scrollOffset / ArchiveImageConstants.animationThreshold
-        return ArchiveImageConstants.maxWidth
-            - (progress * (ArchiveImageConstants.maxWidth - ArchiveImageConstants.minWidth))
-    }
-
-    func imageHeight(for scrollOffset: CGFloat) -> CGFloat {
-        guard scrollOffset < ArchiveImageConstants.animationThreshold else {
-            return ArchiveImageConstants.minHeight
-        }
-        let progress = scrollOffset / ArchiveImageConstants.animationThreshold
-        return ArchiveImageConstants.maxHeight
-            - (progress * (ArchiveImageConstants.maxHeight - ArchiveImageConstants.minHeight))
-    }
-
-    func isTabBarFixed(for scrollOffset: CGFloat) -> Bool {
-        return scrollOffset > ArchiveImageConstants.tabBarFixThreshold
-    }
-
     // MARK: - Public Methods
 
     func loadReactions() {

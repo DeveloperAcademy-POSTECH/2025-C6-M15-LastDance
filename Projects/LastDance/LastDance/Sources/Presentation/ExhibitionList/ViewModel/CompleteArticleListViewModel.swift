@@ -34,15 +34,8 @@ final class CompleteArticleListViewModel: ObservableObject {
         }
         UserDefaults.standard.set(artist.id, forKey: UserDefaultsKey.artistId.key)
         UserDefaults.standard.set(artist.name, forKey: UserDefaultsKey.artistName.key)
-
-        // UUID가 비어있지 않을 때만 저장 (전시 API에서 온 작가는 uuid가 없음)
-        if !artist.uuid.isEmpty {
-            UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
-            Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id), uuid: \(artist.uuid))")
-        } else {
-            Log.warning("⚠️ 작가 UUID가 비어있어서 저장하지 않습니다. 작가 인증 코드로 로그인하세요.")
-            Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id), uuid: 없음)")
-        }
+        UserDefaults.standard.set(artist.uuid, forKey: UserDefaultsKey.artistUUID.key)
+        Log.info("현재 사용자 작가 지정 완료: \(artist.name) (id: \(artist.id), uuid: \(artist.uuid))")
     }
 
     /// 현재 화면에 표시된 "작가명/전시명"으로 전시 id 찾기
