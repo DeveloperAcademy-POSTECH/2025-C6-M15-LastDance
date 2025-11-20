@@ -16,10 +16,10 @@ struct NotificationItemDto: Codable {
     let notification_type: String
     let title: String
     let body: String
-    let reaction_id: Int
-    let exhibition_id: Int
-    let artwork_id: Int
-    let visit_history_id: Int
+    let reaction_id: Int?
+    let exhibition_id: Int?
+    let artwork_id: Int?
+    let visit_history_id: Int?
     let deep_link: String
     let is_read: Bool
     let is_sent: Bool

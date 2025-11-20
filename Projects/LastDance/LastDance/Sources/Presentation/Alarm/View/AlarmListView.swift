@@ -27,7 +27,8 @@ struct AlarmListView: View {
                         ForEach(viewModel.notifications) { item in
                             Button(
                                 action: {
-                                    handleNotificationTap(item)
+                                    viewModel.handleNotificationTap(
+                                        item, router: router, userType: userType)
                                 },
                                 label: {
                                     VStack(spacing: 0) {
@@ -56,44 +57,7 @@ struct AlarmListView: View {
             }
         }
         .onAppear {
-            loadNotifications()
-        }
-    }
-
-    private func loadNotifications() {
-        let uuid: String
-        switch userType {
-        case .artist:
-            uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.key) ?? ""
-        case .viewer:
-            uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.key) ?? ""
-        }
-
-        guard !uuid.isEmpty else {
-            Log.info("UUID가 없습니다.")
-            return
-        }
-
-        viewModel.loadNotifications(uuid: uuid, userType: userType)
-    }
-
-    private func handleNotificationTap(_ item: NotificationItem) {
-        // 딥링크 처리
-        if !item.deepLink.isEmpty, let deepLinkURL = URL(string: item.deepLink) {
-            router.handleDeepLink(deepLinkURL)
-        } else {
-            // deepLink가 없으면 artworkId로 직접 이동
-            switch userType {
-            case .artist:
-                router.push(.response(artworkId: item.artworkId))
-            case .viewer:
-                let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
-                if let artwork = artworks.first(where: { $0.id == item.artworkId }) {
-                    let artists = SwiftDataManager.shared.fetchAll(Artist.self)
-                    let artist = artists.first(where: { $0.id == artwork.artistId })
-                    router.push(.artReaction(artwork: artwork, artist: artist))
-                }
-            }
+            viewModel.onAlarmViewAppear(userType: userType)
         }
     }
 }

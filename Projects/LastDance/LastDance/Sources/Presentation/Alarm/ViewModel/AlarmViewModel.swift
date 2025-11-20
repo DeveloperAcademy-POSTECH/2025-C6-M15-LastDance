@@ -53,6 +53,50 @@ final class AlarmViewModel: ObservableObject {
         }
     }
 
+    /// UUID 가져오기
+    private func getUUID(for userType: UserType) -> String? {
+        let uuid: String?
+        switch userType {
+        case .artist:
+            uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.key)
+        case .viewer:
+            uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.key)
+        }
+        return uuid
+    }
+
+    /// 알림 화면 진입 시 호출
+    func onAlarmViewAppear(userType: UserType) {
+        guard let uuid = getUUID(for: userType), !uuid.isEmpty else {
+            Log.info("UUID가 없습니다.")
+            return
+        }
+
+        loadNotifications(uuid: uuid, userType: userType)
+        markAllAsRead(uuid: uuid)
+    }
+
+    /// 딥링크 처리
+    func handleNotificationTap(
+        _ item: NotificationItem, router: NavigationRouter, userType: UserType
+    ) {
+        if !item.deepLink.isEmpty, let deepLinkURL = URL(string: item.deepLink) {
+            router.handleDeepLink(deepLinkURL)
+        } else {
+            switch userType {
+            case .artist:
+                router.push(.response(artworkId: item.artworkId))
+            case .viewer:
+                let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+                if let artwork = artworks.first(where: { $0.id == item.artworkId }) {
+                    let artists = SwiftDataManager.shared.fetchAll(Artist.self)
+                    let artist = artists.first(where: { $0.id == artwork.artistId })
+                    router.push(.artReaction(artwork: artwork, artist: artist))
+                }
+            }
+        }
+    }
+
     /// 읽지 않은 알림 개수 조회
     func loadUnreadCount(uuid: String) {
         apiService.getUnreadNotificationCount(uuid: uuid) { [weak self] result in
@@ -65,6 +109,23 @@ final class AlarmViewModel: ObservableObject {
                     Log.debug("읽지 않은 알림 개수: \(responseDto.count)개")
                 case .failure(let error):
                     Log.error("읽지 않은 알림 개수 조회 실패: \(error)")
+                }
+            }
+        }
+    }
+
+    /// 모든 알림 읽음 처리
+    func markAllAsRead(uuid: String) {
+        apiService.readAllNotification(uuid: uuid) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                switch result {
+                case .success:
+                    Log.debug("모든 알림 읽음 처리 완료")
+                    self.unreadCount = 0
+                case .failure(let error):
+                    Log.error("모든 알림 읽음 처리 실패: \(error)")
                 }
             }
         }

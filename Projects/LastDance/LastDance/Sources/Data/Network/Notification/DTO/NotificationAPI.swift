@@ -13,6 +13,7 @@ enum NotificationAPI {
     case getNotificationList(
         uuid: String, isRead: Bool? = nil, limit: Int? = nil, offset: Int? = nil)
     case getUnreadNotificationCount(uuid: String)
+    case readAllNotification(uuid: String)
 }
 
 extension NotificationAPI: BaseTargetType {
@@ -26,6 +27,8 @@ extension NotificationAPI: BaseTargetType {
             return "\(APIVersion.version1)/notifications"
         case .getUnreadNotificationCount:
             return "\(APIVersion.version1)/notifications/unread-count"
+        case .readAllNotification:
+            return "\(APIVersion.version1)/notifications/read-all"
         }
     }
 
@@ -35,12 +38,15 @@ extension NotificationAPI: BaseTargetType {
             return .post
         case .getNotificationList, .getUnreadNotificationCount:
             return .get
+        case .readAllNotification:
+            return .patch
         }
     }
 
     var headers: [String: String]? {
         switch self {
-        case .getNotificationList(let uuid, _, _, _), .getUnreadNotificationCount(let uuid):
+        case .getNotificationList(let uuid, _, _, _), .getUnreadNotificationCount(let uuid),
+            .readAllNotification(let uuid):
             var headers = ["Content-Type": HTTPHeaderConstants.contentTypeJSON]
             headers["X-User-UUID"] = uuid
             return headers
@@ -80,7 +86,7 @@ extension NotificationAPI: BaseTargetType {
             return dto
         case .sendNotification(let dto):
             return dto
-        case .getNotificationList, .getUnreadNotificationCount:
+        case .getNotificationList, .getUnreadNotificationCount, .readAllNotification:
             return nil
         }
     }

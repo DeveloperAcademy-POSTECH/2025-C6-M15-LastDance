@@ -33,6 +33,11 @@ protocol NotificationAPIServiceProtocol {
         uuid: String,
         completion: @escaping (Result<UnreadNotificationCountResponseDto, Error>) -> Void
     )
+
+    func readAllNotification(
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 // MARK: NotificationAPIService
@@ -174,6 +179,32 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("API 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// 모든 알림 읽음 처리 함수
+    func readAllNotification(
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        provider.request(.readAllNotification(uuid: uuid)) { result in
+            switch result {
+            case .success(let response):
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                    Log.debug("readAllNotification 응답: \(jsonString)")
+                }
+                Log.debug("모든 알림 읽음 처리 성공")
+                completion(.success(()))
             case .failure(let error):
                 if let data = error.response?.data,
                     let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)

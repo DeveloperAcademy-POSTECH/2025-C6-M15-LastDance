@@ -39,7 +39,7 @@ struct DeepLinkHandler {
             return .artworkReaction(artworkId: artworkId)
         }
 
-        // 알람 리스트에서 해당 알람 선택 후 딥링크 처리
+        // 관람객 알람 리스트에서 해당 알람 선택 후 딥링크 처리
         if host == "visit",
             pathComponents.count >= 4,
             pathComponents.indices.contains(1),
@@ -47,10 +47,21 @@ struct DeepLinkHandler {
             pathComponents[1] == "artwork",
             let artworkId = Int(pathComponents[2])
         {
-            Log.debug("알림 딥링크 인식 - artworkId: \(artworkId)")
+            Log.debug("관람객 알림 딥링크 인식 - artworkId: \(artworkId)")
             return .artworkReaction(artworkId: artworkId)
         }
 
+        // 작가 알람 리스트에서 해당 알람 선택 후 딥링크 처리
+        if host == "exhibition",
+            pathComponents.count >= 4,
+            pathComponents.indices.contains(1),
+            pathComponents.indices.contains(2),
+            pathComponents[1] == "artwork",
+            let artworkId = Int(pathComponents[2])
+        {
+            Log.debug("작가 알림 딥링크 인식 - artworkId: \(artworkId)")
+            return .artworkReaction(artworkId: artworkId)
+        }
         Log.error("알 수 없는 딥링크 형식")
         return .unknown
     }

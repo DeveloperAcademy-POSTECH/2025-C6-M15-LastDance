@@ -23,8 +23,8 @@ struct NotificationItem: Identifiable {
         self.type = userType == .artist ? .artist : .viewer
         self.title = dto.title
         self.message = dto.body
-        self.artworkId = dto.artwork_id
-        self.exhibitionId = dto.exhibition_id
+        self.artworkId = dto.artwork_id ?? 0
+        self.exhibitionId = dto.exhibition_id ?? 0
         self.deepLink = dto.deep_link
         self.isRead = dto.is_read
         self.createdAt = Date.fromAPIServerString(dto.created_at) ?? Date()
