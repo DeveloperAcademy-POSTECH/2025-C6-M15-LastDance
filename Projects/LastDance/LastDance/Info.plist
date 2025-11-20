@@ -31,6 +31,7 @@
 			<key>CFBundleURLName</key>
 			<string>com.postech.LastDance</string>
 		</dict>
+    </array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
