@@ -1,5 +1,5 @@
 //
-//  CreatedInvitationViewModel.swift
+//  InvitationShareViewModel.swift
 //  LastDance
 //
 //  Created by donghee on 11/18/25.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class CreatedInvitationViewModel: ObservableObject {
+final class InvitationShareViewModel: ObservableObject {
     @Published var invitation: Invitation
     @Published var showDeleteAlert: Bool = false
     @Published var showShareSheet: Bool = false
@@ -23,7 +23,7 @@ final class CreatedInvitationViewModel: ObservableObject {
     }
 
     var shareMessage: String? {
-        var message = "🎨 전시 초대장이 도착했습니다!\n\n"
+        var message = InvitationConstants.shareMessageHeader
         message += "전시: \(invitation.exhibitionTitle)\n"
         message +=
             "기간: \(Date.formatShortDateRange(start: invitation.startDate, end: invitation.endDate))\n"
@@ -42,7 +42,7 @@ final class CreatedInvitationViewModel: ObservableObject {
             if let appStoreLink = invitation.appStoreLink {
                 message += appStoreLink
             } else {
-                message += "https://apps.apple.com/kr/app/%EC%97%AC%EC%9A%B4/id6754415794"
+                message += InvitationConstants.appStoreURL
             }
         }
 
@@ -56,7 +56,7 @@ final class CreatedInvitationViewModel: ObservableObject {
 
     private func fetchInvitationLinks() {
         apiService.getInvitations { result in
-            Task { @MainActor in
+            Task {
                 switch result {
                 case .success(let invitations):
                     // 현재 초대장 ID와 일치하는 초대장 찾기
@@ -91,7 +91,7 @@ final class CreatedInvitationViewModel: ObservableObject {
         Log.debug("초대장 삭제 시작 - ID: \(invitation.id)")
 
         apiService.deleteInvitation(invitationId: invitation.id) { result in
-            Task { @MainActor in
+            Task {
                 switch result {
                 case .success:
                     Log.debug("초대장 삭제 성공 - ID: \(self.invitation.id)")

@@ -10,10 +10,10 @@ import SwiftUI
 /// 이미 생성된 초대장을 조회/공유/삭제하는 화면
 struct CreatedInvitationView: View {
     @EnvironmentObject private var router: NavigationRouter
-    @StateObject private var viewModel: CreatedInvitationViewModel
+    @StateObject private var viewModel: InvitationShareViewModel
 
     init(invitation: Invitation) {
-        _viewModel = StateObject(wrappedValue: CreatedInvitationViewModel(invitation: invitation))
+        _viewModel = StateObject(wrappedValue: InvitationShareViewModel(invitation: invitation))
     }
 
     var body: some View {

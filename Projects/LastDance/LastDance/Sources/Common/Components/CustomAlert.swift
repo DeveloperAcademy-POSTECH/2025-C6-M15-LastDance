@@ -52,7 +52,6 @@ struct CustomAlert: View {
                 Spacer().frame(height: 22)  // 타이틀-only 버전용 약간의 여백 조정
             }
 
-            // 버튼 영역 (변경 없음)
             if let cancelAction = cancelAction {
                 HStack(spacing: 8) {
                     Button(action: cancelAction) {
@@ -139,12 +138,8 @@ struct CustomAlertModifier: ViewModifier {
         title: "정말 삭제하시겠습니까?",
         message: "",  // 메시지 안 보임
         buttonText: "확인",
-        action: {
-            print("확인 버튼 눌림")
-        },
-        cancelAction: {
-            print("취소 버튼 눌림")
-        }
+        action: {},
+        cancelAction: {}
     )
     .padding()
     .previewLayout(.sizeThatFits)

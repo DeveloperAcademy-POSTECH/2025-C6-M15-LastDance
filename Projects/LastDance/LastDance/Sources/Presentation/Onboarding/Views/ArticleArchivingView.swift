@@ -20,17 +20,6 @@ struct ArtistExhibitionCardView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 155, height: 219)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-
-                //                Circle()
-                //                    .fill(Color.black)
-                //                    .frame(width: 28, height: 28)
-                //                    .overlay(
-                //                        Text("\(displayItem.reactionCount)")
-                //                            .font(LDFont.heading07)
-                //                            .foregroundColor(.white)
-                //                    )
-                //                    .padding(.leading, 12)
-                //                    .padding(.bottom, 12)
             }
 
             Text(displayItem.exhibition.title)
@@ -96,7 +85,7 @@ struct ArticleArchivingView: View {
                     Button(action: {
                         router.push(.alarmList(userType: .artist))
                     }) {
-                        Image(alarmViewModel.hasNotifications ? "alarm" : "bell")
+                        Image("bell")
                             .resizable()
                             .frame(width: 24, height: 24)
                     }
@@ -111,15 +100,6 @@ struct ArticleArchivingView: View {
                             .foregroundColor(.black)
                     }
                     .padding(.leading, 14)
-                } else {
-                    // 디버깅용 로그
-                    Text("")
-                        .onAppear {
-                            Log.debug("🔍 버튼 표시 조건 체크:")
-                            Log.debug("  - isLoading: \(viewModel.isLoading)")
-                            Log.debug("  - exhibitions.isEmpty: \(viewModel.exhibitions.isEmpty)")
-                            Log.debug("  - exhibitions.count: \(viewModel.exhibitions.count)")
-                        }
                 }
             }
             .foregroundColor(.black)

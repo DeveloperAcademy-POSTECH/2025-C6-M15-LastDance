@@ -13,14 +13,13 @@ enum InvitationAPI {
     case createInvitation(dto: InvitationRequestDto)
     case deleteInvitation(invitation_id: Int)
     case getInvitationByCode(code: String)
-    case createInvitationInterest(dto: InvitationInterestCreateDto)
+    case createInvitationInterest(dto: InvitationInterestRequestDto)
 }
 
 extension InvitationAPI: BaseTargetType {
     var path: String {
         switch self {
         case .getInvitations, .createInvitation:
-            // 서버 경로가 /api/v1/api/v1/invitations/로 되어 있음 (중복)
             return "\(APIVersion.version1)\(APIVersion.version1)/invitations/"
         case .deleteInvitation(let invitation_id):
             return "\(APIVersion.version1)\(APIVersion.version1)/invitations/\(invitation_id)"

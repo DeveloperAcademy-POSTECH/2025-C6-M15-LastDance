@@ -50,26 +50,3 @@ struct VenueInInvitation: Codable {
     let geo_lat: Double?
     let geo_lon: Double?
 }
-
-// MARK: - Mapping to Entity
-
-extension InvitationResponseDto {
-    func toEntity() -> Invitation {
-        return Invitation(
-            id: id,
-            exhibitionId: exhibition.id,
-            exhibitionTitle: exhibition.title,
-            artistName: artist.name,
-            venueName: exhibition.venue.name,
-            venueAddress: exhibition.venue.address,
-            startDate: exhibition.start_date,
-            endDate: exhibition.end_date,
-            coverImageName: exhibition.cover_image_url,
-            invitationMessage: message ?? "",
-            visitorCount: view_count ?? 0,
-            createdAt: created_at,
-            deepLink: deep_link,
-            appStoreLink: app_store_link
-        )
-    }
-}

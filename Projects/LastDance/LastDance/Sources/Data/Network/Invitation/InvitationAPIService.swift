@@ -63,7 +63,7 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     // 로컬에 저장 후 completion 호출
                     DispatchQueue.main.async {
                         for invitationDto in invitations {
-                            let invitation = invitationDto.toEntity()
+                            let invitation = InvitationMapper.toModel(from: invitationDto)
                             SwiftDataManager.shared.upsertInvitation(invitation)
                         }
                         Log.debug("로컬 저장 완료: \(invitations.count)개")
@@ -105,7 +105,7 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     )
 
                     // 로컬에 저장
-                    let invitationEntity = invitation.toEntity()
+                    let invitationEntity = InvitationMapper.toModel(from: invitation)
                     Log.debug(
                         "Entity 변환 완료 - id: \(invitationEntity.id), title: \(invitationEntity.exhibitionTitle)"
                     )
@@ -121,13 +121,16 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     completion(.failure(error))
                 }
             case .failure(let moyaError):
-                // 404 에러인 경우 응답 데이터 확인
-                if let response = moyaError.response,
-                    let responseString = String(data: response.data, encoding: .utf8)
-                {
-                    Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                    Log.error("서버 응답 내용: \(responseString)")
-                    Log.error("요청 URL: \(response.request?.url?.absoluteString ?? "unknown")")
+                if let response = moyaError.response {
+                    // ErrorResponseDto로 먼저 디코딩 시도
+                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                    } else if let responseString = String(data: response.data, encoding: .utf8) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("서버 응답 내용: \(responseString)")
+                        Log.error("요청 URL: \(response.request?.url?.absoluteString ?? "unknown")")
+                    }
                 } else {
                     Log.error("API 요청 실패: \(moyaError)")
                 }
@@ -183,7 +186,7 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     Log.debug("초대장 조회 성공 - invitation_id: \(invitation.id)")
 
                     // 로컬에 저장
-                    let invitationEntity = invitation.toEntity()
+                    let invitationEntity = InvitationMapper.toModel(from: invitation)
                     DispatchQueue.main.async {
                         SwiftDataManager.shared.upsertInvitation(invitationEntity)
                         completion(.success(invitation))
@@ -193,11 +196,15 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     completion(.failure(error))
                 }
             case .failure(let moyaError):
-                if let response = moyaError.response,
-                    let responseString = String(data: response.data, encoding: .utf8)
-                {
-                    Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                    Log.error("서버 응답 내용: \(responseString)")
+                if let response = moyaError.response {
+                    // ErrorResponseDto로 먼저 디코딩 시도
+                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                    } else if let responseString = String(data: response.data, encoding: .utf8) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("서버 응답 내용: \(responseString)")
+                    }
                 } else {
                     Log.error("API 요청 실패: \(moyaError)")
                 }
@@ -213,7 +220,7 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
     ) {
         Log.debug("초대장 관심 표현 API 호출 - invitation_id: \(invitationId)")
 
-        let dto = InvitationInterestCreateDto(invitation_id: invitationId)
+        let dto = InvitationInterestRequestDto(invitation_id: invitationId)
 
         provider.request(.createInvitationInterest(dto: dto)) { result in
             switch result {
@@ -236,11 +243,15 @@ final class InvitationAPIService: InvitationAPIServiceProtocol {
                     completion(.failure(error))
                 }
             case .failure(let moyaError):
-                if let response = moyaError.response,
-                    let responseString = String(data: response.data, encoding: .utf8)
-                {
-                    Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
-                    Log.error("서버 응답 내용: \(responseString)")
+                if let response = moyaError.response {
+                    // ErrorResponseDto로 먼저 디코딩 시도
+                    if let errorDto = try? JSONDecoder().decode(ErrorResponseDto.self, from: response.data) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("에러 상세: \(errorDto.detail.map { $0.msg }.joined(separator: ", "))")
+                    } else if let responseString = String(data: response.data, encoding: .utf8) {
+                        Log.error("API 요청 실패 (상태 코드: \(response.statusCode))")
+                        Log.error("서버 응답 내용: \(responseString)")
+                    }
 
                     // 409 에러 (이미 관심 표현한 경우) 특별 처리
                     if response.statusCode == 409 {

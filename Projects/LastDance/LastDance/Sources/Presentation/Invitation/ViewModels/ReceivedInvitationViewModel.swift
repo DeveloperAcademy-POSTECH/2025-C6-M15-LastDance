@@ -34,7 +34,7 @@ final class ReceivedInvitationViewModel: ObservableObject {
                 switch result {
                 case .success(let invitationDto):
                     Log.debug("초대장 로드 성공: \(invitationDto.id)")
-                    self.invitation = invitationDto.toEntity()
+                    self.invitation = InvitationMapper.toModel(from: invitationDto)
 
                 case .failure(let error):
                     Log.error("초대장 로드 실패: \(error)")

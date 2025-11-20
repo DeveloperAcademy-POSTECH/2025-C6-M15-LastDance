@@ -21,11 +21,6 @@ final class InvitationDetailViewModel: ObservableObject {
     private let maxCharacterCount = 20
     private let apiService: InvitationAPIServiceProtocol
 
-    struct InvitationLinks {
-        let deepLink: String
-        let appStoreLink: String
-    }
-
     init(exhibition: Exhibition, apiService: InvitationAPIServiceProtocol = InvitationAPIService())
     {
         self.exhibition = exhibition
@@ -111,10 +106,9 @@ final class InvitationDetailViewModel: ObservableObject {
         )
 
         apiService.createInvitation(dto: dto) { result in
-            Task { @MainActor in
+            Task {
                 switch result {
                 case .success(let invitationDto):
-                    Log.debug("초대장 생성 성공: \(invitationDto.id)")
                     // 로컬에 자동 저장됨 (APIService에서 처리)
                     Log.info(invitationDto.deep_link ?? "nil")
                     Log.info(invitationDto.app_store_link ?? "nil")
@@ -128,10 +122,6 @@ final class InvitationDetailViewModel: ObservableObject {
                             appStoreLink: appStoreLink
                         )
                     }
-
-                    // 저장 확인용 로그
-                    let invitations = SwiftDataManager.shared.fetchAll(Invitation.self)
-                    Log.debug("현재 로컬에 저장된 초대장 수: \(invitations.count)")
 
                     // 링크 저장 후 공유 시트 표시
                     self.showShareSheet = true

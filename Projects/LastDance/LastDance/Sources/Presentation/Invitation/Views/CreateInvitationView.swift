@@ -156,7 +156,6 @@ struct CreateInvitationView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
         .onAppear {
             // 서버에서 최신 초대장 목록 가져오기
             viewModel.loadInvitationsFromServer()
