@@ -9,7 +9,6 @@ import Moya
 
 enum NotificationAPI {
     case registerDeviceToken(dto: RegisterDeviceTokenRequestDto)
-    case sendNotification(dto: SendNotificationRequestDto)
     case getNotificationList(
         uuid: String, isRead: Bool? = nil, limit: Int? = nil, offset: Int? = nil)
     case getUnreadNotificationCount(uuid: String)
@@ -21,8 +20,6 @@ extension NotificationAPI: BaseTargetType {
         switch self {
         case .registerDeviceToken:
             return "\(APIVersion.version1)/devices/register-token"
-        case .sendNotification:
-            return "\(APIVersion.version1)/devices/send-notification"
         case .getNotificationList:
             return "\(APIVersion.version1)/notifications"
         case .getUnreadNotificationCount:
@@ -34,7 +31,7 @@ extension NotificationAPI: BaseTargetType {
 
     var method: Moya.Method {
         switch self {
-        case .registerDeviceToken, .sendNotification:
+        case .registerDeviceToken:
             return .post
         case .getNotificationList, .getUnreadNotificationCount:
             return .get
@@ -83,8 +80,6 @@ extension NotificationAPI: BaseTargetType {
     var bodyParameters: Codable? {
         switch self {
         case .registerDeviceToken(let dto):
-            return dto
-        case .sendNotification(let dto):
             return dto
         case .getNotificationList, .getUnreadNotificationCount, .readAllNotification:
             return nil

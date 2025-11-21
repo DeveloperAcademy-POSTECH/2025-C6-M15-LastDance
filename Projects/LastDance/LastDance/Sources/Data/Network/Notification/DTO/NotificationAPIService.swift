@@ -16,11 +16,6 @@ protocol NotificationAPIServiceProtocol {
         completion: @escaping (Result<Void, Error>) -> Void
     )
 
-    func sendNotification(
-        dto: SendNotificationRequestDto,
-        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
-    )
-
     func getNotificationList(
         uuid: String,
         isRead: Bool?,
@@ -67,43 +62,6 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
                 }
                 Log.debug("디바이스 토큰 등록 성공")
                 completion(.success(()))
-            case .failure(let error):
-                if let data = error.response?.data,
-                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
-                {
-                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
-                    Log.warning("Validation Error: \(messages)")
-                }
-                Log.error("API 실패: \(error)")
-                completion(.failure(error))
-            }
-        }
-    }
-
-    /// 푸시알람 전송 함수
-    func sendNotification(
-        dto: SendNotificationRequestDto,
-        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
-    ) {
-        provider.request(.sendNotification(dto: dto)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("sendNotification 응답: \(jsonString)")
-                    }
-                    let responseDto = try JSONDecoder().decode(
-                        SendNotificationResponseDto.self,
-                        from: response.data
-                    )
-                    Log.debug(
-                        "푸시알림 전송 성공 - success: \(responseDto.success_count), failed: \(responseDto.failed_count)"
-                    )
-                    completion(.success(responseDto))
-                } catch {
-                    Log.error("디코딩 실패: \(error)")
-                    completion(.failure(NetworkError.decodingFailed))
-                }
             case .failure(let error):
                 if let data = error.response?.data,
                     let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)

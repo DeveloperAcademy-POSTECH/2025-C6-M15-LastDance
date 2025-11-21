@@ -151,12 +151,10 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
                     self.selectedTagsName.removeAll()
                     Log.debug("반응 저장 성공")
 
-                    // 첫 리액션 등록 플래그 저장
                     if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
 
-                    // 푸시 알림은 서버에서 자동으로 전송됨
                     completion(true)
 
                 case .failure(let error):
@@ -252,7 +250,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
         }
     }
 
-    // TODO: 실제데이터 연동 후 파라미터 교체 예정
+    /// 반응 전체 조회 API 함수
     func getReactionsAPI(artworkId: Int) {
         Log.debug("반응 조회 API 테스트 시작")
 

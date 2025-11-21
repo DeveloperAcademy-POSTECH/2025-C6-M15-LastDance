@@ -103,7 +103,6 @@ final class ArtworkReactionViewModel: ObservableObject {
                 dispatchGroup.notify(queue: .main) {
                     self.reactions = fetchedReactionData.sorted { $0.id < $1.id }
 
-                    // API 응답으로부터 selectedEmojis 초기화
                     var emojis: [String: String] = [:]
                     for reaction in self.reactions {
                         if let emoji = reaction.artistEmoji {
@@ -248,7 +247,6 @@ final class ArtworkReactionViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.selectedEmojis[reactionIdString] = emoji
                     self.selectedReactionId = nil
-                    // 푸시 알림은 서버에서 자동으로 전송됨
                 }
             case .failure(let error):
                 Log.error("이모지 반응 전송 실패: \(error.localizedDescription)")
