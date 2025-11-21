@@ -20,7 +20,6 @@ extension Config {
         guard let key = Config.infoDictionarys[NetworkConstants.baseURLKey] as? String else {
             fatalError("⛔️BASE_URL is not set in plist for this configuration⛔️")
         }
-        Log.debug("📍 BASE_URL from plist: \(key)")
         return key
     }()
 }
