@@ -248,18 +248,7 @@ final class ArtworkReactionViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.selectedEmojis[reactionIdString] = emoji
                     self.selectedReactionId = nil
-
-                    // 관람객에게 푸시알림 전송
-                    if let reaction = self.reactions.first(where: { $0.id == reactionIdString }),
-                        let artistName = UserDefaults.standard.string(
-                            forKey: UserDefaultsKey.artistName.rawValue)
-                    {
-                        NotificationManager.shared.sendPushNotificationToViewer(
-                            visitorId: reaction.visitorId,
-                            artistName: artistName,
-                            artworkId: self.artworkId
-                        )
-                    }
+                    // 푸시 알림은 서버에서 자동으로 전송됨
                 }
             case .failure(let error):
                 Log.error("이모지 반응 전송 실패: \(error.localizedDescription)")
@@ -316,19 +305,7 @@ final class ArtworkReactionViewModel: ObservableObject {
                 self.handleMessageCreated(reactionIdString: reactionIdString, response: response)
                 DispatchQueue.main.async {
                     self.message = ""
-
-                    // 관람객에게 푸시알림 전송
-                    if let reaction = self.reactions.first(where: { $0.id == reactionIdString }),
-                        let artistName = UserDefaults.standard.string(
-                            forKey: UserDefaultsKey.artistName.rawValue)
-                    {
-                        NotificationManager.shared.sendPushNotificationToViewer(
-                            visitorId: reaction.visitorId,
-                            artistName: artistName,
-                            artworkId: self.artworkId
-                        )
-                    }
-
+                    // 푸시 알림은 서버에서 자동으로 전송됨
                     completion(true)
                 }
             case .failure(let error):

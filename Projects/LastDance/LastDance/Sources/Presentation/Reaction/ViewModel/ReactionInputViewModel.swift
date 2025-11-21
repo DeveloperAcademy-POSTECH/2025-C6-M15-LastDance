@@ -156,10 +156,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
 
-                    // 작가에게 푸시알림 전송
-                    let artistId = response.data.artwork.artist_id
-                    NotificationManager.shared.sendPushNotificationToArtist(artistId: artistId)
-
+                    // 푸시 알림은 서버에서 자동으로 전송됨
                     completion(true)
 
                 case .failure(let error):

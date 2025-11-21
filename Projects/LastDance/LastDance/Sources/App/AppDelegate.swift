@@ -15,6 +15,13 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // 1. 푸시 권한 요청
         UNUserNotificationCenter.current().delegate = self
         requestAuthorization()
+
+        // 2. 앱이 종료된 상태에서 푸시 알림을 탭해서 실행된 경우 처리
+        if let remoteNotification = launchOptions?[.remoteNotification] as? [String: Any] {
+            Log.debug("앱 종료 상태에서 푸시로 실행됨: \(remoteNotification)")
+            handlePushNotificationData(remoteNotification)
+        }
+
         return true
     }
 
@@ -52,25 +59,103 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
-        Log.debug("푸시 탭 userInfo: \(userInfo)")
+        Log.debug("푸시 탭 userInfo 전체: \(userInfo)")
 
-        if let type = userInfo["type"] as? String,
-            let artworkId = userInfo["artwork_id"] as? Int,
-            type == "artist_reply"
+        // userInfo의 모든 키-값 쌍 출력
+        for (key, value) in userInfo {
+            Log.debug("  - \(key): \(value)")
+        }
+
+        handlePushNotificationData(userInfo)
+        completionHandler()
+    }
+
+    /// 푸시 알림 데이터를 처리하여 딥링크 실행
+    private func handlePushNotificationData(_ userInfo: [AnyHashable: Any]) {
+        // 1. 최상위 레벨에서 deep_link 확인
+        if let deepLinkString = userInfo["deep_link"] as? String,
+            let deepLinkURL = URL(string: deepLinkString)
         {
+            Log.debug("✅ 최상위 deep_link 발견: \(deepLinkURL.absoluteString)")
+            triggerDeepLink(deepLinkURL)
+            return
+        }
+
+        // 2. aps.data 내부에서 deep_link 확인
+        if let aps = userInfo["aps"] as? [String: Any],
+            let data = aps["data"] as? [String: Any],
+            let deepLinkString = data["deep_link"] as? String,
+            let deepLinkURL = URL(string: deepLinkString)
+        {
+            Log.debug("✅ aps.data.deep_link 발견: \(deepLinkURL.absoluteString)")
+            triggerDeepLink(deepLinkURL)
+            return
+        }
+
+        // 3. data 필드에서 deep_link 확인
+        if let data = userInfo["data"] as? [String: Any],
+            let deepLinkString = data["deep_link"] as? String,
+            let deepLinkURL = URL(string: deepLinkString)
+        {
+            Log.debug("✅ data.deep_link 발견: \(deepLinkURL.absoluteString)")
+            triggerDeepLink(deepLinkURL)
+            return
+        }
+
+        // 4. type과 artwork_id로 딥링크 생성
+        if let type = userInfo["type"] as? String {
+            // 작가에게 온 반응 알림
+            if type == "reaction_to_artist",
+                let artworkId = userInfo["artwork_id"] as? Int
+            {
+                let deepLinkURL = URL(
+                    string:
+                        "\(PushDeepLinkConstants.scheme)://\(PushDeepLinkConstants.artworkReactionHost)/\(artworkId)"
+                )!
+                Log.debug(
+                    "✅ reaction_to_artist - artwork_id로 딥링크 생성: \(deepLinkURL.absoluteString)")
+                triggerDeepLink(deepLinkURL)
+                return
+            }
+
+            // 관람객에게 온 작가 반응 알림
+            if type == "artist_reply",
+                let artworkId = userInfo["artwork_id"] as? Int
+            {
+                let deepLinkURL = URL(
+                    string:
+                        "\(PushDeepLinkConstants.scheme)://\(PushDeepLinkConstants.artworkReactionHost)/\(artworkId)"
+                )!
+                Log.debug("✅ artist_reply - artwork_id로 딥링크 생성: \(deepLinkURL.absoluteString)")
+                triggerDeepLink(deepLinkURL)
+                return
+            }
+        }
+
+        // 5. artwork_id만 있는 경우 (폴백)
+        if let artworkId = userInfo["artwork_id"] as? Int {
             let deepLinkURL = URL(
                 string:
                     "\(PushDeepLinkConstants.scheme)://\(PushDeepLinkConstants.artworkReactionHost)/\(artworkId)"
             )!
-            Log.debug("딥링크 URL 생성: \(deepLinkURL.absoluteString)")
+            Log.debug("✅ artwork_id로 딥링크 생성: \(deepLinkURL.absoluteString)")
+            triggerDeepLink(deepLinkURL)
+            return
+        }
 
+        Log.error("❌ deep_link를 생성할 수 없음. userInfo: \(userInfo)")
+    }
+
+    /// 딥링크를 RootView로 전달
+    private func triggerDeepLink(_ url: URL) {
+        // 약간의 지연을 두고 딥링크 실행 (UI가 준비될 시간 확보)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             NotificationCenter.default.post(
                 name: NSNotification.Name("HandleDeepLink"),
                 object: nil,
-                userInfo: ["url": deepLinkURL]
+                userInfo: ["url": url]
             )
         }
-        completionHandler()
     }
 }
 
