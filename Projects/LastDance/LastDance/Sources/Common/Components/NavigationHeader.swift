@@ -24,7 +24,7 @@ struct NavigationHeader: View {
 
     var body: some View {
         HStack {
-            Text("나의 전시")
+            Text("exhibition_title")
                 .font(LDFont.heading02)
                 .foregroundColor(.black)
 
