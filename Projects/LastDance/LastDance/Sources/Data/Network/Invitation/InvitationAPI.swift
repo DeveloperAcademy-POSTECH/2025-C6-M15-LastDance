@@ -20,13 +20,13 @@ extension InvitationAPI: BaseTargetType {
     var path: String {
         switch self {
         case .getInvitations, .createInvitation:
-            return "\(APIVersion.version1)\(APIVersion.version1)/invitations/"
+            return "\(APIVersion.version1)/invitations/"
         case .deleteInvitation(let invitation_id):
-            return "\(APIVersion.version1)\(APIVersion.version1)/invitations/\(invitation_id)"
+            return "\(APIVersion.version1)/invitations/\(invitation_id)"
         case .getInvitationByCode(let code):
-            return "\(APIVersion.version1)\(APIVersion.version1)/invitations/code/\(code)"
+            return "\(APIVersion.version1)/invitations/code/\(code)"
         case .createInvitationInterest:
-            return "\(APIVersion.version1)\(APIVersion.version1)/invitations/interests"
+            return "\(APIVersion.version1)/invitations/interests"
         }
     }
 
