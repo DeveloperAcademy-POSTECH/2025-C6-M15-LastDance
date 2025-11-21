@@ -57,7 +57,6 @@ struct ArtworkReactionView: View {
         .toolbarBackground(.hidden, for: .navigationBar)
         .ignoresSafeArea(edges: .top)
         .onAppear {
-            // 뷰가 나타날 때마다 최신 반응 데이터를 가져옴
             viewModel.fetchReactions()
         }
     }
