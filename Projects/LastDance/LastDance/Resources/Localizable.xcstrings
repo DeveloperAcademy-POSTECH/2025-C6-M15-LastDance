@@ -112,6 +112,16 @@
         }
       }
     },
+    "관람객들에게 반응을 받아보세요" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get reactions from your visitors."
+          }
+        }
+      }
+    },
     "관람하러 온 전시를 알려주세요" : {
       "localizations" : {
         "en" : {

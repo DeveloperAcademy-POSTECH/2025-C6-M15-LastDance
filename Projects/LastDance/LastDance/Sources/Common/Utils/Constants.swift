@@ -110,3 +110,11 @@ enum InvitationConstants {
     static let shareMessageHeader: String = "🎨 전시 초대장이 도착했습니다!\n\n"
     static let appStoreURL: String = "https://apps.apple.com/kr/app/%EC%97%AC%EC%9A%B4/id6754415794"
 }
+
+// MARK: DeepLinkConstants
+/// 푸시알람 딥링크 관련 상수
+enum PushDeepLinkConstants {
+    static let scheme: String = "lastdance"
+    static let artworkReactionHost: String = "artworkReaction"
+    static let invitationHost: String = "invitation"
+}

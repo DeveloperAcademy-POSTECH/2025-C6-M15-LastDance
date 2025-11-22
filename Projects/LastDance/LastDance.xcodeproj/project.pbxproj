@@ -122,7 +122,6 @@
 				Sources/Data/Network/Artwork/DTO/Request/ArtworkMatchRequestDto.swift,
 				Sources/Data/Network/Artwork/DTO/Request/MakeArtworkRequestDto.swift,
 				Sources/Data/Network/Base/BaseTargetType.swift,
-				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/EmojiReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/MessageReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
