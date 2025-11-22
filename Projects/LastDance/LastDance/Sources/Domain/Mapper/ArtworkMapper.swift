@@ -17,4 +17,16 @@ enum ArtworkMapper {
             thumbnailURL: dto.thumbnail_url
         )
     }
+
+    /// AppClip에서 전시 ID 없이 잠깐 쓸 때 쓰는 버전
+    static func mapDtoToModel(_ dto: ArtworkDetailResponseDto) -> Artwork {
+        Artwork(
+            id: dto.id,
+            exhibitionId: 0,
+            title: dto.title,
+            descriptionText: dto.description,
+            artistId: dto.artist_id,
+            thumbnailURL: dto.thumbnail_url
+        )
+    }
 }

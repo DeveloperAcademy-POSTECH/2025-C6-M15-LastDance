@@ -26,7 +26,7 @@ final class ClipArtworkAPIService: ClipArtworkAPIServiceProtocol {
                         let dto = try JSONDecoder().decode(
                             ArtworkDetailResponseDto.self,
                             from: response.data)
-                        let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: nil)
+                        let artwork = ArtworkMapper.mapDtoToModel(dto)
                         continuation.resume(returning: artwork)
                     } catch {
                         continuation.resume(throwing: error)
