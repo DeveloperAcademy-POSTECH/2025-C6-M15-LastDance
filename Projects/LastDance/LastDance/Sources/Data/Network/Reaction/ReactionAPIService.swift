@@ -70,6 +70,11 @@ final class ReactionAPIService: ReactionAPIServiceProtocol {
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         let reaction = ReactionMapper.mapDtoToModel(reactionDetail)
+
+                        if let exhibitionId = reactionDetail.visit?.exhibition_id {
+                            reaction.exhibitionId = exhibitionId
+                        }
+
                         SwiftDataManager.shared.insert(reaction)
                         SwiftDataManager.shared.saveContext()  // 명시적으로 저장
                         Log.debug("로컬 저장 완료")

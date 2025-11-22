@@ -13,6 +13,10 @@ enum ArtistMapper {
         Artist(id: dto.id, uuid: "", name: dto.name)
     }
 
+    static func toModel(from dto: ArtistDetailResponseDto) -> Artist {
+        Artist(id: dto.id, uuid: dto.uuid ?? "", name: dto.name)
+    }
+
     /// 작가 코드 dto를 Model로 변환
     static func toArtistCodeModel(from dto: ArtistCodeResponseDto) -> ArtistCode {
         ArtistCode(

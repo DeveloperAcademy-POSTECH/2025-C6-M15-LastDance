@@ -19,11 +19,6 @@ protocol ArtworkAPIServiceProtocol {
     func getArtworkDetail(
         artworkId: Int, completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
     )
-    func makeArtwork(
-        dto: MakeArtworkRequestDto,
-        thumbnailData: Data,
-        completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
-    )
     func matchArtwork(
         request: ArtworkMatchRequestDto,
         completion: @escaping (Result<ArtworkMatchResponseDto, Error>) -> Void
@@ -59,6 +54,10 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                         [ArtworkDetailResponseDto].self, from: response.data
                     )
 
+                    guard let exhibitionId else {
+                        Log.error("exhibitionId 없음")
+                        return
+                    }
                     // DTO를 Model로 변환하여 로컬에 저장
                     DispatchQueue.main.async {
                         for dto in artworks {
@@ -104,17 +103,39 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
                         Log.debug("작품 상세 조회 응답: \(jsonString)")
                     }
-                    let artwork = try JSONDecoder().decode(
-                        ArtworkDetailResponseDto.self, from: response.data)
 
-                    // DTO를 Model로 변환하여 로컬에 저장
+                    let dto = try JSONDecoder().decode(
+                        ArtworkDetailResponseDto.self,
+                        from: response.data
+                    )
+
+                    // 로컬 업데이트
                     DispatchQueue.main.async {
-                        let artworkModel = ArtworkMapper.mapDtoToModel(artwork, exhibitionId: nil)
-                        SwiftDataManager.shared.insert(artworkModel)
-                        Log.debug("작품 상세 로컬 저장 완료")
+                        guard let container = SwiftDataManager.shared.container else { return }
+                        let context = container.mainContext
+
+                        do {
+                            let descriptor = FetchDescriptor<Artwork>(
+                                predicate: #Predicate<Artwork> { $0.id == dto.id }
+                            )
+                            if let existing = try context.fetch(descriptor).first {
+                                // 디테일 정보만 업데이트, exhibitionId는 건드리지 않는다
+                                existing.title = dto.title
+                                existing.descriptionText = dto.description
+                                existing.artistId = dto.artist_id
+                                existing.thumbnailURL = dto.thumbnail_url
+
+                                try context.save()
+                                Log.debug("작품 상세 로컬 업데이트 완료 - id: \(dto.id)")
+                            } else {
+                                Log.warning("id=\(dto.id)인 Artwork가 로컬에 없음. insert는 하지 않음.")
+                            }
+                        } catch {
+                            Log.error("실패: \(error)")
+                        }
                     }
 
-                    completion(.success(artwork))
+                    completion(.success(dto))
                 } catch {
                     Log.error("작품 상세 조회 JSON 디코딩 실패: \(error)")
                     completion(.failure(error))
@@ -130,54 +151,6 @@ final class ArtworkAPIService: ArtworkAPIServiceProtocol {
                     Log.warning("Validation Error: \(errorMessages)")
                 }
                 Log.error("작품 상세 조회 API 요청 실패: \(error)")
-                completion(.failure(error))
-            }
-        }
-    }
-
-    /// 작품 생성하기 함수
-    func makeArtwork(
-        dto: MakeArtworkRequestDto,
-        thumbnailData: Data,
-        completion: @escaping (Result<ArtworkDetailResponseDto, Error>) -> Void
-    ) {
-        Log.debug("작품 생성 - title: \(dto.title), artistId: \(dto.artist_id)")
-
-        provider.request(.makeArtwork(dto: dto, thumbnailData: thumbnailData)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("작품 생성 응답: \(jsonString)")
-                    }
-                    let artwork = try JSONDecoder().decode(
-                        ArtworkDetailResponseDto.self,
-                        from: response.data
-                    )
-
-                    // DTO를 Model로 변환하여 로컬에 저장
-                    DispatchQueue.main.async {
-                        let artworkModel = ArtworkMapper.mapDtoToModel(artwork, exhibitionId: nil)
-                        SwiftDataManager.shared.insert(artworkModel)
-                        Log.debug("작품 생성 로컬 저장 완료")
-                    }
-
-                    completion(.success(artwork))
-                } catch {
-                    Log.error("작품 생성 JSON 디코딩 실패: \(error)")
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                if let response = error.response,
-                    let validationError = try? JSONDecoder().decode(
-                        ErrorResponseDto.self, from: response.data
-                    )
-                {
-                    let errorMessages = validationError.detail.map { $0.msg }.joined(
-                        separator: ", ")
-                    Log.warning("Validation Error: \(errorMessages)")
-                }
-                Log.error("작품 생성 API 요청 실패: \(error)")
                 completion(.failure(error))
             }
         }

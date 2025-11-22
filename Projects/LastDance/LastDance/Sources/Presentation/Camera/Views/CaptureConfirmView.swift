@@ -12,7 +12,6 @@ struct CaptureConfirmView: View {
     @StateObject private var viewModel = CaptureConfirmViewModel()
 
     let imageData: Data
-    let exhibitionId: Int
 
     private var image: UIImage? {
         UIImage(data: imageData)
@@ -45,15 +44,20 @@ struct CaptureConfirmView: View {
 
                             ZStack {
                                 Button {
-                                    viewModel.uploadImage(image)
+                                    // TODO: - 쇼케이스 위한 전시Id 지정. 이후에 변경 필요
+                                    guard
+                                        let artworkId = viewModel.matchedArtworkId,
+                                        let artistId = viewModel.matchedArtistId,
+                                        let exhibition = viewModel.matchedExhibitions.first
+                                    else {
+                                        return
+                                    }
 
-                                    let displayImage = viewModel.matchedArtworkImage ?? image
-
-                                    // TODO: - 연결 플로우 변경
-                                    router.push(
-                                        .inputArtworkInfo(
-                                            image: displayImage, exhibitionId: exhibitionId,
-                                            artistId: nil)
+                                    handleStartVisit(
+                                        image: image,
+                                        artworkId: artworkId,
+                                        artistId: artistId,
+                                        exhibitionId: exhibition.id
                                     )
                                 } label: {
                                     Image(systemName: "checkmark")
@@ -105,7 +109,6 @@ struct CaptureConfirmView: View {
             // 화면 진입 시점에 바로 서버 이미지 매칭 시작
             viewModel.matchArtwork(
                 imageData: imageData,
-                exhibitionIdFilter: exhibitionId,
                 threshold: 0.4
             )
         }
@@ -142,6 +145,27 @@ struct CaptureConfirmView: View {
                 .scaledToFit()
         } else {
             Color.black
+        }
+    }
+
+    /// 관람객 - 관람 시작하기 버튼 처리
+    private func handleStartVisit(image: UIImage, artworkId: Int, artistId: Int, exhibitionId: Int)
+    {
+        viewModel.uploadImage(image)
+        viewModel.createVisitHistory { success in
+            if success {
+                viewModel.selectExhibitionAsUserExhibition()
+                router.push(
+                    .artReactionSend(
+                        artworkId: artworkId,
+                        artistId: artistId,
+                        exhibitionId: exhibitionId,
+                        imageData: imageData
+                    )
+                )
+            } else {
+                Log.error("Failed to create visit history.")
+            }
         }
     }
 }
