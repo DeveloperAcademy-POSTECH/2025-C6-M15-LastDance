@@ -42,6 +42,15 @@ struct RootView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("HandleDeepLink")))
+        { notification in
+            if let userInfo = notification.userInfo,
+                let url = userInfo["url"] as? URL
+            {
+                Log.debug("RootView에서 딥링크 수신: \(url.absoluteString)")
+                router.handleDeepLink(url)
+            }
+        }
         .environmentObject(router)
         .environmentObject(reactionInputViewModel)
         .environmentObject(identitySelectionViewModel)

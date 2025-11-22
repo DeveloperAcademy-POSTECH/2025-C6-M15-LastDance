@@ -32,7 +32,6 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
     private let apiService = ReactionAPIService()
     private let artworkAPIService = ArtworkAPIService()
     private let artistAPIService = ArtistAPIService()
-    private let notificationService = NotificationAPIService()
 
     private let throttleInterval: TimeInterval = 2.0
     private lazy var throttle = SendThrottle(
@@ -120,13 +119,9 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
                     self.message = ""
                     Log.debug("반응 저장 성공")
 
-                    // 첫 리액션 등록 플래그 저장
                     if !UserDefaults.standard.bool(forKey: .hasRegisteredFirstReaction) {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
-
-                    // 작가에게 푸시알림 전송
-                    self.sendPushNotificationToArtist(reactionResponse: response.data)
 
                     completion(true)
 
@@ -221,7 +216,7 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
         }
     }
 
-    // TODO: 실제데이터 연동 후 파라미터 교체 예정
+    /// 반응 전체 조회 API 함수
     func getReactionsAPI(artworkId: Int) {
         Log.debug("반응 조회 API 테스트 시작")
 
@@ -279,39 +274,6 @@ final class ReactionInputViewModel: ObservableObject, SendThrottleHandler {
                 case .failure(let error):
                     Log.error("작가 목록 조회 실패: \(error.localizedDescription)")
                 }
-            }
-        }
-    }
-}
-
-// MARK: - Push Notification
-
-extension ReactionInputViewModel {
-    /// 작가에게 푸시알림 전송
-    private func sendPushNotificationToArtist(reactionResponse: ReactionDetailResponseDto) {
-        let artistId = reactionResponse.artwork.artist_id
-
-        Log.debug("작가(\(artistId))에게 푸시알림 전송 시작")
-
-        let pushDto = SendNotificationRequestDto(
-            visitor_id: nil,  // 작가에게만 알림 전송
-            artist_id: artistId,
-            device_token: nil,
-            title: "내 작품에 새로운 메시지가 있어요",
-            body: "어떤 메시지인지 확인해보세요!",
-            data: nil,
-            badge: 1,
-            use_sandbox: true  // TODO: 배포 시 false로 변경
-        )
-
-        notificationService.sendNotification(dto: pushDto) { result in
-            switch result {
-            case .success(let response):
-                Log.debug(
-                    "푸시알림 전송 성공 - success: \(response.success_count), failed: \(response.failed_count)"
-                )
-            case .failure(let error):
-                Log.error("푸시알림 전송 실패: \(error.localizedDescription)")
             }
         }
     }
