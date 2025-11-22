@@ -9,11 +9,11 @@ import SwiftUI
 
 /// 하단 버튼에 공통으로 사용되는 컴포넌트
 struct BottomButton: View {
-    let text: String
+    let text: LocalizedStringKey
     let isEnabled: Bool
     let action: () -> Void
 
-    init(text: String, isEnabled: Bool = true, action: @escaping () -> Void) {
+    init(text: LocalizedStringKey, isEnabled: Bool = true, action: @escaping () -> Void) {
         self.text = text
         self.isEnabled = isEnabled
         self.action = action

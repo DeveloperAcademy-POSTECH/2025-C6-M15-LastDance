@@ -10,9 +10,9 @@ import SwiftUI
 /// 커스텀 Alert 컴포넌트
 struct CustomAlert: View {
     let image: String
-    let title: String
-    let message: String
-    let buttonText: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey?
+    let buttonText: LocalizedStringKey
     let action: () -> Void
     let cancelAction: (() -> Void)?  // 취소 버튼 액션 (옵셔널)
 
@@ -36,7 +36,7 @@ struct CustomAlert: View {
                 .padding(.horizontal, 16)
 
             // 메시지가 있을 때만 보여주기
-            if !message.isEmpty {
+            if let message = message {
                 Text(message)
                     .font(LDFont.regular03)
                     .foregroundColor(LDColor.gray1)
@@ -45,12 +45,7 @@ struct CustomAlert: View {
                     .padding(.horizontal, 16)
             }
 
-            // 메시지가 있을 때만 아래 spacer 유지
-            if !message.isEmpty {
-                Spacer().frame(height: 22)
-            } else {
-                Spacer().frame(height: 22)  // 타이틀-only 버전용 약간의 여백 조정
-            }
+            Spacer().frame(height: 22)
 
             if let cancelAction = cancelAction {
                 HStack(spacing: 8) {
@@ -100,9 +95,9 @@ struct CustomAlert: View {
 struct CustomAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let image: String
-    let title: String
-    let message: String
-    let buttonText: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey?
+    let buttonText: LocalizedStringKey
     let action: () -> Void
     let cancelAction: (() -> Void)?
 
@@ -136,7 +131,7 @@ struct CustomAlertModifier: ViewModifier {
     CustomAlert(
         image: "",  // 아무 이미지 안 보임
         title: "정말 삭제하시겠습니까?",
-        message: "",  // 메시지 안 보임
+        message: nil,  // 메시지 안 보임
         buttonText: "확인",
         action: {},
         cancelAction: {}

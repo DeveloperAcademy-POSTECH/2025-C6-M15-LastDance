@@ -50,7 +50,7 @@ struct ArtworkReactionView: View {
         .background(LDColor.color5)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            CustomWhiteNavigationBar(title: artwork?.title ?? "작품 반응") {
+            CustomWhiteNavigationBar(title: LocalizedStringKey(artwork?.title ?? "작품 반응")) {
                 router.popLast()
             }
         }

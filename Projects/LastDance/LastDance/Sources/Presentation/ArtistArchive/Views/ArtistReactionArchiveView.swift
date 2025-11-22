@@ -25,7 +25,7 @@ struct ArtistReactionArchiveView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
-                CustomNavigationBar(title: viewModel.exhibitionTitle) {
+                CustomNavigationBar(title: LocalizedStringKey(viewModel.exhibitionTitle)) {
                     router.popLast()
                 }
             }

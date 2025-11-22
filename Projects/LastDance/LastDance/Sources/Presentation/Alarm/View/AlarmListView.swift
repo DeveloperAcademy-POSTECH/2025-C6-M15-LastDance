@@ -44,6 +44,7 @@ struct AlarmListView: View {
                 .ignoresSafeArea(edges: .bottom)
             }
         }
+        .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButton {

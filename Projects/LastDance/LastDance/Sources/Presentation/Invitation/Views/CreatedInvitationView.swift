@@ -79,7 +79,7 @@ struct CreatedInvitationView: View {
             isPresented: $viewModel.showDeleteAlert,
             image: "",
             title: "초대장을 삭제하시겠어요?",
-            message: "",
+            message: nil,
             buttonText: "확인",
             action: {
                 viewModel.confirmDelete { success in

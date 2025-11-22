@@ -5,6 +5,8 @@
 //  Created by 아우신얀 on 10/20/25.
 //
 
+import SwiftUI
+
 enum AlertType {
     case confirmation
     case restriction
@@ -18,7 +20,7 @@ enum AlertType {
         }
     }
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .confirmation: return "메시지를 전송하시겠어요?"
         case .restriction: return "전송 제한"
@@ -26,7 +28,7 @@ enum AlertType {
         }
     }
 
-    var message: String {
+    var message: LocalizedStringKey? {
         switch self {
         case .confirmation: return "작가님에게 반응이 전달돼요."
         case .restriction: return "욕설∙비속어 사용시 전송이 제한됩니다."
@@ -34,7 +36,7 @@ enum AlertType {
         }
     }
 
-    var buttonText: String {
+    var buttonText: LocalizedStringKey {
         switch self {
         case .confirmation: return "확인"
         case .restriction: return "다시 작성하기"

@@ -133,14 +133,14 @@ extension Date {
         if let day = components.day, day > 0 {
             let formatter = DateFormatter()
             formatter.dateFormat = "M월 d일"
-            formatter.locale = Locale(identifier: "ko_KR")
+            formatter.locale = Locale.current
             return formatter.string(from: self)
         } else if let hour = components.hour, hour > 0 {
-            return "\(hour)시간 전"
+            return String(format: NSLocalizedString("time_ago_hours", comment: ""), hour)
         } else if let minute = components.minute, minute > 0 {
-            return "\(minute)분 전"
+            return String(format: NSLocalizedString("time_ago_minutes", comment: ""), minute)
         } else {
-            return "방금 전"
+            return NSLocalizedString("time_ago_just_now", comment: "")
         }
     }
 }

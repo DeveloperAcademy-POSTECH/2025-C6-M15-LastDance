@@ -24,21 +24,23 @@ final class InvitationShareViewModel: ObservableObject {
 
     var shareMessage: String? {
         var message = InvitationConstants.shareMessageHeader
-        message += "전시: \(invitation.exhibitionTitle)\n"
-        message +=
-            "기간: \(Date.formatShortDateRange(start: invitation.startDate, end: invitation.endDate))\n"
+        message += String(localized: "전시: \(invitation.exhibitionTitle)\n")
+        message += String(
+            localized:
+                "기간: \(Date.formatShortDateRange(start: invitation.startDate, end: invitation.endDate))\n"
+        )
 
         if !invitation.invitationMessage.isEmpty {
             message += "\n\(invitation.invitationMessage)\n"
         }
 
         if let deepLink = invitation.deepLink, let appStoreLink = invitation.appStoreLink {
-            message += "\n초대장 확인하기:\n"
+            message += "\n" + String(localized: "초대장 확인하기") + ":\n"
             message += deepLink
-            message += "\n\nWoA 앱 다운로드:\n"
+            message += "\n\n" + String(localized: "WoA 앱 다운로드") + ":\n"
             message += appStoreLink
         } else {
-            message += "\nWoA 앱에서 확인하세요\n"
+            message += "\n" + String(localized: "WoA 앱에서 확인하세요") + "\n"
             if let appStoreLink = invitation.appStoreLink {
                 message += appStoreLink
             } else {
