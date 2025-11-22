@@ -34,7 +34,14 @@
 
     },
     "%lld개의 작품" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld artworks"
+          }
+        }
+      }
     },
     "+%lld" : {
 
