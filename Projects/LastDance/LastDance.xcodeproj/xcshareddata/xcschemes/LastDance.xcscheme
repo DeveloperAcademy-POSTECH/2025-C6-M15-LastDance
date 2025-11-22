@@ -70,6 +70,11 @@
             isEnabled = "YES">
          </AdditionalOption>
          <AdditionalOption
+            key = "APP_DISTRIBUTOR_ID_OVERRIDE"
+            value = "com.apple.AppStore"
+            isEnabled = "YES">
+         </AdditionalOption>
+         <AdditionalOption
             key = "MallocGuardEdges"
             value = ""
             isEnabled = "YES">

@@ -9,7 +9,7 @@ import SwiftUI
 
 /// 커스텀 네비게이션 바 컴포넌트
 struct CustomNavigationBar: ToolbarContent {
-    let title: String
+    let title: LocalizedStringKey
     let onBackButtonTap: () -> Void
 
     var body: some ToolbarContent {
@@ -26,7 +26,7 @@ struct CustomNavigationBar: ToolbarContent {
 }
 
 struct CustomWhiteNavigationBar: ToolbarContent {
-    let title: String
+    let title: LocalizedStringKey
     let onBackButtonTap: () -> Void
 
     var body: some ToolbarContent {
@@ -43,7 +43,7 @@ struct CustomWhiteNavigationBar: ToolbarContent {
 }
 
 struct CustomXmarkNavigationBar: ToolbarContent {
-    let title: String
+    let title: LocalizedStringKey
     let onXmarkButtonTap: () -> Void
 
     var body: some ToolbarContent {
@@ -61,8 +61,8 @@ struct CustomXmarkNavigationBar: ToolbarContent {
 }
 
 struct CustomNavigationBarWithAction: ToolbarContent {
-    let title: String
-    let actionTitle: String
+    let title: LocalizedStringKey
+    let actionTitle: LocalizedStringKey
     let isActionEnabled: Bool
     let onBackButtonTap: () -> Void
     let onActionTap: () -> Void
