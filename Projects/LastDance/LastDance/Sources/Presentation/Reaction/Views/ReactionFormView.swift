@@ -14,12 +14,7 @@ struct ReactionFormView: View {
     @EnvironmentObject private var router: NavigationRouter
     @EnvironmentObject var viewModel: ReactionInputViewModel
 
-    @State private var showCategorySheet = false
-
     private let placeholder = ReactionConstants.messagePlaceholder
-    private var hasSelectedEmotion: Bool {
-        !viewModel.selectedCategories.isEmpty || !viewModel.selectedTagsName.isEmpty
-    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -27,115 +22,11 @@ struct ReactionFormView: View {
                 .font(LDFont.heading02)
                 .foregroundColor(.black)
 
-            Spacer().frame(height: 14)
-
-            CategoryTag
-
             Spacer().frame(height: 27)
 
             MessageEditor
         }
         .padding(.horizontal, 28)
-        .onAppear {
-            if let savedCategories = UserDefaults.standard.stringArray(
-                forKey: .selectedCategories
-            ) {
-                viewModel.selectedCategories = Set(savedCategories)
-            }
-            Log.debug("선택된 카테고리: \(viewModel.selectedCategories)")
-        }
-    }
-
-    @ViewBuilder
-    private var CategoryTag: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 6) {
-                if hasSelectedEmotion {
-                    Button {
-                        router.push(.category)
-                    } label: {
-                        HStack(spacing: 6) {
-                            Text("감정 태그")
-                                .bold()
-                                .foregroundColor(LDColor.color1)
-
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.black.opacity(0.6))
-                        }
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    Text("감정 태그")
-                        .bold()
-                        .foregroundColor(LDColor.color1)
-                }
-
-                Spacer()
-            }
-
-            if !hasSelectedEmotion {
-                Button(
-                    action: { router.push(.category) },
-                    label: {
-                        HStack {
-                            Text("지금 떠오르는 감정을 표현해보세요")
-                                .font(LDFont.regular02)
-                                .multilineTextAlignment(.leading)
-                                .foregroundColor(
-                                    LDColor.color2
-                                )
-                                .lineSpacing(5)
-
-                            Spacer()
-
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 20, weight: .semibold))
-                                .frame(width: 15, height: 20)
-                                .padding(.vertical, 4)
-                                .foregroundColor(LDColor.color2)
-                        }
-                        .padding(12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(LDColor.color6)
-                        .cornerRadius(12)
-                    }
-                )
-            } else {
-                VStack(alignment: .leading, spacing: 8) {
-                    if !viewModel.selectedCategories.isEmpty {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedCategories).sorted(), id: \.self) {
-                                    categoryName in
-                                    let category = viewModel.categories.first {
-                                        $0.name == categoryName
-                                    }
-                                    ReactionTag(
-                                        text: categoryName,
-                                        color: Color(hex: category?.colorHex ?? "#FFFFFF")
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    if !viewModel.selectedTagsName.isEmpty {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(Array(viewModel.selectedTagsName).sorted(), id: \.self) {
-                                    tagName in
-                                    ReactionTag(
-                                        text: tagName,
-                                        color: viewModel.findColorForTag(tagName: tagName)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @ViewBuilder

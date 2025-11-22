@@ -22,8 +22,6 @@ enum Route: Hashable {
     case captureConfirm(imageData: Data, exhibitionId: Int)
     case inputArtworkInfo(image: UIImage, exhibitionId: Int?, artistId: Int?)
     case archive(id: Int)
-    case category
-    case reactionTags
     case completeReaction(exhibitionId: Int)
     case articleExhibitionList
     case articleList(selectedExhibitionId: Int)
