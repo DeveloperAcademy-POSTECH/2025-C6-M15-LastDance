@@ -11,9 +11,9 @@ extension View {
     func customAlert(
         isPresented: Binding<Bool>,
         image: String,
-        title: String,
-        message: String,
-        buttonText: String,
+        title: LocalizedStringKey,
+        message: LocalizedStringKey?,
+        buttonText: LocalizedStringKey,
         action: @escaping () -> Void,
         cancelAction: (() -> Void)? = nil
     ) -> some View {

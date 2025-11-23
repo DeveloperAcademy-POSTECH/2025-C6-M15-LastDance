@@ -14,6 +14,7 @@ struct ReactionData: Identifiable {
     let artistEmoji: String?  // 작가가 선택한 이모지 (emoji_type)
     let artistMessages: [ArtistMessage]  // 작가가 남긴 메시지들
     let createdAt: String
+    let visitorId: Int  // 반응을 남긴 관람객 ID
 
     struct ArtistMessage: Identifiable {
         let id: Int
@@ -32,7 +33,8 @@ struct ReactionData: Identifiable {
             categories: categories,
             artistEmoji: artistEmoji,
             artistMessages: updatedMessages,
-            createdAt: createdAt
+            createdAt: createdAt,
+            visitorId: visitorId
         )
     }
 }

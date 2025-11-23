@@ -79,30 +79,14 @@
 		997BB1662EC13FCC0052F9BA /* Exceptions for "LastDance" folder in "LastDanceClip" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Assets.xcassets,
 				Resources/Badword/badword_filter.txt,
-				"Resources/Fonts/Pretendard-Black.otf",
-				"Resources/Fonts/Pretendard-Bold.otf",
-				"Resources/Fonts/Pretendard-ExtraBold.otf",
-				"Resources/Fonts/Pretendard-ExtraLight.otf",
-				"Resources/Fonts/Pretendard-Light.otf",
-				"Resources/Fonts/Pretendard-Medium.otf",
-				"Resources/Fonts/Pretendard-Regular.otf",
-				"Resources/Fonts/Pretendard-SemiBold.otf",
-				"Resources/Fonts/Pretendard-Thin.otf",
-				Sources/Common/Components/Button/BottomButton.swift,
 				Sources/Common/Components/CachedImage.swift,
-				Sources/Common/Components/CustomAlert.swift,
-				Sources/Common/DesignSystem/LDColor.swift,
-				Sources/Common/DesignSystem/LDFont.swift,
-				Sources/Common/DesignSystem/LDShadow.swift,
 				"Sources/Common/Extensions/Date+Extensions.swift",
 				Sources/Common/Extensions/Log.swift,
 				"Sources/Common/Extensions/Navigation+Extension.swift",
 				"Sources/Common/Extensions/String + Extension.swift",
 				Sources/Common/Extensions/TapGestureRecognizer.swift,
 				"Sources/Common/Extensions/View+CustomAlert.swift",
-				"Sources/Common/Extensions/View+Shadow.swift",
 				Sources/Common/Utils/Config.swift,
 				Sources/Common/Utils/Constants.swift,
 				Sources/Common/Utils/Enum/AlertType.swift,
@@ -121,7 +105,6 @@
 				Sources/Data/Network/Artwork/DTO/Request/ArtworkMatchRequestDto.swift,
 				Sources/Data/Network/Artwork/DTO/Request/MakeArtworkRequestDto.swift,
 				Sources/Data/Network/Base/BaseTargetType.swift,
-				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/EmojiReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/MessageReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
@@ -149,7 +132,6 @@
 				Sources/Domain/Model/User/Artist.swift,
 				Sources/Domain/Model/User/ArtistCode.swift,
 				Sources/Presentation/Archive/Views/ScrollViewObserver.swift,
-				Sources/Presentation/Archive/Views/TabBarView.swift,
 			);
 			target = 997BB14C2EC1388D0052F9BA /* LastDanceClip */;
 		};
@@ -359,6 +341,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 99E6F05E2E91E4A9002ED9C2;
 			minimizedProjectReferenceProxies = 1;
@@ -607,6 +590,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -664,6 +648,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

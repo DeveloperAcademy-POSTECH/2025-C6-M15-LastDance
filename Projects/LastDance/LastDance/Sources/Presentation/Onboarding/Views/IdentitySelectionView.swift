@@ -78,8 +78,8 @@ struct IdentitySelectionButtons: View {
 
 struct IdentityCardButton: View {
     let icon: String
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let isSelected: Bool
     let action: () -> Void
 
@@ -95,11 +95,13 @@ struct IdentityCardButton: View {
                         .font(LDFont.heading04)
                         .foregroundColor(.black)
                         .padding(.horizontal, 20)
+                        .multilineTextAlignment(.leading)
 
                     Text(subtitle)
                         .font(LDFont.regular03)
                         .foregroundColor(.gray)
                         .padding(.horizontal, 20)
+                        .multilineTextAlignment(.leading)
                 }
                 Spacer()
             }

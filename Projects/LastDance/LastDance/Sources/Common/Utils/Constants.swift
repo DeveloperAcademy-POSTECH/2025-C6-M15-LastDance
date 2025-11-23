@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 // MARK: ReactionConstants
 /// 반응(Reaction) 관련 상수
 enum ReactionConstants {
     static let maxMessageLength: Int = 500
     static let throttleInterval: TimeInterval = 2.0
-    static let messagePlaceholder: String = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
+    static let messagePlaceholder: LocalizedStringKey = "욕설, 비속어 사용 시 전송이 제한될 수 있습니다."
     /// 이모지 asset 이름 목록
     static let emojiAssets: [String] = [
         "emoji_heart",
@@ -76,7 +77,7 @@ enum ArchiveImageConstants {
     static let maxWidth: CGFloat = 281
     static let minHeight: CGFloat = 100
     static let maxHeight: CGFloat = 388
-    static let animationThreshold: CGFloat = 120
+    static let animationThreshold: CGFloat = 200
     static let tabBarFixThreshold: CGFloat = 100
 }
 
@@ -125,6 +126,16 @@ enum ArtistCodeConstants {
 // MARK: InvitationConstants
 /// 초대장 관련 상수
 enum InvitationConstants {
-    static let shareMessageHeader: String = "🎨 전시 초대장이 도착했습니다!\n\n"
+    static var shareMessageHeader: String {
+        String(localized: "🎨 전시 초대장이 도착했습니다!\n\n")
+    }
     static let appStoreURL: String = "https://apps.apple.com/kr/app/%EC%97%AC%EC%9A%B4/id6754415794"
+}
+
+// MARK: DeepLinkConstants
+/// 푸시알람 딥링크 관련 상수
+enum PushDeepLinkConstants {
+    static let scheme: String = "lastdance"
+    static let artworkReactionHost: String = "artworkReaction"
+    static let invitationHost: String = "invitation"
 }

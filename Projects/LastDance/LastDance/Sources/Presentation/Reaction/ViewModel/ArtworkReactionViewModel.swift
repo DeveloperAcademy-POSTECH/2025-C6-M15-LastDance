@@ -86,7 +86,8 @@ final class ArtworkReactionViewModel: ObservableObject {
                                 categories: reactionDetailDto.tags?.map { $0.name } ?? [],
                                 artistEmoji: artistEmoji,
                                 artistMessages: artistMessages,
-                                createdAt: reactionDetailDto.created_at
+                                createdAt: reactionDetailDto.created_at,
+                                visitorId: reactionDetailDto.visitor_id
                             )
                             lock.lock()
                             fetchedReactionData.append(reactionData)
@@ -102,7 +103,6 @@ final class ArtworkReactionViewModel: ObservableObject {
                 dispatchGroup.notify(queue: .main) {
                     self.reactions = fetchedReactionData.sorted { $0.id < $1.id }
 
-                    // API 응답으로부터 selectedEmojis 초기화
                     var emojis: [String: String] = [:]
                     for reaction in self.reactions {
                         if let emoji = reaction.artistEmoji {
@@ -303,6 +303,7 @@ final class ArtworkReactionViewModel: ObservableObject {
                 self.handleMessageCreated(reactionIdString: reactionIdString, response: response)
                 DispatchQueue.main.async {
                     self.message = ""
+                    // 푸시 알림은 서버에서 자동으로 전송됨
                     completion(true)
                 }
             case .failure(let error):

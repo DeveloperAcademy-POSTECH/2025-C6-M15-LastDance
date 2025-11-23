@@ -34,7 +34,7 @@ struct CompleteReactionView: View {
 
             Spacer().frame(height: 8)
 
-            Text("작가에게 반응을 보냈어요")
+            Text("작가님에게 반응을 보냈어요")
                 .foregroundColor(LDColor.gray4)
                 .font(LDFont.regular01)
 
@@ -52,7 +52,7 @@ struct CompleteReactionView: View {
                     Log.debug(
                         "CompleteReactionView: Tapping Continue Viewing. Popping to archive with exhibitionId: \(exhibitionId)"
                     )
-                    router.popTo(.archive(id: exhibitionId))
+                    router.push(.archive(id: exhibitionId))
                 }
             }
             .padding(.horizontal, 20)

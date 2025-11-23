@@ -154,15 +154,24 @@ final class ExhibitionAPIService: ExhibitionAPIServiceProtocol {
                         let exhibition = exhibitionDto.toEntity()
                         SwiftDataManager.shared.upsertExhibition(exhibition)
 
+                        let artistIdByName: [String: Int] = {
+                            guard let artists = exhibitionDto.artists else { return [:] }
+                            return Dictionary(
+                                uniqueKeysWithValues: artists.map { ($0.name, $0.id) }
+                            )
+                        }()
+
                         // Artworks 독립적으로 저장
                         if let artworkInfos = exhibitionDto.artworks {
                             for artworkInfo in artworkInfos {
+                                let resolvedArtistId = artistIdByName[artworkInfo.artist_name]
+
                                 let artwork = Artwork(
                                     id: artworkInfo.id,
                                     exhibitionId: exhibitionDto.id,
                                     title: artworkInfo.title,
                                     descriptionText: nil,
-                                    artistId: nil,
+                                    artistId: resolvedArtistId,
                                     thumbnailURL: artworkInfo.thumbnail_url,
                                     exhibition: exhibition
                                 )

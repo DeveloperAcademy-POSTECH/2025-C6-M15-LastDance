@@ -123,4 +123,24 @@ extension Date {
 
         return nil
     }
+
+    /// 현재 시간 기준으로 M분전, H시간전으로 파싱해주는 함수
+    func toTimeAgoString() -> String {
+        let now = Date()
+        let components = Calendar.current.dateComponents(
+            [.minute, .hour, .day], from: self, to: now)
+
+        if let day = components.day, day > 0 {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "M월 d일"
+            formatter.locale = Locale.current
+            return formatter.string(from: self)
+        } else if let hour = components.hour, hour > 0 {
+            return String(format: NSLocalizedString("time_ago_hours", comment: ""), hour)
+        } else if let minute = components.minute, minute > 0 {
+            return String(format: NSLocalizedString("time_ago_minutes", comment: ""), minute)
+        } else {
+            return NSLocalizedString("time_ago_just_now", comment: "")
+        }
+    }
 }

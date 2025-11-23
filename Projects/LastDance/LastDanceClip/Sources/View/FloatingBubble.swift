@@ -44,8 +44,8 @@ struct FloatingBubble: View {
                 .frame(width: maxWidth)
 
             Text(text)
-                .font(LDFont.medium04)
-                .foregroundColor(LDColor.color1)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
                 .lineLimit(1)
                 .padding(.vertical, 4)
                 .frame(maxWidth: maxWidth * 0.85, alignment: .center)

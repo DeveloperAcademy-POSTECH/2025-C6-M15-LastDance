@@ -32,11 +32,46 @@ final class ArtistReactionViewModel: ObservableObject {
         isLoading = true
         exhibitions = []
 
-        let allLocalExhibitions = swiftDataManager.fetchAll(Exhibition.self)
-        let filteredExhibitions = allLocalExhibitions.filter { $0.isUserSelected == true }
+        guard
+            let artistId = UserDefaults.standard.object(
+                forKey: UserDefaultsKey.artistId.rawValue
+            ) as? Int
+        else {
+            Log.error("loadArtistExhibitions - artistId not found in UserDefaults")
+            isLoading = false
+            return
+        }
+
+        Log.debug("🎨 loadArtistExhibitions - artistId: \(artistId)")
+
+        let allExhibitions: [Exhibition] = swiftDataManager.fetchAll(Exhibition.self)
+        let allArtworks: [Artwork] = swiftDataManager.fetchAll(Artwork.self)
+
+        Log.debug(
+            "🎨 allExhibitions: \(allExhibitions.map { "id=\($0.id)" }.joined(separator: ", "))")
+        Log.debug("🎨 allArtworks count: \(allArtworks.count)")
+        allArtworks.forEach { art in
+            Log.debug(
+                "🎨 Artwork id=\(art.id), exId=\(art.exhibitionId), artistId=\(String(describing: art.artistId))"
+            )
+        }
+
+        let artworksForArtist = allArtworks.filter { $0.artistId == artistId }
+        Log.debug("🎨 artworksForArtist(\(artistId)) count: \(artworksForArtist.count)")
+        Log.debug("🎨 artworksForArtist exIds: \(Set(artworksForArtist.map { $0.exhibitionId }))")
+
+        let exhibitionIdsForArtist: Set<Int> = Set(
+            artworksForArtist.map { $0.exhibitionId }
+        )
+
+        let filteredExhibitions = allExhibitions.filter {
+            exhibitionIdsForArtist.contains($0.id)
+        }
+
+        Log.debug("🎨 filteredExhibitions ids: \(filteredExhibitions.map { $0.id })")
 
         if filteredExhibitions.isEmpty {
-            Log.debug("No selected exhibitions to display")
+            Log.debug("No exhibitions found for artistId \(artistId)")
             isLoading = false
             return
         }
