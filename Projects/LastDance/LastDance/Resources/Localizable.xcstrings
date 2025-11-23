@@ -4,9 +4,6 @@
     "" : {
 
     },
-    "/%lld" : {
-
-    },
     "%@ %@" : {
       "localizations" : {
         "en" : {
@@ -88,9 +85,6 @@
           }
         }
       }
-    },
-    "Onboarding View" : {
-
     },
     "time_ago_hours" : {
       "extractionState" : "manual",
@@ -221,6 +215,7 @@
       }
     },
     "관람하러 온 전시를 알려주세요" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -261,6 +256,7 @@
       }
     },
     "나의 작품에 어떤 반응을\n 남겼는지 확인해보세요" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -359,6 +355,7 @@
       }
     },
     "다시 찾기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -410,6 +407,7 @@
       }
     },
     "등록하기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -460,6 +458,7 @@
       }
     },
     "반응 남기기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -580,6 +579,7 @@
       }
     },
     "완료" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -697,6 +697,7 @@
       }
     },
     "작가명을 선택해주세요" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -707,6 +708,7 @@
       }
     },
     "작가에게 반응을 보냈어요" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -864,6 +866,7 @@
       }
     },
     "전시 정보를 불러오지 못했어요.\n전시 정보를 다시 확인해 주세요." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -874,6 +877,7 @@
       }
     },
     "전시 찾기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -924,6 +928,7 @@
       }
     },
     "전시명" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -944,6 +949,7 @@
       }
     },
     "전시정보" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -964,6 +970,7 @@
       }
     },
     "전시찾기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

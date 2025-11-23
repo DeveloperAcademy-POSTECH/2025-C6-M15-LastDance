@@ -21,10 +21,11 @@ final class Reaction {
     var tags: [ReactionTagInfo]?
     var comment: String?
     var createdAt: String?
+    var exhibitionId: Int?
 
     init(
         id: String, artworkId: Int, visitorId: Int, tags: [ReactionTagInfo]? = nil,
-        comment: String? = nil, createdAt: String? = nil
+        comment: String? = nil, createdAt: String? = nil, exhibitionId: Int? = nil
     ) {
         self.id = id
         self.artworkId = artworkId
@@ -32,5 +33,6 @@ final class Reaction {
         self.tags = tags
         self.comment = comment
         self.createdAt = createdAt
+        self.exhibitionId = exhibitionId
     }
 }

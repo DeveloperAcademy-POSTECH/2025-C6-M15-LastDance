@@ -16,16 +16,21 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String = ""
 
-    private let swiftDataManager = SwiftDataManager.shared
-    private let apiService: ExhibitionAPIServiceProtocol
-    private let artworkAPIService = ArtworkAPIService()
-    private let visitHistoriesAPIService = VisitHistoriesAPIService()
-
     let exhibitionId: Int
 
-    init(apiService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(), exhibitionId: Int) {
-        self.apiService = apiService
+    private let swiftDataManager = SwiftDataManager.shared
+    private let exhibitionService: ExhibitionAPIServiceProtocol
+    private let artworkService: ArtworkAPIServiceProtocol
+
+    init(
+        exhibitionId: Int,
+        exhibitionService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(),
+        artworkService: ArtworkAPIServiceProtocol = ArtworkAPIService()
+    ) {
         self.exhibitionId = exhibitionId
+        self.exhibitionService = exhibitionService
+        self.artworkService = artworkService
+
         loadData()
     }
 
@@ -41,6 +46,8 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                 // 로컬 데이터가 없으면 API 호출
                 await fetchExhibitionAPI()
             }
+
+            isLoading = false
         }
     }
 
@@ -60,21 +67,15 @@ final class ExhibitionArchiveViewModel: ObservableObject {
             reactions = try await fetchReactions()
             artists = try await fetchArtists()
             artworks = try await fetchArtworksForExhibition()
-
-            Log.debug(
-                "로컬 데이터 로드 완료 - Reactions: \(reactions.count), Artworks: \(artworks.count), Artists: \(artists.count)"
-            )
-            isLoading = false
         } catch {
             Log.error("로컬 데이터 로드 실패: \(error)")
-            isLoading = false
             errorMessage = "데이터를 불러오는데 실패했습니다."
         }
     }
 
     /// API호출
     private func fetchExhibitionAPI() async {
-        apiService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
+        exhibitionService.getDetailExhibition(exhibitionId: exhibitionId) { [weak self] result in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
@@ -88,10 +89,6 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                             self.reactions = try await self.fetchReactions()
                             self.artists = try await self.fetchArtists()
                             self.artworks = try await self.fetchArtworksForExhibition()
-
-                            Log.debug(
-                                "로컬 데이터 로드 완료 - Reactions: \(self.reactions.count), Artworks: \(self.artworks.count), Artists: \(self.artists.count)"
-                            )
                         } catch {
                             Log.error("로컬 데이터 로드 실패: \(error)")
                         }
@@ -130,22 +127,15 @@ final class ExhibitionArchiveViewModel: ObservableObject {
 
         let context = container.mainContext
 
-        // 해당 전시의 작품 ID 조회
-        let artworkDescriptor = FetchDescriptor<Artwork>(
-            predicate: #Predicate<Artwork> { artwork in
-                artwork.exhibitionId == exhibitionId
-            }
-        )
-        let exhibitionArtworks = try context.fetch(artworkDescriptor)
-        let artworkIds = Set(exhibitionArtworks.map { $0.id })
-
-        // 모든 반응 조회 후 해당 전시 작품의 반응만 필터링
-        let reactionDescriptor = FetchDescriptor<Reaction>(
+        let descriptor = FetchDescriptor<Reaction>(
+            predicate: #Predicate<Reaction> { reaction in
+                reaction.exhibitionId == exhibitionId
+            },
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
-        let allReactions = try context.fetch(reactionDescriptor)
 
-        return allReactions.filter { artworkIds.contains($0.artworkId) }
+        let reactions = try context.fetch(descriptor)
+        return reactions
     }
 
     /// 해당 전시의 작품만 조회
@@ -179,7 +169,7 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     func fetchArtworkDetail(artworkId: Int) {
         Log.debug("작품 상세 조회 API 호출 - artworkId: \(artworkId)")
 
-        artworkAPIService.getArtworkDetail(artworkId: artworkId) { result in
+        artworkService.getArtworkDetail(artworkId: artworkId) { result in
             Task {
                 switch result {
                 case .success(let artwork):
@@ -190,6 +180,23 @@ final class ExhibitionArchiveViewModel: ObservableObject {
                     Log.error("작품 상세 조회 실패: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+}
+
+// MARK: - Artwork + Reactions 묶어서 반환
+extension ExhibitionArchiveViewModel {
+    /// artwork 1개당 카드 1개만 만들어지도록 도와주는 헬퍼
+    func getArtworkReactionPairs() -> [(artwork: Artwork, reactions: [Reaction])] {
+        let groupedByArtworkId = Dictionary(grouping: reactions, by: { $0.artworkId })
+
+        return artworks.compactMap { artwork in
+            guard let reactionsForArtwork = groupedByArtworkId[artwork.id],
+                !reactionsForArtwork.isEmpty
+            else {
+                return nil
+            }
+            return (artwork, reactionsForArtwork)
         }
     }
 }

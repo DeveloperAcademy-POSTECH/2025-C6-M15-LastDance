@@ -7,7 +7,7 @@
 
 struct ArtistDetailResponseDto: Codable {
     let id: Int
-    let uuid: String
+    let uuid: String?
     let name: String
     let bio: String?
     let email: String?

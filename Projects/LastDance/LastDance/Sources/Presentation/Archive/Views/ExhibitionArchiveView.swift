@@ -62,19 +62,21 @@ struct ExhibitionArchiveView: View {
                         } else if viewModel.hasReactedArtworks() {
                             // 반응 목록 그리드
                             MasonryVStack(columns: 2, spacing: 19) {
-                                ForEach(viewModel.getReactedArtworks(), id: \.id) { artwork in
-                                    if let reaction = viewModel.reactions.first(where: {
-                                        $0.artworkId == artwork.id
-                                    }) {
-                                        let artist = viewModel.artist(for: artwork)
+                                ForEach(viewModel.getArtworkReactionPairs(), id: \.artwork.id) {
+                                    pair in
+                                    if let representative = pair.reactions.first {
                                         ReactionCardView(
-                                            reaction: reaction,
-                                            artwork: artwork,
-                                            artist: artist
+                                            reaction: representative,
+                                            artwork: pair.artwork,
+                                            artist: viewModel.artist(for: pair.artwork)
                                         )
                                         .onTapGesture {
                                             router.push(
-                                                .artReaction(artwork: artwork, artist: artist))
+                                                .artReaction(
+                                                    artwork: pair.artwork,
+                                                    artist: viewModel.artist(for: pair.artwork)
+                                                )
+                                            )
                                         }
                                     }
                                 }

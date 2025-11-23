@@ -1,25 +1,33 @@
 //
-//  ArtReactionView.swift
+//  ArtReactionSendView.swift
 //  LastDance
 //
-//  Created by 광로 on 10/20/25.
+//  Created by 배현진 on 11/21/25.
 //
 
 import SwiftUI
+import UIKit
 
-struct ArtReactionView: View {
+struct ArtReactionSendView: View {
     let artwork: Artwork
-    let artist: Artist?
+    let artist: Artist
+    let exhibitionId: Int
+    let imageData: Data
 
     @StateObject private var viewModel: ArtReactionViewModel
     @EnvironmentObject private var router: NavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
     @State private var didSnap: Bool = false
+    @FocusState private var isMessageFieldFocused: Bool
 
-    init(artwork: Artwork, artist: Artist?) {
+    private let placeholder = ReactionConstants.messagePlaceholder
+
+    init(artwork: Artwork, artist: Artist, exhibitionId: Int, imageData: Data) {
         self.artwork = artwork
         self.artist = artist
+        self.exhibitionId = exhibitionId
+        self.imageData = imageData
         _viewModel = StateObject(
             wrappedValue: ArtReactionViewModel(artworkId: artwork.id)
         )
@@ -40,6 +48,22 @@ struct ArtReactionView: View {
             TabBarView(selectedTab: $selectedTab)
                 .background(Color.white)
                 .opacity(isTabBarFixed ? 1 : 0)
+
+            // 하단 버튼
+            VStack {
+                Spacer()
+
+                if selectedTab == .reaction {
+                    BottomButton(
+                        text: "전송하기",
+                        isEnabled: !viewModel.isSendButtonDisabled,
+                        action: {
+                            viewModel.sendButtonAction()
+                        }
+                    )
+                    .background(LDColor.color6)
+                }
+            }
         }
         .background(Color.white)
         .toolbar {
@@ -48,13 +72,42 @@ struct ArtReactionView: View {
             }
         }
         .onAppear {
-            viewModel.loadReactions()
+            viewModel.capturedImageData = imageData
         }
+        .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
+            if shouldTrigger {
+                viewModel.performSendReaction(artworkId: artwork.id, exhibitionId: exhibitionId) {
+                    success, exhibitionId in
+                    if success, let exhibitionId = exhibitionId {
+                        router.push(.completeReaction(exhibitionId: exhibitionId))
+                    }
+                }
+                viewModel.shouldTriggerSend = false
+            }
+        }
+        .customAlert(
+            isPresented: $viewModel.shouldShowConfirmAlert,
+            image: viewModel.alertType.image,
+            title: viewModel.alertType.title,
+            message: viewModel.alertType.message,
+            buttonText: viewModel.alertType.buttonText,
+            action: {
+                if viewModel.alertType == .confirmation {
+                    viewModel.confirmSendAction()
+                } else {
+                    viewModel.handleRestrictionAlertDismiss()
+                    viewModel.shouldShowConfirmAlert = false
+                }
+            },
+            cancelAction: {
+                viewModel.shouldShowConfirmAlert = false
+            }
+        )
     }
 }
 
 // MARK: - Scroll Content
-extension ArtReactionView {
+extension ArtReactionSendView {
     fileprivate var scrollContent: some View {
         SnappingScrollView {
             VStack(spacing: 0) {
@@ -137,7 +190,7 @@ extension ArtReactionView {
 }
 
 // MARK: - 작품 탭 뷰
-extension ArtReactionView {
+extension ArtReactionSendView {
     fileprivate var artworkTabSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(artwork.title)
@@ -145,17 +198,15 @@ extension ArtReactionView {
                 .foregroundColor(LDColor.color1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let artistName = artist?.name {
-                HStack {
-                    Text(artistName)
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color6)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(LDColor.color1)
-                        .cornerRadius(20)
-                    Spacer()
-                }
+            HStack {
+                Text(artist.name)
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color6)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(LDColor.color1)
+                    .cornerRadius(20)
+                Spacer()
             }
 
             Rectangle()
@@ -190,14 +241,11 @@ extension ArtReactionView {
 }
 
 // MARK: - 감상 탭
-extension ArtReactionView {
+extension ArtReactionSendView {
     fileprivate var reactionTabSection: some View {
         VStack(alignment: .leading, spacing: 36) {
-            // 작가가 남긴 메시지
-            artistMessageSection
-
             // 나의 감상
-            myReactionSection
+            MessageEditor
 
             Spacer(minLength: ArchiveImageConstants.animationThreshold)
         }
@@ -206,83 +254,54 @@ extension ArtReactionView {
         .padding(.bottom, 40)
     }
 
-    // 작가 메시지 영역
-    private var artistMessageSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("작가가 남긴 메시지")
-                .font(LDFont.heading04)
-                .foregroundColor(LDColor.color1)
-
-            HStack {
-                Text("아직 이모지가 없습니다.")
-                    .font(LDFont.regular03)
-                    .foregroundColor(LDColor.color2)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(LDColor.color4)
-                    )
-
-                Spacer()
-            }
-
-            HStack(alignment: .top, spacing: 12) {
-                Image("quote_left")
-                    .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
-                    .frame(width: 24, height: 24)
-                    .offset(y: -4)
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("아직 메시지가 없습니다.")
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.color3)
-                }
-
-                Image("quote_right")
-                    .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
-                    .frame(width: 24, height: 24)
-                    .offset(y: -4)
-            }
-            .padding(12)
-        }
-    }
-    // 나의 감상 영역
-    private var myReactionSection: some View {
+    @ViewBuilder
+    private var MessageEditor: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("나의 감상")
                 .font(LDFont.heading04)
                 .foregroundColor(LDColor.color1)
 
-            if viewModel.isLoading {
-                ProgressView()
-                    .scaleEffect(1.0)
-                    .frame(maxWidth: .infinity, minHeight: 80, alignment: .center)
-                    .padding(.top, 8)
+            VStack(alignment: .trailing, spacing: 8) {
+                ZStack(alignment: .topLeading) {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(LDColor.color5)
+                        .frame(height: 123)
 
-            } else if viewModel.reactions.isEmpty {
-                Text("아직 등록된 감상이 없습니다")
-                    .font(LDFont.medium04)
-                    .foregroundColor(LDColor.color2)
-                    .padding(.top, 4)
+                    if viewModel.message.isEmpty && !isMessageFieldFocused {
+                        Text("작품에 대한 생각을 자유롭게 적어보세요.")
+                            .font(LDFont.regular02)
+                            .foregroundColor(LDColor.color3)
+                            .padding(.top, 12)
+                            .padding(.leading, 14)
+                    }
 
-            } else {
-                ForEach(viewModel.reactions, id: \.id) { reaction in
-                    if let comment = reaction.comment, !comment.isEmpty {
-                        Text(comment)
-                            .padding(12)
-                            .font(LDFont.medium04)
-                            .foregroundColor(LDColor.color1)
-                            .lineSpacing(4)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(LDColor.color5)
-                            )
+                    VStack(spacing: 14) {
+                        TextEditor(text: $viewModel.message)
+                            .scrollContentBackground(.hidden)
+                            .background(Color.clear)
+                            .tint(LDColor.gray5)
+                            .padding(.top, 3)
+                            .padding(.leading, 5)
+                            .padding(.trailing, 5)
+                            .frame(height: 84)
+                            .focused($isMessageFieldFocused)
+                            .onChange(of: viewModel.message) { newValue in
+                                viewModel.updateMessage(newValue: newValue)
+                            }
+                        HStack {
+                            Spacer()
+                            Text("\(viewModel.message.count)/\(viewModel.limit)")
+                                .font(LDFont.medium04)
+                                .foregroundColor(LDColor.color3)
+                                .padding(.trailing, 14)
+                                .padding(.bottom, 10)
+                        }
                     }
                 }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(LDColor.color6.opacity(0.3), lineWidth: 1)
+                )
             }
         }
     }

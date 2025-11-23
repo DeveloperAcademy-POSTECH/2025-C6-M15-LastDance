@@ -128,8 +128,6 @@ extension ReactionAPI: BaseTargetType {
                     mimeType: "image/jpeg"
                 )
                 parts.append(part)
-            } else {
-                fatalError("🚨 ReactionRequestDto.imageData cannot be nil for createReaction API.")
             }
 
             return parts

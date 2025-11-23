@@ -135,6 +135,9 @@ class AppDataCoordinator {
 
             for dto in reactionDtos {
                 let reactionModel = ReactionMapper.mapDtoToModel(dto)
+
+                reactionModel.exhibitionId = payload.exhibitionId
+
                 SwiftDataManager.shared.insert(reactionModel)
             }
             SwiftDataManager.shared.saveContext()
