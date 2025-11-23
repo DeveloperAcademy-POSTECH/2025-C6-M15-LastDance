@@ -9,5 +9,6 @@ import Foundation
 
 enum DeepLinkType {
     case invitation(uuid: String)
+    case artworkReaction(artworkId: Int)
     case unknown
 }

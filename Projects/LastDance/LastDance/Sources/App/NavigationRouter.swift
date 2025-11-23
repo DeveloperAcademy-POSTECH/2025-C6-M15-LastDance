@@ -43,14 +43,38 @@ final class NavigationRouter: ObservableObject {
     }
 
     /// 딥링크 처리
-    func handleDeepLink(_ url: URL) {
+    @MainActor func handleDeepLink(_ url: URL) {
         let deepLinkType = DeepLinkHandler.parse(url)
 
         switch deepLinkType {
         case .invitation(let uuid):
             Log.debug("초대장 딥링크 처리 - UUID: \(uuid)")
-            // 초대장 화면으로 이동
             push(.receivedInvitation(invitationCode: uuid))
+
+        case .artworkReaction(let artworkId):
+            Log.debug("작품 반응 딥링크 처리 - artworkId: \(artworkId)")
+
+            // UserType에 따라 다른 화면으로 이동
+            if let userTypeValue = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.userType.key),
+                let userType = UserType(rawValue: userTypeValue)
+            {
+
+                switch userType {
+                case .artist:
+                    push(.response(artworkId: artworkId))
+
+                case .viewer:
+                    let artworks = SwiftDataManager.shared.fetchAll(Artwork.self)
+                    if let artwork = artworks.first(where: { $0.id == artworkId }) {
+                        let artists = SwiftDataManager.shared.fetchAll(Artist.self)
+                        let artist = artists.first(where: { $0.id == artwork.artistId })
+                        push(.artReaction(artwork: artwork, artist: artist))
+                    } else {
+                        Log.error("artworkId \(artworkId)에 해당하는 Artwork를 찾을 수 없음")
+                    }
+                }
+            }
 
         case .unknown:
             Log.error("알 수 없는 딥링크")

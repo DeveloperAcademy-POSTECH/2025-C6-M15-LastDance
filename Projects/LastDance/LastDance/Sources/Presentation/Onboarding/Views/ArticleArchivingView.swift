@@ -73,7 +73,7 @@ struct ArticleArchivingView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("나의 전시")
+                Text("exhibition_title")
                     .font(LDFont.heading02)
                     .foregroundColor(.black)
 

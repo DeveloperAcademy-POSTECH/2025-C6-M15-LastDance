@@ -16,9 +16,22 @@ protocol NotificationAPIServiceProtocol {
         completion: @escaping (Result<Void, Error>) -> Void
     )
 
-    func sendNotification(
-        dto: SendNotificationRequestDto,
-        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
+    func getNotificationList(
+        uuid: String,
+        isRead: Bool?,
+        limit: Int?,
+        offset: Int?,
+        completion: @escaping (Result<NotificationListResponseDto, Error>) -> Void
+    )
+
+    func getUnreadNotificationCount(
+        uuid: String,
+        completion: @escaping (Result<UnreadNotificationCountResponseDto, Error>) -> Void
+    )
+
+    func readAllNotification(
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
@@ -62,30 +75,94 @@ final class NotificationAPIService: NotificationAPIServiceProtocol {
         }
     }
 
-    /// 푸시알람 전송 함수
-    func sendNotification(
-        dto: SendNotificationRequestDto,
-        completion: @escaping (Result<SendNotificationResponseDto, Error>) -> Void
+    /// 알림 목록 조회 함수
+    func getNotificationList(
+        uuid: String,
+        isRead: Bool? = nil,
+        limit: Int? = nil,
+        offset: Int? = nil,
+        completion: @escaping (Result<NotificationListResponseDto, Error>) -> Void
     ) {
-        provider.request(.sendNotification(dto: dto)) { result in
+        provider.request(
+            .getNotificationList(uuid: uuid, isRead: isRead, limit: limit, offset: offset)
+        ) { result in
             switch result {
             case .success(let response):
                 do {
                     if let jsonString = String(data: response.data, encoding: .utf8) {
-                        Log.debug("sendNotification 응답: \(jsonString)")
+                        Log.debug("getNotificationList 응답: \(jsonString)")
                     }
                     let responseDto = try JSONDecoder().decode(
-                        SendNotificationResponseDto.self,
+                        NotificationListResponseDto.self,
                         from: response.data
                     )
-                    Log.debug(
-                        "푸시알림 전송 성공 - success: \(responseDto.success_count), failed: \(responseDto.failed_count)"
-                    )
+                    Log.debug("알림 목록 조회 성공 - \(responseDto.count)개")
                     completion(.success(responseDto))
                 } catch {
                     Log.error("디코딩 실패: \(error)")
                     completion(.failure(NetworkError.decodingFailed))
                 }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("API 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// 읽지 않은 알림 개수 조회 함수
+    func getUnreadNotificationCount(
+        uuid: String,
+        completion: @escaping (Result<UnreadNotificationCountResponseDto, Error>) -> Void
+    ) {
+        provider.request(.getUnreadNotificationCount(uuid: uuid)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        Log.debug("getUnreadNotificationCount 응답: \(jsonString)")
+                    }
+                    let responseDto = try JSONDecoder().decode(
+                        UnreadNotificationCountResponseDto.self,
+                        from: response.data
+                    )
+                    Log.debug("읽지 않은 알림 개수 조회 성공 - \(responseDto.count)개")
+                    completion(.success(responseDto))
+                } catch {
+                    Log.error("디코딩 실패: \(error)")
+                    completion(.failure(NetworkError.decodingFailed))
+                }
+            case .failure(let error):
+                if let data = error.response?.data,
+                    let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)
+                {
+                    let messages = err.detail.map { $0.msg }.joined(separator: ", ")
+                    Log.warning("Validation Error: \(messages)")
+                }
+                Log.error("API 실패: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /// 모든 알림 읽음 처리 함수
+    func readAllNotification(
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        provider.request(.readAllNotification(uuid: uuid)) { result in
+            switch result {
+            case .success(let response):
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                    Log.debug("readAllNotification 응답: \(jsonString)")
+                }
+                Log.debug("모든 알림 읽음 처리 성공")
+                completion(.success(()))
             case .failure(let error):
                 if let data = error.response?.data,
                     let err = try? JSONDecoder().decode(ErrorResponseDto.self, from: data)

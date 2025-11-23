@@ -90,6 +90,7 @@
 				"Resources/Fonts/Pretendard-Regular.otf",
 				"Resources/Fonts/Pretendard-SemiBold.otf",
 				"Resources/Fonts/Pretendard-Thin.otf",
+				Resources/Localizable.xcstrings,
 				Sources/Common/Components/Button/BottomButton.swift,
 				Sources/Common/Components/CachedImage.swift,
 				Sources/Common/Components/CustomAlert.swift,
@@ -122,7 +123,6 @@
 				Sources/Data/Network/Artwork/DTO/Request/ArtworkMatchRequestDto.swift,
 				Sources/Data/Network/Artwork/DTO/Request/MakeArtworkRequestDto.swift,
 				Sources/Data/Network/Base/BaseTargetType.swift,
-				Sources/Data/Network/Notification/DTO/Request/SendNotificationRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/EmojiReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/MessageReactionRequestDto.swift,
 				Sources/Data/Network/Reaction/DTO/Request/ReactionRequestDto.swift,
@@ -360,6 +360,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 99E6F05E2E91E4A9002ED9C2;
 			minimizedProjectReferenceProxies = 1;
@@ -608,6 +609,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -665,6 +667,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
