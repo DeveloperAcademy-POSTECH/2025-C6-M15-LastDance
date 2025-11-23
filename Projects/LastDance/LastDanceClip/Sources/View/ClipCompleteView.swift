@@ -20,19 +20,19 @@ struct ClipCompleteView: View {
                 Image("heartenvelope")
                     .resizable()
                     .frame(width: 153, height: 138)
-                    .applyShadow(LDShadow.shadow4)
-                
+                    .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+
                 Spacer().frame(height: 14)
                 
                 Text("전송 완료!")
-                    .font(LDFont.heading03)
+                    .font(.system(size: 21, weight: .semibold))
                     .lineSpacing(10)
                 
                 Spacer().frame(height: 8)
                 
                 Text("작가님에게 반응을 보냈어요")
                     .foregroundColor(Color(red: 0.31, green: 0.31, blue: 0.31))
-                    .font(LDFont.regular01)
+                    .font(.system(size: 18, weight: .regular))
                 
                 Spacer(minLength: 120)
             }
@@ -40,7 +40,7 @@ struct ClipCompleteView: View {
             VStack(spacing: 10) {
                 BubbleView()
                 
-                BottomButton(text: "전시 계속 보기") {
+                ClipBottomButton(text: "전시 계속 보기") {
                     openURL(appStoreURL)
                 }
             }

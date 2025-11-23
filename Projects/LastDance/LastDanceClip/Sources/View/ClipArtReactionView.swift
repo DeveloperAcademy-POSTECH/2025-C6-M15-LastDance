@@ -57,7 +57,7 @@ struct ClipArtReactionView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 24))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 24)
-                                    .stroke(LDColor.color5, lineWidth: 10)
+                                    .stroke(Color(red: 0.97, green: 0.97, blue: 0.97), lineWidth: 10)
                             )
                             .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
                         } else {
@@ -69,7 +69,7 @@ struct ClipArtReactionView: View {
                         }
                         
                         // 스크롤 안에 들어오는 탭바 (고정 탭바와 겹치지 않게 투명도 조정)
-                        TabBarView(selectedTab: $selectedTab)
+                        ClipTabBarView(selectedTab: $selectedTab)
                             .padding(.top, 23)
                             .opacity(viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused ? 0 : 1)
                         
@@ -109,17 +109,17 @@ struct ClipArtReactionView: View {
                     ProgressView()
                     Spacer()
                 }
-                .background(LDColor.color6)
+                .background(Color(.white))
             }
             
             // 최상단 고정 탭바
             VStack(spacing: 0) {
                 Color.clear
                     .frame(height: 36)
-                    .background(LDColor.color6)
+                    .background(Color(.white))
                 
-                TabBarView(selectedTab: $selectedTab)
-                    .background(LDColor.color6)
+                ClipTabBarView(selectedTab: $selectedTab)
+                    .background(Color(.white))
             }
             // 고정 탭바 표시 조건: 스크롤 임계값 도달 OR 메시지 필드에 포커스
             .opacity((viewModel.isTabBarFixed(for: scrollOffset) || isMessageFieldFocused) ? 1 : 0)
@@ -129,12 +129,12 @@ struct ClipArtReactionView: View {
             VStack {
                 Spacer()
                 if selectedTab == .reaction {
-                    BottomButton(
+                    ClipBottomButton(
                         text: "전송하기",
                         isEnabled: viewModel.hasText,
                         action: { viewModel.sendButtonAction() }
                     )
-                    .background(LDColor.color6)
+                    .background(Color(.white))
                 }
             }
         }
@@ -175,14 +175,14 @@ struct ClipArtReactionView: View {
     private var artworkSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(viewModel.artwork?.title ?? "작품명")
-                .font(LDFont.heading03)
-                .foregroundColor(LDColor.color1)
+                .font(.system(size: 21, weight: .semibold))
+                .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
             
             if let artistName = viewModel.artist?.name {
                 HStack {
                     Text(artistName)
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color1)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
                         .background(
@@ -190,7 +190,7 @@ struct ClipArtReactionView: View {
                                 .stroke(Color.black, lineWidth: 1)
                                 .background(
                                     RoundedRectangle(cornerRadius: 24)
-                                        .fill(LDColor.color6)
+                                        .fill(Color(.white))
                                 )
                         )
                     Spacer()
@@ -198,8 +198,8 @@ struct ClipArtReactionView: View {
             } else {
                 HStack {
                     Text("작자미상")
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color1)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color(red: 0.14, green: 0.14, blue: 0.14))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 4)
                         .background(
@@ -207,7 +207,7 @@ struct ClipArtReactionView: View {
                                 .stroke(Color.black, lineWidth: 1)
                                 .background(
                                     RoundedRectangle(cornerRadius: 24)
-                                        .fill(LDColor.color6)
+                                        .fill(Color(.white))
                                 )
                         )
                     Spacer()
@@ -221,18 +221,18 @@ struct ClipArtReactionView: View {
             
             if let desc = viewModel.artwork?.descriptionText, !desc.isEmpty {
                 Text("작품 설명")
-                    .font(LDFont.heading04)
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.black)
                     .padding(.top, 12)
                 
                 Text(desc)
-                    .font(LDFont.medium04)
-                    .foregroundColor(LDColor.color2)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.56))
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text("작품 설명이 없습니다.")
-                    .font(LDFont.regular02)
+                    .font(.system(size: 16, weight: .regular))
                     .foregroundColor(Color.gray)
                     .padding(.top, 12)
             }
@@ -248,18 +248,18 @@ struct ClipArtReactionView: View {
     private var reactionInputSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("메시지")
-                .font(LDFont.heading04)
+                .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(.black)
             
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(LDColor.color5)
+                    .fill(Color(red: 0.97, green: 0.97, blue: 0.97))
                     .frame(height: 123)
                 
                 if viewModel.message.isEmpty && !isMessageFieldFocused {
                     Text("작품에 대한 생각을 자유롭게 적어보세요.")
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.color3)
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
                         .padding(.top, 12)
                         .padding(.leading, 14)
                 }
@@ -268,7 +268,7 @@ struct ClipArtReactionView: View {
                     TextEditor(text: $viewModel.message)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .tint(LDColor.gray5)
+                        .tint(Color(red: 0.35, green: 0.35, blue: 0.35))
                         .padding(.top, 3)
                         .padding(.leading, 5)
                         .padding(.trailing, 5)
@@ -280,8 +280,8 @@ struct ClipArtReactionView: View {
                     HStack {
                         Spacer()
                         Text("\(viewModel.message.count)/\(viewModel.limit)")
-                            .font(LDFont.medium04)
-                            .foregroundColor(LDColor.color3)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(Color(red: 0.73, green: 0.73, blue: 0.73))
                             .padding(.trailing, 14)
                             .padding(.bottom, 10)
                     }
