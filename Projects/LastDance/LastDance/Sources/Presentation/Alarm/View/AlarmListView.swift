@@ -10,68 +10,41 @@ import SwiftUI
 // MARK: AlarmListView
 struct AlarmListView: View {
     @EnvironmentObject private var router: NavigationRouter
+    @StateObject private var viewModel = AlarmViewModel()
     let userType: UserType
 
-    // 임시 더미데이터 - userType에 따라 다른 알림 표시
-    private var notifications: [NotificationItem] {
-        switch userType {
-        case .artist:
-            // 작가용 알림
-            return [
-                .init(
-                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선 기억의 지층, 경계를 넘는 시선",
-                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "방금 전"),
-                .init(
-                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.", timeAgo: "2시간 전"),
-                .init(
-                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.",
-                    timeAgo: "10월 31일"),
-                .init(
-                    type: .artist, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "'Portrait in front of the wall N.2'에 새로운 메세지가 있어요.",
-                    timeAgo: "10월 31일"),
-            ]
-        case .viewer:
-            // 관람객용 알림
-            return [
-                .init(
-                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "방금 전"),
-                .init(
-                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "2시간 전"),
-                .init(
-                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
-                .init(
-                    type: .viewer, sender: "죠셉초이 : 기억의 지층, 경계를 넘는 시선",
-                    message: "내가 남긴 메시지에 대한 반응이 있어요.", timeAgo: "10월 31일"),
-            ]
-        }
-    }
-
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(notifications) { item in
-                    Button(
-                        action: {
-                            // TODO: 셀 클릭시 반응 모아보기 딥링크 연동
-                        },
-                        label: {
-                            VStack(spacing: 0) {
-                                NotificationCell(item: item)
-                                Divider()
-                            }
+        Group {
+            if viewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.notifications.isEmpty {
+                DefaultAlarmView()
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(viewModel.notifications) { item in
+                            Button(
+                                action: {
+                                    viewModel.handleNotificationTap(
+                                        item, router: router, userType: userType)
+                                },
+                                label: {
+                                    VStack(spacing: 0) {
+                                        NotificationCell(item: item)
+                                        Divider()
+                                    }
+                                }
+                            )
+                            .buttonStyle(NotificationCellButtonStyle())
                         }
-                    )
-                    .buttonStyle(NotificationCellButtonStyle())
+                    }
                 }
+                .ignoresSafeArea(edges: .bottom)
             }
         }
-        .ignoresSafeArea(edges: .bottom)
+        .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 BackButton {
@@ -83,6 +56,9 @@ struct AlarmListView: View {
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color1)
             }
+        }
+        .onAppear {
+            viewModel.onAlarmViewAppear(userType: userType)
         }
     }
 }
@@ -110,7 +86,7 @@ struct NotificationCell: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text(item.sender)
+                    Text(item.title)
                         .font(LDFont.heading06)
                         .foregroundColor(LDColor.color3)
                         .lineLimit(1)
@@ -131,6 +107,22 @@ struct NotificationCell: View {
         .padding(.horizontal, 20)
         .padding(.top, 16)
         .padding(.bottom, 12)
+    }
+}
+
+// MARK: DefaultAlarmView
+struct DefaultAlarmView: View {
+    var body: some View {
+        VStack(spacing: 36) {
+            Image("defaultAlarmList")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 119)
+
+            Text("관람객들에게 반응을 받아보세요")
+                .font(LDFont.medium03)
+                .foregroundStyle(LDColor.color2)
+        }
     }
 }
 

@@ -8,9 +8,29 @@
 import Foundation
 
 struct NotificationItem: Identifiable {
-    let id = UUID()
+    let id: Int
     let type: NotificationType
-    let sender: String
+    let title: String
     let message: String
-    let timeAgo: String
+    let artworkId: Int
+    let exhibitionId: Int
+    let deepLink: String
+    let isRead: Bool
+    let createdAt: Date
+
+    init(from dto: NotificationItemDto, userType: UserType) {
+        self.id = dto.id
+        self.type = userType == .artist ? .artist : .viewer
+        self.title = dto.title
+        self.message = dto.body
+        self.artworkId = dto.artwork_id ?? 0
+        self.exhibitionId = dto.exhibition_id ?? 0
+        self.deepLink = dto.deep_link
+        self.isRead = dto.is_read
+        self.createdAt = Date.fromAPIServerString(dto.created_at) ?? Date()
+    }
+
+    var timeAgo: String {
+        return createdAt.toTimeAgoString()
+    }
 }

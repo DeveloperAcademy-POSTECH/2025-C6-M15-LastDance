@@ -21,6 +21,7 @@ final class IdentitySelectionViewModel: ObservableObject {
     private let visitorService = VisitorAPIService()
     private let venueService = VenueAPIService()
     private let artistService = ArtistAPIService()
+    private let exhibitionService = ExhibitionAPIService()
 
     /// 사용자 타입 선택
     func selectUserType(_ type: UserType) {
@@ -162,7 +163,12 @@ final class IdentitySelectionViewModel: ObservableObject {
                     // 작가 인증 성공 후 디바이스 토큰 전송
                     DeviceTokenManager.shared.registerDeviceTokenIfNeeded()
 
-                    completion(true)
+                    let artistId = dto.id
+                    Log.debug("코드 인증 성공 - artistId: \(artistId). 전시/작품 동기화 시작")
+                    self.syncArtistExhibitionsAndArtworks(artistId: artistId) {
+                        self.isLoading = false
+                        completion(true)
+                    }
 
                 case .failure(let error):
                     if let moyaError = error as? MoyaError {
@@ -210,6 +216,65 @@ final class IdentitySelectionViewModel: ObservableObject {
                     } else {
                         Log.error("failed: \(error)")
                     }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - 인증된 작가 정보 저장
+
+extension IdentitySelectionViewModel {
+    /// 서버에서 이 작가의 전시 + 작품을 모두 받아서 SwiftData에 저장
+    func syncArtistExhibitionsAndArtworks(
+        artistId: Int,
+        completion: @escaping () -> Void
+    ) {
+        exhibitionService.getExhibitions(status: nil, venueId: nil) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let totalExhibitions):
+                    Log.debug("전시 개수: \(totalExhibitions.count)")
+
+                    // 해당 작가가 포함된 전시만 필터링
+                    let myExhibitionDtos = totalExhibitions.filter { dto in
+                        dto.artists?.contains(where: { $0.id == artistId }) ?? false
+                    }
+
+                    Log.debug("작가 \(artistId)이 포함된 전시 개수: \(myExhibitionDtos.count)")
+
+                    if myExhibitionDtos.isEmpty {
+                        completion()
+                        return
+                    }
+
+                    // 각 전시에 대해 상세 조회
+                    let group = DispatchGroup()
+
+                    for dto in myExhibitionDtos {
+                        group.enter()
+                        self.exhibitionService.getDetailExhibition(
+                            exhibitionId: dto.id
+                        ) { detailResult in
+                            switch detailResult {
+                            case .success(let detailDto):
+                                Log.debug(
+                                    "전시 상세 동기화 완료 - id: \(detailDto.id), title: \(detailDto.title)")
+                            case .failure(let error):
+                                Log.error("전시 상세 동기화 실패 - id: \(dto.id), error: \(error)")
+                            }
+                            group.leave()
+                        }
+                    }
+
+                    group.notify(queue: .main) {
+                        Log.debug("인증된 작가 정보 저장 완료")
+                        completion()
+                    }
+
+                case .failure(let error):
+                    Log.error("실패 - 작가 전시 동기화 불가: \(error)")
+                    completion()
                 }
             }
         }

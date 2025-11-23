@@ -24,7 +24,7 @@ struct NavigationHeader: View {
 
     var body: some View {
         HStack {
-            Text("나의 전시")
+            Text("exhibition_title")
                 .font(LDFont.heading02)
                 .foregroundColor(.black)
 
@@ -42,7 +42,22 @@ struct NavigationHeader: View {
         .padding(.top, 20)
         .padding(.horizontal, 24)
         .onAppear {
-            alarmViewModel.checkNotifications()
+            // UserDefaults에서 UUID 가져오기
+            let uuid: String
+            switch userType {
+            case .artist:
+                uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.artistUUID.key) ?? ""
+            case .viewer:
+                uuid = UserDefaults.standard.string(forKey: UserDefaultsKey.visitorUUID.key) ?? ""
+            }
+
+            guard !uuid.isEmpty else {
+                Log.error("UUID가 없습니다.")
+                return
+            }
+
+            // 읽지 않은 알림 개수 조회
+            alarmViewModel.loadUnreadCount(uuid: uuid)
         }
     }
 }

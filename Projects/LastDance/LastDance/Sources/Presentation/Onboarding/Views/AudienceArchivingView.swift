@@ -91,7 +91,7 @@ struct AudienceArchivingView: View {
                 text: "촬영하기",
                 isEnabled: true
             ) {
-                router.push(.exhibitionList)
+                router.push(.camera)
             }
             .modifier(
                 BottomButtonVisibilityModifier(

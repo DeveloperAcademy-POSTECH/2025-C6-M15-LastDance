@@ -73,7 +73,7 @@ struct ArticleArchivingView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("나의 전시")
+                Text("exhibition_title")
                     .font(LDFont.heading02)
                     .foregroundColor(.black)
 
@@ -109,35 +109,11 @@ struct ArticleArchivingView: View {
                 ProgressView()
                     .scaleEffect(1.2)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if !viewModel.exhibitions.isEmpty {
-                ArtistExhibitionGridView(viewModel: viewModel)
             } else {
-                Spacer()
-                VStack(spacing: 40) {
-                    CircleAddButton {
-                        router.push(.articleExhibitionList)
-                    }
-
-                    Text("나의 작품에 어떤 반응을\n 남겼는지 확인해보세요")
-                        .font(LDFont.medium01)
-                        .foregroundStyle(.black)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                }
-                .frame(maxWidth: .infinity)
-                Spacer()
+                ArtistExhibitionGridView(viewModel: viewModel)
             }
         }
         .background(LDColor.color6)
-        .overlay(alignment: .bottomTrailing) {
-            if !viewModel.isLoading && !viewModel.exhibitions.isEmpty {
-                CircleAddButton {
-                    router.push(.articleExhibitionList)
-                }
-                .padding(.trailing, 24)
-                .padding(.bottom, 40)
-            }
-        }
         .onAppear {
             Log.debug("📱 ArticleArchivingView appeared")
             viewModel.loadArtistExhibitions()

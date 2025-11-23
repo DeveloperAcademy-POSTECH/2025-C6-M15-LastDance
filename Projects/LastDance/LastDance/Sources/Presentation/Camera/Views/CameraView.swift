@@ -14,8 +14,6 @@ struct CameraView: View {
 
     @State private var noticeVisible = false
 
-    let exhibitionId: Int
-
     var body: some View {
         GeometryReader { geo in
             let maxPreviewHeight = max(
@@ -74,7 +72,7 @@ struct CameraView: View {
         .task { await viewModel.setupCameraSession() }
         .onChange(of: viewModel.capturedImage) { _, newImage in
             if let image = newImage, let imageData = image.jpegData(compressionQuality: 1.0) {
-                router.push(.captureConfirm(imageData: imageData, exhibitionId: exhibitionId))
+                router.push(.captureConfirm(imageData: imageData))
                 viewModel.capturedImage = nil
             }
         }

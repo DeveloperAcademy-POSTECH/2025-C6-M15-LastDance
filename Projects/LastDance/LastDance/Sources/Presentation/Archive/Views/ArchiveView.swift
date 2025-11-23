@@ -56,9 +56,7 @@ struct ArchiveView: View {
                                     getRotationAngle: viewModel
                                         .getRotationAngle,
                                     onAddTap: {
-                                        router.push(
-                                            .camera(exhibitionId: exhibitionId)
-                                        )
+                                        router.push(.camera)
                                     },
                                     onArtworkTap: { artwork in
                                         if let artistId = artwork.artistId,
@@ -115,7 +113,7 @@ struct ArchiveView: View {
         }
         .safeAreaInset(edge: .bottom) {
             CameraActionButtonView {
-                router.push(.camera(exhibitionId: exhibitionId))
+                router.push(.camera)
             }
         }
         .onAppear {
