@@ -50,6 +50,10 @@ struct ArtReactionView: View {
         }
         .onAppear {
             viewModel.loadReactions()
+            viewModel.startAutoRefresh()
+        }
+        .onDisappear {
+            viewModel.stopAutoRefresh()
         }
     }
 }
@@ -75,6 +79,14 @@ extension ArtReactionView {
                     // 감상 탭
                     reactionTabSection
                         .opacity(selectedTab == .reaction ? 1 : 0)
+                }
+            }
+        }
+        .refreshable {
+            await withCheckedContinuation { continuation in
+                viewModel.loadReactions()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    continuation.resume()
                 }
             }
         }
@@ -197,15 +209,40 @@ extension ArtReactionView {
                 .foregroundColor(LDColor.color1)
 
             HStack {
-                Text("아직 이모지가 없습니다.")
-                    .font(LDFont.regular03)
-                    .foregroundColor(LDColor.color2)
+                // 모든 반응에서 이모지가 있는 것만 필터링 후 최신순 정렬
+                let latestEmoji = viewModel.reactions
+                    .filter { $0.artistEmoji != nil }
+                    .sorted { ($0.createdAt ?? "") > ($1.createdAt ?? "") }
+                    .first?.artistEmoji
+
+                if let emoji = latestEmoji {
+                    HStack(spacing: 4) {
+                        Image(emoji)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+
+                        Text(ReactionConstants.emojiText(for: emoji))
+                            .font(LDFont.regular03)
+                            .foregroundColor(LDColor.color1)
+                    }
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(
                         RoundedRectangle(cornerRadius: 24)
                             .fill(LDColor.color4)
                     )
+                } else {
+                    Text("아직 이모지가 없습니다.")
+                        .font(LDFont.regular03)
+                        .foregroundColor(LDColor.color2)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(LDColor.color4)
+                        )
+                }
 
                 Spacer()
             }
@@ -213,19 +250,32 @@ extension ArtReactionView {
             HStack(alignment: .top, spacing: 12) {
                 Image("quote_left")
                     .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
+                    .foregroundColor(LDColor.color1)
                     .frame(width: 24, height: 24)
                     .offset(y: -4)
 
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("아직 메시지가 없습니다.")
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.color3)
+                VStack(alignment: .leading, spacing: 8) {
+                    // 모든 반응에서 메시지 수집 후 최신순 정렬
+                    let allMessages = viewModel.reactions
+                        .flatMap { $0.artistMessages ?? [] }
+                        .sorted { $0.createdAt > $1.createdAt }
+
+                    // 최신 메시지 1개만 표시
+                    if let latestMessage = allMessages.first {
+                        Text(latestMessage.message)
+                            .font(LDFont.regular02)
+                            .foregroundColor(LDColor.color1)
+                            .lineSpacing(4)
+                    } else {
+                        Text("아직 메시지가 없습니다.")
+                            .font(LDFont.regular02)
+                            .foregroundColor(LDColor.color3)
+                    }
                 }
 
                 Image("quote_right")
                     .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
+                    .foregroundColor(LDColor.color1)
                     .frame(width: 24, height: 24)
                     .offset(y: -4)
             }

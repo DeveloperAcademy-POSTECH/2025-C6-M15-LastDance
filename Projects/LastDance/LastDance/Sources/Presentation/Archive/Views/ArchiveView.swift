@@ -42,7 +42,7 @@ struct ArchiveView: View {
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    .frame(height: 100)
+                    .frame(height: geometry.size.height / 2)
 
                     ScrollView {
                         VStack(spacing: 0) {
