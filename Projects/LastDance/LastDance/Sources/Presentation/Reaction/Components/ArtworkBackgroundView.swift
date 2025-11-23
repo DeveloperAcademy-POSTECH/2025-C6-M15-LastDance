@@ -15,7 +15,7 @@ struct ArtworkBackgroundView: View {
         ZStack(alignment: .bottomLeading) {
             // 이미지 영역
             CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(3/4, contentMode: .fill)
+                .aspectRatio(3 / 4, contentMode: .fill)
                 .frame(maxWidth: .infinity, maxHeight: 393)
                 .clipped()
 

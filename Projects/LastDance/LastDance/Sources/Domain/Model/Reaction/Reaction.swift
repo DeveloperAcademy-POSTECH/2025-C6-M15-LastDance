@@ -33,24 +33,24 @@ final class Reaction {
     var exhibitionId: Int?
 
     init(
-         id: String,
-         artworkId: Int,
-         visitorId: Int,
-         tags: [ReactionTagInfo]? = nil,
-         comment: String? = nil,
-         artistEmoji: String? = nil,
-         artistMessages: [ArtistMessageInfo]? = nil,
-         createdAt: String? = nil,
-         exhibitionId: Int? = nil
-     ) {
-         self.id = id
-         self.artworkId = artworkId
-         self.visitorId = visitorId
-         self.tags = tags
-         self.comment = comment
-         self.artistEmoji = artistEmoji
-         self.artistMessages = artistMessages
-         self.createdAt = createdAt
-         self.exhibitionId = exhibitionId
-     }
+        id: String,
+        artworkId: Int,
+        visitorId: Int,
+        tags: [ReactionTagInfo]? = nil,
+        comment: String? = nil,
+        artistEmoji: String? = nil,
+        artistMessages: [ArtistMessageInfo]? = nil,
+        createdAt: String? = nil,
+        exhibitionId: Int? = nil
+    ) {
+        self.id = id
+        self.artworkId = artworkId
+        self.visitorId = visitorId
+        self.tags = tags
+        self.comment = comment
+        self.artistEmoji = artistEmoji
+        self.artistMessages = artistMessages
+        self.createdAt = createdAt
+        self.exhibitionId = exhibitionId
+    }
 }

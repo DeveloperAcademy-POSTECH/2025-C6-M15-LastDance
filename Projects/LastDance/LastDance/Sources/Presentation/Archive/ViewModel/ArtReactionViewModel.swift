@@ -63,9 +63,6 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
 
     // MARK: - Public Methods
 
-    func loadReactions(showLoading: Bool = true) {
-        if showLoading {
-            isLoading = true
     // 하단 "전송하기" 버튼 탭
     func sendButtonAction() {
         Log.debug("전송 버튼 탭 이벤트 발생")
@@ -77,6 +74,11 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         Log.debug("Alert 전송 버튼 탭 이벤트 발생")
         throttle.confirmSendAction()
     }
+
+    func loadReactions(showLoading: Bool = true) {
+        if showLoading {
+            isLoading = true
+        }
 
         guard let container = swiftDataManager.container else {
             isLoading = false
@@ -135,7 +137,9 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                             lock.unlock()
 
                         case .failure(let error):
-                            Log.error("반응 ID \(getReactionDto.id) 상세 정보 조회 실패: \(error.localizedDescription)")
+                            Log.error(
+                                "반응 ID \(getReactionDto.id) 상세 정보 조회 실패: \(error.localizedDescription)"
+                            )
                         }
                     }
                 }
@@ -161,7 +165,8 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
     /// 10초마다 자동 새로고침 시작
     func startAutoRefresh() {
         stopAutoRefresh()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) {
+            [weak self] _ in
             // 백그라운드 새로고침은 로딩 인디케이터 없이 조용히 진행
             self?.loadReactions(showLoading: false)
         }
@@ -177,8 +182,9 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
 
     /// UserDefaults에서 visitorUUID를 가져와 SwiftData에서 visitorId 조회
     private func getVisitorId() -> Int? {
-        guard let visitorUUID = UserDefaults.standard.string(
-            forKey: UserDefaultsKey.visitorUUID.rawValue)
+        guard
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
         else {
             return nil
         }
@@ -228,7 +234,7 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                 self.isSending = false
 
                 switch result {
-                case .success(let response):
+                case .success:
                     self.message = ""
 
                     // 첫 리액션 등록 플래그 저장
@@ -236,13 +242,9 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
 
-                    // 작가에게 푸시알림 전송
-                    // TODO: - sendPushNotificationToArtist 말고 다른 방식으로 변경
-                    //                    self.sendPushNotificationToArtist(reactionResponse: response.data)
-
                     completion(true)
 
-                case .failure(let error):
+                case .failure:
                     completion(false)
                 }
             }
@@ -254,9 +256,7 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
     ) {
         // 사진(UIImage) → Data 변환
-        guard
-            let imageData = capturedImageData
-        else {
+        guard let imageData = capturedImageData else {
             Log.warning("capturedImage가 없습니다.")
             alertType = .error
             shouldShowConfirmAlert = true
