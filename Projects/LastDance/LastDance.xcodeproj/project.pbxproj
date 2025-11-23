@@ -93,6 +93,7 @@
 				Sources/Common/Components/Button/BottomButton.swift,
 				Sources/Common/Components/CachedImage.swift,
 				Sources/Common/Components/CustomAlert.swift,
+				Sources/Common/Components/SnappingScrollView.swift,
 				Sources/Common/DesignSystem/LDColor.swift,
 				Sources/Common/DesignSystem/LDFont.swift,
 				Sources/Common/DesignSystem/LDShadow.swift,

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ArtReactionView: View {
     let artwork: Artwork
@@ -57,7 +56,7 @@ struct ArtReactionView: View {
 // MARK: - Scroll Content
 extension ArtReactionView {
     fileprivate var scrollContent: some View {
-        ScrollViewObserver(scrollOffset: $scrollOffset) {
+        SnappingScrollView {
             VStack(spacing: 0) {
                 // 작품 이미지
                 headerImage
@@ -76,6 +75,24 @@ extension ArtReactionView {
                     reactionTabSection
                         .opacity(selectedTab == .reaction ? 1 : 0)
                 }
+            }
+        } onScroll: { offset, scrollView in
+            scrollOffset = offset
+
+            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+            let resetThreshold = snapThreshold - 40
+
+            if !didSnap && offset >= snapThreshold {
+                didSnap = true
+
+                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+
+                scrollView.isScrollEnabled = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    scrollView.isScrollEnabled = true
+                }
+            } else if didSnap && offset < resetThreshold {
+                didSnap = false
             }
         }
     }

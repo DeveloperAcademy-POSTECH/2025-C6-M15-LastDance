@@ -9,8 +9,8 @@ import SwiftUI
 import UIKit
 
 struct ArtReactionSendView: View {
-    let artworkId: Int
-    let artistId: Int
+    let artwork: Artwork
+    let artist: Artist
     let exhibitionId: Int
     let imageData: Data
 
@@ -23,13 +23,13 @@ struct ArtReactionSendView: View {
 
     private let placeholder = ReactionConstants.messagePlaceholder
 
-    init(artworkId: Int, artistId: Int, exhibitionId: Int, imageData: Data) {
-        self.artworkId = artworkId
-        self.artistId = artistId
+    init(artwork: Artwork, artist: Artist, exhibitionId: Int, imageData: Data) {
+        self.artwork = artwork
+        self.artist = artist
         self.exhibitionId = exhibitionId
         self.imageData = imageData
         _viewModel = StateObject(
-            wrappedValue: ArtReactionViewModel(artworkId: artworkId)
+            wrappedValue: ArtReactionViewModel(artworkId: artwork.id)
         )
     }
 
@@ -72,13 +72,11 @@ struct ArtReactionSendView: View {
             }
         }
         .onAppear {
-            viewModel.fetchArtworkDetail(artworkId: artworkId, exhibitionId: exhibitionId)
-            viewModel.fetchArtistDetail(artistId: artistId)
             viewModel.capturedImageData = imageData
         }
         .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
             if shouldTrigger {
-                viewModel.performSendReaction(artworkId: artworkId, exhibitionId: exhibitionId) {
+                viewModel.performSendReaction(artworkId: artwork.id, exhibitionId: exhibitionId) {
                     success, exhibitionId in
                     if success, let exhibitionId = exhibitionId {
                         router.push(.completeReaction(exhibitionId: exhibitionId))
@@ -111,7 +109,7 @@ struct ArtReactionSendView: View {
 // MARK: - Scroll Content
 extension ArtReactionSendView {
     fileprivate var scrollContent: some View {
-        ScrollViewObserver(scrollOffset: $scrollOffset) {
+        SnappingScrollView {
             VStack(spacing: 0) {
                 // 작품 이미지
                 headerImage
@@ -131,6 +129,24 @@ extension ArtReactionSendView {
                         .opacity(selectedTab == .reaction ? 1 : 0)
                 }
             }
+        } onScroll: { offset, scrollView in
+            scrollOffset = offset
+
+            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+            let resetThreshold = snapThreshold - 40
+
+            if !didSnap && offset >= snapThreshold {
+                didSnap = true
+
+                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+
+                scrollView.isScrollEnabled = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    scrollView.isScrollEnabled = true
+                }
+            } else if didSnap && offset < resetThreshold {
+                didSnap = false
+            }
         }
     }
 
@@ -146,7 +162,7 @@ extension ArtReactionSendView {
         )
 
         return Group {
-            if let imageURLString = viewModel.artwork?.thumbnailURL {
+            if let imageURLString = artwork.thumbnailURL {
                 CachedImage(
                     imageURLString,
                     targetSize: .init(
@@ -177,13 +193,13 @@ extension ArtReactionSendView {
 extension ArtReactionSendView {
     fileprivate var artworkTabSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(viewModel.artwork?.title ?? "")
+            Text(artwork.title)
                 .font(LDFont.heading03)
                 .foregroundColor(LDColor.color1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack {
-                Text(viewModel.artist?.name ?? "")
+                Text(artist.name)
                     .font(LDFont.medium04)
                     .foregroundColor(LDColor.color6)
                     .padding(.horizontal, 16)
@@ -198,7 +214,7 @@ extension ArtReactionSendView {
                 .frame(height: 0.5)
                 .foregroundColor(LDColor.color3)
 
-            if let description = viewModel.artwork?.descriptionText, !description.isEmpty {
+            if let description = artwork.descriptionText, !description.isEmpty {
                 Text("작품 설명")
                     .font(LDFont.heading04)
                     .foregroundColor(LDColor.color1)

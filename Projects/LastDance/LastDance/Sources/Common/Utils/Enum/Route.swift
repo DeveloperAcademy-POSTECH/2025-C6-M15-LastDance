@@ -35,7 +35,7 @@ enum Route: Hashable {
     /// 관람객 flow : 작품 상세와 감상 내용 보기 뷰 (작품/감상 탭)
     case artReaction(artwork: Artwork, artist: Artist?)
     /// 관람객 flow : 작품 상세와 감상 보내기 뷰 (작품/감상 탭)
-    case artReactionSend(artworkId: Int, artistId: Int, exhibitionId: Int, imageData: Data)
+    case artReactionSend(artwork: Artwork, artist: Artist, exhibitionId: Int, imageData: Data)
     /// 알람 목록 뷰
     case alarmList(userType: UserType)
     /// 초대장 생성 뷰

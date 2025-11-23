@@ -15,6 +15,7 @@ struct ClipArtReactionView: View {
     @EnvironmentObject private var router: ClipNavigationRouter
     @State private var selectedTab: ArtReactionTab = .artwork
     @State private var scrollOffset: CGFloat = 0
+    @State private var didSnap: Bool = false
     @FocusState private var isMessageFieldFocused: Bool
 
     init(artworkId: Int, exhibitionId: Int) {
@@ -41,7 +42,7 @@ struct ClipArtReactionView: View {
             // 데이터가 로드될 때까지는 로딩만
             if viewModel.isLoaded {
                 // 스크롤 가능한 콘텐츠 영역
-                ScrollViewObserver(scrollOffset: $scrollOffset) {
+                SnappingScrollView() {
                     VStack(spacing: 0) {
                         Color.clear.frame(height: 36)
                         
@@ -78,6 +79,25 @@ struct ClipArtReactionView: View {
                         } else {
                             reactionInputSection
                         }
+                    }
+                }
+                onScroll: { offset, scrollView in
+                    scrollOffset = offset
+
+                    let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 70
+                    let resetThreshold = snapThreshold - 40
+
+                    if !didSnap && offset >= snapThreshold {
+                        didSnap = true
+
+                        scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+
+                        scrollView.isScrollEnabled = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            scrollView.isScrollEnabled = true
+                        }
+                    } else if didSnap && offset < resetThreshold {
+                        didSnap = false
                     }
                 }
                 .background(LDColor.color6)
@@ -158,7 +178,7 @@ struct ClipArtReactionView: View {
                 .font(LDFont.heading03)
                 .foregroundColor(LDColor.color1)
             
-            if let artistName = viewModel.artistName {
+            if let artistName = viewModel.artist?.name {
                 HStack {
                     Text(artistName)
                         .font(LDFont.medium04)

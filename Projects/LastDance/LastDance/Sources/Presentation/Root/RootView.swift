@@ -102,10 +102,10 @@ struct RootView: View {
                 case .artReaction(let artwork, let artist):
                     ArtReactionView(artwork: artwork, artist: artist)
                         .navigationBarBackButtonHidden(true)
-                case .artReactionSend(let artworkId, let artistId, let exhibitionId, let imageData):
+                case .artReactionSend(let artwork, let artist, let exhibitionId, let imageData):
                     ArtReactionSendView(
-                        artworkId: artworkId,
-                        artistId: artistId,
+                        artwork: artwork,
+                        artist: artist,
                         exhibitionId: exhibitionId,
                         imageData: imageData
                     )

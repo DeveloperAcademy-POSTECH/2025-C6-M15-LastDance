@@ -58,7 +58,7 @@ enum ArchiveImageConstants {
     static let maxWidth: CGFloat = 281
     static let minHeight: CGFloat = 100
     static let maxHeight: CGFloat = 388
-    static let animationThreshold: CGFloat = 120
+    static let animationThreshold: CGFloat = 200
     static let tabBarFixThreshold: CGFloat = 100
 }
 

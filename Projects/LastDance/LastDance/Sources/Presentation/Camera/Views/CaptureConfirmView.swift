@@ -152,13 +152,19 @@ struct CaptureConfirmView: View {
     private func handleStartVisit(image: UIImage, artworkId: Int, artistId: Int, exhibitionId: Int)
     {
         viewModel.uploadImage(image)
+        viewModel.fetchArtistDetail(artistId: artistId)
+        viewModel.fetchArtworkDetail(artworkId: artworkId, exhibitionId: exhibitionId)
         viewModel.createVisitHistory { success in
             if success {
                 viewModel.selectExhibitionAsUserExhibition()
+
+                guard let artist = viewModel.artist, let artwork = viewModel.artwork else {
+                    return Log.error("Failed to fetch artist or artwork.")
+                }
                 router.push(
                     .artReactionSend(
-                        artworkId: artworkId,
-                        artistId: artistId,
+                        artwork: artwork,
+                        artist: artist,
                         exhibitionId: exhibitionId,
                         imageData: imageData
                     )

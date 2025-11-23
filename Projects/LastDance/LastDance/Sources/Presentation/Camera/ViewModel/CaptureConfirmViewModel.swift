@@ -21,8 +21,11 @@ final class CaptureConfirmViewModel: ObservableObject {
     @Published var matchedArtistId: Int?
     @Published var matchedExhibitions: [ArtworkMatchExhibitionDto] = []
     @Published var currentExhibition: Exhibition?
+    @Published var artwork: Artwork?
+    @Published var artist: Artist?
 
     private let imageService: ImageAPIServiceProtocol
+    private let artistService: ArtistAPIServiceProtocol
     private let artworkService: ArtworkAPIServiceProtocol
     private let exhibitionService: ExhibitionAPIServiceProtocol
     private let visitHistoriesService: VisitHistoriesAPIServiceProtocol
@@ -30,11 +33,13 @@ final class CaptureConfirmViewModel: ObservableObject {
 
     init(
         imageService: ImageAPIServiceProtocol = ImageAPIService(),
+        artistService: ArtistAPIServiceProtocol = ArtistAPIService(),
         artworkService: ArtworkAPIServiceProtocol = ArtworkAPIService(),
         exhibitionService: ExhibitionAPIServiceProtocol = ExhibitionAPIService(),
         visitHistoriesService: VisitHistoriesAPIServiceProtocol = VisitHistoriesAPIService()
     ) {
         self.imageService = imageService
+        self.artistService = artistService
         self.artworkService = artworkService
         self.exhibitionService = exhibitionService
         self.visitHistoriesService = visitHistoriesService
@@ -245,6 +250,41 @@ final class CaptureConfirmViewModel: ObservableObject {
             case .failure(let error):
                 Log.error("방문 기록 생성 실패: \(error)")
                 completion(false)
+            }
+        }
+    }
+
+    /// Artwork 상세 조회
+    func fetchArtworkDetail(artworkId: Int, exhibitionId: Int) {
+        artworkService.getArtworkDetail(artworkId: artworkId) { result in
+            Task {
+                switch result {
+                case .success(let dto):
+                    Log.debug("작품 상세 조회 성공! 작품명: \(dto.title)")
+                    let artwork = ArtworkMapper.mapDtoToModel(dto, exhibitionId: exhibitionId)
+                    self.artwork = artwork
+
+                case .failure(let error):
+                    Log.error("작품 상세 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    /// Artist 상세 조회
+    func fetchArtistDetail(artistId: Int) {
+        artistService.getArtist(id: artistId) { result in
+            Task {
+                switch result {
+                case .success(let dto):
+                    Log.debug("작가 상세 조회 성공! 작가명: \(dto.name)")
+
+                    let artist = ArtistMapper.toModel(from: dto)
+                    self.artist = artist
+
+                case .failure(let error):
+                    Log.error("작가 상세 조회 실패: \(error.localizedDescription)")
+                }
             }
         }
     }
