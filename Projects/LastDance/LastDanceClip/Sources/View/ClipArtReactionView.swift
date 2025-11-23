@@ -100,7 +100,7 @@ struct ClipArtReactionView: View {
                         didSnap = false
                     }
                 }
-                .background(LDColor.color6)
+                .background(Color.white)
                 
             } else {
                 // 처음 로딩 상태

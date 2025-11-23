@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ClipCustomAlert: View {
     let image: String
-    let title: String
-    let message: String
-    let buttonText: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey?
+    let buttonText: LocalizedStringKey
     let action: () -> Void
     let cancelAction: (() -> Void)?  // 취소 버튼 액션 (옵셔널)
 
@@ -35,7 +35,7 @@ struct ClipCustomAlert: View {
                 .padding(.horizontal, 16)
 
             // 메시지가 있을 때만 보여주기
-            if !message.isEmpty {
+            if let message = message {
                 Text(message)
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.39))
@@ -45,7 +45,7 @@ struct ClipCustomAlert: View {
             }
 
             // 메시지가 있을 때만 아래 spacer 유지
-            if !message.isEmpty {
+            if let message = message {
                 Spacer().frame(height: 22)
             } else {
                 Spacer().frame(height: 22)  // 타이틀-only 버전용 약간의 여백 조정
@@ -99,9 +99,9 @@ struct ClipCustomAlert: View {
 struct CustomAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let image: String
-    let title: String
-    let message: String
-    let buttonText: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey?
+    let buttonText: LocalizedStringKey
     let action: () -> Void
     let cancelAction: (() -> Void)?
 
