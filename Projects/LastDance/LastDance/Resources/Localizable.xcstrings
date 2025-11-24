@@ -619,6 +619,16 @@
         }
       }
     },
+    "이미지가 갤러리에 저장되었습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The image has been saved to your gallery."
+          }
+        }
+      }
+    },
     "이미지를 불러올 수 없습니다." : {
       "localizations" : {
         "en" : {
@@ -1069,6 +1079,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Take Photo"
+          }
+        }
+      }
+    },
+    "촬영한 작품이 맞나요?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Is this the artwork you captured"
           }
         }
       }

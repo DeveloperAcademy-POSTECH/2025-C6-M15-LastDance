@@ -65,11 +65,6 @@
       </BuildableProductRunnable>
       <AdditionalOptions>
          <AdditionalOption
-            key = "MallocGuardEdges"
-            value = ""
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
             key = "MallocScribble"
             value = ""
             isEnabled = "YES">
@@ -77,6 +72,11 @@
          <AdditionalOption
             key = "APP_DISTRIBUTOR_ID_OVERRIDE"
             value = "com.apple.AppStore"
+            isEnabled = "YES">
+         </AdditionalOption>
+         <AdditionalOption
+            key = "MallocGuardEdges"
+            value = ""
             isEnabled = "YES">
          </AdditionalOption>
       </AdditionalOptions>
