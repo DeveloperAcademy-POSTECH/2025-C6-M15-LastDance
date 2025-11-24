@@ -15,6 +15,7 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
 
     @Published var reactions: [Reaction] = []
     @Published var artistName: String = ""
+    @Published var description: String = ""
     @Published var isLoading = false
     @Published var message: String = ""  // 반응을 남기기 위한 textEditor 메세지
     @Published var capturedImageData: Data?  // 촬영한 이미지
@@ -122,6 +123,8 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                             }
 
                             self.artistName = reactionDetailDto.artwork.artist_name ?? "작자미상"
+                            self.description =
+                                reactionDetailDto.artwork.description ?? "작품 설명이 없습니다."
 
                             let reaction = Reaction(
                                 id: String(reactionDetailDto.id),

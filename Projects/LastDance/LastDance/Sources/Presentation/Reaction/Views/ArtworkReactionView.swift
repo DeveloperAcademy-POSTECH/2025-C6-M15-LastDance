@@ -41,6 +41,9 @@ struct ArtworkReactionView: View {
             }
         }
         .background(LDColor.color5)
+        .overlay(alignment: .top) {
+            NavigationBarGradientView()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomWhiteNavigationBar(title: LocalizedStringKey(artwork?.title ?? "작품 반응")) {
@@ -51,6 +54,23 @@ struct ArtworkReactionView: View {
         .ignoresSafeArea(edges: .top)
         .onAppear {
             viewModel.fetchReactions()
+        }
+    }
+
+    struct NavigationBarGradientView: View {
+        var body: some View {
+            LinearGradient(
+                colors: [
+                    Color.black.opacity(1.0),
+                    Color.black.opacity(0.4),
+                    Color.clear,
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 120)
+            .ignoresSafeArea(edges: .top)
+            .allowsHitTesting(false)
         }
     }
 }

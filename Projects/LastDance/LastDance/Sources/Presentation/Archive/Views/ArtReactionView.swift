@@ -81,7 +81,7 @@ extension ArtReactionView {
             onScroll: { offset, scrollView in
                 scrollOffset = offset
 
-                let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+                let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 190
                 let resetThreshold = snapThreshold - 40
 
                 if !didSnap && offset >= snapThreshold {
@@ -109,7 +109,7 @@ extension ArtReactionView {
             ArchiveImageConstants.maxHeight,
             max(
                 ArchiveImageConstants.minHeight,
-                ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+                ArchiveImageConstants.maxHeight - scrollOffset * 0.5
             )
         )
         let imageWidth = min(
@@ -174,23 +174,16 @@ extension ArtReactionView {
                 .frame(height: 0.5)
                 .foregroundColor(LDColor.color3)
 
-            if let description = artwork.descriptionText, !description.isEmpty {
-                Text("작품 설명")
-                    .font(LDFont.heading04)
-                    .foregroundColor(LDColor.color1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            Text("작품 설명")
+                .font(LDFont.heading04)
+                .foregroundColor(LDColor.color1)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(description)
-                    .font(LDFont.medium04)
-                    .foregroundColor(LDColor.color2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineSpacing(4)
-            } else {
-                Text("작품 설명이 없습니다.")
-                    .font(LDFont.medium04)
-                    .foregroundColor(LDColor.color2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            Text(viewModel.description)
+                .font(LDFont.medium04)
+                .foregroundColor(LDColor.color2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineSpacing(4)
 
             Spacer(minLength: ArchiveImageConstants.animationThreshold)
         }

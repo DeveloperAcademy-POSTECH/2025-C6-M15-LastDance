@@ -34,14 +34,13 @@ struct ArchiveView: View {
                     BackGround(geometry: geometry)
 
                     LinearGradient(
-                        colors: [
-                            LDColor.color6,
-                            LDColor.color6.opacity(0),
-                        ],
+                        gradient: Gradient(stops: [
+                            .init(color: LDColor.color6, location: 0.0),  // 맨 위: 완전 흰
+                            .init(color: LDColor.color6.opacity(0.0), location: 1.0),  // 아래: 완전 투명
+                        ]),
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    .frame(height: geometry.size.height / 2)
 
                     ScrollView {
                         VStack(spacing: 0) {
@@ -95,13 +94,7 @@ struct ArchiveView: View {
                 )
             }
         }
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [LDColor.color6, LDColor.color6]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .background(LDColor.color6)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomXmarkNavigationBar(title: "") {
