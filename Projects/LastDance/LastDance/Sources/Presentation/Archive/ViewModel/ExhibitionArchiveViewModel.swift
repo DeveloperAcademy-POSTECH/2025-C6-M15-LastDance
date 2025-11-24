@@ -55,7 +55,16 @@ final class ExhibitionArchiveViewModel: ObservableObject {
     private func hasLocalData() async -> Bool {
         do {
             let artworks = try await fetchArtworksForExhibition()
-            return !artworks.isEmpty
+            guard !artworks.isEmpty else {
+                return false
+            }
+
+            let artists = try await fetchArtists()
+            guard !artists.isEmpty else {
+                return false
+            }
+
+            return true
         } catch {
             return false
         }
@@ -81,13 +90,15 @@ final class ExhibitionArchiveViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.isLoading = false
                 switch result {
-                case .success:
+                case .success(let dto):
                     Log.debug("전시 상세 조회 API 성공")
 
                     Task {
                         do {
                             self.reactions = try await self.fetchReactions()
-                            self.artists = try await self.fetchArtists()
+                            self.artists = (dto.artists ?? []).map { dto in
+                                Artist(id: dto.id, uuid: "", name: dto.name)
+                            }
                             self.artworks = try await self.fetchArtworksForExhibition()
                         } catch {
                             Log.error("로컬 데이터 로드 실패: \(error)")

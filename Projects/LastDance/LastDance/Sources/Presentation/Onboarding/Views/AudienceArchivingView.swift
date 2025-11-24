@@ -13,8 +13,8 @@ struct AudienceArchivingView: View {
     @State private var isBottomButtonVisible: Bool = true
 
     private let gridColumns: [GridItem] = [
-        GridItem(.fixed(155), spacing: 16),
-        GridItem(.fixed(155), spacing: 16),
+        GridItem(.fixed(167), spacing: 19),
+        GridItem(.fixed(167)),
     ]
 
     var body: some View {
@@ -31,7 +31,7 @@ struct AudienceArchivingView: View {
                     LazyVGrid(
                         columns: gridColumns,
                         alignment: .leading,
-                        spacing: 24
+                        spacing: 48
                     ) {
                         ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) {
                             index, exhibition in
@@ -134,18 +134,18 @@ struct ExhibitionCardView: View {
                     case .empty:
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.gray.opacity(0.2))
-                            .frame(width: 155, height: 219)
+                            .frame(width: 167, height: 227)
                             .overlay(ProgressView())
                     case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 155, height: 219)
+                            .frame(width: 167, height: 227)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     case .failure:
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.gray.opacity(0.2))
-                            .frame(width: 155, height: 219)
+                            .frame(width: 167, height: 227)
                             .overlay(
                                 Image(systemName: "PlaceholderImage")
                                     .foregroundColor(.gray)
@@ -157,7 +157,7 @@ struct ExhibitionCardView: View {
             } else {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color.gray.opacity(0.2))
-                    .frame(width: 155, height: 219)
+                    .frame(width: 167, height: 227)
                     .overlay(
                         Text("이미지 없음")
                             .foregroundColor(.gray)
@@ -165,17 +165,17 @@ struct ExhibitionCardView: View {
             }
             // 전시 제목
             Text(exhibition.title)
-                .font(LDFont.heading06)
+                .font(LDFont.medium04)
                 .foregroundColor(.black)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
-                .frame(width: 155, alignment: .leading)
+                .frame(width: 167, alignment: .leading)
 
             // 날짜
             Text(dateString)
                 .font(LDFont.regular03)
                 .foregroundColor(LDColor.gray5)
-                .frame(width: 155, alignment: .leading)
+                .frame(width: 167, alignment: .leading)
         }
     }
 }

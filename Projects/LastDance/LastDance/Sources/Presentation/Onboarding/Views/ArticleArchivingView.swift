@@ -11,15 +11,16 @@ struct ArtistExhibitionCardView: View {
     let displayItem: ArtistExhibitionDisplayItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 4) {
             ZStack(alignment: .bottomLeading) {
                 CachedImage(
                     displayItem.exhibition.coverImageName,
-                    targetSize: CGSize(width: 155, height: 219)  // targetSize는 이미지 로딩 최적화를 위함
+                    targetSize: CGSize(width: 167, height: 227)
                 )
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 155, height: 219)
+                .frame(width: 167, height: 227)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(.bottom, 4)
             }
 
             Text(displayItem.exhibition.title)
@@ -27,7 +28,13 @@ struct ArtistExhibitionCardView: View {
                 .foregroundColor(.black)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
-                .frame(width: 155, height: 44, alignment: .topLeading)
+                .frame(width: 167, alignment: .topLeading)
+
+            // 날짜
+            Text(Date.formatShortDate(from: displayItem.exhibition.startDate))
+                .font(LDFont.regular03)
+                .foregroundColor(LDColor.gray5)
+                .frame(width: 167, alignment: .leading)
         }
     }
 }
@@ -40,15 +47,17 @@ private struct ArtistExhibitionGridView: View {
         ScrollView {
             LazyVGrid(
                 columns: [
-                    GridItem(.fixed(155), spacing: 31),
-                    GridItem(.fixed(155), spacing: 31),
+                    GridItem(.fixed(167), spacing: 19),
+                    GridItem(.fixed(167)),
                 ],
-                spacing: 28
+                spacing: 48
             ) {
-                ForEach(viewModel.exhibitions) { displayItem in
+                ForEach(Array(viewModel.exhibitions.enumerated()), id: \.element.id) {
+                    index, displayItem in
                     ArtistExhibitionCardView(
                         displayItem: displayItem
                     )
+                    .offset(y: index % 2 == 0 ? 0 : 40)
                     .onTapGesture {
                         router.push(
                             .artistReactionArchiveView(
@@ -93,10 +102,9 @@ struct ArticleArchivingView: View {
                     Button(action: {
                         router.push(.createInvitation)
                     }) {
-                        Image(systemName: "envelope")
+                        Image("envelope.noti")
                             .resizable()
-                            .frame(width: 28, height: 23)
-                            .foregroundColor(.black)
+                            .frame(width: 22, height: 19)
                     }
                     .padding(.leading, 14)
                 }

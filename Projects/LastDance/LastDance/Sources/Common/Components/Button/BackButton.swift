@@ -39,7 +39,7 @@ struct XmarkButton: View {
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "xmark")
+            Image("xmark")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)

@@ -23,13 +23,12 @@ struct ArtistReactionArchiveView: View {
     var body: some View {
         ArtistArtworkScrollView(viewModel: viewModel)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
             .toolbar {
                 CustomNavigationBar(title: LocalizedStringKey(viewModel.exhibitionTitle)) {
                     router.popLast()
                 }
             }
-            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbarBackground(Color.white, for: .navigationBar)
             .onAppear {
                 viewModel.loadArtworksAndReactions()
             }
@@ -60,7 +59,7 @@ private struct ArtistArtworkScrollView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
 
-                            Spacer().frame(height: 4)
+                            Spacer().frame(height: 2)
 
                             // 작품 제목
 

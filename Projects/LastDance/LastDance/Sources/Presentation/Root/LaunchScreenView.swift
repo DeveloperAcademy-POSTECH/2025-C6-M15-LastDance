@@ -1,5 +1,5 @@
 //
-//  LunchScreenView.swift
+//  LaunchScreenView.swift
 //  LastDance
 //
 //  Created by 배현진 on 11/18/25.

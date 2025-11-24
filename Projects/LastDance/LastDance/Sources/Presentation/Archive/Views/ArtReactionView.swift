@@ -116,7 +116,8 @@ extension ArtReactionView {
             ArchiveImageConstants.maxWidth,
             max(
                 ArchiveImageConstants.minWidth,
-                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight)
+                    * 0.76
             )
         )
 
@@ -157,17 +158,15 @@ extension ArtReactionView {
                 .foregroundColor(LDColor.color1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let artistName = artist?.name {
-                HStack {
-                    Text(artistName)
-                        .font(LDFont.medium04)
-                        .foregroundColor(LDColor.color6)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(LDColor.color1)
-                        .cornerRadius(20)
-                    Spacer()
-                }
+            HStack {
+                Text(viewModel.artistName)
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color6)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(LDColor.color1)
+                    .cornerRadius(20)
+                Spacer()
             }
 
             Rectangle()
