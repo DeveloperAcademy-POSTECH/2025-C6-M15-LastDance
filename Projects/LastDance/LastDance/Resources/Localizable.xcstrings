@@ -746,6 +746,7 @@
       }
     },
     "작자미상" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -846,6 +847,7 @@
       }
     },
     "전시 계속 보기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
