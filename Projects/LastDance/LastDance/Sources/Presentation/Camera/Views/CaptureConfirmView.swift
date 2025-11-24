@@ -32,10 +32,21 @@ struct CaptureConfirmView: View {
 
                 if let image = image {
                     // 화면 비율의 유연성을 위한 ScrollView 추가
-                    ScrollView(.vertical, showsIndicators: true) {
+                    ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
 
-                            Spacer(minLength: 45)
+                            // 작품 인식이 완료되면 텍스트 표시
+                            if viewModel.showMatchConfirmAlert {
+                                Spacer().frame(height: 9)
+
+                                Text("촬영한 작품이 맞나요?")
+                                    .foregroundStyle(LDColor.color1)
+                                    .font(LDFont.heading04)
+
+                                Spacer().frame(height: 12)
+                            } else {
+                                Spacer(minLength: 45)
+                            }
 
                             // 이미지 영역
                             ZStack {
@@ -43,22 +54,34 @@ struct CaptureConfirmView: View {
                                     .frame(width: geo.size.width)
                                     .clipped()
 
+                                // 작품 인식이 완료되면 이미지 하단에 카드 표시
+                                if viewModel.showMatchConfirmAlert, let artwork = viewModel.artwork
+                                {
+                                    VStack {
+                                        Spacer()
+                                        ArtworkMatchCardView(
+                                            artwork: artwork, artist: viewModel.artist
+                                        )
+                                        .padding(.bottom, 20)
+                                        .padding(.horizontal, 24)
+                                    }
+                                }
+
                                 if saveNoticeVisible {
                                     VStack {
                                         HStack(spacing: 12) {
                                             Image(systemName: "CheckIcon")
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(width: 26, height: 26)
-                                                .foregroundStyle(LDColor.color6)
+                                                .frame(width: 30, height: 30)
 
                                             Text("이미지가 갤러리에 저장되었습니다.")
                                                 .font(LDFont.medium04)
-                                                .foregroundStyle(LDColor.color6)
+                                                .foregroundStyle(LDColor.color1)
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
-                                        .background(LDColor.color1)
+                                        .background(Color.white)
                                         .transition(.move(edge: .top).combined(with: .opacity))
                                         .cornerRadius(12)
                                         .shadow(LDShadow.shadow4)
@@ -137,6 +160,10 @@ struct CaptureConfirmView: View {
             }
         }
         .onAppear {
+            if let image = image {
+                viewModel.saveImageToPhotoLibrary(image: image)
+            }
+
             // 화면 진입 시점에 바로 서버 이미지 매칭 시작
             viewModel.matchArtwork(
                 imageData: imageData,
@@ -189,7 +216,6 @@ struct CaptureConfirmView: View {
             Color.black
         }
     }
-
     /// 관람객 - 관람 시작하기 버튼 처리
     private func handleStartVisit(image: UIImage, artworkId: Int, artistId: Int, exhibitionId: Int)
     {
@@ -215,5 +241,51 @@ struct CaptureConfirmView: View {
                 Log.error("Failed to create visit history.")
             }
         }
+    }
+}
+
+// MARK: ArtworkMatchCardView
+struct ArtworkMatchCardView: View {
+    let artwork: Artwork
+    let artist: Artist?
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            //사진
+            CachedImage(artwork.thumbnailURL)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 52, height: 71)
+                .cornerRadius(8)
+                .clipped()
+
+            //정보
+            VStack(alignment: .leading, spacing: 12) {
+                Text(artwork.title)
+                    .font(LDFont.heading04)
+                    .foregroundColor(LDColor.color1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                if let artistName = artist?.name {
+                    HStack {
+                        Text(artistName)
+                            .font(LDFont.medium05)
+                            .foregroundColor(LDColor.color1)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .cornerRadius(24)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 24)
+                            .inset(by: 0.5)
+                            .stroke(LDColor.color1, lineWidth: 1)
+                    )
+                }
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: 95)
+        .background(.white.opacity(0.6))
+        .cornerRadius(13)
+        .shadow(color: .black.opacity(0.14), radius: 5, x: 0, y: 0)
     }
 }

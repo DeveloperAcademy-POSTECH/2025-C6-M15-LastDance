@@ -4,6 +4,17 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.postech.LastDance</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>lastdance</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -21,20 +32,11 @@
 		<string>Pretendard-SemiBold.otf</string>
 		<string>Pretendard-Thin.otf</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>lastdance</string>
-			</array>
-			<key>CFBundleURLName</key>
-			<string>com.postech.LastDance</string>
-		</dict>
-    </array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>촬영한 작품 사진을 갤러리에 저장하기 위해 사진 라이브러리 접근 권한이 필요합니다.</string>
 </dict>
 </plist>

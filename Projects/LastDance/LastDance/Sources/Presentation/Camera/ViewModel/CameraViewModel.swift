@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import Photos
 import SwiftUI
 
 @MainActor
@@ -82,12 +83,26 @@ final class CameraViewModel: ObservableObject {
             isAuthorized = true
         case .notDetermined:
             isAuthorized = await CameraManager.requestAccess()
+            // 카메라 권한 요청과 동시에 사진 저장 권한도 요청
+            if isAuthorized {
+                await requestPhotoLibraryAuthorization()
+            }
         default:
             isAuthorized = false
         }
 
         guard isAuthorized else {
             throw CameraError.unauthorized
+        }
+    }
+
+    /// 사진 라이브러리 저장 권한 요청
+    private func requestPhotoLibraryAuthorization() async {
+        await withCheckedContinuation { continuation in
+            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+                Log.info("사진 라이브러리 권한 상태: \(status.rawValue)")
+                continuation.resume()
+            }
         }
     }
 

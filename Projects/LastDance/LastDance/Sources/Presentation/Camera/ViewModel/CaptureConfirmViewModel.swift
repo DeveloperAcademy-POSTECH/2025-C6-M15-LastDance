@@ -5,6 +5,7 @@
 //  Created by 아우신얀 on 10/20/25.
 //
 
+import Photos
 import SwiftUI
 
 @MainActor
@@ -17,6 +18,7 @@ final class CaptureConfirmViewModel: ObservableObject {
     @Published var uploadedImageUrl: String?
     @Published var errorMessage: String?
     @Published var showFailAlert: Bool = false
+    @Published var showMatchConfirmAlert: Bool = false
     @Published var matchedArtworkId: Int?
     @Published var matchedArtistId: Int?
     @Published var matchedExhibitions: [ArtworkMatchExhibitionDto] = []
@@ -129,6 +131,14 @@ final class CaptureConfirmViewModel: ObservableObject {
                                     self.matchedArtworkId = best.artwork_id
                                     self.matchedExhibitions.append(contentsOf: best.exhibitions)
                                     self.isMatching = false
+
+                                    self.fetchArtworkDetail(
+                                        artworkId: best.artwork_id,
+                                        exhibitionId: best.exhibitions.first?.id ?? 0
+                                    )
+                                    self.fetchArtistDetail(artistId: best.artist_id)
+
+                                    self.showMatchConfirmAlert = true
                                 }
                             }
                         }
@@ -285,6 +295,25 @@ final class CaptureConfirmViewModel: ObservableObject {
                 case .failure(let error):
                     Log.error("작가 상세 조회 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+
+    /// 갤러리에 사진 저장
+    func saveImageToPhotoLibrary(image: UIImage) {
+        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+        guard status == .authorized else {
+            Log.warning("사진 라이브러리 권한이 없습니다.")
+            return
+        }
+
+        PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        } completionHandler: { success, error in
+            if success {
+                Log.info("이미지가 갤러리에 저장되었습니다.")
+            } else if let error = error {
+                Log.error("이미지 저장 실패: \(error.localizedDescription)")
             }
         }
     }
