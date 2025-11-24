@@ -1,125 +1,40 @@
-# 🚀 프로젝트 이름
+<div align="center">
+<img width="1000" alt="woa-banner" src="https://github.com/user-attachments/assets/14902098-79a0-442b-9d88-d43dfbb1d62e" />
 
-![배너 이미지 또는 로고](링크)
+### 우아 : WoA
+작가와 관객 사이 특별한 연결의 경험을 제공하는 서비스
 
-> 간단한 한 줄 소개 – 프로젝트의 핵심 가치 또는 기능
+<br>
 
-[![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)]()
-[![Xcode](https://img.shields.io/badge/Xcode-15.0-blue.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-green.svg)]()
+<img width="180" alt="app-icon" src="https://github.com/user-attachments/assets/4a66ff4e-faec-4dc0-b569-9b7bc22d802d" />
+</div>
 
----
+<br>
 
-## 🗂 목차
-- [소개](#소개)
-- [프로젝트 기간](#프로젝트-기간)
-- [기술 스택](#기술-스택)
-- [기능](#기능)
-- [시연](#시연)
-- [폴더 구조](#폴더-구조)
-- [팀 소개](#팀-소개)
-- [Git 컨벤션](#git-컨벤션)
-- [테스트 방법](#테스트-방법)
-- [프로젝트 문서](#프로젝트-문서)
-- [라이선스](#lock_with_ink_pen-license)
+## Preview
 
----
+#### 🎨 작가
+<img width="800" alt="artist_preview" src="https://github.com/user-attachments/assets/bc600560-1413-4c86-be93-583fe606dae7" />
 
-## 📱 소개
+<br>
 
-> 프로젝트의 주요 목적과 사용자가 얻게 될 경험을 설명해주세요.
+#### 👥 관객
+<img width="800" alt="visitor_preview" src="https://github.com/user-attachments/assets/8d7fdf6a-f814-4d42-9284-3c27d33dd078" />
 
-[🔗 앱스토어/웹 링크](https://example.com)
+<br>
 
+## 🛠️ Tech & Skills
 
-## 📆 프로젝트 기간
-- 전체 기간: `YYYY.MM.DD - YYYY.MM.DD`
-- 개발 기간: `YYYY.MM.DD - YYYY.MM.DD`
+| Area | Stack |
+|------|-------|
+| **iOS** | Swift, SwiftUI, SwiftData, Moya, Kingfisher, App Clip |
+| **Backend** | FastAPI, PostgreSQL, Docker, AWS, GitHub Actions |
 
+<br>
 
-## 🛠 기술 스택
+## 👥 Team
 
-- Swift / SwiftUI / UIKit / Firebase 등
-- 아키텍처: MVVM / MVC / Clean Architecture 등
-- 기타 도구: Figma, Notion, GitHub Projects 등
-
-
-## 🌟 주요 기능
-
-- ✅ 기능 1
-- ✅ 기능 2
-- ✅ 기능 3
-
-> 필요시 이미지, GIF, 혹은 링크 삽입
-
-
-## 🖼 화면 구성 및 시연
-
-| 기능 | 설명 | 이미지 |
-|------|------|--------|
-| 예시1 | 기능 요약 | ![gif](링크) |
-| 예시2 | 기능 요약 | ![gif](링크) |
-
-
-## 🧱 폴더 구조
-
-```
-📦ProjectName
-┣ 📂Feature
-┃ ┣ 📂SceneA
-┃ ┗ 📂SceneB
-┣ 📂Core
-┣ 📂UI
-┣ 📂Test
-┗ 📂Resources
-```
-
-
-## 🧑‍💻 팀 소개
-
-| 이름 | 역할 | GitHub |
-|------|------|--------|
-| 홍길동 | iOS Developer | [@hong](https://github.com/hong) |
-| 김개발 | PM | [@devkim](https://github.com/devkim) |
-
-[🔗 팀 블로그 / 미디엄 링크](https://medium.com/example)
-
-## 🔖 브랜치 전략
-`(예시)`
-- `main`: 배포 가능한 안정 버전
-- `develop`: 통합 개발 브랜치
-- `feature/*`: 기능 개발 브랜치
-- `bugfix/*`: 버그 수정 브랜치
-- `hotfix/*`: 긴급 수정 브랜치
-
-## 🌀 커밋 메시지 컨벤션
-`(예시)`  
-[Gitmoji](https://gitmoji.dev) + [Conventional Commits](https://www.conventionalcommits.org)
-
-### 예시
-- ✨ feat: 로그인 화면 추가
-- 🐛 fix: 홈 진입 시 크래시 수정
-- ♻️ refactor: 데이터 모델 구조 정리
-
-
-## ✅ 테스트 방법
-
-1. 이 저장소를 클론합니다.
-```bash
-git clone https://github.com/yourteam/project.git
-```
-2. `Xcode`로 `.xcodeproj` 또는 `.xcworkspace` 열기
-3. 시뮬레이터 환경 설정: iPhone 15 / iOS 17
-4. `Cmd + R`로 실행 / `Cmd + U`로 테스트 실행
-
-
-## 📎 프로젝트 문서
-
-- [기획 히스토리](링크)
-- [디자인 히스토리](링크)
-- [기술 문서 (아키텍처 등)](링크)
-
-
-## 📝 License
-
-This project is licensed under the ~~[CHOOSE A LICENSE](https://choosealicense.com). and update this line~~
+| Kwangro / 허찬욱 | Berry / 배현진 | Ethan / 김동희 | J / 김지혜 | Yan / 아우신얀 | Jomi / 이호정 |
+|:----------------:|:--------------:|:--------------:|:----------:|:--------------:|:-------------:|
+| <img width="514" height="555" alt="Frame 433" src="https://github.com/user-attachments/assets/f106cbd9-6fad-46d1-9ff1-5e6e01b02ddb" />| <img width="389" height="421" alt="Frame 428" src="https://github.com/user-attachments/assets/cb207208-4c18-458b-a9d8-ccb5e5bb4701" /> | <img width="453" height="489" alt="Frame 432" src="https://github.com/user-attachments/assets/6fc98773-079b-4fcd-9085-6689390f743d" /> | <img width="433" height="468" alt="Frame 429" src="https://github.com/user-attachments/assets/679156fa-5386-46b1-9eb4-2aa2e983bde6" /> | <img width="433" height="468" alt="Frame 430" src="https://github.com/user-attachments/assets/8dc5370d-7df9-45c4-97a6-3d00e8e68f9f" /> | <img width="546" height="590" alt="Frame 434" src="https://github.com/user-attachments/assets/c4731e8d-3a1d-45ca-a5ef-94fdb03371da" />|
+| Project Manager, iOS Developer | iOS Developer | iOS Developer | Backend Developer | iOS Developer | UI/UX Designer |
