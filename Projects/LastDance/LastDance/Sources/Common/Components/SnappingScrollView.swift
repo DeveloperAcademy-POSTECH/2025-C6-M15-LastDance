@@ -89,6 +89,10 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
         }
 
         @objc func handleRefresh() {
+            // 햅틱 피드백
+            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+            impactFeedback.impactOccurred()
+
             parent.onRefresh?()
 
             // 0.7초 후 새로고침 종료 (UX 개선)
