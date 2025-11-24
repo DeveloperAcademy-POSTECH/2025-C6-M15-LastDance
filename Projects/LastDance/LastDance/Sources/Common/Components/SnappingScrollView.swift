@@ -12,13 +12,17 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
     private let content: () -> Content
     // 스크롤 콜백 (offset, scrollView)
     private let onScroll: (CGFloat, UIScrollView) -> Void
+    // 새로고침 콜백
+    private let onRefresh: (() -> Void)?
 
     init(
         @ViewBuilder content: @escaping () -> Content,
-        onScroll: @escaping (CGFloat, UIScrollView) -> Void
+        onScroll: @escaping (CGFloat, UIScrollView) -> Void,
+        onRefresh: (() -> Void)? = nil
     ) {
         self.content = content
         self.onScroll = onScroll
+        self.onRefresh = onRefresh
     }
 
     func makeCoordinator() -> Coordinator {
@@ -30,6 +34,19 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
         scrollView.delegate = context.coordinator
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = true
+
+        // UIRefreshControl 추가
+        if onRefresh != nil {
+            let refreshControl = UIRefreshControl()
+            refreshControl.tintColor = UIColor(Color.gray)
+            refreshControl.addTarget(
+                context.coordinator,
+                action: #selector(Coordinator.handleRefresh),
+                for: .valueChanged
+            )
+            scrollView.refreshControl = refreshControl
+            context.coordinator.refreshControl = refreshControl
+        }
 
         // SwiftUI 뷰를 담을 호스팅 컨트롤러
         let hosting = UIHostingController(rootView: content())
@@ -61,6 +78,7 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
     class Coordinator: NSObject, UIScrollViewDelegate {
         let parent: SnappingScrollView
         var hostingController: UIHostingController<Content>?
+        var refreshControl: UIRefreshControl?
 
         init(parent: SnappingScrollView) {
             self.parent = parent
@@ -68,6 +86,19 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
 
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             parent.onScroll(scrollView.contentOffset.y, scrollView)
+        }
+
+        @objc func handleRefresh() {
+            // 햅틱 피드백
+            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+            impactFeedback.impactOccurred()
+
+            parent.onRefresh?()
+
+            // 0.7초 후 새로고침 종료 (UX 개선)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                self?.refreshControl?.endRefreshing()
+            }
         }
     }
 }

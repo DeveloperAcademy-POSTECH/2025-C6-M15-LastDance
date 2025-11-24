@@ -15,7 +15,7 @@ struct BackGround: View {
             .resizable()
             .scaledToFit()
             .frame(width: geometry.size.width, height: geometry.size.height * 2.5)
-            .offset(x: 0, y: -160)
+            .offset(x: 0, y: -80)
             .opacity(0.6)
             .overlay(
                 LinearGradient(

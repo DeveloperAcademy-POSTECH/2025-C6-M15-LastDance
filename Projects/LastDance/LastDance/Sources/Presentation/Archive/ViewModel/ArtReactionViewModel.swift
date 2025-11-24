@@ -37,11 +37,13 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         throttleInterval: throttleInterval,
         handler: self
     )
+    private let reactionAPIService: ReactionAPIServiceProtocol
 
     // MARK: - Initialization
 
-    init(artworkId: Int) {
+    init(artworkId: Int, reactionAPIService: ReactionAPIServiceProtocol = ReactionAPIService()) {
         self.artworkId = artworkId
+        self.reactionAPIService = reactionAPIService
     }
 
     var hasText: Bool {
@@ -72,27 +74,111 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         throttle.confirmSendAction()
     }
 
-    func loadReactions() {
-        isLoading = true
+    func loadReactions(showLoading: Bool = true) {
+        if showLoading {
+            isLoading = true
+        }
 
         guard let container = swiftDataManager.container else {
             isLoading = false
             return
         }
 
-        let context = container.mainContext
+        // 관람객 UUID로 visitorId 가져오기
+        let visitorId = getVisitorId()
 
-        do {
-            let targetId = artworkId
-            let predicate = #Predicate<Reaction> { reaction in
-                reaction.artworkId == targetId
+        reactionAPIService.getReactions(artworkId: artworkId, visitorId: visitorId, visitId: nil) {
+            [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let getReactionDtos):
+                let dispatchGroup = DispatchGroup()
+                var fetchedReactions: [Reaction] = []
+                let lock = NSLock()
+
+                for getReactionDto in getReactionDtos {
+                    dispatchGroup.enter()
+                    self.reactionAPIService.getDetailReaction(reactionId: getReactionDto.id) {
+                        detailResult in
+                        defer { dispatchGroup.leave() }
+
+                        switch detailResult {
+                        case .success(let reactionResponseDto):
+                            let reactionDetailDto = reactionResponseDto.data
+
+                            // 작가 이모지 추출 (첫 번째 이모지만 사용)
+                            let artistEmoji = reactionDetailDto.artist_emojis?.first?.emoji_type
+
+                            // 작가 메시지 매핑
+                            let artistMessages = reactionDetailDto.artist_messages?.map {
+                                ArtistMessageInfo(
+                                    id: $0.id,
+                                    artistName: $0.artist_name,
+                                    message: $0.message,
+                                    createdAt: $0.created_at
+                                )
+                            }
+
+                            let reaction = Reaction(
+                                id: String(reactionDetailDto.id),
+                                artworkId: reactionDetailDto.artwork_id,
+                                visitorId: reactionDetailDto.visitor_id,
+                                tags: [],
+                                comment: reactionDetailDto.comment,
+                                artistEmoji: artistEmoji,
+                                artistMessages: artistMessages,
+                                createdAt: reactionDetailDto.created_at
+                            )
+
+                            lock.lock()
+                            fetchedReactions.append(reaction)
+                            lock.unlock()
+
+                        case .failure(let error):
+                            Log.error(
+                                "반응 ID \(getReactionDto.id) 상세 정보 조회 실패: \(error.localizedDescription)"
+                            )
+                        }
+                    }
+                }
+
+                dispatchGroup.notify(queue: .main) {
+                    self.reactions = fetchedReactions.sorted { $0.id < $1.id }
+                    if showLoading {
+                        self.isLoading = false
+                    }
+                }
+
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    if showLoading {
+                        self.isLoading = false
+                    }
+                    Log.error("작품 \(self.artworkId)에 대한 반응 조회 실패: \(error.localizedDescription)")
+                }
             }
-            let descriptor = FetchDescriptor<Reaction>(predicate: predicate)
-            reactions = try context.fetch(descriptor)
-        } catch {
-            Log.error("Failed to load reactions: \(error)")
         }
-        isLoading = false
+    }
+
+
+    // MARK: - Private Methods
+
+    /// UserDefaults에서 visitorUUID를 가져와 SwiftData에서 visitorId 조회
+    private func getVisitorId() -> Int? {
+        guard
+            let visitorUUID = UserDefaults.standard.string(
+                forKey: UserDefaultsKey.visitorUUID.rawValue)
+        else {
+            return nil
+        }
+
+        let visitors = swiftDataManager.fetchAll(Visitor.self)
+        guard let visitor = visitors.first(where: { $0.uuid == visitorUUID }) else {
+            return nil
+        }
+
+        return visitor.id
     }
 
     // 텍스트 길이 제한 로직
@@ -132,7 +218,7 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                 self.isSending = false
 
                 switch result {
-                case .success(let response):
+                case .success:
                     self.message = ""
 
                     // 첫 리액션 등록 플래그 저장
@@ -140,13 +226,9 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
                         UserDefaults.standard.set(true, forKey: .hasRegisteredFirstReaction)
                     }
 
-                    // 작가에게 푸시알림 전송
-                    // TODO: - sendPushNotificationToArtist 말고 다른 방식으로 변경
-                    //                    self.sendPushNotificationToArtist(reactionResponse: response.data)
-
                     completion(true)
 
-                case .failure(let error):
+                case .failure:
                     completion(false)
                 }
             }
@@ -158,9 +240,7 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
     ) {
         // 사진(UIImage) → Data 변환
-        guard
-            let imageData = capturedImageData
-        else {
+        guard let imageData = capturedImageData else {
             Log.warning("capturedImage가 없습니다.")
             alertType = .error
             shouldShowConfirmAlert = true

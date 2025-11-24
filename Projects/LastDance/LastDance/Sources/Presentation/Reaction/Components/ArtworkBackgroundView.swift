@@ -15,8 +15,8 @@ struct ArtworkBackgroundView: View {
         ZStack(alignment: .bottomLeading) {
             // 이미지 영역
             CachedImage(artwork?.thumbnailURL)
-                .aspectRatio(contentMode: .fill)
-                .frame(maxHeight: 393)
+                .aspectRatio(3 / 4, contentMode: .fill)
+                .frame(maxWidth: .infinity, maxHeight: 393)
                 .clipped()
 
             // 그라데이션 오버레이
@@ -25,9 +25,11 @@ struct ArtworkBackgroundView: View {
                     LDColor.color5.opacity(0),
                     LDColor.color5,
                 ]),
-                startPoint: .center,
+                startPoint: .top,
                 endPoint: .bottom
             )
+            .frame(height: 150)  // 하단 150pt만 그라데이션 적용
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
         .offset(y: -35)
         .ignoresSafeArea(.container, edges: .top)

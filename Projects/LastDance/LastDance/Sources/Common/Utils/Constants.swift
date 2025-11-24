@@ -22,6 +22,24 @@ enum ReactionConstants {
         "emoji_sad",
         "emoji_laugh",
     ]
+
+    /// 이모지 asset 이름을 텍스트로 변환
+    static func emojiText(for assetName: String) -> String {
+        switch assetName {
+        case "emoji_heart":
+            return "사랑해요"
+        case "emoji_like":
+            return "감동이에요"
+        case "emoji_surprise":
+            return "놀라워요"
+        case "emoji_sad":
+            return "슬퍼요"
+        case "emoji_laugh":
+            return "재밌어요"
+        default:
+            return ""
+        }
+    }
 }
 
 // MARK: CameraConstants

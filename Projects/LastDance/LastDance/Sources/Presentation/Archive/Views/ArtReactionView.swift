@@ -56,56 +56,68 @@ struct ArtReactionView: View {
 // MARK: - Scroll Content
 extension ArtReactionView {
     fileprivate var scrollContent: some View {
-        SnappingScrollView {
-            VStack(spacing: 0) {
-                // 작품 이미지
-                headerImage
-                    .padding(.vertical, 24)
+        SnappingScrollView(
+            content: {
+                VStack(spacing: 0) {
+                    // 작품 이미지
+                    headerImage
+                        .padding(.vertical, 24)
 
-                // 스크롤 안에 들어오는 탭바
-                TabBarView(selectedTab: $selectedTab)
-                    .opacity(isTabBarFixed ? 0 : 1)
+                    // 스크롤 안에 들어오는 탭바
+                    TabBarView(selectedTab: $selectedTab)
+                        .opacity(isTabBarFixed ? 0 : 1)
 
-                ZStack {
-                    // 작품 정보 탭
-                    artworkTabSection
-                        .opacity(selectedTab == .artwork ? 1 : 0)
+                    ZStack {
+                        // 작품 정보 탭
+                        artworkTabSection
+                            .opacity(selectedTab == .artwork ? 1 : 0)
 
-                    // 감상 탭
-                    reactionTabSection
-                        .opacity(selectedTab == .reaction ? 1 : 0)
+                        // 감상 탭
+                        reactionTabSection
+                            .opacity(selectedTab == .reaction ? 1 : 0)
+                    }
                 }
-            }
-        } onScroll: { offset, scrollView in
-            scrollOffset = offset
+            },
+            onScroll: { offset, scrollView in
+                scrollOffset = offset
 
-            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
-            let resetThreshold = snapThreshold - 40
+                let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+                let resetThreshold = snapThreshold - 40
 
-            if !didSnap && offset >= snapThreshold {
-                didSnap = true
+                if !didSnap && offset >= snapThreshold {
+                    didSnap = true
 
-                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+                    scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
 
-                scrollView.isScrollEnabled = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    scrollView.isScrollEnabled = true
+                    scrollView.isScrollEnabled = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        scrollView.isScrollEnabled = true
+                    }
+                } else if didSnap && offset < resetThreshold {
+                    didSnap = false
                 }
-            } else if didSnap && offset < resetThreshold {
-                didSnap = false
+            },
+            onRefresh: {
+                viewModel.loadReactions()
             }
-        }
+        )
     }
 
     fileprivate var headerImage: some View {
-        // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(
-            ArchiveImageConstants.minHeight,
-            ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+        // 스크롤에 따라 이미지 크기 조정 (최대값 제한 추가)
+        let imageHeight = min(
+            ArchiveImageConstants.maxHeight,
+            max(
+                ArchiveImageConstants.minHeight,
+                ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+            )
         )
-        let imageWidth = max(
-            ArchiveImageConstants.minWidth,
-            ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+        let imageWidth = min(
+            ArchiveImageConstants.maxWidth,
+            max(
+                ArchiveImageConstants.minWidth,
+                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+            )
         )
 
         return Group {
@@ -214,15 +226,40 @@ extension ArtReactionView {
                 .foregroundColor(LDColor.color1)
 
             HStack {
-                Text("아직 이모지가 없습니다.")
-                    .font(LDFont.regular03)
-                    .foregroundColor(LDColor.color2)
+                // 모든 반응에서 이모지가 있는 것만 필터링 후 최신순 정렬
+                let latestEmoji = viewModel.reactions
+                    .filter { $0.artistEmoji != nil }
+                    .sorted { ($0.createdAt ?? "") > ($1.createdAt ?? "") }
+                    .first?.artistEmoji
+
+                if let emoji = latestEmoji {
+                    HStack(spacing: 4) {
+                        Image(emoji)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+
+                        Text(ReactionConstants.emojiText(for: emoji))
+                            .font(LDFont.regular03)
+                            .foregroundColor(LDColor.color1)
+                    }
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(
                         RoundedRectangle(cornerRadius: 24)
                             .fill(LDColor.color4)
                     )
+                } else {
+                    Text("아직 이모지가 없습니다.")
+                        .font(LDFont.regular03)
+                        .foregroundColor(LDColor.color2)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(LDColor.color4)
+                        )
+                }
 
                 Spacer()
             }
@@ -230,19 +267,32 @@ extension ArtReactionView {
             HStack(alignment: .top, spacing: 12) {
                 Image("quote_left")
                     .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
+                    .foregroundColor(LDColor.color1)
                     .frame(width: 24, height: 24)
                     .offset(y: -4)
 
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("아직 메시지가 없습니다.")
-                        .font(LDFont.regular02)
-                        .foregroundColor(LDColor.color3)
+                VStack(alignment: .leading, spacing: 8) {
+                    // 모든 반응에서 메시지 수집 후 최신순 정렬
+                    let allMessages = viewModel.reactions
+                        .flatMap { $0.artistMessages ?? [] }
+                        .sorted { $0.createdAt > $1.createdAt }
+
+                    // 최신 메시지 1개만 표시
+                    if let latestMessage = allMessages.first {
+                        Text(latestMessage.message)
+                            .font(LDFont.regular02)
+                            .foregroundColor(LDColor.color1)
+                            .lineSpacing(4)
+                    } else {
+                        Text("아직 메시지가 없습니다.")
+                            .font(LDFont.regular02)
+                            .foregroundColor(LDColor.color3)
+                    }
                 }
 
                 Image("quote_right")
                     .renderingMode(.template)
-                    .foregroundColor(LDColor.color3)
+                    .foregroundColor(LDColor.color1)
                     .frame(width: 24, height: 24)
                     .offset(y: -4)
             }
