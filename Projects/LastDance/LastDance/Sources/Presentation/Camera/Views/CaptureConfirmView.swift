@@ -24,31 +24,26 @@ struct CaptureConfirmView: View {
         GeometryReader { geo in
             let safeBottom = geo.safeAreaInsets.bottom
 
-            // 버튼 높이 계산
-            let buttonsBlockHeight: CGFloat = 82 + 24 + safeBottom
-
             ZStack {
                 Color(.systemBackground).ignoresSafeArea()
 
                 if let image = image {
-                    // 화면 비율의 유연성을 위한 ScrollView 추가
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        // 작품 인식이 완료되면 텍스트 표시
+                        if viewModel.showMatchConfirmAlert {
+                            Spacer().frame(height: 9)
 
-                            // 작품 인식이 완료되면 텍스트 표시
-                            if viewModel.showMatchConfirmAlert {
-                                Spacer().frame(height: 9)
+                            Text("촬영한 작품이 맞나요?")
+                                .foregroundStyle(LDColor.color1)
+                                .font(LDFont.heading04)
 
-                                Text("촬영한 작품이 맞나요?")
-                                    .foregroundStyle(LDColor.color1)
-                                    .font(LDFont.heading04)
+                            Spacer().frame(height: 12)
+                        } else {
+                            Spacer().frame(height: 45)
+                        }
 
-                                Spacer().frame(height: 12)
-                            } else {
-                                Spacer(minLength: 45)
-                            }
-
-                            // 이미지 영역
+                        // 스크롤 가능한 이미지 영역
+                        ScrollView(.vertical, showsIndicators: false) {
                             ZStack {
                                 matchedImageView
                                     .frame(width: geo.size.width)
@@ -62,85 +57,57 @@ struct CaptureConfirmView: View {
                                         ArtworkMatchCardView(
                                             artwork: artwork, artist: viewModel.artist
                                         )
-                                        .padding(.bottom, 20)
+                                        .padding(.bottom, 24)
                                         .padding(.horizontal, 24)
                                     }
                                 }
-
-                                if saveNoticeVisible {
-                                    VStack {
-                                        HStack(spacing: 12) {
-                                            Image(systemName: "CheckIcon")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 30, height: 30)
-
-                                            Text("이미지가 갤러리에 저장되었습니다.")
-                                                .font(LDFont.medium04)
-                                                .foregroundStyle(LDColor.color1)
-                                        }
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                        .background(Color.white)
-                                        .transition(.move(edge: .top).combined(with: .opacity))
-                                        .cornerRadius(12)
-                                        .shadow(LDShadow.shadow4)
-                                        .shadow(LDShadow.shadow5)
-                                        .shadow(LDShadow.shadow6)
-
-                                        Spacer()
-                                    }
-                                    .offset(y: -20)
-                                }
                             }
-
-                            Spacer(minLength: 34)
-
-                            ZStack {
-                                Button {
-                                    // TODO: - 쇼케이스 위한 전시Id 지정. 이후에 변경 필요
-                                    guard
-                                        let artworkId = viewModel.matchedArtworkId,
-                                        let artistId = viewModel.matchedArtistId,
-                                        let exhibition = viewModel.matchedExhibitions.first
-                                    else {
-                                        return
-                                    }
-
-                                    handleStartVisit(
-                                        image: image,
-                                        artworkId: artworkId,
-                                        artistId: artistId,
-                                        exhibitionId: exhibition.id
-                                    )
-                                } label: {
-                                    Image(systemName: "checkmark")
-                                        .font(.system(size: 24, weight: .bold))
-                                        .foregroundStyle(LDColor.color6)
-                                        .padding(8)
-                                        .frame(width: 82, height: 82)
-                                        .background(LDColor.color1, in: Circle())
-                                }
-                                .disabled(viewModel.isMatching)
-
-                                Button {
-                                    router.popLast()
-                                } label: {
-                                    Image(systemName: "arrow.counterclockwise")
-                                        .font(.system(size: 20, weight: .semibold))
-                                        .foregroundStyle(LDColor.black2)
-                                        .padding(8)
-                                        .frame(width: 52, height: 52)
-                                        .background(LDColor.gray3, in: Circle())
-                                }
-                                .offset(x: 100)
-                            }
-
-                            Color.clear.frame(height: safeBottom)
                         }
-                        .frame(maxWidth: .infinity)
+
+                        Spacer().frame(height: 34)
+
+                        // 고정된 하단 버튼
+                        ZStack {
+                            Button {
+                                // TODO: - 쇼케이스 위한 전시Id 지정. 이후에 변경 필요
+                                guard
+                                    let artworkId = viewModel.matchedArtworkId,
+                                    let artistId = viewModel.matchedArtistId,
+                                    let exhibition = viewModel.matchedExhibitions.first
+                                else {
+                                    return
+                                }
+
+                                handleStartVisit(
+                                    image: image,
+                                    artworkId: artworkId,
+                                    artistId: artistId,
+                                    exhibitionId: exhibition.id
+                                )
+                            } label: {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundStyle(LDColor.color6)
+                                    .padding(8)
+                                    .frame(width: 82, height: 82)
+                                    .background(LDColor.color1, in: Circle())
+                            }
+                            .disabled(viewModel.isMatching)
+
+                            Button {
+                                router.popLast()
+                            } label: {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(LDColor.black2)
+                                    .padding(8)
+                                    .frame(width: 52, height: 52)
+                                    .background(LDColor.gray3, in: Circle())
+                            }
+                            .offset(x: 100)
+                        }
+                        .padding(.bottom, safeBottom > 0 ? safeBottom : 24)
                     }
-                    .ignoresSafeArea(.all, edges: .bottom)
 
                 } else {
                     Text("이미지를 불러올 수 없습니다.")
@@ -156,6 +123,33 @@ struct CaptureConfirmView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color(.systemBackground))
                         )
+                }
+
+                // 저장 완료 알림
+                if saveNoticeVisible {
+                    VStack {
+                        HStack(spacing: 8) {
+                            Image("CheckIcon")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+
+                            Text("이미지가 갤러리에 저장되었습니다.")
+                                .font(LDFont.medium04)
+                                .foregroundStyle(LDColor.color1)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.white)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                        .cornerRadius(12)
+                        .shadow(LDShadow.shadow4)
+                        .shadow(LDShadow.shadow5)
+                        .shadow(LDShadow.shadow6)
+                        .offset(y: 28)
+
+                        Spacer()
+                    }
                 }
             }
         }
