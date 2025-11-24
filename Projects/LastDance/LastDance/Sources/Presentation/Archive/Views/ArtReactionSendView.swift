@@ -20,6 +20,7 @@ struct ArtReactionSendView: View {
     @State private var scrollOffset: CGFloat = 0
     @State private var didSnap: Bool = false
     @FocusState private var isMessageFieldFocused: Bool
+    @State private var saveNoticeVisible = false
 
     private let placeholder = ReactionConstants.messagePlaceholder
 
@@ -64,6 +65,33 @@ struct ArtReactionSendView: View {
                     .background(LDColor.color6)
                 }
             }
+
+            // 저장 완료 알림
+            if saveNoticeVisible {
+                VStack {
+                    HStack(spacing: 8) {
+                        Image("CheckIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+
+                        Text("이미지가 갤러리에 저장되었습니다.")
+                            .font(LDFont.medium04)
+                            .foregroundStyle(LDColor.color1)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color.white)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .cornerRadius(12)
+                    .shadow(LDShadow.shadow4)
+                    .shadow(LDShadow.shadow5)
+                    .shadow(LDShadow.shadow6)
+                    .offset(y: 35)
+
+                    Spacer()
+                }
+            }
         }
         .background(Color.white)
         .toolbar {
@@ -73,6 +101,16 @@ struct ArtReactionSendView: View {
         }
         .onAppear {
             viewModel.capturedImageData = imageData
+
+            withAnimation(.easeInOut(duration: 0.3)) {
+                saveNoticeVisible = true
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    saveNoticeVisible = false
+                }
+            }
         }
         .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
             if shouldTrigger {

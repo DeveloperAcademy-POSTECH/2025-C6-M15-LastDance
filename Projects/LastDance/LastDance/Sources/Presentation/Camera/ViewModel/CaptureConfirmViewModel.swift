@@ -300,20 +300,23 @@ final class CaptureConfirmViewModel: ObservableObject {
     }
 
     /// 갤러리에 사진 저장
-    func saveImageToPhotoLibrary(image: UIImage) {
-        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-        guard status == .authorized else {
-            Log.warning("사진 라이브러리 권한이 없습니다.")
-            return
-        }
+    func saveImageToPhotoLibrary(image: UIImage, completion: @escaping () -> Void) {
+        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+            guard status == .authorized else {
+                Log.warning("사진 라이브러리 권한이 없습니다.")
+                completion()
+                return
+            }
 
-        PHPhotoLibrary.shared().performChanges {
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        } completionHandler: { success, error in
-            if success {
-                Log.info("이미지가 갤러리에 저장되었습니다.")
-            } else if let error = error {
-                Log.error("이미지 저장 실패: \(error.localizedDescription)")
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { success, error in
+                if success {
+                    Log.info("이미지가 갤러리에 저장되었습니다.")
+                } else if let error = error {
+                    Log.error("이미지 저장 실패: \(error.localizedDescription)")
+                }
+                completion()
             }
         }
     }

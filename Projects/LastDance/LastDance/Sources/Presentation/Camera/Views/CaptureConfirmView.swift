@@ -13,8 +13,6 @@ struct CaptureConfirmView: View {
 
     let imageData: Data
 
-    @State private var saveNoticeVisible = false
-
     private var image: UIImage? {
         UIImage(data: imageData)
     }
@@ -125,55 +123,14 @@ struct CaptureConfirmView: View {
                         )
                 }
 
-                // 저장 완료 알림
-                if saveNoticeVisible {
-                    VStack {
-                        HStack(spacing: 8) {
-                            Image("CheckIcon")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
-
-                            Text("이미지가 갤러리에 저장되었습니다.")
-                                .font(LDFont.medium04)
-                                .foregroundStyle(LDColor.color1)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Color.white)
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                        .cornerRadius(12)
-                        .shadow(LDShadow.shadow4)
-                        .shadow(LDShadow.shadow5)
-                        .shadow(LDShadow.shadow6)
-                        .offset(y: 28)
-
-                        Spacer()
-                    }
-                }
             }
         }
         .onAppear {
-            if let image = image {
-                viewModel.saveImageToPhotoLibrary(image: image)
-            }
-
             // 화면 진입 시점에 바로 서버 이미지 매칭 시작
             viewModel.matchArtwork(
                 imageData: imageData,
                 threshold: 0.4
             )
-
-            // 2초 동안 저장 완료 팝업 표시
-            withAnimation(.easeInOut(duration: 0.3)) {
-                saveNoticeVisible = true
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    saveNoticeVisible = false
-                }
-            }
         }
         .customAlert(
             isPresented: $viewModel.showFailAlert,
@@ -193,16 +150,7 @@ struct CaptureConfirmView: View {
 
     @ViewBuilder
     private var matchedImageView: some View {
-        if let artworkImage = viewModel.matchedArtworkImage {
-            Image(uiImage: artworkImage)
-                .resizable()
-                .scaledToFit()
-        } else if let candidate = viewModel.topCandidate,
-            let urlString = candidate.thumbnail_url
-        {
-            CachedImage(urlString)
-                .scaledToFit()
-        } else if let image = image {
+        if let image = image {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
@@ -213,26 +161,29 @@ struct CaptureConfirmView: View {
     /// 관람객 - 관람 시작하기 버튼 처리
     private func handleStartVisit(image: UIImage, artworkId: Int, artistId: Int, exhibitionId: Int)
     {
-        viewModel.uploadImage(image)
-        viewModel.fetchArtistDetail(artistId: artistId)
-        viewModel.fetchArtworkDetail(artworkId: artworkId, exhibitionId: exhibitionId)
-        viewModel.createVisitHistory { success in
-            if success {
-                viewModel.selectExhibitionAsUserExhibition()
+        // 사진 저장
+        viewModel.saveImageToPhotoLibrary(image: image) {
+            viewModel.uploadImage(image)
+            viewModel.fetchArtistDetail(artistId: artistId)
+            viewModel.fetchArtworkDetail(artworkId: artworkId, exhibitionId: exhibitionId)
+            viewModel.createVisitHistory { success in
+                if success {
+                    viewModel.selectExhibitionAsUserExhibition()
 
-                guard let artist = viewModel.artist, let artwork = viewModel.artwork else {
-                    return Log.error("Failed to fetch artist or artwork.")
-                }
-                router.push(
-                    .artReactionSend(
-                        artwork: artwork,
-                        artist: artist,
-                        exhibitionId: exhibitionId,
-                        imageData: imageData
+                    guard let artist = viewModel.artist, let artwork = viewModel.artwork else {
+                        return Log.error("Failed to fetch artist or artwork.")
+                    }
+                    router.push(
+                        .artReactionSend(
+                            artwork: artwork,
+                            artist: artist,
+                            exhibitionId: exhibitionId,
+                            imageData: imageData
+                        )
                     )
-                )
-            } else {
-                Log.error("Failed to create visit history.")
+                } else {
+                    Log.error("Failed to create visit history.")
+                }
             }
         }
     }
