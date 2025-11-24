@@ -13,6 +13,8 @@ struct CaptureConfirmView: View {
 
     let imageData: Data
 
+    @State private var saveNoticeVisible = false
+
     private var image: UIImage? {
         UIImage(data: imageData)
     }
@@ -36,9 +38,38 @@ struct CaptureConfirmView: View {
                             Spacer(minLength: 45)
 
                             // 이미지 영역
-                            matchedImageView
-                                .frame(width: geo.size.width)
-                                .clipped()
+                            ZStack {
+                                matchedImageView
+                                    .frame(width: geo.size.width)
+                                    .clipped()
+
+                                if saveNoticeVisible {
+                                    VStack {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "CheckIcon")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 26, height: 26)
+                                                .foregroundStyle(LDColor.color6)
+
+                                            Text("이미지가 갤러리에 저장되었습니다.")
+                                                .font(LDFont.medium04)
+                                                .foregroundStyle(LDColor.color6)
+                                        }
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 8)
+                                        .background(LDColor.color1)
+                                        .transition(.move(edge: .top).combined(with: .opacity))
+                                        .cornerRadius(12)
+                                        .shadow(LDShadow.shadow4)
+                                        .shadow(LDShadow.shadow5)
+                                        .shadow(LDShadow.shadow6)
+
+                                        Spacer()
+                                    }
+                                    .offset(y: -20)
+                                }
+                            }
 
                             Spacer(minLength: 34)
 
@@ -111,6 +142,17 @@ struct CaptureConfirmView: View {
                 imageData: imageData,
                 threshold: 0.4
             )
+
+            // 2초 동안 저장 완료 팝업 표시
+            withAnimation(.easeInOut(duration: 0.3)) {
+                saveNoticeVisible = true
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    saveNoticeVisible = false
+                }
+            }
         }
         .customAlert(
             isPresented: $viewModel.showFailAlert,
