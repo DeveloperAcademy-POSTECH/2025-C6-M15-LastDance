@@ -49,10 +49,6 @@ struct ArtReactionView: View {
         }
         .onAppear {
             viewModel.loadReactions()
-            viewModel.startAutoRefresh()
-        }
-        .onDisappear {
-            viewModel.stopAutoRefresh()
         }
     }
 }
@@ -60,64 +56,68 @@ struct ArtReactionView: View {
 // MARK: - Scroll Content
 extension ArtReactionView {
     fileprivate var scrollContent: some View {
-        SnappingScrollView {
-            VStack(spacing: 0) {
-                // 작품 이미지
-                headerImage
-                    .padding(.vertical, 24)
+        SnappingScrollView(
+            content: {
+                VStack(spacing: 0) {
+                    // 작품 이미지
+                    headerImage
+                        .padding(.vertical, 24)
 
-                // 스크롤 안에 들어오는 탭바
-                TabBarView(selectedTab: $selectedTab)
-                    .opacity(isTabBarFixed ? 0 : 1)
+                    // 스크롤 안에 들어오는 탭바
+                    TabBarView(selectedTab: $selectedTab)
+                        .opacity(isTabBarFixed ? 0 : 1)
 
-                ZStack {
-                    // 작품 정보 탭
-                    artworkTabSection
-                        .opacity(selectedTab == .artwork ? 1 : 0)
+                    ZStack {
+                        // 작품 정보 탭
+                        artworkTabSection
+                            .opacity(selectedTab == .artwork ? 1 : 0)
 
-                    // 감상 탭
-                    reactionTabSection
-                        .opacity(selectedTab == .reaction ? 1 : 0)
+                        // 감상 탭
+                        reactionTabSection
+                            .opacity(selectedTab == .reaction ? 1 : 0)
+                    }
                 }
-            }
-        } onScroll: { offset, scrollView in
-            scrollOffset = offset
+            },
+            onScroll: { offset, scrollView in
+                scrollOffset = offset
 
-            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
-            let resetThreshold = snapThreshold - 40
+                let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+                let resetThreshold = snapThreshold - 40
 
-            if !didSnap && offset >= snapThreshold {
-                didSnap = true
+                if !didSnap && offset >= snapThreshold {
+                    didSnap = true
 
-                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+                    scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
 
-                scrollView.isScrollEnabled = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    scrollView.isScrollEnabled = true
+                    scrollView.isScrollEnabled = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        scrollView.isScrollEnabled = true
+                    }
+                } else if didSnap && offset < resetThreshold {
+                    didSnap = false
                 }
-            } else if didSnap && offset < resetThreshold {
-                didSnap = false
-            }
-        }
-        .refreshable {
-            await withCheckedContinuation { continuation in
+            },
+            onRefresh: {
                 viewModel.loadReactions()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    continuation.resume()
-                }
             }
-        }
+        )
     }
 
     fileprivate var headerImage: some View {
-        // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(
-            ArchiveImageConstants.minHeight,
-            ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+        // 스크롤에 따라 이미지 크기 조정 (최대값 제한 추가)
+        let imageHeight = min(
+            ArchiveImageConstants.maxHeight,
+            max(
+                ArchiveImageConstants.minHeight,
+                ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+            )
         )
-        let imageWidth = max(
-            ArchiveImageConstants.minWidth,
-            ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+        let imageWidth = min(
+            ArchiveImageConstants.maxWidth,
+            max(
+                ArchiveImageConstants.minWidth,
+                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+            )
         )
 
         return Group {

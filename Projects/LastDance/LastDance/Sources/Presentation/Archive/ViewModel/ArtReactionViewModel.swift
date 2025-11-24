@@ -38,7 +38,6 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         handler: self
     )
     private let reactionAPIService: ReactionAPIServiceProtocol
-    private var refreshTimer: Timer?
 
     // MARK: - Initialization
 
@@ -162,21 +161,6 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         }
     }
 
-    /// 10초마다 자동 새로고침 시작
-    func startAutoRefresh() {
-        stopAutoRefresh()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) {
-            [weak self] _ in
-            // 백그라운드 새로고침은 로딩 인디케이터 없이 조용히 진행
-            self?.loadReactions(showLoading: false)
-        }
-    }
-
-    /// 자동 새로고침 중지
-    func stopAutoRefresh() {
-        refreshTimer?.invalidate()
-        refreshTimer = nil
-    }
 
     // MARK: - Private Methods
 
