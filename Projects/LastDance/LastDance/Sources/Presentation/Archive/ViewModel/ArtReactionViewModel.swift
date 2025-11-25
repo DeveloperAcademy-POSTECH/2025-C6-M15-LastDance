@@ -161,7 +161,6 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
         }
     }
 
-
     // MARK: - Private Methods
 
     /// UserDefaults에서 visitorUUID를 가져와 SwiftData에서 visitorId 조회

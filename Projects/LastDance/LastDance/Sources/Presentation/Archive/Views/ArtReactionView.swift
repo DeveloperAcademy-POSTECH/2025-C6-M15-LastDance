@@ -116,7 +116,8 @@ extension ArtReactionView {
             ArchiveImageConstants.maxWidth,
             max(
                 ArchiveImageConstants.minWidth,
-                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight) * 0.76
+                ArchiveImageConstants.maxWidth - (ArchiveImageConstants.maxHeight - imageHeight)
+                    * 0.76
             )
         )
 
