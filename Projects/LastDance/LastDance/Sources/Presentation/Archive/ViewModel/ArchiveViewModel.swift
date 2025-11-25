@@ -15,6 +15,7 @@ final class ArchiveViewModel: ObservableObject {
     @Published var reactedArtworks: [Artwork] = []
     @Published var currentExhibition: Exhibition?
     @Published var isLoading = false
+    @Published var artists: [Artist] = []
 
     private let swiftDataManager = SwiftDataManager.shared
     private let reactionApiService = ReactionAPIService()
@@ -80,10 +81,13 @@ final class ArchiveViewModel: ObservableObject {
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success:
+                case .success(let dto):
                     // 상세 저장이 끝났으니, 다시 로컬에서 Exhibition 최신 상태를 로드
                     self.fetchExhibition(by: exhibitionId)
                     Log.debug("전시 상세 저장 완료. 작품 수: \(self.currentExhibition?.artworks.count ?? 0)")
+                    self.artists = (dto.artists ?? []).map { dto in
+                        Artist(id: dto.id, uuid: "", name: dto.name)
+                    }
                     completion()
                 case .failure(let error):
                     Log.error("전시 상세 조회 실패: \(error.localizedDescription)")

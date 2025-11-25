@@ -49,113 +49,39 @@ struct MessageItemView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
+                // 날짜
                 Text(Date.formatShortDate(from: reaction.createdAt))
                     .font(LDFont.medium05)
                     .foregroundColor(LDColor.color3)
 
                 Spacer().frame(height: 8)
 
-                // 댓글 텍스트
+                // 댓글 텍스트 + 더보기/접기
                 if !reaction.comment.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text(viewModel.displayText(for: reaction))
-                            .font(LDFont.medium03)
-                            .foregroundColor(LDColor.color1)
-                            .lineLimit(viewModel.expandedReactions.contains(reaction.id) ? nil : 3)
-                            .lineSpacing(6)
-
-                        // TODO: 글자수 말고 글자 높이, 너비로 접기-더보기 수정
-                        if reaction.comment.count > 80 {
-                            Button(action: {
-                                viewModel.handleExpandToggle(for: reaction)
-                            }) {
-                                Text(
-                                    viewModel.expandedReactions.contains(reaction.id) ? "접기" : "더보기"
-                                )
-                                .font(LDFont.medium05)
-                                .foregroundColor(LDColor.color3)
-                            }
+                    ReactionCommentView(
+                        comment: reaction.comment,
+                        isExpanded: viewModel.expandedReactions.contains(reaction.id),
+                        onToggleExpand: {
+                            viewModel.handleExpandToggle(for: reaction)
                         }
-                    }
+                    )
                     .padding(.bottom, 12)
                 }
 
-                HStack(spacing: 18) {
-                    GeometryReader { proxy in
-                        Button(action: {
-                            // 이미지 리스트에서 클릭된 이모지가 없다면 토글 가능
-                            if viewModel.getSelectedEmoji(for: reaction.id) == nil {
-                                if viewModel.selectedReactionId == reaction.id && showEmojiPopup {
-                                    // 이미 팝업이 열려있으면 닫기
-                                    showEmojiPopup = false
-                                    viewModel.selectedReactionId = nil
-                                } else {
-                                    // 팝업 열기
-                                    viewModel.selectedReactionId = reaction.id
-                                    emojiPopupPosition = proxy.frame(in: .global)
-                                    showEmojiPopup = true
-                                }
-                            }
-                        }) {
-                            // 선택된 이미지가 존재한다면 그걸로 표시
-                            if let selectedEmoji = viewModel.getSelectedEmoji(for: reaction.id) {
-                                Image(selectedEmoji)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 31, height: 29)
+                // 이모지 / 말풍선 버튼
+                ReactionActionsView(
+                    reaction: reaction,
+                    viewModel: viewModel,
+                    showEmojiPopup: $showEmojiPopup,
+                    emojiPopupPosition: $emojiPopupPosition,
+                    showMessagePopup: $showMessagePopup,
+                    selectedReactionForMessage: $selectedReactionForMessage
+                )
 
-                            } else {
-                                Image(
-                                    viewModel.selectedReactionId == reaction.id && showEmojiPopup
-                                        ? "defaultImageFill" : "defaultImage"
-                                )
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 26, height: 27)
-                            }
-                        }
-                        .disabled(viewModel.getSelectedEmoji(for: reaction.id) != nil)
-                    }
-                    .frame(width: 26, height: 27)
-
-                    Button(action: {
-                        selectedReactionForMessage = reaction
-                        showMessagePopup = true
-                    }) {
-                        Image(reaction.artistMessages.isEmpty ? "bubbleOff" : "bubbleOn")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 26, height: 25)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-
-                    Spacer()
-                }
-
-                // 작가가 남긴 답글들
+                // 작가 답글
                 if !reaction.artistMessages.isEmpty {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(reaction.artistMessages) { artistMessage in
-                            VStack(alignment: .leading, spacing: 4) {
-                                HStack(spacing: 10) {
-                                    Image("reactionLine")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 14, height: 12)
-
-                                    Text("내 답글")
-                                        .font(LDFont.medium05)
-                                        .foregroundColor(LDColor.color2)
-                                }
-
-                                Text(artistMessage.message)
-                                    .font(LDFont.medium03)
-                                    .foregroundColor(LDColor.color1)
-                                    .lineSpacing(4)
-                            }
-                        }
-                    }
-                    .padding(.top, 24)
+                    ArtistMessagesView(messages: reaction.artistMessages)
+                        .padding(.top, 24)
                 }
             }
             .padding(.top, 12)
@@ -166,6 +92,34 @@ struct MessageItemView: View {
                 Rectangle()
                     .fill(LDColor.gray8)
                     .frame(height: 1)
+            }
+        }
+    }
+}
+
+private struct ArtistMessagesView: View {
+    let messages: [ReactionData.ArtistMessage]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(messages) { artistMessage in
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 10) {
+                        Image("reactionLine")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 14, height: 12)
+
+                        Text("내 답글")
+                            .font(LDFont.medium05)
+                            .foregroundColor(LDColor.color2)
+                    }
+
+                    Text(artistMessage.message)
+                        .font(LDFont.medium03)
+                        .foregroundColor(LDColor.color1)
+                        .lineSpacing(4)
+                }
             }
         }
     }

@@ -35,7 +35,7 @@ struct ClipArtReactionView: View {
         let maxImageWidth: CGFloat = 281
         
         // 스크롤에 따라 이미지 크기 조정
-        let imageHeight = max(100, 388 - scrollOffset * 1.5)
+        let imageHeight = max(100, 388 - scrollOffset * 0.4)
         let imageWidth = max(150, 281 - (388 - imageHeight) * 0.76)
         
         ZStack(alignment: .top) {
@@ -84,7 +84,7 @@ struct ClipArtReactionView: View {
                 onScroll: { offset, scrollView in
                     scrollOffset = offset
 
-                    let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 70
+                    let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 190
                     let resetThreshold = snapThreshold - 40
 
                     if !didSnap && offset >= snapThreshold {
@@ -268,7 +268,7 @@ struct ClipArtReactionView: View {
                     TextEditor(text: $viewModel.message)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .tint(Color(red: 0.35, green: 0.35, blue: 0.35))
+                        .tint(Color(red: 0.14, green: 0.14, blue: 0.14))
                         .padding(.top, 3)
                         .padding(.leading, 5)
                         .padding(.trailing, 5)

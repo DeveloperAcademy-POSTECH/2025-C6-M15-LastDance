@@ -13,7 +13,6 @@ struct ArchiveView: View {
 
     @StateObject private var viewModel: ArchiveViewModel
     @EnvironmentObject private var router: NavigationRouter
-    @Query private var artists: [Artist]
 
     init(exhibitionId: Int) {
         self.exhibitionId = exhibitionId
@@ -35,14 +34,13 @@ struct ArchiveView: View {
                     BackGround(geometry: geometry)
 
                     LinearGradient(
-                        colors: [
-                            LDColor.color6,
-                            LDColor.color6.opacity(0),
-                        ],
+                        gradient: Gradient(stops: [
+                            .init(color: LDColor.color6, location: 0.0),  // 맨 위: 완전 흰
+                            .init(color: LDColor.color6.opacity(0.0), location: 1.0),  // 아래: 완전 투명
+                        ]),
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    .frame(height: geometry.size.height / 2)
 
                     ScrollView {
                         VStack(spacing: 0) {
@@ -59,18 +57,16 @@ struct ArchiveView: View {
                                         router.push(.camera)
                                     },
                                     onArtworkTap: { artwork in
-                                        if let artistId = artwork.artistId,
-                                            let artist = artists.first(where: {
-                                                $0.id == artistId
-                                            })
-                                        {
-                                            router.push(
-                                                .artReaction(
-                                                    artwork: artwork,
-                                                    artist: artist
-                                                )
+                                        let artist = viewModel.artists.first(where: {
+                                            $0.id == artwork.artistId
+                                        })
+
+                                        router.push(
+                                            .artReaction(
+                                                artwork: artwork,
+                                                artist: artist
                                             )
-                                        }
+                                        )
                                     }
                                 )
                             }
@@ -98,13 +94,7 @@ struct ArchiveView: View {
                 )
             }
         }
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [LDColor.color6, LDColor.color6]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .background(LDColor.color6)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CustomXmarkNavigationBar(title: "") {
@@ -163,9 +153,9 @@ struct ArtworkGridView: View {
         LazyVGrid(
             columns: [
                 GridItem(.flexible(), spacing: 31),
-                GridItem(.flexible(), spacing: 31),
+                GridItem(.flexible()),
             ],
-            spacing: 24
+            spacing: 34
         ) {
             // 첫 번째 아이템: + 버튼 (항상 고정)
             Button(action: onAddTap) {
@@ -177,7 +167,7 @@ struct ArtworkGridView: View {
                         .font(.system(size: 22, weight: .light))
                         .foregroundColor(LDColor.gray8)
                 }
-                .frame(width: 157, height: 213)
+                .frame(width: 137, height: 193)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(
@@ -189,18 +179,20 @@ struct ArtworkGridView: View {
             }
 
             // 나머지 아이템: 작품들
-            ForEach(Array(artworks.enumerated()), id: \.element.id) {
-                index,
-                artwork in
+            ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
                 Button(action: {
                     onArtworkTap(artwork)
                 }) {
                     CachedImage(artwork.thumbnailURL)
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 157, height: 213)
+                        .frame(width: 137, height: 193)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(LDColor.color5, lineWidth: 10)
+                        )
                         .rotationEffect(.degrees(getRotationAngle(index + 1)))
-                        .applyShadow(LDShadow.shadow4)
+                        .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
                 }
             }
         }

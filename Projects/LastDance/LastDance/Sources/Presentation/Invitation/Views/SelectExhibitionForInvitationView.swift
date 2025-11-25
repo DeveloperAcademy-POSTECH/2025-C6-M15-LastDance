@@ -52,8 +52,8 @@ private struct ExhibitionSelectionGridView: View {
         ScrollView {
             LazyVGrid(
                 columns: [
-                    GridItem(.fixed(155), spacing: 31),
-                    GridItem(.fixed(155), spacing: 31),
+                    GridItem(.fixed(167), spacing: 31),
+                    GridItem(.fixed(167), spacing: 31),
                 ],
                 spacing: 28
             ) {
@@ -85,12 +85,12 @@ private struct ExhibitionSelectionCardView: View {
                 if let coverImageURLString = exhibition.coverImageName {
                     CachedImage(coverImageURLString)
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 155, height: 219)
+                        .frame(width: 167, height: 227)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 } else {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.gray.opacity(0.2))
-                        .frame(width: 155, height: 219)
+                        .frame(width: 167, height: 227)
                         .overlay(
                             Text("이미지 없음")
                                 .foregroundColor(.gray)

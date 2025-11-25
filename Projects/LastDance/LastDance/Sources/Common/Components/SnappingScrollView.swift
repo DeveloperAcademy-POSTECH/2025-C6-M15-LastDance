@@ -85,6 +85,8 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
         }
 
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            guard scrollView.isDragging || scrollView.isDecelerating else { return }
+
             parent.onScroll(scrollView.contentOffset.y, scrollView)
         }
 

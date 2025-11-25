@@ -170,13 +170,13 @@ extension ArtReactionSendView {
         } onScroll: { offset, scrollView in
             scrollOffset = offset
 
-            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 80
+            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 200
             let resetThreshold = snapThreshold - 40
 
             if !didSnap && offset >= snapThreshold {
                 didSnap = true
 
-                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: true)
 
                 scrollView.isScrollEnabled = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -192,7 +192,7 @@ extension ArtReactionSendView {
         // 스크롤에 따라 이미지 크기 조정
         let imageHeight = max(
             ArchiveImageConstants.minHeight,
-            ArchiveImageConstants.maxHeight - scrollOffset * 1.5
+            ArchiveImageConstants.maxHeight - scrollOffset * 1.0
         )
         let imageWidth = max(
             ArchiveImageConstants.minWidth,

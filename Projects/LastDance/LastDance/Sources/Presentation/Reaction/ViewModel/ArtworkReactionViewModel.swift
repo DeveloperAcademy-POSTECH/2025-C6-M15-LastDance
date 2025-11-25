@@ -160,18 +160,6 @@ final class ArtworkReactionViewModel: ObservableObject {
         }
     }
 
-    /// 반응의 코멘트를 확장 상태에 따라 전체 또는 축약하여 반환합니다
-    /// - Parameter reaction: 표시할 반응 데이터
-    /// - Returns: 확장 시 전체 코멘트, 축소 시 100자까지 축약된 코멘트
-    func displayText(for reaction: ReactionData) -> String {
-        if expandedReactions.contains(reaction.id) {
-            return reaction.comment
-        } else {
-            return String(reaction.comment.prefix(100))
-                + (reaction.comment.count > 100 ? "..." : "")
-        }
-    }
-
     /// 숨겨진 카테고리의 개수를 계산합니다
     /// - Parameter reaction: 반응 데이터
     /// - Returns: 첫 번째 카테고리를 제외한 나머지 카테고리 개수

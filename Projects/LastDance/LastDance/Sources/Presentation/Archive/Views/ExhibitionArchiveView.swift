@@ -35,21 +35,22 @@ struct ExhibitionArchiveView: View {
     var body: some View {
         VStack(spacing: 0) {
             // 전시 정보 헤더
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 // 전시 제목
                 Text(exhibition?.title ?? "전시 정보 로딩 중...")
-                    .font(LDFont.heading04)
+                    .font(LDFont.heading02)
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
-                    .padding(.top, 12)
+                    .padding(.top, 14)
 
                 // 날짜
                 Text(Date.formatShortDate(from: exhibition?.createdAt ?? ""))
-                    .font(LDFont.regular03)
+                    .font(LDFont.regular01)
                     .foregroundColor(LDColor.color2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 24)
+                    .padding(.bottom, 10)
 
                 // 반응 목록
                 ZStack(alignment: .top) {
