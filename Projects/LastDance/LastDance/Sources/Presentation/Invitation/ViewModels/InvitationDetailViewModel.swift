@@ -17,6 +17,7 @@ final class InvitationDetailViewModel: ObservableObject {
     @Published var showShareSheet: Bool = false
     @Published var createdInvitation: Invitation?
     @Published var invitationLinks: InvitationLinks?
+    @Published var alreadyExistInvitation: Bool = false
 
     private let maxCharacterCount = 20
     private let apiService: InvitationAPIServiceProtocol
@@ -111,6 +112,7 @@ final class InvitationDetailViewModel: ObservableObject {
                     self.showShareSheet = true
 
                 case .failure(let error):
+                    self.alreadyExistInvitation = true
                     Log.error("초대장 생성 실패: \(error)")
                 }
             }

@@ -96,7 +96,7 @@ struct ClipCustomAlert: View {
 }
 
 /// Alert를 표시하기 위한 Modifier
-struct CustomAlertModifier: ViewModifier {
+struct ClipCustomAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let image: String
     let title: LocalizedStringKey

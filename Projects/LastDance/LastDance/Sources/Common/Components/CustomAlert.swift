@@ -45,7 +45,12 @@ struct CustomAlert: View {
                     .padding(.horizontal, 16)
             }
 
-            Spacer().frame(height: 22)
+            // 메시지가 있을 때만 아래 spacer 유지
+            if let message = message {
+                Spacer().frame(height: 22)
+            } else {
+                Spacer().frame(height: 22)  // 타이틀-only 버전용 약간의 여백 조정
+            }
 
             if let cancelAction = cancelAction {
                 HStack(spacing: 8) {
@@ -126,16 +131,4 @@ struct CustomAlertModifier: ViewModifier {
             }
         }
     }
-}
-#Preview {
-    CustomAlert(
-        image: "",  // 아무 이미지 안 보임
-        title: "정말 삭제하시겠습니까?",
-        message: nil,  // 메시지 안 보임
-        buttonText: "확인",
-        action: {},
-        cancelAction: {}
-    )
-    .padding()
-    .previewLayout(.sizeThatFits)
 }

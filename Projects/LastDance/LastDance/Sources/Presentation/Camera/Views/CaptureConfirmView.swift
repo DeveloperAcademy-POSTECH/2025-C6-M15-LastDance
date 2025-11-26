@@ -46,6 +46,14 @@ struct CaptureConfirmView: View {
                                 matchedImageView
                                     .frame(width: geo.size.width)
                                     .clipped()
+                                    .overlay {
+                                        if viewModel.isMatching {
+                                            ShimmerLayerView()
+                                                .allowsHitTesting(false)
+                                                .blendMode(.screen)
+                                                .clipped()
+                                        }
+                                    }
 
                                 // 작품 인식이 완료되면 이미지 하단에 카드 표시
                                 if viewModel.showMatchConfirmAlert, let artwork = viewModel.artwork
@@ -111,18 +119,6 @@ struct CaptureConfirmView: View {
                     Text("이미지를 불러올 수 없습니다.")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-
-                // 매칭 중일때 보여줄 내용
-                // TODO: - 디자인팀 의견 나오면 반영
-                if viewModel.isMatching {
-                    ProgressView()
-                        .padding(16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.systemBackground))
-                        )
-                }
-
             }
         }
         .onAppear {

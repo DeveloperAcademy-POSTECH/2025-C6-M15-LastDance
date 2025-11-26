@@ -47,6 +47,7 @@ struct ArtReactionView: View {
                 router.popLast()
             }
         }
+        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.loadReactions()
         }
@@ -59,6 +60,9 @@ extension ArtReactionView {
         SnappingScrollView(
             content: {
                 VStack(spacing: 0) {
+                    Color.white
+                        .frame(height: 20)
+
                     // 작품 이미지
                     headerImage
                         .padding(.vertical, 24)
@@ -81,13 +85,14 @@ extension ArtReactionView {
             onScroll: { offset, scrollView in
                 scrollOffset = offset
 
-                let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 190
-                let resetThreshold = snapThreshold - 40
+                let snapTarget = ArchiveImageConstants.tabBarFixThreshold
+                let snapTrigger = snapTarget + 200
+                let resetThreshold = snapTarget - 40
 
-                if !didSnap && offset >= snapThreshold {
+                if !didSnap && offset >= snapTrigger {
                     didSnap = true
 
-                    scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: false)
+                    scrollView.setContentOffset(.init(x: 0, y: snapTrigger), animated: false)
 
                     scrollView.isScrollEnabled = false
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -179,17 +184,20 @@ extension ArtReactionView {
                 .foregroundColor(LDColor.color1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text(viewModel.description)
-                .font(LDFont.medium04)
-                .foregroundColor(LDColor.color2)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineSpacing(4)
+            ScrollView {
+                Text(viewModel.description)
+                    .font(LDFont.medium04)
+                    .foregroundColor(LDColor.color2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .lineSpacing(4)
+            }
+            .frame(minHeight: 450)
+            .scrollIndicators(ScrollIndicatorVisibility.hidden)
 
             Spacer(minLength: ArchiveImageConstants.animationThreshold)
         }
         .padding(.horizontal, 24)
         .padding(.top, 24)
-        .padding(.bottom, 44)
     }
 }
 
@@ -311,20 +319,24 @@ extension ArtReactionView {
                     .padding(.top, 4)
 
             } else {
-                ForEach(viewModel.reactions, id: \.id) { reaction in
-                    if let comment = reaction.comment, !comment.isEmpty {
-                        Text(comment)
-                            .padding(12)
-                            .font(LDFont.medium04)
-                            .foregroundColor(LDColor.color1)
-                            .lineSpacing(4)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(LDColor.color5)
-                            )
+                ScrollView {
+                    ForEach(viewModel.reactions, id: \.id) { reaction in
+                        if let comment = reaction.comment, !comment.isEmpty {
+                            Text(comment)
+                                .padding(12)
+                                .font(LDFont.medium04)
+                                .foregroundColor(LDColor.color1)
+                                .lineSpacing(4)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(LDColor.color5)
+                                )
+                        }
                     }
                 }
+                .frame(minHeight: 400)
+                .scrollIndicators(ScrollIndicatorVisibility.hidden)
             }
         }
     }
