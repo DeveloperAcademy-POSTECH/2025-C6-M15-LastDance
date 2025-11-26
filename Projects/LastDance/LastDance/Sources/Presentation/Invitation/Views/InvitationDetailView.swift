@@ -151,6 +151,19 @@ struct InvitationDetailView: View {
                 }
         )
         .customAlert(
+            isPresented: $viewModel.alreadyExistInvitation,
+            image: "warning",
+            title: "이미 초대장이 존재해요",
+            message: "",
+            buttonText: "나가기",
+            action: {
+                router.popLast()
+            },
+            cancelAction: {
+                viewModel.alreadyExistInvitation = false
+            }
+        )
+        .customAlert(
             isPresented: $viewModel.showDeleteAlert,
             image: "warning",
             title: "작업 내용을 잃게 돼요",

@@ -244,6 +244,12 @@ final class ArtReactionViewModel: ObservableObject, SendThrottleHandler {
     func performSendReaction(
         artworkId: Int, exhibitionId: Int?, completion: @escaping (Bool, Int?) -> Void
     ) {
+        if isSending {
+            Log.debug("이미 전송 중이라 performSendReaction 재호출 무시")
+            completion(false, nil)
+            return
+        }
+
         // 사진(UIImage) → Data 변환
         guard let imageData = capturedImageData else {
             Log.warning("capturedImage가 없습니다.")

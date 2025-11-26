@@ -14,8 +14,11 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
     private let onScroll: (CGFloat, UIScrollView) -> Void
     // 새로고침 콜백
     private let onRefresh: (() -> Void)?
+    // 키보드에 따라 inset 조정할지 여부
+    private let adjustsForKeyboard: Bool
 
     init(
+        adjustsForKeyboard: Bool = false,
         @ViewBuilder content: @escaping () -> Content,
         onScroll: @escaping (CGFloat, UIScrollView) -> Void,
         onRefresh: (() -> Void)? = nil
@@ -23,6 +26,7 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
         self.content = content
         self.onScroll = onScroll
         self.onRefresh = onRefresh
+        self.adjustsForKeyboard = adjustsForKeyboard
     }
 
     func makeCoordinator() -> Coordinator {
@@ -65,12 +69,17 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
 
         // 나중에 update할 수 있도록 coordinator에 보관
         context.coordinator.hostingController = hosting
+        context.coordinator.scrollView = scrollView
+        context.coordinator.startObservingKeyboardIfNeeded()
+
         return scrollView
     }
 
     func updateUIView(_ uiView: UIScrollView, context: Context) {
         // SwiftUI의 상태 변경 → rootView 교체
         context.coordinator.hostingController?.rootView = content()
+        context.coordinator.startObservingKeyboardIfNeeded()
+
     }
 
     // MARK: - Coordinator
@@ -79,9 +88,68 @@ struct SnappingScrollView<Content: View>: UIViewRepresentable {
         let parent: SnappingScrollView
         var hostingController: UIHostingController<Content>?
         var refreshControl: UIRefreshControl?
+        weak var scrollView: UIScrollView?
+        private var isObservingKeyboard = false
 
         init(parent: SnappingScrollView) {
             self.parent = parent
+        }
+
+        deinit {
+            stopObservingKeyboard()
+        }
+
+        func startObservingKeyboardIfNeeded() {
+            guard parent.adjustsForKeyboard, !isObservingKeyboard else { return }
+            isObservingKeyboard = true
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(keyboardWillChangeFrame(_:)),
+                name: UIResponder.keyboardWillChangeFrameNotification,
+                object: nil
+            )
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(keyboardWillHide(_:)),
+                name: UIResponder.keyboardWillHideNotification,
+                object: nil
+            )
+        }
+
+        private func stopObservingKeyboard() {
+            guard isObservingKeyboard else { return }
+            isObservingKeyboard = false
+            NotificationCenter.default.removeObserver(self)
+        }
+
+        @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+            guard let scrollView,
+                let window = scrollView.window,
+                let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+                    as? CGRect
+            else { return }
+
+            let keyboardFrameInWindow = frame
+            let scrollViewFrameInWindow = scrollView.convert(scrollView.bounds, to: window)
+            let intersection = scrollViewFrameInWindow.intersection(keyboardFrameInWindow)
+            let bottomInset = max(0, intersection.height)
+
+            applyKeyboardInset(bottomInset)
+        }
+
+        @objc private func keyboardWillHide(_ notification: Notification) {
+            applyKeyboardInset(0)
+        }
+
+        private func applyKeyboardInset(_ bottomInset: CGFloat) {
+            guard let scrollView else { return }
+
+            var inset = scrollView.contentInset
+            inset.bottom = bottomInset
+            scrollView.contentInset = inset
+            scrollView.scrollIndicatorInsets = inset
         }
 
         func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -21,6 +21,8 @@ struct ArtReactionSendView: View {
     @State private var didSnap: Bool = false
     @FocusState private var isMessageFieldFocused: Bool
     @State private var saveNoticeVisible = false
+    @State private var isTabBarFixed: Bool = false
+    @ObservedObject private var keyboard = KeyboardInfo.shared
 
     private let placeholder = ReactionConstants.messagePlaceholder
 
@@ -36,9 +38,13 @@ struct ArtReactionSendView: View {
 
     // MARK: - Computed Properties
 
-    private var isTabBarFixed: Bool {
-        scrollOffset > ArchiveImageConstants.tabBarFixThreshold
-    }
+    //    private var isTabBarFixed: Bool {
+    //        if keyboard.height > 0 {
+    //            return true
+    //        }
+    //
+    //        return scrollOffset > ArchiveImageConstants.tabBarFixThreshold
+    //    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -99,6 +105,7 @@ struct ArtReactionSendView: View {
                 router.popLast()
             }
         }
+        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.capturedImageData = imageData
 
@@ -110,6 +117,12 @@ struct ArtReactionSendView: View {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     saveNoticeVisible = false
                 }
+            }
+        }
+        .onChange(of: keyboard.height) { _, newValue in
+            if newValue > 0 {
+                didSnap = true
+                isTabBarFixed = true
             }
         }
         .onChange(of: viewModel.shouldTriggerSend) { _, shouldTrigger in
@@ -147,7 +160,7 @@ struct ArtReactionSendView: View {
 // MARK: - Scroll Content
 extension ArtReactionSendView {
     fileprivate var scrollContent: some View {
-        SnappingScrollView {
+        SnappingScrollView(adjustsForKeyboard: true) {
             VStack(spacing: 0) {
                 // 작품 이미지
                 headerImage
@@ -170,20 +183,26 @@ extension ArtReactionSendView {
         } onScroll: { offset, scrollView in
             scrollOffset = offset
 
-            let snapThreshold = ArchiveImageConstants.tabBarFixThreshold + 200
-            let resetThreshold = snapThreshold - 40
+            let snapTarget = ArchiveImageConstants.tabBarFixThreshold
+            let snapTrigger = snapTarget + 120
+            let resetThreshold = snapTarget - 40
 
-            if !didSnap && offset >= snapThreshold {
+            // 아래로 충분히 내렸을 때 한 번만 스냅
+            if !didSnap && offset >= snapTrigger {
                 didSnap = true
+                isTabBarFixed = true
 
-                scrollView.setContentOffset(.init(x: 0, y: snapThreshold), animated: true)
+                scrollView.setContentOffset(.init(x: 0, y: snapTrigger), animated: false)
 
                 scrollView.isScrollEnabled = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     scrollView.isScrollEnabled = true
                 }
-            } else if didSnap && offset < resetThreshold {
+            }
+            // 위로 다시 충분히 올렸고, 키보드도 없을 때만 해제
+            else if didSnap && offset < resetThreshold && keyboard.height == 0 {
                 didSnap = false
+                isTabBarFixed = false
             }
         }
     }
@@ -258,11 +277,15 @@ extension ArtReactionSendView {
                     .foregroundColor(LDColor.color1)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(description)
-                    .font(LDFont.medium04)
-                    .foregroundColor(LDColor.color2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineSpacing(4)
+                ScrollView {
+                    Text(description)
+                        .font(LDFont.medium04)
+                        .foregroundColor(LDColor.color2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .lineSpacing(4)
+                }
+                .frame(minHeight: 450)
+                .scrollIndicators(ScrollIndicatorVisibility.hidden)
             } else {
                 Text("작품 설명이 없습니다.")
                     .font(LDFont.medium04)
@@ -274,7 +297,6 @@ extension ArtReactionSendView {
         }
         .padding(.horizontal, 24)
         .padding(.top, 24)
-        .padding(.bottom, 44)
     }
 }
 
@@ -340,7 +362,10 @@ extension ArtReactionSendView {
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(LDColor.color6.opacity(0.3), lineWidth: 1)
                 )
+
+                Spacer()
             }
+            .frame(minHeight: 400)
         }
     }
 }
